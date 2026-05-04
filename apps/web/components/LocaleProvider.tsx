@@ -11,6 +11,8 @@ const dictionary: Dictionary = {
   "common.start": { tr: "Başla", en: "Start", ru: "Начать", de: "Starten" },
   "common.contact": { tr: "İletişim", en: "Contact", ru: "Контакты", de: "Kontakt" },
   "common.mobileApp": { tr: "Mobil Uygulama", en: "Mobile App", ru: "Мобильное приложение", de: "Mobile App" },
+  "common.androidApp": { tr: "Android indir", en: "Download Android", ru: "Скачать Android", de: "Android herunterladen" },
+  "common.iosApp": { tr: "iPhone indir", en: "Download iPhone", ru: "Скачать iPhone", de: "iPhone herunterladen" },
   "common.businessesFor": { tr: "İşletmeler İçin", en: "For Businesses", ru: "Для бизнеса", de: "Für Unternehmen" },
   "common.explore": { tr: "Keşfet", en: "Explore", ru: "Открыть", de: "Entdecken" },
   "common.noContent": { tr: "Henüz içerik yok", en: "No content yet", ru: "Пока нет контента", de: "Noch kein Inhalt" },

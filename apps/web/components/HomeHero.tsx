@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "@/components/LocaleProvider";
-import { ArrowRight, Compass, Download, LogIn } from "lucide-react";
+import { ArrowRight, Compass, Download, LogIn, Smartphone } from "lucide-react";
 import { SectionEyebrow } from "./SectionEyebrow";
 
 export function HomeHero() {
@@ -20,6 +20,14 @@ export function HomeHero() {
         <a className="secondary" href="/mobil-uygulama">
           <Download size={18} />
           <span style={{ marginLeft: 8 }}>Mobil Uygulama</span>
+        </a>
+        <a className="secondary" href="https://play.google.com/store/apps/details?id=narrehberi.com&hl=tr" target="_blank" rel="noreferrer">
+          <Smartphone size={18} />
+          <span style={{ marginLeft: 8 }}>{t("common.androidApp")}</span>
+        </a>
+        <a className="secondary" href="https://apps.apple.com/tr/app/nar-rehberi/id6761314584" target="_blank" rel="noreferrer">
+          <Smartphone size={18} />
+          <span style={{ marginLeft: 8 }}>{t("common.iosApp")}</span>
         </a>
         <a className="secondary" href="#ozellikler">
           <ArrowRight size={18} />

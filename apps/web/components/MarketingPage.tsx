@@ -94,6 +94,18 @@ export function MarketingPage({ page, showFooter = true }: { page: MarketingPage
             <a className="secondary" href="/iletisim">
               <span>{t("common.contact")}</span>
             </a>
+            {page.slug === "mobil-uygulama" ? (
+              <>
+                <a className="secondary" href="https://play.google.com/store/apps/details?id=narrehberi.com&hl=tr" target="_blank" rel="noreferrer">
+                  <Smartphone size={18} />
+                  <span>{t("common.androidApp")}</span>
+                </a>
+                <a className="secondary" href="https://apps.apple.com/tr/app/nar-rehberi/id6761314584" target="_blank" rel="noreferrer">
+                  <Smartphone size={18} />
+                  <span>{t("common.iosApp")}</span>
+                </a>
+              </>
+            ) : null}
           </div>
         </div>
       </section>

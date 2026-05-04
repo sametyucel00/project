@@ -24,28 +24,59 @@ function uniqueEventsByTitle(items: EventItem[]) {
   });
 }
 
-function getAutfHighlights(items: EventItem[]) {
-  return uniqueEventsByTitle(
-    items
-      .filter((item) => String(item.ticketUrl ?? "").includes("16-autf"))
-      .sort((first, second) => first.startsAt.localeCompare(second.startsAt))
-  ).slice(0, 4);
+function normalizeText(value: string) {
+  return value
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9ğüşöçıİ\s]/g, " ");
 }
 
-function getMayHighlights(items: EventItem[]) {
-  return uniqueEventsByTitle(
-    items
-      .filter((item) => item.startsAt.startsWith("2026-05"))
-      .sort((first, second) => first.startsAt.localeCompare(second.startsAt))
-  ).slice(0, 8);
+function haversineMeters(first: { lat: number; lng: number }, second: { lat: number; lng: number }) {
+  const earthRadius = 6371000;
+  const dLat = ((second.lat - first.lat) * Math.PI) / 180;
+  const dLng = ((second.lng - first.lng) * Math.PI) / 180;
+  const lat1 = (first.lat * Math.PI) / 180;
+  const lat2 = (second.lat * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+  return 2 * earthRadius * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function formatDistanceLabel(distanceMeters?: number | null) {
+  if (distanceMeters === undefined || distanceMeters === null || Number.isNaN(distanceMeters)) return "Mesafe yok";
+  if (distanceMeters < 1000) return `${Math.round(distanceMeters)} m`;
+  return `${(distanceMeters / 1000).toFixed(distanceMeters >= 10000 ? 0 : 1)} km`;
+}
+
+function resolveNearbyEvents(items: EventItem[], places: Place[], location?: { lat: number; lng: number } | null) {
+  return uniqueEventsByTitle(items.map((event) => event))
+    .map((event) => {
+      const normalizedVenue = normalizeText(event.venueName);
+      const place = places.find((item) => {
+        const title = normalizeText(item.title.tr);
+        const address = normalizeText(item.address);
+        return title.includes(normalizedVenue) || normalizedVenue.includes(title) || address.includes(normalizedVenue);
+      });
+
+      const distance = location && place?.location ? haversineMeters(location, place.location) : null;
+      return { event, place, distance };
+    })
+    .sort((first, second) => {
+      const firstDistance = first.distance ?? Number.POSITIVE_INFINITY;
+      const secondDistance = second.distance ?? Number.POSITIVE_INFINITY;
+      if (firstDistance !== secondDistance) return firstDistance - secondDistance;
+      return first.event.startsAt.localeCompare(second.event.startsAt);
+    })
+    .slice(0, 6);
 }
 
 export function LandingSections() {
   const [places, setPlaces] = useState<Place[]>(featuredPlaces.slice(0, 6));
-  const [events, setEvents] = useState<EventItem[]>(featuredEvents.slice(0, 5));
+  const [events, setEvents] = useState<EventItem[]>(featuredEvents.slice(0, 6));
   const [offers, setOffers] = useState<Offer[]>(featuredOffers.slice(0, 3));
-  const [autfHighlights, setAutfHighlights] = useState<EventItem[]>(getAutfHighlights(featuredEvents));
-  const [mayHighlights, setMayHighlights] = useState<EventItem[]>(getMayHighlights(featuredEvents));
+  const [nearbyEvents, setNearbyEvents] = useState<Array<{ event: EventItem; place?: Place; distance: number | null }>>([]);
 
   useEffect(() => {
     let active = true;
@@ -53,7 +84,7 @@ export function LandingSections() {
     async function loadLandingContent() {
       try {
         const [livePlaces, liveEvents, liveOffers] = await Promise.all([
-          fetchLivePlaces(6),
+          fetchLivePlaces(80),
           fetchLiveEvents(48),
           fetchLiveOffers(3)
         ]);
@@ -65,18 +96,33 @@ export function LandingSections() {
         }
 
         const sortedEvents = [...mergedEvents].sort((first, second) => first.startsAt.localeCompare(second.startsAt));
+        const resolvedPlaces = livePlaces.length ? livePlaces : featuredPlaces;
 
-        setPlaces((livePlaces.length ? livePlaces : featuredPlaces).slice(0, 6));
-        setEvents(sortedEvents.slice(0, 5));
-        setAutfHighlights(getAutfHighlights(sortedEvents));
-        setMayHighlights(getMayHighlights(sortedEvents));
+        setPlaces(resolvedPlaces.slice(0, 6));
+        setEvents(sortedEvents.slice(0, 6));
         setOffers((liveOffers.length ? liveOffers : featuredOffers).slice(0, 3));
+
+        if (typeof navigator !== "undefined" && navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              if (!active) return;
+              const nextLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+              setNearbyEvents(resolveNearbyEvents(sortedEvents, resolvedPlaces, nextLocation));
+            },
+            () => {
+              if (!active) return;
+              setNearbyEvents(resolveNearbyEvents(sortedEvents, resolvedPlaces, null));
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+          );
+        } else {
+          setNearbyEvents(resolveNearbyEvents(sortedEvents, resolvedPlaces, null));
+        }
       } catch {
         if (!active) return;
         setPlaces(featuredPlaces.slice(0, 6));
-        setEvents(featuredEvents.slice(0, 5));
-        setAutfHighlights(getAutfHighlights(featuredEvents));
-        setMayHighlights(getMayHighlights(featuredEvents));
+        setEvents(featuredEvents.slice(0, 6));
+        setNearbyEvents(resolveNearbyEvents(featuredEvents, featuredPlaces, null));
         setOffers(featuredOffers.slice(0, 3));
       }
     }
@@ -125,59 +171,35 @@ export function LandingSections() {
 
       <section className="section" id="etkinlikler">
         <div className="section-head">
-          <h2>Etkinlikleri aya, haftaya veya ruh haline göre yakala.</h2>
-          <p>Tiyatrodan konsere, festivalden sergiye şehirde ne varsa tek yerde.</p>
+          <h2>Yakındaki etkinlikler.</h2>
+          <p>Konuma göre sıralanan en yakın 6 etkinlik tek yerde.</p>
         </div>
         <div className="rail">
-          {events.map((event) => (
+          {(nearbyEvents.length ? nearbyEvents : events.map((event) => ({ event, place: undefined, distance: null }))).map(({ event, distance }) => (
             <article className="feature" key={event.id}>
-              <span className="event-meta"><CalendarDays size={18} /> {new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt))}</span>
+              <span className="event-meta">
+                <CalendarDays size={18} /> {new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt))}
+              </span>
               <h3>{event.title.tr}</h3>
-              <p>{event.synopsis?.tr ?? event.description.tr}</p>
+              <p>{formatDistanceLabel(distance)} · {event.synopsis?.tr ?? event.description.tr}</p>
             </article>
           ))}
           {offers.map((offer) => (
             <article className="feature" key={offer.id}>
               <Gift size={22} />
               <span className="meta meta-inline">
-                <span className="meta-offer-part"><Tag size={14} /><span>{offer.discountLabel}</span></span>
+                <span className="meta-offer-part">
+                  <Tag size={14} />
+                  <span>{offer.discountLabel}</span>
+                </span>
                 <span aria-hidden="true">·</span>
-                <span className="meta-offer-part"><QrCode size={14} /><span>QR aktif</span></span>
+                <span className="meta-offer-part">
+                  <QrCode size={14} />
+                  <span>QR aktif</span>
+                </span>
               </span>
               <h3>{offer.title.tr}</h3>
               <p>{offer.description.tr}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section dark" id="festival-vitrini">
-        <div className="section-head">
-          <h2>16. Antalya Uluslararası Tiyatro Festivali artık akışta.</h2>
-          <p>Festival oyunları, seansları ve kapak görselleri yeni etkinlik akışına işlendi.</p>
-        </div>
-        <div className="rail">
-          {autfHighlights.map((event) => (
-            <article className="feature" key={event.id}>
-              <span className="event-meta"><CalendarDays size={18} /> {new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt))}</span>
-              <h3>{event.title.tr}</h3>
-              <p>{event.venueName}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section" id="mayis-ajandasi">
-        <div className="section-head">
-          <h2>Mayıs'ta Antalya'da öne çıkan etkinlikler.</h2>
-          <p>Festival, konser, bale ve şehir ajandasından derlenmiş güncel Mayıs seçkisi.</p>
-        </div>
-        <div className="rail">
-          {mayHighlights.map((event) => (
-            <article className="feature" key={event.id}>
-              <span className="event-meta"><CalendarDays size={18} /> {new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt))}</span>
-              <h3>{event.title.tr}</h3>
-              <p>{event.venueName} · {event.district}</p>
             </article>
           ))}
         </div>
