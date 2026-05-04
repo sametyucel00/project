@@ -162,30 +162,34 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
             <Pressable accessibilityRole="button" onPress={() => setMode("register")} style={[styles.authChoice, mode === "register" && styles.authChoiceActive]}>
               <Text style={mode === "register" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.register}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => void runUtility(() => resetPassword(email.trim()), c.statusResetSent)} style={styles.authChoice}>
+            <Pressable accessibilityRole="button" hitSlop={8} onPress={() => void runUtility(() => resetPassword(email.trim()), c.statusResetSent)} style={styles.authChoice}>
               <Text style={styles.authChoiceText}>{c.forgot}</Text>
             </Pressable>
           </View>
 
-          <TextInput value={email} onChangeText={setEmail} placeholder={c.email} keyboardType="email-address" autoCapitalize="none" style={styles.authInput} />
-          <TextInput value={password} onChangeText={setPassword} placeholder={c.password} secureTextEntry style={styles.authInput} />
-          {mode === "register" ? (
-            <View style={styles.settingsCard}>
-              <TextInput value={displayName} onChangeText={setDisplayName} placeholder={c.name} style={styles.authInput} />
-              <Text style={styles.settingsTitle}>{c.accountType}</Text>
-              <View style={styles.authRow}>
-                <Pressable accessibilityRole="button" onPress={() => setRole("individual")} style={[styles.authChoice, role === "individual" && styles.authChoiceActive]}>
-                  <Text style={role === "individual" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.individual}</Text>
-                </Pressable>
-                <Pressable accessibilityRole="button" onPress={() => setRole("business")} style={[styles.authChoice, role === "business" && styles.authChoiceActive]}>
-                  <Text style={role === "business" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.business}</Text>
-                </Pressable>
-                <Pressable accessibilityRole="button" onPress={() => setRole("theater")} style={[styles.authChoice, role === "theater" && styles.authChoiceActive]}>
-                  <Text style={role === "theater" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.theater}</Text>
-                </Pressable>
+          <View style={styles.authGroup}>
+            <TextInput value={email} onChangeText={setEmail} placeholder={c.email} keyboardType="email-address" autoCapitalize="none" style={styles.authInput} />
+            <TextInput value={password} onChangeText={setPassword} placeholder={c.password} secureTextEntry style={styles.authInput} />
+            {mode === "register" ? (
+              <>
+                <TextInput value={displayName} onChangeText={setDisplayName} placeholder={c.name} style={styles.authInput} />
+                <View style={styles.settingsCard}>
+                <Text style={styles.settingsTitle}>{c.accountType}</Text>
+                <View style={styles.authRow}>
+                  <Pressable accessibilityRole="button" onPress={() => setRole("individual")} style={[styles.authChoice, role === "individual" && styles.authChoiceActive]}>
+                    <Text style={role === "individual" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.individual}</Text>
+                  </Pressable>
+                  <Pressable accessibilityRole="button" onPress={() => setRole("business")} style={[styles.authChoice, role === "business" && styles.authChoiceActive]}>
+                    <Text style={role === "business" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.business}</Text>
+                  </Pressable>
+                  <Pressable accessibilityRole="button" onPress={() => setRole("theater")} style={[styles.authChoice, role === "theater" && styles.authChoiceActive]}>
+                    <Text style={role === "theater" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.theater}</Text>
+                  </Pressable>
+                </View>
               </View>
-            </View>
-          ) : null}
+              </>
+            ) : null}
+          </View>
 
           <Pressable
             accessibilityRole="button"

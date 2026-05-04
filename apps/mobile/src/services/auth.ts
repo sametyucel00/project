@@ -1,4 +1,7 @@
 import { defaultPushPreferences, defaultUserPoints, type Locale, type UserRole } from "@nar/core";
+import * as AppleAuthentication from "expo-apple-authentication";
+import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -24,6 +27,7 @@ import {
   type FirestoreError
 } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
+import { Platform } from "react-native";
 import { auth, db, functions } from "../firebase";
 import { normalizeLocale, normalizeThemeMode, type MobileUserPreferences } from "./preferences";
 
@@ -74,6 +78,57 @@ function shouldUseRedirectAuth() {
   return coarsePointer || smallViewport;
 }
 
+function isWebEnvironment() {
+  return typeof window !== "undefined" && typeof document !== "undefined";
+}
+
+function getGoogleClientId() {
+  return (
+    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID ||
+    process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID ||
+    process.env.GOOGLE_WEB_CLIENT_ID ||
+    process.env.GOOGLE_CLIENT_ID ||
+    ""
+  ).trim();
+}
+
+function getGoogleRedirectUri() {
+  return AuthSession.makeRedirectUri({
+    scheme: "narrehberi",
+    path: "auth/google"
+  });
+}
+
+function buildGoogleAuthUrl(clientId: string) {
+  const redirectUri = getGoogleRedirectUri();
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    response_type: "id_token token",
+    scope: "openid profile email",
+    include_granted_scopes: "true",
+    prompt: "select_account"
+  });
+  return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+}
+
+function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): MobileSession {
+  const role: SelfServiceRole = user.isAnonymous ? "individual" : requestedRole ?? "individual";
+  return {
+    uid: user.uid,
+    email: user.email ?? "",
+    displayName: user.displayName ?? "Nar kullanıcısı",
+    isAnonymous: user.isAnonymous,
+    role,
+    city: "Antalya",
+    preferredLocale: "tr",
+    themeMode: "system",
+    notificationPreferences: defaultPushPreferences,
+    points: user.isAnonymous ? 0 : defaultUserPoints,
+    nextTab: resolveRoleTab(role)
+  };
+}
+
 function toSession(user: User, data: Record<string, unknown>): MobileSession {
   const role = (data.role ?? "individual") as UserRole;
   return {
@@ -95,84 +150,88 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
 }
 
 export async function ensureMobileUserProfile(user: User, requestedRole?: SelfServiceRole): Promise<MobileSession> {
-  const userRef = doc(db, "users", user.uid);
-  const snapshot = await getDoc(userRef);
-  const storedData = snapshot.exists() ? (snapshot.data() as Record<string, unknown>) : null;
+  try {
+    const userRef = doc(db, "users", user.uid);
+    const snapshot = await getDoc(userRef);
+    const storedData = snapshot.exists() ? (snapshot.data() as Record<string, unknown>) : null;
 
-  if (snapshot.exists() && !user.isAnonymous) {
-    const storedPoints = typeof storedData?.points === "number" ? storedData.points : null;
-    const hasSeedMarker = Boolean(storedData?.pointsSeededAt);
-    if ((storedPoints === null || storedPoints === 0) && !hasSeedMarker) {
-      await setDoc(
-        userRef,
-        {
+    if (snapshot.exists() && !user.isAnonymous) {
+      const storedPoints = typeof storedData?.points === "number" ? storedData.points : null;
+      const hasSeedMarker = Boolean(storedData?.pointsSeededAt);
+      if ((storedPoints === null || storedPoints === 0) && !hasSeedMarker) {
+        await setDoc(
+          userRef,
+          {
+            points: defaultUserPoints,
+            pointsSeededAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+        return {
+          uid: user.uid,
+          email: typeof storedData?.email === "string" ? storedData.email : user.email ?? "",
+          displayName: typeof storedData?.displayName === "string" ? storedData.displayName : user.displayName ?? "Nar kullanıcısı",
+          isAnonymous: user.isAnonymous,
+          role: (storedData?.role ?? "individual") as UserRole,
+          city: typeof storedData?.city === "string" ? storedData.city : "Antalya",
+          preferredLocale: normalizeLocale(typeof storedData?.preferredLocale === "string" ? storedData.preferredLocale : null),
+          themeMode: normalizeThemeMode(typeof storedData?.themeMode === "string" ? storedData.themeMode : null),
+          notificationPreferences: {
+            ...defaultPushPreferences,
+            ...(typeof storedData?.notificationPreferences === "object" && storedData.notificationPreferences ? storedData.notificationPreferences : {})
+          },
           points: defaultUserPoints,
-          pointsSeededAt: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        },
-        { merge: true }
-      );
+          nextTab: resolveRoleTab((storedData?.role ?? "individual") as UserRole)
+        };
+      }
+    }
+
+    if (!snapshot.exists()) {
+      const allowedRoles: SelfServiceRole[] = ["individual", "business", "theater"];
+      const role: SelfServiceRole = requestedRole && allowedRoles.includes(requestedRole) ? requestedRole : "individual";
+      const preferredLocale: Locale = "tr";
+      const points = user.isAnonymous ? 0 : defaultUserPoints;
+      const profile = {
+        id: user.uid,
+        role,
+        displayName: user.displayName ?? "Nar kullanıcısı",
+        email: user.email ?? "",
+        city: "Antalya",
+        preferredLocale,
+        themeMode: "system",
+        notificationPreferences: defaultPushPreferences,
+        points,
+        pointsSeededAt: user.isAnonymous ? null : serverTimestamp(),
+        qrCodeId: "qr_" + user.uid,
+        favoritePlaceIds: [],
+        favoriteEventIds: [],
+        favoriteOfferIds: [],
+        badges: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: serverTimestamp()
+      };
+
+      await setDoc(userRef, profile);
       return {
         uid: user.uid,
-        email: typeof storedData?.email === "string" ? storedData.email : user.email ?? "",
-        displayName: typeof storedData?.displayName === "string" ? storedData.displayName : user.displayName ?? "Nar kullanıcısı",
+        email: profile.email,
+        displayName: profile.displayName,
         isAnonymous: user.isAnonymous,
-        role: (storedData?.role ?? "individual") as UserRole,
-        city: typeof storedData?.city === "string" ? storedData.city : "Antalya",
-        preferredLocale: normalizeLocale(typeof storedData?.preferredLocale === "string" ? storedData.preferredLocale : null),
-        themeMode: normalizeThemeMode(typeof storedData?.themeMode === "string" ? storedData.themeMode : null),
-        notificationPreferences: {
-          ...defaultPushPreferences,
-          ...(typeof storedData?.notificationPreferences === "object" && storedData.notificationPreferences ? storedData.notificationPreferences : {})
-        },
-        points: defaultUserPoints,
-        nextTab: resolveRoleTab((storedData?.role ?? "individual") as UserRole)
+        role: profile.role,
+        city: profile.city,
+        preferredLocale: profile.preferredLocale,
+        themeMode: "system",
+        notificationPreferences: profile.notificationPreferences,
+        points: profile.points,
+        nextTab: resolveRoleTab(profile.role)
       };
     }
+
+    return toSession(user, snapshot.data() as Record<string, unknown>);
+  } catch {
+    return buildFallbackSession(user, requestedRole);
   }
-
-  if (!snapshot.exists()) {
-    const allowedRoles: SelfServiceRole[] = ["individual", "business", "theater"];
-    const role: SelfServiceRole = requestedRole && allowedRoles.includes(requestedRole) ? requestedRole : "individual";
-    const preferredLocale: Locale = "tr";
-    const points = user.isAnonymous ? 0 : defaultUserPoints;
-    const profile = {
-      id: user.uid,
-      role,
-      displayName: user.displayName ?? "Nar kullanıcısı",
-      email: user.email ?? "",
-      city: "Antalya",
-      preferredLocale,
-      themeMode: "system",
-      notificationPreferences: defaultPushPreferences,
-      points,
-      pointsSeededAt: user.isAnonymous ? null : serverTimestamp(),
-      qrCodeId: `qr_${user.uid}`,
-      favoritePlaceIds: [],
-      favoriteEventIds: [],
-      favoriteOfferIds: [],
-      badges: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: serverTimestamp()
-    };
-
-    await setDoc(userRef, profile);
-    return {
-      uid: user.uid,
-      email: profile.email,
-      displayName: profile.displayName,
-      isAnonymous: user.isAnonymous,
-      role: profile.role,
-      city: profile.city,
-      preferredLocale: profile.preferredLocale,
-      themeMode: "system",
-      notificationPreferences: profile.notificationPreferences,
-      points: profile.points,
-      nextTab: resolveRoleTab(profile.role)
-    };
-  }
-
-  return toSession(user, snapshot.data() as Record<string, unknown>);
 }
 
 export async function registerWithEmail(email: string, password: string, displayName: string) {
@@ -210,6 +269,24 @@ export async function loginWithGoogleToken(input: GoogleTokenInput | string) {
 }
 
 export async function loginWithGooglePopup() {
+  if (!isWebEnvironment()) {
+    const clientId = getGoogleClientId();
+    if (!clientId) {
+      throw new Error("Google girişi için EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID gerekli.");
+    }
+    const authResult = await WebBrowser.openAuthSessionAsync(buildGoogleAuthUrl(clientId), getGoogleRedirectUri());
+    if (authResult.type !== "success") {
+      throw new Error("Google girişi iptal edildi.");
+    }
+    const authUrl = new URL(authResult.url);
+    const fragmentParams = new URLSearchParams(authUrl.hash.replace(/^#/, ""));
+    const idToken = authUrl.searchParams.get("id_token") ?? fragmentParams.get("id_token") ?? "";
+    const accessToken = authUrl.searchParams.get("access_token") ?? fragmentParams.get("access_token") ?? "";
+    if (!idToken) {
+      throw new Error("Google kimlik bilgisi alınamadı.");
+    }
+    return loginWithGoogleToken({ idToken, accessToken: accessToken || undefined });
+  }
   if (shouldUseRedirectAuth()) {
     await signInWithRedirect(auth, new GoogleAuthProvider());
     return AUTH_REDIRECT_STARTED;
@@ -230,6 +307,22 @@ export async function loginWithAppleToken(input: AppleTokenInput | string) {
 }
 
 export async function loginWithApplePopup() {
+  if (!isWebEnvironment()) {
+    if (Platform.OS !== "ios") {
+      throw new Error("Apple girişi yalnızca iPhone ve iPad üzerinde kullanılabilir.");
+    }
+    const available = await AppleAuthentication.isAvailableAsync();
+    if (!available) {
+      throw new Error("Bu cihaz Apple ile giriş için uygun değil.");
+    }
+    const response = await AppleAuthentication.signInAsync({
+      requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL]
+    });
+    if (!response.identityToken) {
+      throw new Error("Apple kimlik bilgisi alınamadı.");
+    }
+    return loginWithAppleToken({ identityToken: response.identityToken });
+  }
   if (shouldUseRedirectAuth()) {
     await signInWithRedirect(auth, new OAuthProvider("apple.com"));
     return AUTH_REDIRECT_STARTED;

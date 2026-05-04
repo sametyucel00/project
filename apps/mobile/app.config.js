@@ -12,16 +12,17 @@ module.exports = {
   version: "9.1.0",
   icon: "./assets/icon.png",
   owner: process.env.EXPO_OWNER || "simic52",
+  plugins: [...(expo.plugins ?? []), "expo-web-browser"],
   ios: {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.2"
+    buildNumber: "1.3"
   },
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9101
+    versionCode: 9102
   },
   extra: {
     ...(expo.extra ?? {}),

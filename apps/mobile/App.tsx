@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as WebBrowser from "expo-web-browser";
 import type { ReactElement } from "react";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -23,6 +24,8 @@ import { getDeviceLocale, getMobileLocale, setMobileLocale, subscribeMobileLocal
 import { getOnboardingCompleted, markOnboardingCompleted } from "./src/services/onboarding";
 import { loadStoredAppSettings } from "./src/services/appSettings";
 import { t } from "@nar/core";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const tabs = [
   { label: "Ana Sayfa", icon: "home-outline", screen: HomeScreen },

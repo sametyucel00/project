@@ -122,6 +122,7 @@ function buildStyles() {
     onboardingActionSecondary: { backgroundColor: theme.surface, borderWidth: StyleSheet.hairlineWidth, borderColor: theme.line },
     onboardingActionText: { color: theme.paper, fontWeight: "800" },
     onboardingActionTextSecondary: { color: theme.ink, fontWeight: "800" },
+    authGroup: { gap: 10, marginTop: 4 },
     onboardingList: { gap: 10, paddingTop: 4 },
     onboardingListItem: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
     onboardingListText: { color: theme.muted, lineHeight: 20, flex: 1 },

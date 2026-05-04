@@ -1,5 +1,5 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectAuthEmulator, getAuth, initializeAuth } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
@@ -14,7 +14,10 @@ const firebaseConfig = {
 };
 
 export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
-export const auth = getAuth(firebaseApp);
+const isWebEnvironment = typeof window !== "undefined" && typeof document !== "undefined";
+export const auth = isWebEnvironment
+  ? getAuth(firebaseApp)
+  : initializeAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const functions = getFunctions(firebaseApp, "europe-west1");
 export const storage = getStorage(firebaseApp);

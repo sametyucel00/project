@@ -4,9 +4,17 @@ import { fetchLiveEvents, fetchLiveOffers, fetchLivePlaces } from "@/lib/live-da
 import { featuredEvents, featuredOffers, featuredPlaces, timeBasedDiscovery, type EventItem, type Offer, type Place } from "@nar/core";
 import { MapPin, Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocale } from "./LocaleProvider";
+import { localizeText } from "./DiscoveryList";
 
 export function AppShowcase() {
-  const current = timeBasedDiscovery.evening;
+  const { locale } = useLocale();
+  const current = {
+    tr: timeBasedDiscovery.evening,
+    en: { label: "Evening", title: "Stage, concerts and city lights", filters: ["theater", "concert", "exhibition"] },
+    ru: { label: "Вечер", title: "Сцена, концерты и огни города", filters: ["театр", "концерт", "выставка"] },
+    de: { label: "Abend", title: "Bühne, Konzerte und Stadtlichter", filters: ["Theater", "Konzert", "Ausstellung"] }
+  }[locale];
   const [offers, setOffers] = useState<Offer[]>(featuredOffers.slice(0, 1));
   const [events, setEvents] = useState<EventItem[]>(featuredEvents.slice(0, 1));
   const [places, setPlaces] = useState<Place[]>(featuredPlaces.slice(0, 2));
@@ -41,13 +49,13 @@ export function AppShowcase() {
   }, []);
 
   return (
-    <div className="phone" aria-label="Nar Rehberi mobil uygulama önizlemesi">
+    <div className="phone" aria-label={locale === "tr" ? "Nar Rehberi mobil uygulama önizlemesi" : locale === "en" ? "Nar Rehberi mobile app preview" : locale === "ru" ? "Предпросмотр мобильного приложения Nar Rehberi" : "Vorschau der Nar Rehberi Mobile App"}>
       <div className="phone-screen">
         <div className="app-top">
           <strong>Nar Rehberi</strong>
           <div className="app-search">
             <Search size={16} />
-            <span style={{ marginLeft: 8 }}>Mekan, etkinlik, fırsat ara</span>
+            <span style={{ marginLeft: 8 }}>{locale === "tr" ? "Mekan, etkinlik, fırsat ara" : locale === "en" ? "Search places, events and offers" : locale === "ru" ? "Искать места, события и предложения" : "Orte, Events und Angebote suchen"}</span>
           </div>
         </div>
         <div className="time-panel">
@@ -62,7 +70,7 @@ export function AppShowcase() {
               <span>{offer.discountLabel}</span>
             </div>
           ))}
-          {["Tiyatro", "Kahve", "Antik", "Acil"].slice(0, 4).map((item) => (
+          {(locale === "tr" ? ["Tiyatro", "Kahve", "Antik", "Acil"] : locale === "en" ? ["Theater", "Coffee", "Ancient", "Emergency"] : locale === "ru" ? ["Театр", "Кофе", "Антика", "Экстренно"] : ["Theater", "Kaffee", "Antik", "Notfall"]).slice(0, 4).map((item) => (
             <div className="story" key={item}>
               <div className="story-dot" />
               <span>{item}</span>
@@ -74,7 +82,7 @@ export function AppShowcase() {
             <div className="app-row" key={item.id}>
               <div className="app-thumb" style={{ backgroundImage: `url(${item.coverImage}?auto=format&fit=crop&w=260&q=80)` }} />
               <div>
-                <strong>{item.title.tr}</strong>
+                <strong>{localizeText(item.title, locale as "tr" | "en" | "ru" | "de")}</strong>
                 <span>
                   <MapPin size={12} /> {"venueName" in item ? item.venueName : item.district}
                 </span>

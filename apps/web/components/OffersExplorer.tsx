@@ -10,7 +10,19 @@ import { fetchLiveOffers } from "@/lib/live-data";
 import { SectionEyebrow } from "./SectionEyebrow";
 
 export function OffersExplorer() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const filterLabels = {
+    instant: { tr: "Anlık", en: "Instant", ru: "Мгновенно", de: "Sofort" },
+    qr: { tr: "QR aktif", en: "QR active", ru: "QR aktiv", de: "QR aktiv" },
+    points: { tr: "Puanla kullan", en: "Use points", ru: "Использовать баллы", de: "Mit Punkten nutzen" },
+    stories: { tr: "Hikaye", en: "Stories", ru: "Истории", de: "Stories" }
+  } as const;
+  const storyLabel = {
+    tr: "Hikaye tarzı fırsatlar",
+    en: "Story-style offers",
+    ru: "Предложения в формате историй",
+    de: "Story-Angebote"
+  }[locale];
   const [items, setItems] = useState<Offer[]>(featuredOffers);
   const [activeFilter, setActiveFilter] = useState("all");
 
@@ -32,11 +44,11 @@ export function OffersExplorer() {
 
   const filters = useMemo<FilterOption[]>(() => ([
     { id: "all", label: t("common.explore") },
-    { id: "instant", label: "Anlık" },
-    { id: "qr", label: "QR aktif" },
-    { id: "points", label: "Puanla kullan" },
-    { id: "stories", label: "Hikaye" }
-  ]), [t]);
+    { id: "instant", label: filterLabels.instant[locale] },
+    { id: "qr", label: filterLabels.qr[locale] },
+    { id: "points", label: filterLabels.points[locale] },
+    { id: "stories", label: filterLabels.stories[locale] }
+  ]), [locale, t]);
 
   const filteredItems = useMemo(() => {
     return items.filter((offer) => {
@@ -63,6 +75,9 @@ export function OffersExplorer() {
         <p className="lead">{t("offers.lead")}</p>
       </div>
       <FilterPills activeId={activeFilter} ariaLabel="Fırsat filtreleri" onChange={setActiveFilter} options={filters} />
+      <div className="section-head">
+        <h2>{storyLabel}</h2>
+      </div>
       <OfferStoriesRail />
       <DiscoveryList items={filteredItems} type="offers" />
     </>

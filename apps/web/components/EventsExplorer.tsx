@@ -46,6 +46,36 @@ function compareByPriority(first: EventItem, second: EventItem, now: Date) {
 
 export function EventsExplorer() {
   const { locale, t } = useLocale();
+  const viewModeLabels = {
+    month: { tr: "Aylık", en: "Month", ru: "Месяц", de: "Monat" },
+    week: { tr: "Haftalık", en: "Week", ru: "Неделя", de: "Woche" },
+    list: { tr: "Liste", en: "List", ru: "Liste", de: "Liste" },
+    map: { tr: "Harita", en: "Map", ru: "Harita", de: "Karte" }
+  } as const;
+  const filterLabels = {
+    today: { tr: "Bugün", en: "Today", ru: "Сегодня", de: "Heute" },
+    thisWeek: { tr: "Bu hafta", en: "This week", ru: "На этой неделе", de: "Diese Woche" },
+    month: { tr: "Bu ay", en: "This month", ru: "Этот месяц", de: "Dieser Monat" },
+    soon: { tr: "Yakında", en: "Soon", ru: "Скоро", de: "Bald" }
+  } as const;
+  const searchPlaceholder = {
+    tr: "Etkinlik adı, tür, mekan veya ilçe ara",
+    en: "Search event name, type, venue or district",
+    ru: "Искать событие, тип, площадку или район",
+    de: "Eventname, Typ, Ort oder Bezirk suchen"
+  }[locale];
+  const maySpotlightTitle = {
+    tr: "Mayıs'ta Antalya",
+    en: "May in Antalya",
+    ru: "Май в Анталье",
+    de: "Mai in Antalya"
+  }[locale];
+  const maySpotlightLead = {
+    tr: "Festival, konser, bale ve şehir sahnesinden güncel Mayıs seçkisi.",
+    en: "A current May selection from festivals, concerts, ballet and the city stage.",
+    ru: "Актуальная майская подборка фестивалей, концертов, балета и городской сцены.",
+    de: "Eine aktuelle Mai-Auswahl aus Festivals, Konzerten, Ballett und Stadtszene."
+  }[locale];
   const [items, setItems] = useState<EventItem[]>([...featuredEvents]);
   const [activeView, setActiveView] = useState("list");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -89,15 +119,15 @@ export function EventsExplorer() {
     };
   }, []);
 
-  const viewModes = useMemo<FilterOption[]>(() => eventViewModes.map((mode) => ({ id: mode.id, label: mode.label })), []);
+  const viewModes = useMemo<FilterOption[]>(() => eventViewModes.map((mode) => ({ id: mode.id, label: viewModeLabels[mode.id][locale] })), [locale]);
 
   const eventFilters = useMemo<FilterOption[]>(() => [
     { id: "all", label: t("common.explore") },
-    { id: "today", label: "Bugün" },
-    { id: "thisWeek", label: "Bu hafta" },
-    { id: "month", label: "Bu ay" },
-    { id: "soon", label: "Yakında" }
-  ], [t]);
+    { id: "today", label: filterLabels.today[locale] },
+    { id: "thisWeek", label: filterLabels.thisWeek[locale] },
+    { id: "month", label: filterLabels.month[locale] },
+    { id: "soon", label: filterLabels.soon[locale] }
+  ], [locale, t]);
 
   const categoryFilters = useMemo<FilterOption[]>(() => [
     { id: "all", label: t("common.explore") },
@@ -214,7 +244,7 @@ export function EventsExplorer() {
         <Search size={17} />
         <input
           type="search"
-          placeholder="Etkinlik adı, tür, mekan veya ilçe ara"
+          placeholder={searchPlaceholder}
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
         />
@@ -222,8 +252,8 @@ export function EventsExplorer() {
 
       <section className="section" aria-labelledby="mayis-ajandasi-baslik">
         <div className="section-head">
-          <h2 id="mayis-ajandasi-baslik">Mayıs'ta Antalya</h2>
-          <p>Festival, konser, bale ve şehir sahnesinden güncel Mayıs seçkisi.</p>
+          <h2 id="mayis-ajandasi-baslik">{maySpotlightTitle}</h2>
+          <p>{maySpotlightLead}</p>
         </div>
         <div className="rail">
           {maySpotlight.map((event) => (
@@ -255,8 +285,8 @@ export function EventsExplorer() {
       ) : (
         <section className="section section-tight">
           <div className="section-head">
-            <h2>Harita görünümü</h2>
-            <p>Harita görünümü için etkinliğe tıklayıp detay ekranındaki konum alanını kullanabilirsin.</p>
+            <h2>{viewModeLabels.map[locale]}</h2>
+            <p>{locale === "tr" ? "Harita görünümü için etkinliğe tıklayıp detay ekranındaki konum alanını kullanabilirsin." : locale === "en" ? "Use the event detail location area to work with map view." : locale === "ru" ? "Используйте блок локации в деталях события для карты." : "Nutze den Standortbereich in den Eventdetails für die Kartenansicht."}</p>
           </div>
         </section>
       )}

@@ -19,7 +19,7 @@ export function HomeHero() {
         </a>
         <a className="secondary" href="/mobil-uygulama">
           <Download size={18} />
-          <span style={{ marginLeft: 8 }}>Mobil Uygulama</span>
+          <span style={{ marginLeft: 8 }}>{t("common.mobileApp")}</span>
         </a>
         <a className="secondary" href="https://play.google.com/store/apps/details?id=narrehberi.com&hl=tr" target="_blank" rel="noreferrer">
           <Smartphone size={18} />

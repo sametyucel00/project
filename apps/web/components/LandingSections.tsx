@@ -4,15 +4,107 @@ import { fetchLiveEvents, fetchLiveOffers, fetchLivePlaces } from "@/lib/live-da
 import { categories, featuredEvents, featuredOffers, featuredPlaces, type EventItem, type Offer, type Place } from "@nar/core";
 import { Bell, CalendarDays, Gift, Languages, QrCode, ShieldCheck, Sparkles, Tag, Theater, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocale } from "./LocaleProvider";
 
 const features = [
-  { icon: Sparkles, title: "Şehir keşfi", text: "Günün saatine ve ilgine göre mekan, rota ve etkinlik önerileri." },
-  { icon: Gift, title: "Nar Fırsatları", text: "Hızlı kampanyalar, hikaye tadında öneriler ve puanla avantajlar." },
-  { icon: Theater, title: "Sahne ajandası", text: "Tiyatro, konser, festival ve sergiler için temiz bir etkinlik takvimi." },
-  { icon: QrCode, title: "QR ile kazan", text: "Katıldıkça puan kazan, fırsatları daha kolay kullan." },
-  { icon: Languages, title: "Dört dil", text: "Türkçe, İngilizce, Rusça ve Almanca deneyim." },
-  { icon: ShieldCheck, title: "Kişisel alan", text: "Favorilerin, puanların ve tercihlerin hesabında saklanır." }
-];
+  { icon: Sparkles, key: "cityDiscovery" },
+  { icon: Gift, key: "offers" },
+  { icon: Theater, key: "stageAgenda" },
+  { icon: QrCode, key: "qrEarn" },
+  { icon: Languages, key: "fourLanguages" },
+  { icon: ShieldCheck, key: "personalArea" }
+] as const;
+
+const copy = {
+  tr: {
+    title: "Şehri tek akışta, yorulmadan keşfet.",
+    lead: "Mekanlar, etkinlikler ve fırsatlar birbirini tamamlayan sakin bir deneyimde buluşur.",
+    accountTitle: "Hesabın sana göre açılır.",
+    accountLead: "Bireysel kullanıcılar, işletmeler ve tiyatrolar kendi ihtiyaçlarına uygun alana geçer.",
+    groupTitle: "İştah açan rotalar, sakin molalar ve kültür durakları.",
+    sections: {
+      cityDiscovery: ["Şehir keşfi", "Günün saatine ve ilgine göre mekan, rota ve etkinlik önerileri."],
+      offers: ["Nar Fırsatları", "Hızlı kampanyalar, hikaye tadında öneriler ve puanla avantajlar."],
+      stageAgenda: ["Sahne ajandası", "Tiyatro, konser, festival ve sergiler için temiz bir etkinlik takvimi."],
+      qrEarn: ["QR ile kazan", "Katıldıkça puan kazan, fırsatları daha kolay kullan."],
+      fourLanguages: ["Dört dil", "Türkçe, İngilizce, Rusça ve Almanca deneyim."],
+      personalArea: ["Kişisel alan", "Favorilerin, puanların ve tercihlerin hesabında saklanır."]
+    },
+    panelCards: [
+      ["Bireysel", "Puan, QR, favoriler, hatırlatıcılar ve şehir görevleri."],
+      ["İşletme", "Mekanını tanıt, kampanya oluştur ve QR ile sadakat akışını yönet."],
+      ["Tiyatro", "Oyunlarını, kadronu, bilet bağlantılarını ve duyurularını düzenle."],
+      ["Yönetim", "İçerikleri, üyeleri ve kampanyaları tek merkezden takip et."]
+    ] as Array<[string, string]>,
+    categoryLead: categories.map((category) => category.title.tr).join(" · ")
+  },
+  en: {
+    title: "Discover the city in one calm flow.",
+    lead: "Places, events and offers come together in a composed experience.",
+    accountTitle: "Your account opens your way.",
+    accountLead: "Individual users, businesses and theaters move to the space they need.",
+    groupTitle: "Appetizing routes, calm pauses and cultural stops.",
+    sections: {
+      cityDiscovery: ["City discovery", "Venue, route and event suggestions based on time of day and interest."],
+      offers: ["Nar Offers", "Fast campaigns, story-like suggestions and point perks."],
+      stageAgenda: ["Stage agenda", "A clean event calendar for theater, concerts, festivals and exhibitions."],
+      qrEarn: ["Earn with QR", "Earn points as you go and use offers more easily."],
+      fourLanguages: ["Four languages", "Turkish, English, Russian and German experience."],
+      personalArea: ["Personal area", "Favorites, points and preferences are stored in your account."]
+    },
+    panelCards: [
+      ["Individual", "Points, QR, favorites, reminders and city tasks."],
+      ["Business", "Promote your venue, create campaigns and manage loyalty via QR."],
+      ["Theater", "Manage plays, cast, ticket links and announcements."],
+      ["Management", "Track content, members and campaigns from one center."]
+    ] as Array<[string, string]>,
+    categoryLead: categories.map((category) => category.title.en).join(" · ")
+  },
+  ru: {
+    title: "Открывайте город в одном спокойном потоке.",
+    lead: "Места, события и предложения объединяются в цельный опыт.",
+    accountTitle: "Аккаунт открывается под вас.",
+    accountLead: "Частные пользователи, бизнес и театры переходят в нужный им раздел.",
+    groupTitle: "Аппетитные маршруты, спокойные паузы и культурные остановки.",
+    sections: {
+      cityDiscovery: ["Открытие города", "Рекомендации мест, маршрутов и событий по времени суток и интересам."],
+      offers: ["Предложения Nar", "Быстрые кампании, истории и бонусы за баллы."],
+      stageAgenda: ["Афиша сцены", "Чистый календарь для театра, концертов, фестивалей и выставок."],
+      qrEarn: ["Зарабатывайте с QR", "Получайте баллы по мере использования и легче пользуйтесь предложениями."],
+      fourLanguages: ["Четыре языка", "Опыт на турецком, английском, русском и немецком."],
+      personalArea: ["Личный кабинет", "Избранное, баллы и настройки хранятся в аккаунте."]
+    },
+    panelCards: [
+      ["Личный", "Баллы, QR, избранное, напоминания и городские задания."],
+      ["Бизнес", "Продвигайте место, создавайте кампании и управляйте лояльностью через QR."],
+      ["Театр", "Управляйте постановками, составом, ссылками на билеты и объявлениями."],
+      ["Управление", "Отслеживайте контент, участников и кампании из одного центра."]
+    ] as Array<[string, string]>,
+    categoryLead: categories.map((category) => category.title.ru).join(" · ")
+  },
+  de: {
+    title: "Entdecke die Stadt in einem ruhigen Fluss.",
+    lead: "Orte, Events und Angebote greifen in einem klaren Erlebnis ineinander.",
+    accountTitle: "Dein Konto öffnet deinen Weg.",
+    accountLead: "Private Nutzer, Unternehmen und Theater wechseln in ihren passenden Bereich.",
+    groupTitle: "Appetitliche Routen, ruhige Pausen und Kulturstopps.",
+    sections: {
+      cityDiscovery: ["Stadtentdeckung", "Ort-, Routen- und Eventempfehlungen nach Tageszeit und Interesse."],
+      offers: ["Nar Angebote", "Schnelle Kampagnen, Story-Empfehlungen und Punktvorteile."],
+      stageAgenda: ["Bühnenagenda", "Ein klarer Kalender für Theater, Konzerte, Festivals und Ausstellungen."],
+      qrEarn: ["Mit QR verdienen", "Sammle Punkte unterwegs und nutze Angebote leichter."],
+      fourLanguages: ["Vier Sprachen", "Türkisch, Englisch, Russisch und Deutsch."],
+      personalArea: ["Persönlicher Bereich", "Favoriten, Punkte und Einstellungen bleiben im Konto gespeichert."]
+    },
+    panelCards: [
+      ["Persönlich", "Punkte, QR, Favoriten, Erinnerungen und Stadtaufgaben."],
+      ["Business", "Bewerbe deinen Ort, erstelle Kampagnen und steuere Loyalty via QR."],
+      ["Theater", "Verwalte Stücke, Cast, Ticketlinks und Ankündigungen."],
+      ["Verwaltung", "Verfolge Inhalte, Mitglieder und Kampagnen von einer Stelle aus."]
+    ] as Array<[string, string]>,
+    categoryLead: categories.map((category) => category.title.de).join(" · ")
+  }
+} as const;
 
 function uniqueEventsByTitle(items: EventItem[]) {
   const seen = new Set<string>();
@@ -73,6 +165,8 @@ function resolveNearbyEvents(items: EventItem[], places: Place[], location?: { l
 }
 
 export function LandingSections() {
+  const { locale } = useLocale();
+  const text = copy[locale];
   const [places, setPlaces] = useState<Place[]>(featuredPlaces.slice(0, 6));
   const [events, setEvents] = useState<EventItem[]>(featuredEvents.slice(0, 6));
   const [offers, setOffers] = useState<Offer[]>(featuredOffers.slice(0, 3));
@@ -138,15 +232,15 @@ export function LandingSections() {
     <>
       <section className="section" id="ozellikler">
         <div className="section-head">
-          <h2>Şehri tek akışta, yorulmadan keşfet.</h2>
-          <p>Mekanlar, etkinlikler ve fırsatlar birbirini tamamlayan sakin bir deneyimde buluşur.</p>
+          <h2>{text.title}</h2>
+          <p>{text.lead}</p>
         </div>
         <div className="rail">
           {features.map((feature) => (
-            <div className="feature" key={feature.title}>
+            <div className="feature" key={feature.key}>
               <feature.icon size={22} />
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
+              <h3>{text.sections[feature.key][0]}</h3>
+              <p>{text.sections[feature.key][1]}</p>
             </div>
           ))}
         </div>
@@ -154,20 +248,15 @@ export function LandingSections() {
 
       <section className="section dark" id="paneller">
         <div className="section-head">
-          <h2>Hesabın sana göre açılır.</h2>
-          <p>Bireysel kullanıcılar, işletmeler ve tiyatrolar kendi ihtiyaçlarına uygun alana geçer.</p>
+          <h2>{text.accountTitle}</h2>
+          <p>{text.accountLead}</p>
         </div>
         <div className="panel-grid">
-          {[
-            ["Bireysel", "Puan, QR, favoriler, hatırlatıcılar ve şehir görevleri."],
-            ["İşletme", "Mekanını tanıt, kampanya oluştur ve QR ile sadakat akışını yönet."],
-            ["Tiyatro", "Oyunlarını, kadronu, bilet bağlantılarını ve duyurularını düzenle."],
-            ["Yönetim", "İçerikleri, üyeleri ve kampanyaları tek merkezden takip et."]
-          ].map(([title, text]) => (
+          {text.panelCards.map(([title, description]) => (
             <div className="panel" key={title}>
-              {title === "Yönetim" ? <ShieldCheck size={22} /> : title === "Bireysel" ? <Users size={22} /> : <Bell size={22} />}
+              {title === (locale === "tr" ? "Yönetim" : locale === "en" ? "Management" : locale === "ru" ? "Управление" : "Verwaltung") ? <ShieldCheck size={22} /> : title === (locale === "tr" ? "Bireysel" : locale === "en" ? "Individual" : locale === "ru" ? "Личный" : "Persönlich") ? <Users size={22} /> : <Bell size={22} />}
               <h3>{title}</h3>
-              <p>{text}</p>
+              <p>{description}</p>
             </div>
           ))}
         </div>
@@ -175,8 +264,8 @@ export function LandingSections() {
 
       <section className="section" id="kategoriler">
         <div className="section-head">
-          <h2>İştah açan rotalar, sakin molalar ve kültür durakları.</h2>
-          <p>{categories.map((category) => category.title.tr).join(" · ")}</p>
+          <h2>{text.groupTitle}</h2>
+          <p>{text.categoryLead}</p>
         </div>
       </section>
     </>

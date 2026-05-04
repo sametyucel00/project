@@ -27,6 +27,12 @@ function formatRemaining(endsAt: string, locale: string) {
 
 export function HomeOffersRail() {
   const { locale } = useLocale();
+  const copy = {
+    tr: { label: "Fırsatlar", viewAll: "Tümünü gör", activeQr: "QR aktif", optionalQr: "QR opsiyonel", unlimited: "Sınırsız", uses: "kullanım", aria: "Öne çıkan fırsatlar" },
+    en: { label: "Offers", viewAll: "View all", activeQr: "QR active", optionalQr: "QR optional", unlimited: "Unlimited", uses: "uses", aria: "Featured offers" },
+    ru: { label: "Предложения", viewAll: "Смотреть все", activeQr: "QR активен", optionalQr: "QR не обязателен", unlimited: "Без лимита", uses: "исп.", aria: "Рекомендуемые предложения" },
+    de: { label: "Angebote", viewAll: "Alle ansehen", activeQr: "QR aktiv", optionalQr: "QR optional", unlimited: "Unbegrenzt", uses: "Nutzung", aria: "Hervorgehobene Angebote" }
+  }[locale];
   const [items, setItems] = useState<Offer[]>(featuredOffers);
   const [paused, setPaused] = useState(false);
   const railRef = useRef<HTMLDivElement | null>(null);
@@ -82,10 +88,10 @@ export function HomeOffersRail() {
   }, [paused, spotlight.length]);
 
   return (
-    <section className="home-offers-rail" aria-label="Öne çıkan fırsatlar">
+    <section className="home-offers-rail" aria-label={copy.aria}>
       <div className="home-offers-head">
-        <span className="home-offers-kicker"><TicketPercent size={15} /> Fırsatlar</span>
-        <a href="/firsatlar">Tümünü gör</a>
+        <span className="home-offers-kicker"><TicketPercent size={15} /> {copy.label}</span>
+        <a href="/firsatlar">{copy.viewAll}</a>
       </div>
       <div
         className="home-offers-scroll"
@@ -107,8 +113,8 @@ export function HomeOffersRail() {
               <strong>{localizeText(offer.title, locale)}</strong>
               <p>{localizeText(offer.description, locale)}</p>
               <div className="home-offer-foot">
-                <span><QrCode size={13} /> {offer.requiresQr ? "QR aktif" : "QR opsiyonel"}</span>
-                <span>{remainingUse === null ? "Sınırsız" : `${remainingUse} kullanım`}</span>
+                <span><QrCode size={13} /> {offer.requiresQr ? copy.activeQr : copy.optionalQr}</span>
+                <span>{remainingUse === null ? copy.unlimited : `${remainingUse} ${copy.uses}`}</span>
               </div>
             </a>
           );

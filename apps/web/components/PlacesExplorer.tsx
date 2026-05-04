@@ -12,6 +12,17 @@ import { SectionEyebrow } from "./SectionEyebrow";
 
 export function PlacesExplorer() {
   const { locale, t } = useLocale();
+  const searchPlaceholder = {
+    tr: "Mekan, kategori, ilçe veya özellik ara",
+    en: "Search venue, category, district or feature",
+    ru: "Искать место, категорию, район или особенность",
+    de: "Ort, Kategorie, Bezirk oder Merkmal suchen"
+  }[locale];
+  const filterLabels = {
+    openNow: { tr: "Açık", en: "Open now", ru: "Открыто", de: "Jetzt offen" },
+    rating: { tr: "4.5+", en: "4.5+", ru: "4.5+", de: "4.5+" },
+    hasOffer: { tr: "Fırsat var", en: "Has offer", ru: "Есть предложение", de: "Angebot vorhanden" }
+  } as const;
   const [items, setItems] = useState<Place[]>(featuredPlaces);
   const [activeFilter, setActiveFilter] = useState("all");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -60,9 +71,9 @@ export function PlacesExplorer() {
       .filter((filter) => ["openNow", "rating", "hasOffer"].includes(filter.id))
       .map((filter) => ({
         id: filter.id,
-        label: filter.id === "rating" ? "4.5+" : filter.label
+        label: filter.id === "rating" ? filterLabels.rating[locale] : filterLabels[filter.id as keyof typeof filterLabels][locale]
       }))
-  ], [t]);
+  ], [filterLabels, locale, t]);
 
   const categoryFilters = useMemo<FilterOption[]>(() => [
     { id: "all", label: t("common.explore") },
@@ -144,7 +155,7 @@ export function PlacesExplorer() {
         <Search size={17} />
         <input
           type="search"
-          placeholder="Mekan, kategori, ilçe veya özellik ara"
+          placeholder={searchPlaceholder}
           value={searchText}
           onChange={(event) => setSearchText(event.target.value)}
         />
