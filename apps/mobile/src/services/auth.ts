@@ -112,6 +112,35 @@ function buildGoogleAuthUrl(clientId: string) {
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
+function getAppleServiceId() {
+  return (
+    process.env.EXPO_PUBLIC_APPLE_SERVICE_ID ||
+    process.env.EXPO_PUBLIC_APPLE_WEB_CLIENT_ID ||
+    process.env.APPLE_SERVICE_ID ||
+    ""
+  ).trim();
+}
+
+function getAppleRedirectUri() {
+  return AuthSession.makeRedirectUri({
+    scheme: "narrehberi",
+    path: "auth/apple"
+  });
+}
+
+function buildAppleAuthUrl(serviceId: string) {
+  const redirectUri = getAppleRedirectUri();
+  const params = new URLSearchParams({
+    client_id: serviceId,
+    redirect_uri: redirectUri,
+    response_type: "code id_token",
+    response_mode: "fragment",
+    scope: "",
+    state: "narrehberi-apple"
+  });
+  return `https://appleid.apple.com/auth/authorize?${params.toString()}`;
+}
+
 function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): MobileSession {
   const role: SelfServiceRole = user.isAnonymous ? "individual" : requestedRole ?? "individual";
   return {
@@ -308,20 +337,34 @@ export async function loginWithAppleToken(input: AppleTokenInput | string) {
 
 export async function loginWithApplePopup() {
   if (!isWebEnvironment()) {
-    if (Platform.OS !== "ios") {
-      throw new Error("Apple girişi yalnızca iPhone ve iPad üzerinde kullanılabilir.");
+    if (Platform.OS === "ios") {
+      const available = await AppleAuthentication.isAvailableAsync();
+      if (!available) {
+        throw new Error("Bu cihaz Apple ile giriş için uygun değil.");
+      }
+      const response = await AppleAuthentication.signInAsync({
+        requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL]
+      });
+      if (!response.identityToken) {
+        throw new Error("Apple kimlik bilgisi alınamadı.");
+      }
+      return loginWithAppleToken({ identityToken: response.identityToken });
     }
-    const available = await AppleAuthentication.isAvailableAsync();
-    if (!available) {
-      throw new Error("Bu cihaz Apple ile giriş için uygun değil.");
+    const serviceId = getAppleServiceId();
+    if (!serviceId) {
+      throw new Error("Android için Apple girişi yapılandırılmadı. EXPO_PUBLIC_APPLE_SERVICE_ID gerekli.");
     }
-    const response = await AppleAuthentication.signInAsync({
-      requestedScopes: [AppleAuthentication.AppleAuthenticationScope.FULL_NAME, AppleAuthentication.AppleAuthenticationScope.EMAIL]
-    });
-    if (!response.identityToken) {
+    const authResult = await WebBrowser.openAuthSessionAsync(buildAppleAuthUrl(serviceId), getAppleRedirectUri());
+    if (authResult.type !== "success") {
+      throw new Error("Apple girişi iptal edildi.");
+    }
+    const authUrl = new URL(authResult.url);
+    const fragmentParams = new URLSearchParams(authUrl.hash.replace(/^#/, ""));
+    const idToken = authUrl.searchParams.get("id_token") ?? fragmentParams.get("id_token") ?? "";
+    if (!idToken) {
       throw new Error("Apple kimlik bilgisi alınamadı.");
     }
-    return loginWithAppleToken({ identityToken: response.identityToken });
+    return loginWithAppleToken({ identityToken: idToken });
   }
   if (shouldUseRedirectAuth()) {
     await signInWithRedirect(auth, new OAuthProvider("apple.com"));
