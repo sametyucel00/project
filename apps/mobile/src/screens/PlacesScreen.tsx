@@ -59,7 +59,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
               key={place.id}
               image={place.coverImage}
               title={pickText(place.title, locale)}
-              meta={`${category} · ${place.district} · ${place.openNow ? c.openNow : c.hoursMissing} · ${resolveDistanceLabel(userLocation, place.location)}`}
+              meta={`${category} · ${place.district} · ${place.openNow ? c.openNow : c.hoursMissing} · ${resolveDistanceLabel(userLocation, place)}`}
               onPress={() => onOpenPlace?.(place.id)}
             />
           );

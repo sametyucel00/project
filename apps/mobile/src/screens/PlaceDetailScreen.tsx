@@ -6,14 +6,15 @@ import type { MobileScreenProps } from "./types";
 import { openAddressInMaps, openEmailAddress, openExternalUrl, openPhoneNumber } from "../utils/links";
 import { toggleFavorite } from "../services";
 import { useMemo } from "react";
-import { hasMeaningfulMapPoint, resolveDistanceLabel } from "../utils/location";
+import { hasMeaningfulMapPoint, readMapPoint, resolveDistanceLabel } from "../utils/location";
 
 export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack }: MobileScreenProps & { placeId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
   const place = useMemo(() => feed.places.find((item) => item.id === placeId), [feed.places, placeId]);
   const category = place ? placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place))?.title.tr ?? "Mekan" : "Mekan";
-  const placeLocation = place?.location;
-  const mapUrl = hasMeaningfulMapPoint(placeLocation) ? createStaticMapUrl(placeLocation, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
+  const placeLocation = place;
+  const mapPoint = readMapPoint(placeLocation);
+  const mapUrl = mapPoint && hasMeaningfulMapPoint(mapPoint) ? createStaticMapUrl(mapPoint, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
   const openingHours = place?.openingHours?.length ? place.openingHours.join(" · ") : "Belirtilmemiş";
   const socialLinks = Object.values(place?.socialLinks ?? {}).filter(Boolean);
 
@@ -37,7 +38,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
         ["Puan", compactValue(place.googleRating)],
         ["Yorum", compactValue(place.googleReviewCount)],
         ["Durum", place.openNow ? "Açık" : "Belirtilmemiş"],
-        ["Mesafe", resolveDistanceLabel(userLocation, place.location)]
+        ["Mesafe", resolveDistanceLabel(userLocation, place)]
       ]} />
       <SubsectionGrid items={[...place.features.slice(0, 6), place.accessibility.wheelchair ? "Engelli dostu" : "Erişim bilgisi yok"]} />
       <ActionRow>

@@ -61,10 +61,10 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, feed.events, locale, query, todayStart, viewMode]);
 
   const visibleEvents = useMemo(() => filteredEvents.map((event) => {
-    const venuePlace = feed.places.find((place) => pickText(place.title, locale) === event.venueName || place.title.tr === event.venueName);
+    const venuePlace = resolveEventVenue(feed.places, event.venueName, event.district, locale);
     return {
       event,
-      distance: resolveDistanceLabel(userLocation, venuePlace?.location ?? null)
+      distance: resolveDistanceLabel(userLocation, venuePlace ?? event)
     };
   }), [feed.places, filteredEvents, locale, userLocation]);
 
@@ -86,9 +86,9 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
         <View style={styles.settingsCard}>
           <Text style={styles.settingsTitle}>{c.mapView}</Text>
           <Text style={styles.profileText}>{filteredEvents[0].venueName}</Text>
-          {feed.places.find((place) => place.title.tr === filteredEvents[0].venueName)?.location ? (
+          {resolveEventVenue(feed.places, filteredEvents[0].venueName, filteredEvents[0].district, locale)?.location ? (
             <ImageBackground
-              source={{ uri: createStaticMapUrl(feed.places.find((place) => place.title.tr === filteredEvents[0].venueName)?.location, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) }}
+              source={{ uri: createStaticMapUrl(resolveEventVenue(feed.places, filteredEvents[0].venueName, filteredEvents[0].district, locale)?.location, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) }}
               style={{ height: 170, borderRadius: 18, overflow: "hidden" }}
               imageStyle={{ borderRadius: 18 }}
             />
@@ -143,6 +143,15 @@ function pickText(value: unknown, locale: string) {
 
 function normalizeTypeLabel(value: string, workshopLabel: string) {
   return value === "Workshop" ? workshopLabel : value;
+}
+
+function resolveEventVenue(places: Array<{ title: Record<string, string>; district: string; address: string; location?: { lat: number; lng: number } }>, venueName: string, district: string, locale: string) {
+  const normalizedVenue = normalize(venueName);
+  const normalizedDistrict = normalize(district);
+  return places.find((place) => {
+    const titles = [pickText(place.title, locale), place.title.tr, place.title.en, place.address].map(normalize);
+    return titles.some((title) => title === normalizedVenue || title.includes(normalizedVenue) || normalizedVenue.includes(title));
+  }) ?? places.find((place) => normalize(place.district) === normalizedDistrict);
 }
 
 function translateViewMode(mode: EventViewMode, locale: string) {

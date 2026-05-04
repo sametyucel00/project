@@ -29,12 +29,12 @@ module.exports = {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.4"
+    buildNumber: "1.5"
   },
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9106
+    versionCode: 9107
   },
   extra: {
     ...(expo.extra ?? {}),

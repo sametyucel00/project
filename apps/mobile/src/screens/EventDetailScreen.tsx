@@ -7,17 +7,18 @@ import { openAddressInMaps, openExternalUrl } from "../utils/links";
 import { createTicketOrder, scheduleReminder, toggleFavorite } from "../services";
 import { useEffect, useMemo, useState } from "react";
 import { getMobileLocale } from "../locale";
-import { hasMeaningfulMapPoint, resolveDistanceLabel } from "../utils/location";
+import { hasMeaningfulMapPoint, readMapPoint, resolveDistanceLabel } from "../utils/location";
 
 export function EventDetailScreen({ feed, userLocation, session, eventId, onBack }: MobileScreenProps & { eventId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
-  const event = useMemo(() => feed.events.find((item) => item.id === eventId), [eventId, feed.events]);
-  const venue = useMemo(() => feed.places.find((item) => item.title.tr === event?.venueName) ?? feed.places[0], [event?.venueName, feed.places]);
-  const venueLocation = venue?.location;
-  const synopsis = normalizeSynopsisText(event?.synopsis?.tr ?? event?.description.tr);
   const locale = getMobileLocale();
+  const event = useMemo(() => feed.events.find((item) => item.id === eventId), [eventId, feed.events]);
+  const venue = useMemo(() => event ? resolveEventVenue(feed.places, event.venueName, event.district, locale) : undefined, [event, feed.places, locale]);
+  const venueLocation = venue ?? event;
+  const mapPoint = readMapPoint(venueLocation);
+  const synopsis = normalizeSynopsisText(event?.synopsis?.tr ?? event?.description.tr);
   const [synopsisText, setSynopsisText] = useState(synopsis);
-  const mapUrl = hasMeaningfulMapPoint(venueLocation) ? createStaticMapUrl(venueLocation, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
+  const mapUrl = mapPoint && hasMeaningfulMapPoint(mapPoint) ? createStaticMapUrl(mapPoint, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
 
   useEffect(() => {
     let active = true;
@@ -59,7 +60,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         ["Tarih", formatDate(event.startsAt)],
         ["Yer", event.venueName],
         ["Bilet", event.priceType === "free" ? "Ücretsiz" : "Ücretli"],
-        ["Mesafe", resolveDistanceLabel(userLocation, venue?.location ?? null)]
+        ["Mesafe", resolveDistanceLabel(userLocation, venue ?? event)]
       ]} />
       <SubsectionGrid items={[...event.cast.slice(0, 4), event.district]} />
 
@@ -94,4 +95,24 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+}
+
+function resolveEventVenue(places: Array<{ title: Record<string, string>; district: string; address: string; location?: { lat: number; lng: number } }>, venueName: string, district: string, locale: string) {
+  const normalizedVenue = normalize(venueName);
+  const normalizedDistrict = normalize(district);
+  return places.find((place) => {
+    const titles = [pickText(place.title, locale), place.title.tr, place.title.en, place.address].map(normalize);
+    return titles.some((title) => title === normalizedVenue || title.includes(normalizedVenue) || normalizedVenue.includes(title));
+  }) ?? places.find((place) => normalize(place.district) === normalizedDistrict);
+}
+
+function normalize(value: string) {
+  return value.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function pickText(value: unknown, locale: string) {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  const record = value as Record<string, string | undefined>;
+  return record[locale] ?? record.tr ?? record.en ?? "";
 }

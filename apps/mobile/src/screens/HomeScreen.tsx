@@ -105,7 +105,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
 
   const nearbyPlaces = useMemo(() => feed.places
     .filter((place) => matchesText([pickText(place.title, locale), pickText(place.description, locale), place.district, place.categoryId], normalizedQuery))
-    .sort((left, right) => compareDistance(userLocation, left.location, right.location))
+    .sort((left, right) => compareDistance(userLocation, left, right))
     .slice(0, 5), [feed.places, locale, normalizedQuery, userLocation]);
 
   const selectedStory = isStoryKey(activeStory) ? (homeStoryActions[locale] ?? homeStoryActions.tr)[activeStory] : null;
@@ -158,7 +158,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
       </Section>
       <Section title={labels.nearbyPlaces}>
         {nearbyPlaces.length ? nearbyPlaces.map((place) => (
-          <WideItem key={place.id} image={place.coverImage} title={pickText(place.title, locale)} meta={`${place.district} · ${place.googleRating ?? labels.noRating} · ${resolveDistanceLabel(userLocation, place.location)}`} onPress={() => onOpenPlace?.(place.id)} />
+          <WideItem key={place.id} image={place.coverImage} title={pickText(place.title, locale)} meta={`${place.district} · ${place.googleRating ?? labels.noRating} · ${resolveDistanceLabel(userLocation, place)}`} onPress={() => onOpenPlace?.(place.id)} />
         )) : <Text style={styles.emptyText}>{labels.noPlaces}</Text>}
       </Section>
     </>
