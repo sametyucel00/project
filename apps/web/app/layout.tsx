@@ -1,5 +1,6 @@
 import { AccessibilityProvider } from "@/components/AccessibilityProvider";
 import { LocaleProvider } from "@/components/LocaleProvider";
+import { SiteHeader } from "@/components/SiteHeader";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata, Viewport } from "next";
 import { createMetadata, createStructuredData } from "@/lib/seo";
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <LocaleProvider>
             <AccessibilityProvider>
               <a className="skip-link" href="#main-content">İçeriğe geç</a>
+              <SiteHeader />
               <script
                 type="application/ld+json"
                 suppressHydrationWarning

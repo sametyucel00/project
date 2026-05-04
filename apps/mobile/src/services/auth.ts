@@ -9,6 +9,7 @@ import {
   signInWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   updateProfile,
   type User
@@ -53,6 +54,7 @@ export interface AppleTokenInput {
 }
 
 export type SelfServiceRole = Exclude<UserRole, "admin">;
+export const AUTH_REDIRECT_STARTED = Symbol("AUTH_REDIRECT_STARTED");
 
 const roleTabs: Record<UserRole, MobileTab> = {
   individual: "Ana Sayfa",
@@ -63,6 +65,13 @@ const roleTabs: Record<UserRole, MobileTab> = {
 
 export function resolveRoleTab(role: UserRole): MobileTab {
   return roleTabs[role] ?? "Ana Sayfa";
+}
+
+function shouldUseRedirectAuth() {
+  if (typeof window === "undefined") return false;
+  const coarsePointer = typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
+  const smallViewport = typeof window.innerWidth === "number" && window.innerWidth < 960;
+  return coarsePointer || smallViewport;
 }
 
 function toSession(user: User, data: Record<string, unknown>): MobileSession {
@@ -80,7 +89,7 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
       ...defaultPushPreferences,
       ...(typeof data.notificationPreferences === "object" && data.notificationPreferences ? data.notificationPreferences : {})
     },
-    points: typeof data.points === "number" ? data.points : defaultUserPoints,
+    points: user.isAnonymous ? 0 : typeof data.points === "number" ? data.points : defaultUserPoints,
     nextTab: resolveRoleTab(role)
   };
 }
@@ -88,11 +97,45 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
 export async function ensureMobileUserProfile(user: User, requestedRole?: SelfServiceRole): Promise<MobileSession> {
   const userRef = doc(db, "users", user.uid);
   const snapshot = await getDoc(userRef);
+  const storedData = snapshot.exists() ? (snapshot.data() as Record<string, unknown>) : null;
+
+  if (snapshot.exists() && !user.isAnonymous) {
+    const storedPoints = typeof storedData?.points === "number" ? storedData.points : null;
+    const hasSeedMarker = Boolean(storedData?.pointsSeededAt);
+    if ((storedPoints === null || storedPoints === 0) && !hasSeedMarker) {
+      await setDoc(
+        userRef,
+        {
+          points: defaultUserPoints,
+          pointsSeededAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
+      return {
+        uid: user.uid,
+        email: typeof storedData?.email === "string" ? storedData.email : user.email ?? "",
+        displayName: typeof storedData?.displayName === "string" ? storedData.displayName : user.displayName ?? "Nar kullanıcısı",
+        isAnonymous: user.isAnonymous,
+        role: (storedData?.role ?? "individual") as UserRole,
+        city: typeof storedData?.city === "string" ? storedData.city : "Antalya",
+        preferredLocale: normalizeLocale(typeof storedData?.preferredLocale === "string" ? storedData.preferredLocale : null),
+        themeMode: normalizeThemeMode(typeof storedData?.themeMode === "string" ? storedData.themeMode : null),
+        notificationPreferences: {
+          ...defaultPushPreferences,
+          ...(typeof storedData?.notificationPreferences === "object" && storedData.notificationPreferences ? storedData.notificationPreferences : {})
+        },
+        points: defaultUserPoints,
+        nextTab: resolveRoleTab((storedData?.role ?? "individual") as UserRole)
+      };
+    }
+  }
 
   if (!snapshot.exists()) {
     const allowedRoles: SelfServiceRole[] = ["individual", "business", "theater"];
     const role: SelfServiceRole = requestedRole && allowedRoles.includes(requestedRole) ? requestedRole : "individual";
     const preferredLocale: Locale = "tr";
+    const points = user.isAnonymous ? 0 : defaultUserPoints;
     const profile = {
       id: user.uid,
       role,
@@ -102,10 +145,12 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
       preferredLocale,
       themeMode: "system",
       notificationPreferences: defaultPushPreferences,
-      points: defaultUserPoints,
+      points,
+      pointsSeededAt: user.isAnonymous ? null : serverTimestamp(),
       qrCodeId: `qr_${user.uid}`,
       favoritePlaceIds: [],
       favoriteEventIds: [],
+      favoriteOfferIds: [],
       badges: [],
       createdAt: new Date().toISOString(),
       updatedAt: serverTimestamp()
@@ -165,6 +210,10 @@ export async function loginWithGoogleToken(input: GoogleTokenInput | string) {
 }
 
 export async function loginWithGooglePopup() {
+  if (shouldUseRedirectAuth()) {
+    await signInWithRedirect(auth, new GoogleAuthProvider());
+    return AUTH_REDIRECT_STARTED;
+  }
   const result = await signInWithPopup(auth, new GoogleAuthProvider());
   return ensureMobileUserProfile(result.user);
 }
@@ -181,6 +230,10 @@ export async function loginWithAppleToken(input: AppleTokenInput | string) {
 }
 
 export async function loginWithApplePopup() {
+  if (shouldUseRedirectAuth()) {
+    await signInWithRedirect(auth, new OAuthProvider("apple.com"));
+    return AUTH_REDIRECT_STARTED;
+  }
   const result = await signInWithPopup(auth, new OAuthProvider("apple.com"));
   return ensureMobileUserProfile(result.user);
 }

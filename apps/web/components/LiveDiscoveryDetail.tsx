@@ -45,7 +45,12 @@ export function LivePlaceDetail({ id, fallback }: { id: string; fallback: Place 
   return (
     <>
       <DetailHero title={title} description={description} image={place.coverImage} meta={`${categoryTitle} · ${place.district}`} />
-      <ActionStrip deepLink={deepLinks.place(place.id)} />
+      <ActionStrip
+        deepLink={deepLinks.place(place.id)}
+        shareText={`${title} - ${categoryTitle}`}
+        shareTitle={title}
+        storageKey={`place:${place.id}`}
+      />
       <FactGrid
         facts={[
           { label: "Telefon", value: sanitizePublicValue(place.phone) },
@@ -124,7 +129,13 @@ export function LiveEventDetail({ id, fallback }: { id: string; fallback: EventI
   return (
     <>
       <DetailHero title={title} description={description} image={event.coverImage} meta={`${event.venueName} · ${event.district}`} />
-      <ActionStrip deepLink={deepLinks.event(event.id)} calendarUrl={createEventCalendarUrl(event)} />
+      <ActionStrip
+        deepLink={deepLinks.event(event.id)}
+        calendarUrl={createEventCalendarUrl(event)}
+        shareText={`${title} - ${event.venueName}`}
+        shareTitle={title}
+        storageKey={`event:${event.id}`}
+      />
       <FactGrid
         facts={[
           { label: "Tarih", value: new Intl.DateTimeFormat(locale === "tr" ? "tr-TR" : locale, { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt)) },
@@ -168,7 +179,12 @@ export function LiveOfferDetail({ id, fallback }: { id: string; fallback: Offer 
   return (
     <>
       <DetailHero title={title} description={description} image={place?.coverImage ?? "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"} meta={`${offer.discountLabel} · ${place?.title.tr ?? t("common.unspecified")}`} />
-      <ActionStrip deepLink={deepLinks.offer(offer.id)} />
+      <ActionStrip
+        deepLink={deepLinks.offer(offer.id)}
+        shareText={`${title} - ${offer.discountLabel}`}
+        shareTitle={title}
+        storageKey={`offer:${offer.id}`}
+      />
       <FactGrid
         facts={[
           { label: "İndirim", value: offer.discountLabel },

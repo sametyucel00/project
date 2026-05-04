@@ -1,14 +1,16 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { badges, compactValue, defaultPushPreferences, userTasks } from "@nar/core";
+import { badges, compactValue, defaultPushPreferences, getEventById, getOfferById, getPlaceById, userTasks } from "@nar/core";
 import { ActionPill, ActionRow, DetailPreview, StatStrip } from "../components/ui";
 import { completeUserTask, deleteCurrentAccount, fetchUserOrders, fetchUserQrTransactions, logout, resetCurrentUserScanHistory, useQrTransaction } from "../services";
 import { loadStoredAppSettings, saveStoredAppSettings } from "../services/appSettings";
 import { saveMobilePreferences, type MobileThemeMode } from "../services/preferences";
+import { db } from "../firebase";
 import { styles } from "../styles";
 import { getMobileLocale, setMobileLocale } from "../locale";
 import { getMobileThemeMode, getMobileThemeVersion, setMobileThemeMode } from "../theme";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import type { MobileScreenProps } from "./types";
 
 type ProfileLocale = "tr" | "en" | "ru" | "de";
@@ -24,6 +26,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
   const [language, setLanguage] = useState<ProfileLocale>((getMobileLocale() as ProfileLocale) ?? "tr");
   const [qrRows, setQrRows] = useState<Array<[string, string]>>([]);
   const [orderRows, setOrderRows] = useState<Array<[string, string]>>([]);
+  const [favoriteRows, setFavoriteRows] = useState<Array<[string, string]>>([]);
   const [status, setStatus] = useState("Profil bilgilerin hazır.");
   const [saving, setSaving] = useState(false);
   const lastSavedRef = useRef("");
@@ -71,6 +74,33 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
       active = false;
     };
   }, [uid]);
+
+  useEffect(() => {
+    if (!uid) {
+      setFavoriteRows([]);
+      return;
+    }
+
+    const favoritesRef = query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(
+      favoritesRef,
+      (snapshot) => {
+        const rows = snapshot.docs.map((favorite) => {
+          const data = favorite.data() as { entityType?: string; entityId?: string };
+          return [
+            resolveFavoriteTitle(data.entityType ?? "", data.entityId ?? "", feed),
+            translateFavoriteType(data.entityType ?? "", language)
+          ] as [string, string];
+        });
+        setFavoriteRows(rows);
+      },
+      () => {
+        setFavoriteRows([]);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [feed, language, uid]);
 
   useEffect(() => {
     const requestedThemeVersion = getMobileThemeVersion();
@@ -310,6 +340,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
           <DetailPreview title={copy.badges} rows={badges.map((badge) => [badge.title.tr, `${translateBadgeLevel(badge.level)} · ${badge.description.tr}`])} />
           <DetailPreview title={copy.qrHistory} rows={qrRows.length ? qrRows : [["Geçmiş", copy.noQrHistory]]} />
           <DetailPreview title={copy.orderHistory} rows={orderRows.length ? orderRows : [["Geçmiş", copy.noOrderHistory]]} />
+          <DetailPreview title="Favoriler" rows={favoriteRows.length ? favoriteRows : [["Favoriler", "Henüz kaydedilen favori yok"]]} />
         </>
       ) : (
         <Text style={styles.emptyText}>{copy.guestLocked}</Text>
@@ -446,6 +477,23 @@ function serializeSettings({
     themeMode,
     preferences
   });
+}
+
+function resolveFavoriteTitle(entityType: string, entityId: string, feed: MobileScreenProps["feed"]) {
+  if (entityType === "place") return feed.places.find((place) => place.id === entityId)?.title.tr ?? getPlaceById(entityId)?.title.tr ?? entityId;
+  if (entityType === "event") return feed.events.find((event) => event.id === entityId)?.title.tr ?? getEventById(entityId)?.title.tr ?? entityId;
+  if (entityType === "offer") return feed.offers.find((offer) => offer.id === entityId)?.title.tr ?? getOfferById(entityId)?.title.tr ?? entityId;
+  return entityId || "Belirtilmemiş";
+}
+
+function translateFavoriteType(entityType: string, locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, Record<string, string>> = {
+    tr: { place: "Mekan", event: "Etkinlik", offer: "Fırsat" },
+    en: { place: "Place", event: "Event", offer: "Offer" },
+    ru: { place: "Место", event: "Событие", offer: "Предложение" },
+    de: { place: "Ort", event: "Veranstaltung", offer: "Angebot" }
+  };
+  return labels[locale][entityType] ?? compactValue(entityType);
 }
 
 function translateBadgeLevel(value: string) {

@@ -3,7 +3,6 @@
 import type { MarketingPageContent } from "@nar/core";
 import { ArrowRight, Building2, CheckCircle2, Handshake, Info, Smartphone, type LucideIcon } from "lucide-react";
 import { SiteFooter } from "./SiteFooter";
-import { SiteHeader } from "./SiteHeader";
 import { useLocale } from "./LocaleProvider";
 import { SectionEyebrow } from "./SectionEyebrow";
 
@@ -79,8 +78,6 @@ export function MarketingPage({ page, showFooter = true }: { page: MarketingPage
 
   return (
     <main className="shell" id="main-content">
-      <SiteHeader />
-
       <section className="marketing-hero">
         <div className="section-center-column section-center-column-wide">
           <SectionEyebrow icon={EyebrowIcon}>{resolvedPage.eyebrow}</SectionEyebrow>

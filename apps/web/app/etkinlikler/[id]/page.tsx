@@ -1,6 +1,5 @@
 import { LiveEventDetail } from "@/components/LiveDiscoveryDetail";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
 import { featuredEvents, getEventById } from "@nar/core";
 
 export function generateStaticParams() {
@@ -13,7 +12,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
 
   return (
     <main className="shell">
-      <SiteHeader compact />
       <LiveEventDetail fallback={fallback} id={id} />
       <SiteFooter />
     </main>

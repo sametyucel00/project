@@ -6,7 +6,7 @@ import { getMobileLocale } from "../locale";
 import { fetchAncientGuideStops, fetchTouristSurvivalKit } from "../services";
 import { styles } from "../styles";
 import { theme } from "../theme";
-import { compareDistance, hasMeaningfulMapPoint, resolveDistanceLabel } from "../utils/location";
+import { compareDistance, resolveDistanceLabel } from "../utils/location";
 import type { MobileScreenProps } from "./types";
 import { useEffect, useMemo, useState } from "react";
 
@@ -105,7 +105,6 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
 
   const nearbyPlaces = useMemo(() => feed.places
     .filter((place) => matchesText([pickText(place.title, locale), pickText(place.description, locale), place.district, place.categoryId], normalizedQuery))
-    .filter((place) => userLocation ? hasMeaningfulMapPoint(place.location) : true)
     .sort((left, right) => compareDistance(userLocation, left.location, right.location))
     .slice(0, 5), [feed.places, locale, normalizedQuery, userLocation]);
 

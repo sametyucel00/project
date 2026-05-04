@@ -3,6 +3,7 @@
 import type { EventItem, GeoPoint, Offer, Place } from "@nar/core";
 import { createGoogleMapsDirectionsUrl } from "@nar/core";
 import { CalendarDays, Gift, Heart, Map, MapPin, Navigation, QrCode, Share2, Star, Tag } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useLocale, type SiteLocale } from "./LocaleProvider";
 
 type DiscoveryItem = Place | EventItem | Offer;
@@ -151,14 +152,83 @@ export function FactGrid({ facts }: { facts: Array<{ label: string; value: strin
   );
 }
 
-export function ActionStrip({ deepLink, calendarUrl }: { deepLink: string; calendarUrl?: string }) {
+export function ActionStrip({
+  deepLink,
+  calendarUrl,
+  storageKey,
+  shareTitle,
+  shareText
+}: {
+  deepLink: string;
+  calendarUrl?: string;
+  storageKey: string;
+  shareTitle: string;
+  shareText: string;
+}) {
   const { t } = useLocale();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const isMobileBrowser = typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const openInAppHref = isMobileBrowser ? deepLink : "/mobil-uygulama";
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem("nar-web-favorites");
+      if (!saved) return;
+      const parsed = JSON.parse(saved) as Array<{ key?: string }>;
+      setIsFavorite(parsed.some((item) => item.key === storageKey));
+    } catch {
+      setIsFavorite(false);
+    }
+  }, [storageKey]);
+
+  function saveFavorites(nextState: boolean) {
+    try {
+      const saved = window.localStorage.getItem("nar-web-favorites");
+      const parsed = saved ? (JSON.parse(saved) as Array<{ key: string; href: string; title: string }>) : [];
+      const next = nextState
+        ? [...parsed.filter((item) => item.key !== storageKey), { key: storageKey, href: deepLink, title: shareTitle }]
+        : parsed.filter((item) => item.key !== storageKey);
+      window.localStorage.setItem("nar-web-favorites", JSON.stringify(next));
+    } catch {
+      // Yerel favori kaydı başarısız olursa akışı bozma.
+    }
+  }
+
+  async function handleShare() {
+    const url = typeof window !== "undefined" ? window.location.href : deepLink;
+    if (typeof navigator !== "undefined" && "share" in navigator) {
+      try {
+        await navigator.share({ title: shareTitle, text: shareText, url });
+        return;
+      } catch {
+        // Kullanıcı paylaşımı iptal edebilir; sessizce clipboard'a geç.
+      }
+    }
+    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+    }
+  }
 
   return (
     <div className="action-strip" aria-label="Detay aksiyonları">
-      <button aria-label={t("detail.favorite")} type="button"><Heart size={18} /><span>{t("detail.favorite")}</span></button>
-      <button aria-label={t("detail.share")} type="button"><Share2 size={18} /><span>{t("detail.share")}</span></button>
-      <a aria-label={t("detail.openInApp")} href={deepLink}><Navigation size={18} /><span>{t("detail.openInApp")}</span></a>
+      <button
+        aria-pressed={isFavorite}
+        aria-label={t("detail.favorite")}
+        type="button"
+        onClick={() => {
+          const next = !isFavorite;
+          setIsFavorite(next);
+          saveFavorites(next);
+        }}
+      >
+        <Heart size={18} />
+        <span>{isFavorite ? `${t("detail.favorite")} ✓` : t("detail.favorite")}</span>
+      </button>
+      <button aria-label={t("detail.share")} type="button" onClick={() => { void handleShare(); }}>
+        <Share2 size={18} />
+        <span>{t("detail.share")}</span>
+      </button>
+      <a aria-label={t("detail.openInApp")} href={openInAppHref}><Navigation size={18} /><span>{t("detail.openInApp")}</span></a>
       {calendarUrl ? <a aria-label={t("events.addToCalendar")} href={calendarUrl} target="_blank" rel="noreferrer"><CalendarDays size={18} /><span>{t("events.addToCalendar")}</span></a> : null}
     </div>
   );

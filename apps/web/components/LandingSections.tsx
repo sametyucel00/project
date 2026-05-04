@@ -152,59 +152,6 @@ export function LandingSections() {
         </div>
       </section>
 
-      <section className="section dark" id="mekanlar">
-        <div className="section-head">
-          <h2>Mekan keşfi daha net, daha hızlı.</h2>
-          <p>Adres, yol tarifi, puan, yorum ve açık/kapalı bilgileriyle karar vermek kolaylaşır.</p>
-        </div>
-        <div className="rail">
-          {places.map((place) => (
-            <article className="place" key={place.id}>
-              <div className="place-image" style={{ backgroundImage: `url(${place.coverImage}?auto=format&fit=crop&w=900&q=80)` }} />
-              <span className="meta">{place.district} · {place.googleRating ?? "Belirtilmemiş"} · {place.openNow ? "Açık" : "Belirtilmemiş"}</span>
-              <h3>{place.title.tr}</h3>
-              <p>{place.description.tr}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section" id="etkinlikler">
-        <div className="section-head">
-          <h2>Yakındaki etkinlikler.</h2>
-          <p>Konuma göre sıralanan en yakın 6 etkinlik tek yerde.</p>
-        </div>
-        <div className="rail">
-          {(nearbyEvents.length ? nearbyEvents : events.map((event) => ({ event, place: undefined, distance: null }))).map(({ event, distance }) => (
-            <article className="feature" key={event.id}>
-              <span className="event-meta">
-                <CalendarDays size={18} /> {new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt))}
-              </span>
-              <h3>{event.title.tr}</h3>
-              <p>{formatDistanceLabel(distance)} · {event.synopsis?.tr ?? event.description.tr}</p>
-            </article>
-          ))}
-          {offers.map((offer) => (
-            <article className="feature" key={offer.id}>
-              <Gift size={22} />
-              <span className="meta meta-inline">
-                <span className="meta-offer-part">
-                  <Tag size={14} />
-                  <span>{offer.discountLabel}</span>
-                </span>
-                <span aria-hidden="true">·</span>
-                <span className="meta-offer-part">
-                  <QrCode size={14} />
-                  <span>QR aktif</span>
-                </span>
-              </span>
-              <h3>{offer.title.tr}</h3>
-              <p>{offer.description.tr}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="section dark" id="paneller">
         <div className="section-head">
           <h2>Hesabın sana göre açılır.</h2>

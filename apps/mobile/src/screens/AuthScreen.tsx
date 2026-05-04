@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { t, type Locale } from "@nar/core";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { loginAnonymously, loginWithApplePopup, loginWithEmail, loginWithGooglePopup, registerWithEmailAndRole, resetPassword } from "../services";
+import { AUTH_REDIRECT_STARTED, loginAnonymously, loginWithApplePopup, loginWithEmail, loginWithGooglePopup, registerWithEmailAndRole, resetPassword } from "../services";
 import { styles } from "../styles";
 import { theme } from "../theme";
 import type { SelfServiceRole } from "../services";
@@ -123,10 +123,11 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
   async function runAuth(action: () => Promise<unknown>) {
     setStatus(c.statusSigning);
     try {
-      await action();
+      const result = await action();
+      if (result === AUTH_REDIRECT_STARTED) return;
       onSignedIn();
-    } catch {
-      setStatus(c.statusError);
+    } catch (error) {
+      setStatus(error instanceof Error && error.message ? error.message : c.statusError);
     }
   }
 
@@ -135,15 +136,15 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
     try {
       await action();
       setStatus(successMessage ?? c.statusResetSent);
-    } catch {
-      setStatus(c.statusError);
+    } catch (error) {
+      setStatus(error instanceof Error && error.message ? error.message : c.statusError);
     }
   }
 
   return (
     <View style={styles.startupScreen}>
       <ScrollView style={styles.startupScroll} contentContainerStyle={styles.startupContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.splashCard}>
+        <View style={styles.onboardingCard}>
           <View style={styles.splashBrandRow}>
             <View>
               <Text style={styles.splashBadge}>Nar Rehberi</Text>
@@ -153,36 +154,34 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
           </View>
           <Text style={styles.splashTagline}>{c.title}</Text>
           <Text style={styles.onboardingText}>{c.subtitle}</Text>
-        </View>
 
-        <View style={styles.onboardingCard}>
-          <View style={styles.onboardingChoiceRow}>
-            <Pressable accessibilityRole="button" onPress={() => setMode("login")} style={[styles.onboardingChoice, mode === "login" && styles.onboardingChoiceActive]}>
-              <Text style={mode === "login" ? styles.onboardingChoiceTextActive : styles.onboardingChoiceText}>{c.login}</Text>
+          <View style={styles.authRow}>
+            <Pressable accessibilityRole="button" onPress={() => setMode("login")} style={[styles.authChoice, mode === "login" && styles.authChoiceActive]}>
+              <Text style={mode === "login" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.login}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => setMode("register")} style={[styles.onboardingChoice, mode === "register" && styles.onboardingChoiceActive]}>
-              <Text style={mode === "register" ? styles.onboardingChoiceTextActive : styles.onboardingChoiceText}>{c.register}</Text>
+            <Pressable accessibilityRole="button" onPress={() => setMode("register")} style={[styles.authChoice, mode === "register" && styles.authChoiceActive]}>
+              <Text style={mode === "register" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.register}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => void runUtility(() => resetPassword(email.trim()), c.statusResetSent)} style={styles.onboardingChoice}>
-              <Text style={styles.onboardingChoiceText}>{c.forgot}</Text>
+            <Pressable accessibilityRole="button" onPress={() => void runUtility(() => resetPassword(email.trim()), c.statusResetSent)} style={styles.authChoice}>
+              <Text style={styles.authChoiceText}>{c.forgot}</Text>
             </Pressable>
           </View>
 
           <TextInput value={email} onChangeText={setEmail} placeholder={c.email} keyboardType="email-address" autoCapitalize="none" style={styles.authInput} />
           <TextInput value={password} onChangeText={setPassword} placeholder={c.password} secureTextEntry style={styles.authInput} />
-          <TextInput value={displayName} onChangeText={setDisplayName} placeholder={c.name} style={styles.authInput} />
           {mode === "register" ? (
             <View style={styles.settingsCard}>
+              <TextInput value={displayName} onChangeText={setDisplayName} placeholder={c.name} style={styles.authInput} />
               <Text style={styles.settingsTitle}>{c.accountType}</Text>
-              <View style={styles.onboardingChoiceRow}>
-                <Pressable accessibilityRole="button" onPress={() => setRole("individual")} style={[styles.onboardingChoice, role === "individual" && styles.onboardingChoiceActive]}>
-                  <Text style={role === "individual" ? styles.onboardingChoiceTextActive : styles.onboardingChoiceText}>{c.individual}</Text>
+              <View style={styles.authRow}>
+                <Pressable accessibilityRole="button" onPress={() => setRole("individual")} style={[styles.authChoice, role === "individual" && styles.authChoiceActive]}>
+                  <Text style={role === "individual" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.individual}</Text>
                 </Pressable>
-                <Pressable accessibilityRole="button" onPress={() => setRole("business")} style={[styles.onboardingChoice, role === "business" && styles.onboardingChoiceActive]}>
-                  <Text style={role === "business" ? styles.onboardingChoiceTextActive : styles.onboardingChoiceText}>{c.business}</Text>
+                <Pressable accessibilityRole="button" onPress={() => setRole("business")} style={[styles.authChoice, role === "business" && styles.authChoiceActive]}>
+                  <Text style={role === "business" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.business}</Text>
                 </Pressable>
-                <Pressable accessibilityRole="button" onPress={() => setRole("theater")} style={[styles.onboardingChoice, role === "theater" && styles.onboardingChoiceActive]}>
-                  <Text style={role === "theater" ? styles.onboardingChoiceTextActive : styles.onboardingChoiceText}>{c.theater}</Text>
+                <Pressable accessibilityRole="button" onPress={() => setRole("theater")} style={[styles.authChoice, role === "theater" && styles.authChoiceActive]}>
+                  <Text style={role === "theater" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.theater}</Text>
                 </Pressable>
               </View>
             </View>
@@ -198,12 +197,12 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
             <Text style={styles.onboardingActionText}>{c.continue}</Text>
           </Pressable>
 
-          <View style={styles.onboardingChoiceRow}>
-            <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginWithGooglePopup())} style={styles.onboardingChoice}>
-              <Text style={styles.onboardingChoiceText}>{c.google}</Text>
+          <View style={styles.authRow}>
+            <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginWithGooglePopup())} style={styles.authChoice}>
+              <Text style={styles.authChoiceText}>{c.google}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginWithApplePopup())} style={styles.onboardingChoice}>
-              <Text style={styles.onboardingChoiceText}>{c.apple}</Text>
+            <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginWithApplePopup())} style={styles.authChoice}>
+              <Text style={styles.authChoiceText}>{c.apple}</Text>
             </Pressable>
           </View>
 

@@ -1,6 +1,5 @@
 import { LiveOfferDetail } from "@/components/LiveDiscoveryDetail";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
 import { featuredOffers, getOfferById } from "@nar/core";
 
 export function generateStaticParams() {
@@ -13,7 +12,6 @@ export default async function OfferDetailPage({ params }: { params: Promise<{ id
 
   return (
     <main className="shell">
-      <SiteHeader compact />
       <LiveOfferDetail fallback={fallback} id={id} />
       <SiteFooter />
     </main>

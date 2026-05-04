@@ -1,6 +1,5 @@
 import { LivePlaceDetail } from "@/components/LiveDiscoveryDetail";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
 import { featuredPlaces, getPlaceById } from "@nar/core";
 
 export function generateStaticParams() {
@@ -13,7 +12,6 @@ export default async function PlaceDetailPage({ params }: { params: Promise<{ id
 
   return (
     <main className="shell">
-      <SiteHeader compact />
       <LivePlaceDetail fallback={fallback} id={id} />
       <SiteFooter />
     </main>

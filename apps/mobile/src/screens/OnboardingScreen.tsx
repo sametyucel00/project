@@ -3,6 +3,7 @@ import { t } from "@nar/core";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles } from "../styles";
 import { theme } from "../theme";
+
 const languageChoices = [
   { code: "tr", label: "Türkçe" },
   { code: "en", label: "English" },
@@ -30,7 +31,7 @@ export function OnboardingScreen({
   return (
     <View style={styles.startupScreen}>
       <ScrollView style={styles.startupScroll} contentContainerStyle={styles.startupContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.splashCard}>
+        <View style={styles.onboardingCard}>
           <View style={styles.splashBrandRow}>
             <View>
               <Text style={styles.splashBadge}>Nar Rehberi</Text>
@@ -38,16 +39,7 @@ export function OnboardingScreen({
             </View>
             <Ionicons name="compass-outline" size={30} color={theme.nar} />
           </View>
-          <Text style={styles.splashTagline}>{t(locale, "onboardingSplashTagline")}</Text>
-          <View style={styles.splashAccent}>
-            <Text style={styles.splashPill}>Keşif</Text>
-            <Text style={styles.splashPill}>Mekan</Text>
-            <Text style={styles.splashPill}>Etkinlik</Text>
-            <Text style={styles.splashPill}>QR</Text>
-          </View>
-        </View>
 
-        <View style={styles.onboardingCard}>
           <Text style={styles.onboardingTitle}>{t(locale, "onboardingTitle")}</Text>
           <Text style={styles.onboardingText}>{t(locale, "onboardingSubtitle")}</Text>
 
@@ -59,10 +51,7 @@ export function OnboardingScreen({
                   key={choice.code}
                   accessibilityRole="button"
                   onPress={() => onSelectLocale(choice.code)}
-                  style={[
-                    styles.onboardingChoice,
-                    locale === choice.code && styles.onboardingChoiceActive
-                  ]}
+                  style={[styles.onboardingChoice, locale === choice.code && styles.onboardingChoiceActive]}
                 >
                   <Text style={locale === choice.code ? styles.onboardingChoiceTextActive : styles.onboardingChoiceText}>{choice.label}</Text>
                 </Pressable>
@@ -87,10 +76,14 @@ export function OnboardingScreen({
           <Text style={styles.onboardingText}>{locationStatus}</Text>
 
           <Pressable accessibilityRole="button" onPress={onGrantLocation} style={styles.onboardingAction}>
-            <Text style={styles.onboardingActionText}>{locationGranted ? t(locale, "onboardingLocationGranted") : t(locale, "onboardingAllowLocation")}</Text>
+            <Text style={styles.onboardingActionText}>
+              {locationGranted ? t(locale, "onboardingLocationGranted") : t(locale, "onboardingAllowLocation")}
+            </Text>
           </Pressable>
           <Pressable accessibilityRole="button" onPress={onSkip} style={[styles.onboardingAction, styles.onboardingActionSecondary]}>
-            <Text style={styles.onboardingActionTextSecondary}>{locationGranted ? t(locale, "onboardingContinue") : t(locale, "onboardingSkipLocation")}</Text>
+            <Text style={styles.onboardingActionTextSecondary}>
+              {locationGranted ? t(locale, "onboardingContinue") : t(locale, "onboardingSkipLocation")}
+            </Text>
           </Pressable>
         </View>
       </ScrollView>

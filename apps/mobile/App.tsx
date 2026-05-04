@@ -47,7 +47,6 @@ type Surface =
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabLabel>("Ana Sayfa");
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
-  const [startupReady, setStartupReady] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const feed = useDiscoveryFeed();
   const { session, loading: sessionLoading } = useSession();
@@ -83,19 +82,13 @@ export default function App() {
       if (!active) return;
       setOnboardingCompleted(completed);
     });
-    const timer = setTimeout(() => {
-      if (!active) return;
-      setStartupReady(true);
-    }, 900);
     return () => {
       active = false;
-      clearTimeout(timer);
     };
   }, []);
 
   const locale = getMobileLocale();
-  const isBooting = !startupReady || onboardingCompleted === null || sessionLoading;
-  const needsOnboarding = onboardingCompleted === false;
+  const needsOnboarding = onboardingCompleted !== true;
   const showAuth = surface.kind === "auth" || (!needsOnboarding && !session);
   const showLegal = surface.kind === "legal";
 
@@ -156,33 +149,6 @@ export default function App() {
 
   async function grantLocationAccess() {
     await requestLocationAccess();
-  }
-
-  if (isBooting) {
-    return (
-      <SafeAreaProvider>
-        <SafeAreaView style={styles.startupScreen}>
-          <View style={[styles.startupContent, { justifyContent: "center" }]}>
-            <View style={styles.splashCard}>
-              <View style={styles.splashBrandRow}>
-                <View>
-                  <Text style={styles.splashBadge}>Nar Rehberi</Text>
-                  <Text style={styles.splashLogo}>{t(locale, "appName")}</Text>
-                </View>
-                <Ionicons name="compass-outline" size={30} color={theme.nar} />
-              </View>
-              <Text style={styles.splashTagline}>{t(locale, "onboardingSplashTagline")}</Text>
-              <View style={styles.splashAccent}>
-                <Text style={styles.splashPill}>Keşif</Text>
-                <Text style={styles.splashPill}>Mekan</Text>
-                <Text style={styles.splashPill}>Etkinlik</Text>
-                <Text style={styles.splashPill}>QR</Text>
-              </View>
-            </View>
-          </View>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    );
   }
 
   if (needsOnboarding) {
