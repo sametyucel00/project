@@ -12,12 +12,17 @@
     },
     "preview": {
       "distribution": "internal",
+      "buildArtifactPaths": [
+        "android/app/build/outputs/apk/**/*.apk"
+      ],
       "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease"
+        "buildType": "apk"
       }
     },
     "production": {
+      "buildArtifactPaths": [
+        "android/app/build/outputs/bundle/**/*.aab"
+      ],
       "android": {
         "buildType": "app-bundle"
       }
