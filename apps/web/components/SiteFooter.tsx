@@ -18,6 +18,7 @@ export function SiteFooter() {
         <a href="/iletisim">{t("nav.contact")}</a>
         <a href="/mobil-uygulama">{t("common.mobileApp")}</a>
         <a href="/isletmeler-icin">{t("common.businessesFor")}</a>
+        <a href="/hesap-silme">Hesap silme</a>
       </div>
       <LanguageSwitcher />
       <div className="social-links" aria-label="Sosyal medya">

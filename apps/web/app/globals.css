@@ -1204,6 +1204,101 @@ h1 {
   font-size: 24px;
 }
 
+.legal-hero {
+  display: grid;
+  align-items: flex-end;
+  min-height: calc(66vh - 68px);
+  padding: clamp(44px, 8vw, 104px) clamp(18px, 5vw, 72px) 58px;
+  border-bottom: 1px solid rgba(23, 20, 18, 0.10);
+}
+
+.legal-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--nar);
+  padding: 9px 13px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.legal-actions,
+.legal-grid,
+.legal-columns {
+  display: grid;
+  gap: 16px;
+}
+
+.legal-actions {
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  align-items: center;
+  margin-top: 28px;
+}
+
+.legal-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.legal-card,
+.legal-note {
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.legal-card h2,
+.legal-note h2,
+.legal-columns h2 {
+  margin: 12px 0 8px;
+  font-size: clamp(22px, 3vw, 30px);
+}
+
+.legal-card p,
+.legal-note p {
+  margin: 0;
+}
+
+.legal-section {
+  padding-top: clamp(42px, 6vw, 72px);
+  padding-bottom: clamp(42px, 6vw, 72px);
+}
+
+.legal-section-compact {
+  padding-top: 28px;
+}
+
+.legal-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.legal-list {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0 0;
+  padding-left: 20px;
+  color: var(--ink);
+}
+
+.legal-list-muted {
+  color: var(--muted);
+}
+
+.legal-note {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+}
+
+.legal-note a,
+.legal-card a {
+  color: var(--nar);
+  font-weight: 700;
+}
+
 .contact-form {
   display: grid;
   gap: 18px;
@@ -2071,6 +2166,18 @@ html[data-a11y-motion="reduced"] *::after {
 
   .marketing-grid {
     grid-template-columns: 1fr;
+  }
+
+  .legal-actions,
+  .legal-grid,
+  .legal-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-actions .primary,
+  .legal-actions .secondary {
+    width: 100%;
+    justify-content: center;
   }
 
   .workflow-list article {
