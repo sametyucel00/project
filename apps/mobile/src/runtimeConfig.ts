@@ -6,7 +6,27 @@ type RuntimeExtra = {
   googleMapsApiKey?: string;
 };
 
-const extra = (Constants.expoConfig?.extra ?? {}) as RuntimeExtra;
+const constants = Constants as typeof Constants & {
+  manifest?: { extra?: RuntimeExtra };
+  manifest2?: { extra?: { expoClient?: { extra?: RuntimeExtra } }; expoClient?: { extra?: RuntimeExtra } };
+};
+
+const extra = (
+  Constants.expoConfig?.extra
+  ?? constants.manifest2?.extra?.expoClient?.extra
+  ?? constants.manifest2?.expoClient?.extra
+  ?? constants.manifest?.extra
+  ?? {}
+) as RuntimeExtra;
+
+const defaultFirebaseConfig = {
+  apiKey: "AIzaSyA9QfI2_s10k8HL-uAglDYHVqADG5wx0v0",
+  authDomain: "nar-rehberi-pro.firebaseapp.com",
+  projectId: "nar-rehberi-pro",
+  storageBucket: "nar-rehberi-pro.firebasestorage.app",
+  messagingSenderId: "712568563076",
+  appId: "1:712568563076:web:a9c6f80d4ba8f5f4fe29d1"
+};
 
 function readValue(envName: string, extraValue?: string) {
   return (process.env[envName] || extraValue || "").trim();
@@ -14,12 +34,12 @@ function readValue(envName: string, extraValue?: string) {
 
 export function getRuntimeFirebaseConfig() {
   return {
-    apiKey: readValue("EXPO_PUBLIC_FIREBASE_API_KEY", extra.firebase?.apiKey),
-    authDomain: readValue("EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN", extra.firebase?.authDomain),
-    projectId: readValue("EXPO_PUBLIC_FIREBASE_PROJECT_ID", extra.firebase?.projectId),
-    storageBucket: readValue("EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET", extra.firebase?.storageBucket),
-    messagingSenderId: readValue("EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID", extra.firebase?.messagingSenderId),
-    appId: readValue("EXPO_PUBLIC_FIREBASE_APP_ID", extra.firebase?.appId)
+    apiKey: readValue("EXPO_PUBLIC_FIREBASE_API_KEY", extra.firebase?.apiKey) || defaultFirebaseConfig.apiKey,
+    authDomain: readValue("EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN", extra.firebase?.authDomain) || defaultFirebaseConfig.authDomain,
+    projectId: readValue("EXPO_PUBLIC_FIREBASE_PROJECT_ID", extra.firebase?.projectId) || defaultFirebaseConfig.projectId,
+    storageBucket: readValue("EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET", extra.firebase?.storageBucket) || defaultFirebaseConfig.storageBucket,
+    messagingSenderId: readValue("EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID", extra.firebase?.messagingSenderId) || defaultFirebaseConfig.messagingSenderId,
+    appId: readValue("EXPO_PUBLIC_FIREBASE_APP_ID", extra.firebase?.appId) || defaultFirebaseConfig.appId
   };
 }
 
@@ -35,4 +55,3 @@ export function getAppleServiceId() {
     || readValue("EXPO_PUBLIC_APPLE_WEB_CLIENT_ID", extra.auth?.appleWebClientId)
     || readValue("APPLE_SERVICE_ID");
 }
-

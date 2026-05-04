@@ -31,7 +31,7 @@ module.exports = {
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9103
+    versionCode: 9104
   },
   extra: {
     ...(expo.extra ?? {}),
