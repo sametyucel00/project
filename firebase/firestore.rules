@@ -1,0 +1,168 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc(uid) {
+      return get(/databases/$(database)/documents/users/$(uid));
+    }
+
+    function role() {
+      return signedIn() && userDoc(request.auth.uid).data.role;
+    }
+
+    function isAdmin() {
+      return signedIn() && role() == "admin";
+    }
+
+    function isOwner(ownerId) {
+      return signedIn() && ownerId == request.auth.uid;
+    }
+
+    function validLocalized(field) {
+      return field.keys().hasAll(["tr", "en", "ru", "de"]);
+    }
+
+    match /users/{uid} {
+      allow read, update: if isAdmin() || isOwner(uid);
+      allow create: if signedIn() && isOwner(uid) && request.resource.data.points == 500;
+      allow delete: if isAdmin();
+
+      match /fcmTokens/{tokenId} {
+        allow read, write: if isAdmin() || isOwner(uid);
+      }
+
+      match /favorites/{favoriteId} {
+        allow read, write: if isAdmin() || isOwner(uid);
+      }
+
+      match /reminders/{reminderId} {
+        allow read, write: if isAdmin() || isOwner(uid);
+      }
+    }
+
+    match /places/{placeId} {
+      allow read: if resource.data.status == "published" || isAdmin() || isOwner(resource.data.ownerId);
+      allow create: if isAdmin() || (signedIn() && role() == "business" && request.resource.data.ownerId == request.auth.uid && validLocalized(request.resource.data.title));
+      allow update: if isAdmin() || (signedIn() && role() == "business" && isOwner(resource.data.ownerId));
+      allow delete: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if resource.data.status == "published" || isAdmin() || isOwner(resource.data.organizerId);
+      allow create: if isAdmin() || (signedIn() && role() == "theater" && request.resource.data.organizerId == request.auth.uid && request.resource.data.notificationLimit <= 3);
+      allow update: if isAdmin() || (signedIn() && role() == "theater" && isOwner(resource.data.organizerId) && request.resource.data.notificationLimit <= resource.data.notificationLimit);
+      allow delete: if isAdmin();
+    }
+
+    match /offers/{offerId} {
+      allow read: if resource.data.status == "published" || isAdmin() || isOwner(resource.data.businessId);
+      allow create, update: if isAdmin() || (signedIn() && role() == "business" && request.resource.data.businessId == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    match /stories/{storyId} {
+      allow read: if resource.data.status == "published" || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /categories/{categoryId} {
+      allow read: if resource.data.status == "published" || isAdmin();
+      allow write: if isAdmin() && validLocalized(request.resource.data.title);
+    }
+
+    match /touristSurvivalKit/{itemId} {
+      allow read: if resource.data.status == "published" || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /ancientGuideStops/{stopId} {
+      allow read: if resource.data.status == "published" || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /seoMeta/{metaId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /qrTransactions/{transactionId} {
+      allow read: if isAdmin() || isOwner(resource.data.userId) || isOwner(resource.data.businessId);
+      allow create: if isAdmin() || (signedIn() && role() == "business" && request.resource.data.businessId == request.auth.uid);
+      allow update, delete: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+
+      match /deliveries/{deliveryId} {
+        allow read, write: if isAdmin();
+      }
+    }
+
+    match /imports/{importId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /contactRequests/{requestId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /approvalQueue/{approvalId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.ownerId == request.auth.uid);
+      allow create: if signedIn() && request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /analyticsEvents/{eventId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /analyticsCounters/{counterId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /exportManifests/{manifestId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAdmin() || (signedIn() && (resource.data.userId == request.auth.uid || resource.data.businessId == request.auth.uid));
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin() || (signedIn() && resource.data.businessId == request.auth.uid);
+      allow delete: if isAdmin();
+    }
+
+    match /errorLogs/{logId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /rateLimits/{limitId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /userTasks/{taskId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /badges/{badgeId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

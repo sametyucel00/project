@@ -1,0 +1,38 @@
+[
+  {
+    "id": "old-town-table",
+    "categoryId": "restaurants",
+    "district": "Muratpaşa",
+    "address": "Kaleiçi, Antalya",
+    "location": {
+      "lat": 36.8841,
+      "lng": 30.7056
+    },
+    "title": {
+      "tr": "Kaleiçi Sofrası",
+      "en": "Old Town Table",
+      "ru": "Стол старого города",
+      "de": "Altstadt Tisch"
+    },
+    "description": {
+      "tr": "Taş sokakların arasında sakin, yerel ve rafine bir akşam rotası.",
+      "en": "A calm, local and refined evening route among stone streets.",
+      "ru": "Спокойный и изысканный вечерний маршрут среди каменных улиц.",
+      "de": "Eine ruhige, lokale und feine Abendroute zwischen Steingassen."
+    },
+    "coverImage": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
+    "gallery": [],
+    "features": ["rezervasyon", "yerel mutfak", "teras"],
+    "accessibility": {
+      "wheelchair": true,
+      "childFriendly": true,
+      "parking": false,
+      "wifi": true,
+      "vegan": true
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 842,
+    "openNow": true,
+    "status": "published"
+  }
+]

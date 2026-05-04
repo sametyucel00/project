@@ -1,0 +1,24 @@
+[
+  {
+    "id": "hadrians-gate",
+    "district": "Muratpaşa",
+    "era": "Roma",
+    "location": {
+      "lat": 36.885,
+      "lng": 30.7087
+    },
+    "image": "https://images.unsplash.com/photo-1604933762023-7213af7ff7a5",
+    "title": {
+      "tr": "Hadrian Kapısı",
+      "en": "Hadrian's Gate",
+      "ru": "Ворота Адриана",
+      "de": "Hadrianstor"
+    },
+    "description": {
+      "tr": "Kaleiçi girişinde Roma döneminden kalan şehir simgesi.",
+      "en": "A Roman-era city landmark at the entrance of Kaleiçi.",
+      "ru": "Городской символ римской эпохи у входа в Калеичи.",
+      "de": "Ein Wahrzeichen aus römischer Zeit am Eingang von Kaleiçi."
+    }
+  }
+]

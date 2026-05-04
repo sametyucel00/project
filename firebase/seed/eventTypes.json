@@ -1,0 +1,20 @@
+[
+  {
+    "id": "theater",
+    "title": {
+      "tr": "Tiyatro",
+      "en": "Theater",
+      "ru": "Театр",
+      "de": "Theater"
+    }
+  },
+  {
+    "id": "concert",
+    "title": {
+      "tr": "Konser",
+      "en": "Concert",
+      "ru": "Концерт",
+      "de": "Konzert"
+    }
+  }
+]

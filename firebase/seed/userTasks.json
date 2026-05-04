@@ -1,0 +1,21 @@
+[
+  {
+    "id": "first-qr-scan",
+    "rewardPoints": 75,
+    "badgeId": "city-starter",
+    "trigger": "scanQr",
+    "title": {
+      "tr": "İlk QR",
+      "en": "First QR",
+      "ru": "Первый QR",
+      "de": "Erster QR"
+    },
+    "description": {
+      "tr": "İlk QR işlemini yap ve puan akışını başlat.",
+      "en": "Complete your first QR action and start earning points.",
+      "ru": "Выполните первое QR-действие и начните получать баллы.",
+      "de": "Schließe deine erste QR-Aktion ab und sammle Punkte."
+    },
+    "status": "published"
+  }
+]

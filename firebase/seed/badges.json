@@ -1,0 +1,19 @@
+[
+  {
+    "id": "city-starter",
+    "icon": "qr",
+    "level": "bronze",
+    "title": {
+      "tr": "Şehre Başladın",
+      "en": "City Starter",
+      "ru": "Начало города",
+      "de": "Stadtstarter"
+    },
+    "description": {
+      "tr": "Nar QR ile ilk etkileşimini tamamladın.",
+      "en": "You completed your first Nar QR interaction.",
+      "ru": "Вы завершили первое взаимодействие с Nar QR.",
+      "de": "Du hast deine erste Nar-QR-Interaktion abgeschlossen."
+    }
+  }
+]

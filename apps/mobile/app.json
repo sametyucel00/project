@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Nar Rehberi",
+    "slug": "nar-rehberi",
+    "scheme": "narrehberi",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.narrehberi.app"
+    },
+    "android": {
+      "package": "narrehberi.com"
+    },
+    "plugins": []
+  }
+}

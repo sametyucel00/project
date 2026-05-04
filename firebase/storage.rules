@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return signedIn()
+        && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return signedIn() && role() == "admin";
+    }
+
+    match /public/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /places/{ownerId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() || (signedIn() && role() == "business" && request.auth.uid == ownerId);
+    }
+
+    match /events/{organizerId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin() || (signedIn() && role() == "theater" && request.auth.uid == organizerId);
+    }
+
+    match /imports/{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+
+    match /users/{uid}/{allPaths=**} {
+      allow read, write: if isAdmin() || (signedIn() && request.auth.uid == uid);
+    }
+  }
+}

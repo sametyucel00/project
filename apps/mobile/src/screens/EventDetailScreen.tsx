@@ -1,0 +1,97 @@
+import { ImageBackground, Text, View } from "react-native";
+import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getEventTypeMeta, normalizeSynopsisText, translateText } from "@nar/core";
+import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
+import { styles } from "../styles";
+import type { MobileScreenProps } from "./types";
+import { openAddressInMaps, openExternalUrl } from "../utils/links";
+import { createTicketOrder, scheduleReminder, toggleFavorite } from "../services";
+import { useEffect, useMemo, useState } from "react";
+import { getMobileLocale } from "../locale";
+import { hasMeaningfulMapPoint, resolveDistanceLabel } from "../utils/location";
+
+export function EventDetailScreen({ feed, userLocation, session, eventId, onBack }: MobileScreenProps & { eventId: string; onBack: () => void }) {
+  const isGuest = !session || session.isAnonymous;
+  const event = useMemo(() => feed.events.find((item) => item.id === eventId), [eventId, feed.events]);
+  const venue = useMemo(() => feed.places.find((item) => item.title.tr === event?.venueName) ?? feed.places[0], [event?.venueName, feed.places]);
+  const venueLocation = venue?.location;
+  const synopsis = normalizeSynopsisText(event?.synopsis?.tr ?? event?.description.tr);
+  const locale = getMobileLocale();
+  const [synopsisText, setSynopsisText] = useState(synopsis);
+  const mapUrl = hasMeaningfulMapPoint(venueLocation) ? createStaticMapUrl(venueLocation, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
+
+  useEffect(() => {
+    let active = true;
+    const base = synopsis || event?.description.tr || "";
+    if (!base) {
+      setSynopsisText("");
+      return;
+    }
+    if (locale === "tr") {
+      setSynopsisText(base);
+      return;
+    }
+    void translateText(base, locale, "tr").then((value) => {
+      if (!active) return;
+      setSynopsisText(value || base);
+    });
+    return () => {
+      active = false;
+    };
+  }, [event?.description.tr, locale, synopsis]);
+
+  if (!event) {
+    return (
+      <View style={styles.profileSurface}>
+        <ActionPill label="Geri" variant="secondary" onPress={onBack} />
+        <Text style={styles.emptyText}>Seçilen etkinlik bulunamadı.</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View>
+      <ActionRow>
+        <ActionPill label="Geri" variant="secondary" onPress={onBack} />
+        {event.ticketUrl ? <ActionPill label="Bilet aç" onPress={() => openExternalUrl(event.ticketUrl)} /> : null}
+      </ActionRow>
+      <DetailHeroCard image={event.coverImage} eyebrow={getEventTypeMeta(event).title.tr} title={event.title.tr} subtitle={synopsisText || event.description.tr} />
+      <StatStrip items={[
+        ["Tarih", formatDate(event.startsAt)],
+        ["Yer", event.venueName],
+        ["Bilet", event.priceType === "free" ? "Ücretsiz" : "Ücretli"],
+        ["Mesafe", resolveDistanceLabel(userLocation, venue?.location ?? null)]
+      ]} />
+      <SubsectionGrid items={[...event.cast.slice(0, 4), event.district]} />
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.settingsTitle}>Etkinlik bilgileri</Text>
+        <DetailLinkRow icon="calendar-outline" label="Tarih ve saat" value={formatDate(event.startsAt)} />
+        <DetailLinkRow icon="location-outline" label="Mekan" value={event.venueName} onPress={() => venue?.location ? openAddressInMaps(venue.address ?? event.venueName) : undefined} />
+        <DetailLinkRow icon="people-outline" label="Kadro" value={compactValue(event.cast.join(", "))} />
+        <DetailLinkRow icon="document-text-outline" label="Sinopsis" value={compactValue(synopsisText)} />
+        <DetailLinkRow icon="ticket-outline" label="Bilet bağlantısı" value={compactValue(event.ticketUrl)} onPress={() => openExternalUrl(event.ticketUrl)} />
+        <DetailLinkRow icon="navigate-outline" label="Yol tarifi" value="Bağlantı" onPress={() => venue?.location ? openExternalUrl(createGoogleMapsDirectionsUrl(venue.location, venue.title.tr)) : openAddressInMaps(venue?.address ?? event.venueName)} />
+      </View>
+
+      <View style={styles.settingsCard}>
+        <Text style={styles.settingsTitle}>Harita</Text>
+        {mapUrl ? (
+          <ImageBackground source={{ uri: mapUrl }} style={{ height: 190, borderRadius: 18, overflow: "hidden" }} imageStyle={{ borderRadius: 18 }} />
+        ) : (
+          <ActionPill label="Haritayı aç" onPress={() => openAddressInMaps(venue?.address ?? event.venueName)} />
+        )}
+      </View>
+
+      <ActionRow>
+        {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void toggleFavorite("event", event.id)} /> : null}
+        {!isGuest ? <ActionPill label="Takvime ekle" onPress={() => void scheduleReminder({ entityType: "event", entityId: event.id, remindAt: event.startsAt })} /> : null}
+        <ActionPill label="Bilet al" variant="secondary" onPress={() => void createTicketOrder({ eventId: event.id, eventTitle: event.title.tr, ticketUrl: event.ticketUrl })} />
+      </ActionRow>
+      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim işlemleri kapalıdır.</Text> : null}
+    </View>
+  );
+}
+
+function formatDate(value: string) {
+  return new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
+}

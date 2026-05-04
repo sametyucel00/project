@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-03T11:42:28.190Z",
+  "collections": [
+    {
+      "name": "categories",
+      "file": "categories.json",
+      "count": 2,
+      "checksum": "9af560d41e9770493d028c76c2528817d11d012cab8f4811bfe5d6f162d87a47"
+    },
+    {
+      "name": "eventTypes",
+      "file": "eventTypes.json",
+      "count": 2,
+      "checksum": "6c14ac739a5903cefba71c28aa4a889c7f493d0f58590d8ad8548bf5bc87d285"
+    },
+    {
+      "name": "places",
+      "file": "places.json",
+      "count": 1,
+      "checksum": "0d296a4b8d56e8004b37b840d500867de5685e92431ce8cafe75bb64f80350eb"
+    },
+    {
+      "name": "events",
+      "file": "events.json",
+      "count": 125,
+      "checksum": "f5fcca81f66cf7c0535b07dbe99066168fb6cf5dca55f203abc658185e5b8832"
+    },
+    {
+      "name": "offers",
+      "file": "offers.json",
+      "count": 1,
+      "checksum": "351a2ebd063ee4f2f46e08cca28896d33b969bd4e196f221d5b6f50f801c4e05"
+    },
+    {
+      "name": "userTasks",
+      "file": "userTasks.json",
+      "count": 1,
+      "checksum": "88092edb8033faf7e606bf2a85dc74af8483a3780a39ea0caf3fef9af29bfe8d"
+    },
+    {
+      "name": "badges",
+      "file": "badges.json",
+      "count": 1,
+      "checksum": "733c9584b2a22afe1bdcd6ebbf9c072a1920b4168295b9ed348185c7af60f6ef"
+    },
+    {
+      "name": "orders",
+      "file": "orders.json",
+      "count": 1,
+      "checksum": "8d2135d076506ac72c7f0944ab9639f8ee98d9b560be99fc1d07596c6035eadf"
+    },
+    {
+      "name": "touristSurvivalKit",
+      "file": "touristSurvivalKit.json",
+      "count": 1,
+      "checksum": "17d6d4627edeedbe492684719ceee5fb13e83ee2724949c9d0374b64dc0cc5fe"
+    },
+    {
+      "name": "ancientGuideStops",
+      "file": "ancientGuideStops.json",
+      "count": 1,
+      "checksum": "f6cdd4610cb988da09cf6b42cc1e5255a4f48c47e1b996ad20b5d37c245c1b02"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "nar-rehberi-next-gen",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Nar Rehberi için Next.js, React Native ve Firebase tabanlı yeni nesil şehir keşif platformu.",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "firebase/functions"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace apps/web run dev",
+    "export:web": "npm --workspace apps/web run build",
+    "dev:mobile": "npm --workspace apps/mobile run start",
+    "dev:functions": "npm --workspace firebase/functions run serve",
+    "lint": "npm --workspaces --if-present run lint",
+    "typecheck": "npm --workspaces --if-present run typecheck",
+    "check:turkish": "node scripts/check-turkish-encoding.mjs",
+    "check:env": "node scripts/check-env.mjs",
+    "seed:export": "node scripts/export-seed.mjs",
+    "seed:firestore": "node scripts/import-seed-firestore.mjs",
+    "check:seed": "node scripts/check-seed.mjs",
+    "check:security": "node scripts/check-security.mjs",
+    "check:contracts": "node scripts/check-data-contracts.mjs",
+    "check:import-export": "node scripts/check-import-export.mjs",
+    "check:auth-qr": "node scripts/check-auth-qr-flows.mjs",
+    "check:notifications": "node scripts/check-notification-flows.mjs",
+    "check:events": "node scripts/check-event-theater-flows.mjs",
+    "check:places": "node scripts/check-place-flows.mjs",
+    "check:offers": "node scripts/check-offer-loyalty-flows.mjs",
+    "check:localization": "node scripts/check-localization-theme.mjs",
+    "check:governance": "node scripts/check-governance-seo.mjs",
+    "check:analytics": "node scripts/check-analytics-stats.mjs",
+    "check:ui": "node scripts/check-ui-contract.mjs",
+    "check:web-inventory": "node scripts/check-web-route-inventory.mjs",
+    "check:flows": "node scripts/check-product-flows.mjs",
+    "check:a11y": "node scripts/check-accessibility.mjs",
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:legacy-live": "node scripts/check-legacy-live.mjs",
+    "check:google-apis": "node scripts/check-google-apis.mjs",
+    "legacy:import-events": "node scripts/import-legacy-events.mjs",
+    "legacy:import-biletinial-festival": "node scripts/import-biletinial-festival.mjs",
+    "legacy:import-antalya-may-events": "node scripts/import-antalya-may-events.mjs",
+    "legacy:normalized-preview": "node scripts/export-legacy-normalized.mjs",
+    "check:routes": "node scripts/check-routes.mjs",
+    "check:responsive": "node scripts/check-responsive.mjs",
+    "check:web-live": "npm run check:routes && npm run check:responsive",
+    "check:quality": "npm run check:turkish && npm run check:env && npm run check:seed && npm run check:security && npm run check:contracts && npm run check:import-export && npm run check:auth-qr && npm run check:notifications && npm run check:events && npm run check:places && npm run check:offers && npm run check:localization && npm run check:governance && npm run check:analytics && npm run check:ui && npm run check:web-inventory && npm run check:flows && npm run check:a11y && npm run check:docs && npm run typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}

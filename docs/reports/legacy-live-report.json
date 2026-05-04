@@ -1,0 +1,370 @@
+{
+  "checkedAt": "2026-05-02T07:12:33.557Z",
+  "projectId": "nar-rehberi-pro",
+  "collections": {
+    "venues": {
+      "count": 100,
+      "publishedCount": 100,
+      "issueCount": 200,
+      "samplesWithIssues": [
+        {
+          "id": "00ip26m1GNCIsy2hCuFx",
+          "title": "MSC Gemi Acenteliği A.Ş.",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "02ga2p5tRPg2DCv3608m",
+          "title": "Dr. F. Volkan Yüksel Psikiyatrist-Psikoterapist-Cinsel Terapist (Antalya Psikoloji Merkezi)",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "05DhulbVjMeIKNK3XjLN",
+          "title": "KARAMAN OTO SERVİS TAMİR &amp; BAKIM &amp; AKÜ &amp; YOL YARDIM",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "05urfC3axLVu6nNtc6oh",
+          "title": "Agora Sinemaları",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "08zMEAvKsrqeYlNqYDAE",
+          "title": "BKM YÖNETİM VE TEMİZLİK HİZMETLERİ LTD.ŞTİ",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0BoqINh476RCMl7aSzJE",
+          "title": "Aplus fitness center",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0Eslomhos5r38RLerVX5",
+          "title": "Zencefil Mutfak - Ev Yemekleri",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0GV2FHGb2GMvsh0RNevG",
+          "title": "Antalya Psikolog - Sertaç Kırvar",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0MYP63jWpMUy6Cn1KuSx",
+          "title": "Antalya Lawyer Ali Önal &amp; Batuhan Önal Avukatlık Bürosu | Antalya Avukat | Русскоговорящий Адвокат в Анталии",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0NBgyz1iGlgTWq2fJMsK",
+          "title": "SUNEXPRESS Antalya",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0Q0dKW8hSo26o1wq5f3P",
+          "title": "Eko Oto Servis EKREM BARAN",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0Quk6dZCx9qfmyx9tXdR",
+          "title": "Berat Oto Servis Oto Lastik Tamir ve Bakım Servisi",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0a4dzIcX975c2vdQ9ETq",
+          "title": "DÜŞES KUAFÖR &amp; GÜZELLİK SALONU",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0dDCql9JvVMXJieGBq7X",
+          "title": "Antalya başar halı yıkama",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0fP8AG8fdHddmhc0H9yk",
+          "title": "Lider Elektrik Elektronik",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0fkuJ8U2W58GIlHYrP1D",
+          "title": "ÖZEL LARA KURAL SÜRÜCÜ KURSU",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0lluk6Dms65moUM5dUPY",
+          "title": "Diyetisyen Merve KURT ATMACA",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0lwKWI4Na38eF1UQ95cW",
+          "title": "Hair-Med Saç Ekimi Merkezi",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0m1sqWwfnL0VnoXbXYpU",
+          "title": "Urfa Sofrası",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        },
+        {
+          "id": "0nvSeXyOikQbwa0AJJFC",
+          "title": "Enterprise Rent-A-Car - Antalya Lara Araç Kiralama",
+          "status": "YAYINDA",
+          "issues": [
+            "açıklama eksik",
+            "kapak görseli eksik"
+          ]
+        }
+      ]
+    },
+    "theatre_plays": {
+      "count": 0,
+      "publishedCount": 0,
+      "issueCount": 0,
+      "samplesWithIssues": []
+    },
+    "users": {
+      "count": 33,
+      "issueCount": 31,
+      "samplesWithIssues": [
+        {
+          "id": "1H7x4GdmBBOXvQL0T7VrthFRDm73",
+          "title": "Kurucu",
+          "role": "MASTER",
+          "issues": [
+            "rol eşleşmesi belirsiz: MASTER",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "9e3a88f6-565a-4687-b8f7-ca4c69054249",
+          "title": "İsimsiz kullanıcı",
+          "role": "Belirtilmemiş",
+          "issues": [
+            "rol eksik",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "DuhIpoo0aNqMVdiHCFMB",
+          "title": "İsimsiz kullanıcı",
+          "role": "courier",
+          "issues": [
+            "rol eşleşmesi belirsiz: courier",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "MCnr7qov6FuzyvkVoiNj",
+          "title": "İsimsiz kullanıcı",
+          "role": "courier",
+          "issues": [
+            "rol eşleşmesi belirsiz: courier",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "WKhm5PFrlPnHTs8kS0hW",
+          "title": "İsimsiz kullanıcı",
+          "role": "courier",
+          "issues": [
+            "rol eşleşmesi belirsiz: courier",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "bySENPAo8jQlyT35n3AMsGLk4dD2",
+          "title": "Devlet Tiyatrosu Yetkilisi",
+          "role": "DT_ADMIN",
+          "issues": [
+            "rol eşleşmesi belirsiz: DT_ADMIN",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "demo-admin-id",
+          "title": "İsimsiz kullanıcı",
+          "role": "Belirtilmemiş",
+          "issues": [
+            "rol eksik",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "demo-courier-id",
+          "title": "İsimsiz kullanıcı",
+          "role": "Belirtilmemiş",
+          "issues": [
+            "rol eksik",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "demo-customer-id",
+          "title": "İsimsiz kullanıcı",
+          "role": "Belirtilmemiş",
+          "issues": [
+            "rol eksik",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "developer_root",
+          "title": "İsimsiz kullanıcı",
+          "role": "Belirtilmemiş",
+          "issues": [
+            "rol eksik",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "gqbvWEyWoIvFqNgcOmkd",
+          "title": "İsimsiz kullanıcı",
+          "role": "admin",
+          "issues": [
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "icbnLQAPC6cOwEYDVYLL",
+          "title": "İsimsiz kullanıcı",
+          "role": "admin",
+          "issues": [
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "mN7yYelt0WZAmOBbxyUmeJx3OBL2",
+          "title": "yapmam",
+          "role": "ISLETME",
+          "issues": [
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "qhJXa9f1UjSbXhuFVu5F",
+          "title": "İsimsiz kullanıcı",
+          "role": "courier",
+          "issues": [
+            "rol eşleşmesi belirsiz: courier",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "sJGoDBOtBFtqmpK68nFg",
+          "title": "İsimsiz kullanıcı",
+          "role": "courier",
+          "issues": [
+            "rol eşleşmesi belirsiz: courier",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "wfREMa5AW8S9VvNMbtDAQNtQPkt1",
+          "title": "Samet",
+          "role": "KURUMSAL",
+          "issues": [
+            "rol eşleşmesi belirsiz: KURUMSAL",
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "x8SC2UZ20aT0ywUq5TRH",
+          "title": "İsimsiz kullanıcı",
+          "role": "admin",
+          "issues": [
+            "puan alanı eksik"
+          ]
+        },
+        {
+          "id": "yA27TzdtnaZ8t8OAxFsYjeYxuSa2",
+          "title": "Kurucu",
+          "role": "MASTER",
+          "issues": [
+            "rol eşleşmesi belirsiz: MASTER"
+          ]
+        }
+      ]
+    },
+    "qr_logs": {
+      "count": 0,
+      "issueCount": 0
+    },
+    "notifications": {
+      "count": 1,
+      "issueCount": 1
+    }
+  }
+}

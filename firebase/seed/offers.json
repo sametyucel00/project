@@ -1,0 +1,24 @@
+[
+  {
+    "id": "coffee-qr-week",
+    "businessId": "business-harbor",
+    "placeId": "harbor-coffee",
+    "discountLabel": "%50",
+    "startsAt": "2026-05-01T00:00:00+03:00",
+    "endsAt": "2026-05-31T23:59:00+03:00",
+    "requiresQr": true,
+    "title": {
+      "tr": "QR ile ikinci kahve %50",
+      "en": "Second coffee 50% with QR",
+      "ru": "Второй кофе -50% с QR",
+      "de": "Zweiter Kaffee 50% mit QR"
+    },
+    "description": {
+      "tr": "Nar QR kodunu göster, günün ikinci kahvesini yarı fiyatına al.",
+      "en": "Show your Nar QR code and get the second coffee of the day half price.",
+      "ru": "Покажите QR Nar и получите второй кофе дня за полцены.",
+      "de": "Zeige deinen Nar-QR-Code und erhalte den zweiten Kaffee zum halben Preis."
+    },
+    "status": "published"
+  }
+]

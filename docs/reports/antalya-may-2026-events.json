@@ -1,0 +1,173 @@
+{
+  "fetchedAt": "2026-05-02T13:53:45.936Z",
+  "count": 42,
+  "sources": [
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/berkay-evdeyiz-dede",
+      "title": "Berkay - Evdeyiz Dede",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/mustafa-keser-konseri",
+      "title": "Mustafa Keser Sizlerle",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/seyyah-",
+      "title": "Seyyah",
+      "type": "musical",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/anadolu-atesi-fire-of-anatolia",
+      "title": "Anadolu Ateşi - Fire of Anatolia",
+      "type": "ballet",
+      "sessionCount": 4
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/rezonans-solo-viyolonsel-resitali",
+      "title": "\"Rezonans\" Solo Viyolonsel Resitali",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/cagri-sinci",
+      "title": "Çağrı Sinci",
+      "type": "concert",
+      "sessionCount": 2
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/antalya-devlet-senfoni-orkestrasi-8-mayis-konseri",
+      "title": "Antalya Devlet Senfoni Orkestrası 8 Mayıs Konseri",
+      "type": "ballet",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/semicenk-karisik-kaset",
+      "title": "Semicenk – Karışık Kaset",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/miniyo-cocuk-sarkilari-konseri",
+      "title": "Miniyo Çocuk Şarkıları Konseri",
+      "type": "kids",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/oyku-dorter",
+      "title": "Öykü Dörter",
+      "type": "concert",
+      "sessionCount": 2
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/batu-akdeniz",
+      "title": "Batu Akdeniz",
+      "type": "kids",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/magnifique-concert-ludovico-einaudi",
+      "title": "Magnifique Concert: Ludovico Einaudi",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/19-mayis-ataturku-anma-genclik-ve-spor-bayrami-ozel-konseri-adso-",
+      "title": "19 Mayıs Atatürk'ü Anma Gençlik ve Spor Bayramı Özel Konseri - Antalya Devlet Senfoni Orkestrası",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/nihat-sirdar-ile-dj-performans-90lar-kafasi",
+      "title": "90’lar Kafası: Nihat Sırdar",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/arem-arman",
+      "title": "Arem & Arman",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/elif-buse-dogan-konser",
+      "title": "Elif Buse Doğan - Akustik Renkler",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/populer-klasiklerden-secmeler-bahar-konseri-adso",
+      "title": "Popüler Klasiklerden Seçmeler \"Bahar Konseri\"",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/discman-90lar-2000ler-turkce-pop-gecesi",
+      "title": "Discman 90’lar & 2000’ler Türkçe Pop Gecesi",
+      "type": "concert",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/muzik/can-gox",
+      "title": "Can Gox",
+      "type": "concert",
+      "sessionCount": 7
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/opera-bale/anna-karenina-antalya-dob",
+      "title": "Anna Karenina - Antalya DOB",
+      "type": "ballet",
+      "sessionCount": 3
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/opera-bale/gec-romantizm-aksami-antalya-dob",
+      "title": "Geç Romantizm Akşamı - Antalya DOB",
+      "type": "ballet",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://biletinial.com/tr-tr/opera-bale/saraydan-kiz-kacirma-antalya-dob",
+      "title": "Saraydan Kız Kaçırma - Antalya DOB",
+      "type": "ballet",
+      "sessionCount": 1
+    },
+    {
+      "source": "https://dsmbilet.com/etkinlikler/antalya-coffee-festival-2026/01-mayis-cuma-tam-gun",
+      "title": "Antalya Coffee Festival 2026",
+      "type": "festival"
+    },
+    {
+      "source": "https://biletino.com/tr/e-18pe/antalya-coffee-festival-2026/",
+      "title": "Antalya Coffee Festival 2026",
+      "type": "festival"
+    },
+    {
+      "source": "https://biletino.com/tr/e-18pe/antalya-coffee-festival-2026/",
+      "title": "Antalya Coffee Festival 2026",
+      "type": "festival"
+    },
+    {
+      "source": "https://antalya.tc/etkinlikler/festivaller/antalya-foodfest",
+      "title": "Antalya Foodfest",
+      "type": "festival"
+    },
+    {
+      "source": "https://antalya.tc/events/sports-events/tahtali-run-to-sky",
+      "title": "Tahtalı Run to Sky",
+      "type": "show"
+    },
+    {
+      "source": "https://antalya.tc/etkinlikler/festivaller/antalya-yoruk-turkmen-festivali",
+      "title": "Antalya Yörük Türkmen Festivali",
+      "type": "festival"
+    },
+    {
+      "source": "https://antalya.tc/events/sports-events/the-presidential-cycling-tour-of-turkey",
+      "title": "Cumhurbaşkanlığı Türkiye Bisiklet Turu - Antalya Etapları",
+      "type": "show"
+    }
+  ]
+}

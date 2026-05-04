@@ -1,0 +1,19 @@
+[
+  {
+    "id": "emergency-112",
+    "category": "emergency",
+    "phone": "112",
+    "title": {
+      "tr": "Acil Çağrı 112",
+      "en": "Emergency 112",
+      "ru": "Экстренный номер 112",
+      "de": "Notruf 112"
+    },
+    "description": {
+      "tr": "Sağlık, polis, itfaiye ve acil durumlar için tek numara.",
+      "en": "Single number for health, police, fire and emergencies.",
+      "ru": "Единый номер для скорой, полиции, пожарной службы и экстренных случаев.",
+      "de": "Eine Nummer für Gesundheit, Polizei, Feuerwehr und Notfälle."
+    }
+  }
+]

@@ -1,0 +1,8762 @@
+import type { Place } from "./index";
+
+export const legacyPlaces: Place[] = [
+  {
+    "id": "00ip26m1GNCIsy2hCuFx",
+    "title": {
+      "tr": "MSC Gemi Acenteliği A.Ş.",
+      "en": "MSC Gemi Acenteliği A.Ş.",
+      "ru": "MSC Gemi Acenteliği A.Ş.",
+      "de": "MSC Gemi Acenteliği A.Ş."
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Etiler, Evliya Çelebi Cd. Mirador İş Merkezi Kat:1 Daire 101, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 245 44 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "02ga2p5tRPg2DCv3608m",
+    "title": {
+      "tr": "Dr. F. Volkan Yüksel Psikiyatrist-Psikoterapist-Cinsel Terapist (Antalya Psikoloji Merkezi)",
+      "en": "Dr. F. Volkan Yüksel Psikiyatrist-Psikoterapist-Cinsel Terapist (Antalya Psikoloji Merkezi)",
+      "ru": "Dr. F. Volkan Yüksel Psikiyatrist-Psikoterapist-Cinsel Terapist (Antalya Psikoloji Merkezi)",
+      "de": "Dr. F. Volkan Yüksel Psikiyatrist-Psikoterapist-Cinsel Terapist (Antalya Psikoloji Merkezi)"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, İsmet Gökşen Cd. No:37 D:1, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 316 21 22",
+    "website": "http://www.drvolkanyuksel.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "05DhulbVjMeIKNK3XjLN",
+    "title": {
+      "tr": "KARAMAN OTO SERVİS TAMİR &amp; BAKIM &amp; AKÜ &amp; YOL YARDIM",
+      "en": "KARAMAN OTO SERVİS TAMİR &amp; BAKIM &amp; AKÜ &amp; YOL YARDIM",
+      "ru": "KARAMAN OTO SERVİS TAMİR &amp; BAKIM &amp; AKÜ &amp; YOL YARDIM",
+      "de": "KARAMAN OTO SERVİS TAMİR &amp; BAKIM &amp; AKÜ &amp; YOL YARDIM"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, 1977. Sk. No:30 D:1, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 542 727 45 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "05urfC3axLVu6nNtc6oh",
+    "title": {
+      "tr": "Agora Sinemaları",
+      "en": "Agora Sinemaları",
+      "ru": "Agora Sinemaları",
+      "de": "Agora Sinemaları"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altınova Sinan, 07170 Kepez/Antalya, Türkiye",
+    "phone": "+90 242 333 07 00",
+    "website": "https://www.biletiva.com/place/ANTALYA_AGORA_SINEMALARI",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "08zMEAvKsrqeYlNqYDAE",
+    "title": {
+      "tr": "BKM YÖNETİM VE TEMİZLİK HİZMETLERİ LTD.ŞTİ",
+      "en": "BKM YÖNETİM VE TEMİZLİK HİZMETLERİ LTD.ŞTİ",
+      "ru": "BKM YÖNETİM VE TEMİZLİK HİZMETLERİ LTD.ŞTİ",
+      "de": "BKM YÖNETİM VE TEMİZLİK HİZMETLERİ LTD.ŞTİ"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Belispark Sitesi, Güzeloba, 2163. Sk., 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 766 02 21",
+    "website": "https://www.bkmyonetim.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0BoqINh476RCMl7aSzJE",
+    "title": {
+      "tr": "Aplus fitness center",
+      "en": "Aplus fitness center",
+      "ru": "Aplus fitness center",
+      "de": "Aplus fitness center"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Bülent Ecevit Blv. No:2, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 546 762 11 44",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0Eslomhos5r38RLerVX5",
+    "title": {
+      "tr": "Zencefil Mutfak - Ev Yemekleri",
+      "en": "Zencefil Mutfak - Ev Yemekleri",
+      "ru": "Zencefil Mutfak - Ev Yemekleri",
+      "de": "Zencefil Mutfak - Ev Yemekleri"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güvenlik, 281. Sk. No:15, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 537 596 59 72",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0GV2FHGb2GMvsh0RNevG",
+    "title": {
+      "tr": "Antalya Psikolog - Sertaç Kırvar",
+      "en": "Antalya Psikolog - Sertaç Kırvar",
+      "ru": "Antalya Psikolog - Sertaç Kırvar",
+      "de": "Antalya Psikolog - Sertaç Kırvar"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kırcami, Göller Cd. No: 2, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 693 43 82",
+    "website": "https://www.sertackirvar.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0MYP63jWpMUy6Cn1KuSx",
+    "title": {
+      "tr": "Antalya Lawyer Ali Önal &amp; Batuhan Önal Avukatlık Bürosu | Antalya Avukat | Русскоговорящий Адвокат в Анталии",
+      "en": "Antalya Lawyer Ali Önal &amp; Batuhan Önal Avukatlık Bürosu | Antalya Avukat | Русскоговорящий Адвокат в Анталии",
+      "ru": "Antalya Lawyer Ali Önal &amp; Batuhan Önal Avukatlık Bürosu | Antalya Avukat | Русскоговорящий Адвокат в Анталии",
+      "de": "Antalya Lawyer Ali Önal &amp; Batuhan Önal Avukatlık Bürosu | Antalya Avukat | Русскоговорящий Адвокат в Анталии"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çam Plaza Kızıltoprak Aspendos Bulvarı No:19 D:K:1, Kızıltoprak, D:1, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 322 85 55",
+    "website": "https://x.com/avbatuhanonal",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0NBgyz1iGlgTWq2fJMsK",
+    "title": {
+      "tr": "SUNEXPRESS Antalya",
+      "en": "SUNEXPRESS Antalya",
+      "ru": "SUNEXPRESS Antalya",
+      "de": "SUNEXPRESS Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, 1967. Sk. No:6 D:2, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 01 30",
+    "website": "http://www.antalyaticket.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 2.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0Q0dKW8hSo26o1wq5f3P",
+    "title": {
+      "tr": "Eko Oto Servis EKREM BARAN",
+      "en": "Eko Oto Servis EKREM BARAN",
+      "ru": "Eko Oto Servis EKREM BARAN",
+      "de": "Eko Oto Servis EKREM BARAN"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, 666. Sk. No:18, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 536 712 08 61",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0Quk6dZCx9qfmyx9tXdR",
+    "title": {
+      "tr": "Berat Oto Servis Oto Lastik Tamir ve Bakım Servisi",
+      "en": "Berat Oto Servis Oto Lastik Tamir ve Bakım Servisi",
+      "ru": "Berat Oto Servis Oto Lastik Tamir ve Bakım Servisi",
+      "de": "Berat Oto Servis Oto Lastik Tamir ve Bakım Servisi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Fener Cd. No:70/A, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 273 13 23",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0a4dzIcX975c2vdQ9ETq",
+    "title": {
+      "tr": "DÜŞES KUAFÖR &amp; GÜZELLİK SALONU",
+      "en": "DÜŞES KUAFÖR &amp; GÜZELLİK SALONU",
+      "ru": "DÜŞES KUAFÖR &amp; GÜZELLİK SALONU",
+      "de": "DÜŞES KUAFÖR &amp; GÜZELLİK SALONU"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeniköy, 318. Sk. No:63, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 551 566 06 06",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0dDCql9JvVMXJieGBq7X",
+    "title": {
+      "tr": "Antalya başar halı yıkama",
+      "en": "Antalya başar halı yıkama",
+      "ru": "Antalya başar halı yıkama",
+      "de": "Antalya başar halı yıkama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızılarık, 2842. Sk. No:32, 07310 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 542 339 44 14",
+    "website": "http://www.basarhaliyikama.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0fP8AG8fdHddmhc0H9yk",
+    "title": {
+      "tr": "Lider Elektrik Elektronik",
+      "en": "Lider Elektrik Elektronik",
+      "ru": "Lider Elektrik Elektronik",
+      "de": "Lider Elektrik Elektronik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, 1946. Sk. Athioğlu Apt. D:6/B, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 216 80 50",
+    "website": "https://sites.google.com/liderelektrikelektronik.com/lider-elektrik-elektronik/ana-sayfa",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0fkuJ8U2W58GIlHYrP1D",
+    "title": {
+      "tr": "ÖZEL LARA KURAL SÜRÜCÜ KURSU",
+      "en": "ÖZEL LARA KURAL SÜRÜCÜ KURSU",
+      "ru": "ÖZEL LARA KURAL SÜRÜCÜ KURSU",
+      "de": "ÖZEL LARA KURAL SÜRÜCÜ KURSU"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, İsmet Gökşen Cd. NO:94 D:5, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 331 05 09",
+    "website": "https://www.larakural.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0lluk6Dms65moUM5dUPY",
+    "title": {
+      "tr": "Diyetisyen Merve KURT ATMACA",
+      "en": "Diyetisyen Merve KURT ATMACA",
+      "ru": "Diyetisyen Merve KURT ATMACA",
+      "de": "Diyetisyen Merve KURT ATMACA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Demircikara, 1429. Sk. No:12 Daire:2, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 546 731 89 90",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0lwKWI4Na38eF1UQ95cW",
+    "title": {
+      "tr": "Hair-Med Saç Ekimi Merkezi",
+      "en": "Hair-Med Saç Ekimi Merkezi",
+      "ru": "Hair-Med Saç Ekimi Merkezi",
+      "de": "Hair-Med Saç Ekimi Merkezi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kışla, 45. Sk. No:20/4, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 545 892 82 82",
+    "website": "http://www.hair-med.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0m1sqWwfnL0VnoXbXYpU",
+    "title": {
+      "tr": "Urfa Sofrası",
+      "en": "Urfa Sofrası",
+      "ru": "Urfa Sofrası",
+      "de": "Urfa Sofrası"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Uncalı, Çamlık Cd Centek Sitesi 103/A C Blok No: 2, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 242 229 63 63",
+    "website": "http://www.urfasofrasi.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0nvSeXyOikQbwa0AJJFC",
+    "title": {
+      "tr": "Enterprise Rent-A-Car - Antalya Lara Araç Kiralama",
+      "en": "Enterprise Rent-A-Car - Antalya Lara Araç Kiralama",
+      "ru": "Enterprise Rent-A-Car - Antalya Lara Araç Kiralama",
+      "de": "Enterprise Rent-A-Car - Antalya Lara Araç Kiralama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Bülent Ecevit Blv. 11 B, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 970 09 37",
+    "website": "https://www.enterprise.com.tr/en/offices/antalya-rent-a-car/lara-kundu-rent-a-car?mcid=yext:245709&#038;utm_source=yext&#038;utm_medium=local",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0qSI0OAwotGa55Pvniu9",
+    "title": {
+      "tr": "Uygun Sürücü Kursu / Güzeloba",
+      "en": "Uygun Sürücü Kursu / Güzeloba",
+      "ru": "Uygun Sürücü Kursu / Güzeloba",
+      "de": "Uygun Sürücü Kursu / Güzeloba"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, Barınaklar Blv., 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 349 60 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0stuC6PvSofa2RS4KSYa",
+    "title": {
+      "tr": "Bacchus Butik Otel and Rent a Car",
+      "en": "Bacchus Butik Otel and Rent a Car",
+      "ru": "Bacchus Butik Otel and Rent a Car",
+      "de": "Bacchus Butik Otel and Rent a Car"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kılıçaslan Mh, Zeytin Çk. No:6, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 241 69 41",
+    "website": "https://sites.google.com/view/bacchus-hostel/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0uKAwWXT3BIQ5LuI3tRk",
+    "title": {
+      "tr": "Fizyoterapist Dilara Kumbasar",
+      "en": "Fizyoterapist Dilara Kumbasar",
+      "ru": "Fizyoterapist Dilara Kumbasar",
+      "de": "Fizyoterapist Dilara Kumbasar"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçeyaka, Atatürk Cd. No:435 Kat:1, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 546 502 55 53",
+    "website": "https://www.instagram.com/dosemealtifiziktedavi",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0voHVkshyBo4XsaUWLK9",
+    "title": {
+      "tr": "SİEM REKLAM/ ANTALYA TABELA TOTEM IŞIKLI KUTU HARF DİJİTAL BASKI",
+      "en": "SİEM REKLAM/ ANTALYA TABELA TOTEM IŞIKLI KUTU HARF DİJİTAL BASKI",
+      "ru": "SİEM REKLAM/ ANTALYA TABELA TOTEM IŞIKLI KUTU HARF DİJİTAL BASKI",
+      "de": "SİEM REKLAM/ ANTALYA TABELA TOTEM IŞIKLI KUTU HARF DİJİTAL BASKI"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Haşimişcan, Arık Cd. No:38, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 220 36 73",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "0vyxWbZiCunkx5zpiCjE",
+    "title": {
+      "tr": "Elektrozen Enerji Sistemleri Elektrik Proje Mühendislik Ticaret Ve Limited Şirketi",
+      "en": "Elektrozen Enerji Sistemleri Elektrik Proje Mühendislik Ticaret Ve Limited Şirketi",
+      "ru": "Elektrozen Enerji Sistemleri Elektrik Proje Mühendislik Ticaret Ve Limited Şirketi",
+      "de": "Elektrozen Enerji Sistemleri Elektrik Proje Mühendislik Ticaret Ve Limited Şirketi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yenigün, 1064. Sk. No:15, 07310 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 507 923 08 92",
+    "website": "http://elektrozenenerji.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "134vJUuvgtckz4IvEbPB",
+    "title": {
+      "tr": "SERBEST MUHASEBECİ MALİ MÜŞAVİR İBRAHİM MURAT ELBEYİ - BEYOĞLU MALİ MÜŞAVİRLİK ACCOUNTANT &amp; FINANCIAL ADVISOR",
+      "en": "SERBEST MUHASEBECİ MALİ MÜŞAVİR İBRAHİM MURAT ELBEYİ - BEYOĞLU MALİ MÜŞAVİRLİK ACCOUNTANT &amp; FINANCIAL ADVISOR",
+      "ru": "SERBEST MUHASEBECİ MALİ MÜŞAVİR İBRAHİM MURAT ELBEYİ - BEYOĞLU MALİ MÜŞAVİRLİK ACCOUNTANT &amp; FINANCIAL ADVISOR",
+      "de": "SERBEST MUHASEBECİ MALİ MÜŞAVİR İBRAHİM MURAT ELBEYİ - BEYOĞLU MALİ MÜŞAVİRLİK ACCOUNTANT &amp; FINANCIAL ADVISOR"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Ulus, Orhan Veli Cd. Kopuzlar İş Merkezi Kat:4 Daire:5, 07040 Kepez/Antalya, Türkiye",
+    "phone": "+90 242 244 55 56",
+    "website": "https://www.ibrahimmuratelbeyi.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "18HD1oDfGxhDttxQorn2",
+    "title": {
+      "tr": "M&amp;B OTO YIKAMA",
+      "en": "M&amp;B OTO YIKAMA",
+      "ru": "M&amp;B OTO YIKAMA",
+      "de": "M&amp;B OTO YIKAMA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Zümrütova, Yalı Cd. No:1, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 233 93 09",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1BcAtSEasoabJzTM1vO9",
+    "title": {
+      "tr": "Nurmed Medikal Ltd.Şti.",
+      "en": "Nurmed Medikal Ltd.Şti.",
+      "ru": "Nurmed Medikal Ltd.Şti.",
+      "de": "Nurmed Medikal Ltd.Şti."
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Varlık, Teoman Paşa Cd. Cihan Apt D:108/B, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 242 44 93",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1JbbC28OyomCid7UoaM8",
+    "title": {
+      "tr": "Sacha Kuaför Hair-Salon",
+      "en": "Sacha Kuaför Hair-Salon",
+      "ru": "Sacha Kuaför Hair-Salon",
+      "de": "Sacha Kuaför Hair-Salon"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Bülent Ecevit Blv. Rüyam kent sitesi c blok 3/ A, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 544 603 80 30",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1MT7VB1LyW5tK3ORQTRQ",
+    "title": {
+      "tr": "Best Service Travel Agency",
+      "en": "Best Service Travel Agency",
+      "ru": "Best Service Travel Agency",
+      "de": "Best Service Travel Agency"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Meydan Kavağı Mah Perge Bulvarı, Atmaca İş merkezi C Blok, No56 /304, Meydankavağı, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 322 10 70",
+    "website": "https://www.best-servicetravel.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1OTXAqnDMz1WO5ijV8B9",
+    "title": {
+      "tr": "Avcı Akvaryum-Pet Shop",
+      "en": "Avcı Akvaryum-Pet Shop",
+      "ru": "Avcı Akvaryum-Pet Shop",
+      "de": "Avcı Akvaryum-Pet Shop"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçeyaka, Şht. Mustafa Gürcan Cd. No:12, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 544 264 83 91",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1RUjOdA865jpP5YakCEV",
+    "title": {
+      "tr": "Mutfak Ev Yemekleri",
+      "en": "Mutfak Ev Yemekleri",
+      "ru": "Mutfak Ev Yemekleri",
+      "de": "Mutfak Ev Yemekleri"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Tarım, Perge Blv. Gündoğdu Sitesi D:3A, 07200 Muratpaşa/Antalya, Türkiye",
+    "location": {
+      "lat": 0,
+      "lng": 0
+    },
+    "phone": "+90 242 313 18 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1Rgdb8tALQgw8noJ0dU5",
+    "title": {
+      "tr": "Antalya Arena Taksi",
+      "en": "Antalya Arena Taksi",
+      "ru": "Antalya Arena Taksi",
+      "de": "Antalya Arena Taksi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Meltem, Sakıp Sabancı Blv. No:10, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 540 237 18 71",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1SYZtX1lgrajQ8tAYhL3",
+    "title": {
+      "tr": "Holiday Inn Antalya - Lara",
+      "en": "Holiday Inn Antalya - Lara",
+      "ru": "Holiday Inn Antalya - Lara",
+      "de": "Holiday Inn Antalya - Lara"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Lara, Güzeloba, 2290. Sk., 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 345 88 88",
+    "website": "https://www.ihg.com/holidayinn/hotels/gb/en/antalya/aytlg/hoteldetail?cm_mmc=GoogleMaps-_-HI-_-TR-_-AYTLG",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1mEQQTEck66QZi8WRyyP",
+    "title": {
+      "tr": "Sevgim Sürücü Kursu",
+      "en": "Sevgim Sürücü Kursu",
+      "ru": "Sevgim Sürücü Kursu",
+      "de": "Sevgim Sürücü Kursu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener mah. 1988 sok, Aykal Apt, Fener, Falez Cd. NO:10 D:3, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 18 62",
+    "website": "http://www.sevgimsurucukursu.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1nuCSN4mKF5Rwf5LC2Bp",
+    "title": {
+      "tr": "Emay Mimarlık Emre Aydın",
+      "en": "Emay Mimarlık Emre Aydın",
+      "ru": "Emay Mimarlık Emre Aydın",
+      "de": "Emay Mimarlık Emre Aydın"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, 1476. Sk., 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 316 21 20",
+    "website": "http://www.emaymimarlik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1pPx3RQYZQmb9G497WGz",
+    "title": {
+      "tr": "Trend Mimarlik - Antalya",
+      "en": "Trend Mimarlik - Antalya",
+      "ru": "Trend Mimarlik - Antalya",
+      "de": "Trend Mimarlik - Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, 1445. Sk. no:3, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 311 19 90",
+    "website": "http://www.trendmimarlik.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1qfszyLNcQkAbQbvZ83V",
+    "title": {
+      "tr": "Antalya MARKANTALYA Masaj salonu",
+      "en": "Antalya MARKANTALYA Masaj salonu",
+      "ru": "Antalya MARKANTALYA Masaj salonu",
+      "de": "Antalya MARKANTALYA Masaj salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Tahılpazarı, 456. Sk., 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 506 188 32 09",
+    "website": "https://antalya-markantalya-masaj-salonu.runasp.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1rOEGQvgoovnD8rEkkVP",
+    "title": {
+      "tr": "Akdeniz Rent A Car",
+      "en": "Akdeniz Rent A Car",
+      "ru": "Akdeniz Rent A Car",
+      "de": "Akdeniz Rent A Car"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altınkum, Atatürk Blv. NO:147 / A, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 544 450 07 44",
+    "website": "https://www.akdenizrentacar.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1v9N762xH2DEvu3d9P81",
+    "title": {
+      "tr": "Cizgi rent a car Antalya Havalimanı",
+      "en": "Cizgi rent a car Antalya Havalimanı",
+      "ru": "Cizgi rent a car Antalya Havalimanı",
+      "de": "Cizgi rent a car Antalya Havalimanı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Antalya Havalimanı İç Hatlar Terminali NO :G181, Yenigöl, 07025 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 433 1183",
+    "website": "http://www.cizgirentacar.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1vO8kZjhdWvZd2oHn1Co",
+    "title": {
+      "tr": "ANTALYA AVUKAT | AVUKAT CEMİL BERK CAN | AVUKATLIK BÜROSU",
+      "en": "ANTALYA AVUKAT | AVUKAT CEMİL BERK CAN | AVUKATLIK BÜROSU",
+      "ru": "ANTALYA AVUKAT | AVUKAT CEMİL BERK CAN | AVUKATLIK BÜROSU",
+      "de": "ANTALYA AVUKAT | AVUKAT CEMİL BERK CAN | AVUKATLIK BÜROSU"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızılarık, 2754. Sk No:1 D:055, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 555 050 26 57",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "1xCDoTM41fMFGZcpYSFU",
+    "title": {
+      "tr": "Kağan Taylan İç Mimarlık Antalya",
+      "en": "Kağan Taylan İç Mimarlık Antalya",
+      "ru": "Kağan Taylan İç Mimarlık Antalya",
+      "de": "Kağan Taylan İç Mimarlık Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Zümrütova Mah. Sinanoğlu Cad. Osman Eceoğlu Apt. No:33/1, Muratpaşa/Antalya, Yeşilbahçe, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 501 77 99",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "21hBevLkfwCFA2VdWy5F",
+    "title": {
+      "tr": "Atik Nakliyat",
+      "en": "Atik Nakliyat",
+      "ru": "Atik Nakliyat",
+      "de": "Atik Nakliyat"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Varlık, 202. Sk. Emek Apt No:13 A, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 625 07 63",
+    "website": "https://www.atiknakliye.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "23QrHGznver0kXotvjvP",
+    "title": {
+      "tr": "Renovafit Klinik",
+      "en": "Renovafit Klinik",
+      "ru": "Renovafit Klinik",
+      "de": "Renovafit Klinik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Tekelioğlu Cd. Kedikli Sitesi A Blok Kat: 3 Daire: 8, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 551 66 70",
+    "website": "http://www.renovafit.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "25ooDLMF7xVjBhWAA2Xn",
+    "title": {
+      "tr": "Ateşler Koltuk Yıkama",
+      "en": "Ateşler Koltuk Yıkama",
+      "ru": "Ateşler Koltuk Yıkama",
+      "de": "Ateşler Koltuk Yıkama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, 2129. Sk., 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 136 43 22",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "28YhfjmutOXzNkWewrBH",
+    "title": {
+      "tr": "MAKARNATOR",
+      "en": "MAKARNATOR",
+      "ru": "MAKARNATOR",
+      "de": "MAKARNATOR"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeniköy, Kırkgöz Cd. No: 176, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 541 641 13 09",
+    "website": "https://www.instagram.com/makarnator/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2ANybLNAlDTDUKCuABiy",
+    "title": {
+      "tr": "Antalya-Muratpaşa İbrahim Çolak Cimnastik Salonu",
+      "en": "Antalya-Muratpaşa İbrahim Çolak Cimnastik Salonu",
+      "ru": "Antalya-Muratpaşa İbrahim Çolak Cimnastik Salonu",
+      "de": "Antalya-Muratpaşa İbrahim Çolak Cimnastik Salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Doğuyaka, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2H9DZd4eygQl1LSiyLL5",
+    "title": {
+      "tr": "Narin Lojistik Taşımacılık",
+      "en": "Narin Lojistik Taşımacılık",
+      "ru": "Narin Lojistik Taşımacılık",
+      "de": "Narin Lojistik Taşımacılık"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yenigöl Mh, Akasya Sk. No:39/1, 07310 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "https://narintasimacilik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2IueQIQxAbbCnCITxLIt",
+    "title": {
+      "tr": "Gökmen Çiçekçilik",
+      "en": "Gökmen Çiçekçilik",
+      "ru": "Gökmen Çiçekçilik",
+      "de": "Gökmen Çiçekçilik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe mah. Metin Kasapoğlu cad. Yorgancıoğlu sitesi, Yeşilbahçe, D:27/b, 07031 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 302 65 61",
+    "website": "http://www.gokmencicekcilik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2JTbxjnpoT6W7k1lqmRl",
+    "title": {
+      "tr": "Hair Transplant Of Antalya / Antalya Saç Ekimi / Altınsoy Hair Clinic",
+      "en": "Hair Transplant Of Antalya / Antalya Saç Ekimi / Altınsoy Hair Clinic",
+      "ru": "Hair Transplant Of Antalya / Antalya Saç Ekimi / Altınsoy Hair Clinic",
+      "de": "Hair Transplant Of Antalya / Antalya Saç Ekimi / Altınsoy Hair Clinic"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Emek, Kara Yusuf Cd. No:70, 07060 Kepez/Antalya, Türkiye",
+    "phone": "+90 545 178 34 59",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2KAtdV3WudtssjFRWS2Q",
+    "title": {
+      "tr": "Mukaddes Aksoy Yatılı Bakım Merkezi",
+      "en": "Mukaddes Aksoy Yatılı Bakım Merkezi",
+      "ru": "Mukaddes Aksoy Yatılı Bakım Merkezi",
+      "de": "Mukaddes Aksoy Yatılı Bakım Merkezi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbayır, Namık Kemal Cd. No:2, 07010 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 506 377 19 90",
+    "website": "http://www.mukaddesaksoy.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2NeZcZeG0FDW3oYynuod",
+    "title": {
+      "tr": "Karya Oto Yıkama Park",
+      "en": "Karya Oto Yıkama Park",
+      "ru": "Karya Oto Yıkama Park",
+      "de": "Karya Oto Yıkama Park"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Gençlik Mahallesi 1319. Sokak, Gençlik, Işıklar Cd., 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 507 643 35 32",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2P5dsD2RAARoDVYXdXU9",
+    "title": {
+      "tr": "Antalya Emlak Gayrimenkul - Real Estate - Investment",
+      "en": "Antalya Emlak Gayrimenkul - Real Estate - Investment",
+      "ru": "Antalya Emlak Gayrimenkul - Real Estate - Investment",
+      "de": "Antalya Emlak Gayrimenkul - Real Estate - Investment"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, Portakal Çiçeği Cd. No:11/b, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 205 04 77",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2QjlL4PuNh2lEodGouEs",
+    "title": {
+      "tr": "Acar Oto Servis",
+      "en": "Acar Oto Servis",
+      "ru": "Acar Oto Servis",
+      "de": "Acar Oto Servis"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, 663. Sk. No:5, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 716 88 35",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2T7tFyC6R3bBQefCeZEH",
+    "title": {
+      "tr": "Solymos Travel",
+      "en": "Solymos Travel",
+      "ru": "Solymos Travel",
+      "de": "Solymos Travel"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kılınçarslan, Hesapçı Sk. No:41, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 544 425 53 40",
+    "website": "http://www.solymostravel.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2TvmRf47IPK6ifkZkWR0",
+    "title": {
+      "tr": "Şişçi İbo Lara Şubesi",
+      "en": "Şişçi İbo Lara Şubesi",
+      "ru": "Şişçi İbo Lara Şubesi",
+      "de": "Şişçi İbo Lara Şubesi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cityclubspa Beyazdünya, Fener, Fener Cd. No:15, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 337 07 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2XZjueVJkUpkRRH6wVas",
+    "title": {
+      "tr": "Woody Atölye",
+      "en": "Woody Atölye",
+      "ru": "Woody Atölye",
+      "de": "Woody Atölye"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yağcıoğlu İşhanı, Kışla, 45. Sk. No:13, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 530 770 30 55",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2hLuzTFMI5WW63txM4b2",
+    "title": {
+      "tr": "Netlog Lojistik Antalya Altınova Lojistik Merkezi",
+      "en": "Netlog Lojistik Antalya Altınova Lojistik Merkezi",
+      "ru": "Netlog Lojistik Antalya Altınova Lojistik Merkezi",
+      "de": "Netlog Lojistik Antalya Altınova Lojistik Merkezi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altınova Orta, Anso Sk., 07170 Kepez/Antalya, Türkiye",
+    "phone": "+90 212 622 50 00",
+    "website": "https://www.netloglogistics.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2lFeY9ScL0jI4jFWGLVy",
+    "title": {
+      "tr": "Medya",
+      "en": "Medya",
+      "ru": "Medya",
+      "de": "Medya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa, 07000 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2n4HFuK5czHRv1g0x0WU",
+    "title": {
+      "tr": "Antalya sev &amp; al rent a car otokiralama",
+      "en": "Antalya sev &amp; al rent a car otokiralama",
+      "ru": "Antalya sev &amp; al rent a car otokiralama",
+      "de": "Antalya sev &amp; al rent a car otokiralama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Ömer kapar apartmanı, Cumhuriyet, 639. Sk No:20, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 554 561 44 42",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2oKUp0EWu3ZyAZY4VN11",
+    "title": {
+      "tr": "Esta World Güzellik Salonu",
+      "en": "Esta World Güzellik Salonu",
+      "ru": "Esta World Güzellik Salonu",
+      "de": "Esta World Güzellik Salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çaybaşı Mah. 1358 Sok. Premier Plaza 1/A Blok Kat:3 No:16, Çaybaşı, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 608 24 99",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2ocpgwFnll1o2uR9j08F",
+    "title": {
+      "tr": "Antelsa Mühendislik",
+      "en": "Antelsa Mühendislik",
+      "ru": "Antelsa Mühendislik",
+      "de": "Antelsa Mühendislik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa, Evliya Çelebi Cd. No:54/A, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 606 20 17",
+    "website": "http://www.antelsa.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2sqvr5ugAl2mDvNJAs9f",
+    "title": {
+      "tr": "Konyaaltı Çilingir Antalya",
+      "en": "Konyaaltı Çilingir Antalya",
+      "ru": "Konyaaltı Çilingir Antalya",
+      "de": "Konyaaltı Çilingir Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Öğretmenevleri, Öğretmenler Cd. evimiz Sitesi No 25-AF A Blok, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 537 486 54 25",
+    "website": "https://www.konyaalticilingiri.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2wxnPsVvEaTpvNJFYUxS",
+    "title": {
+      "tr": "Akar Elektrik",
+      "en": "Akar Elektrik",
+      "ru": "Akar Elektrik",
+      "de": "Akar Elektrik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızıltoprak, 938. Sk. Aspendos Apt K blok no 16/C, 07025 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 505 62 16",
+    "website": "https://www.akarelektrik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "2zToJ0Zp0Xd7y6eZyZe1",
+    "title": {
+      "tr": "Lara Anahtar",
+      "en": "Lara Anahtar",
+      "ru": "Lara Anahtar",
+      "de": "Lara Anahtar"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Tekelioğlu Cd. No:65, 07235 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 530 416 05 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "30OnO17feZKGmhe7LY1Z",
+    "title": {
+      "tr": "Madame Rose Boutique &amp; Underwear",
+      "en": "Madame Rose Boutique &amp; Underwear",
+      "ru": "Madame Rose Boutique &amp; Underwear",
+      "de": "Madame Rose Boutique &amp; Underwear"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeniköy, Çiftlik Cd. No:164 D:a A Blok, Liva Konakları, Yeniköy, D:7, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 541 850 38 81",
+    "website": "https://www.instagram.com/madame_rossee_/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "37hg9LRvfvXQszfyJoqa",
+    "title": {
+      "tr": "Saloni Mobilya - Antalya Mağaza",
+      "en": "Saloni Mobilya - Antalya Mağaza",
+      "ru": "Saloni Mobilya - Antalya Mağaza",
+      "de": "Saloni Mobilya - Antalya Mağaza"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Mehmetçik Mahallesi Aspendos Bulvarı, Mehmetçik, Nar Plaza No: 89/B, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 311 50 11",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "37oydQXTpMaUhnbRqgCI",
+    "title": {
+      "tr": "Seal Rent a Car",
+      "en": "Seal Rent a Car",
+      "ru": "Seal Rent a Car",
+      "de": "Seal Rent a Car"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, Portakal Çiçeği Cd. No:26/B, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 471 62 68",
+    "website": "http://www.sealrentacar.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "39WvTX8dxSJGqBmXifi9",
+    "title": {
+      "tr": "Botanik Çiçek",
+      "en": "Botanik Çiçek",
+      "ru": "Botanik Çiçek",
+      "de": "Botanik Çiçek"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Haşimişcan Mah Tınaztepe Cad. Koparan Apt. D:3/A, Gençlik, Işıklar Cd., 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 244 94 50",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3H1EW7DwdTc1i7eJow6N",
+    "title": {
+      "tr": "Muratpaşa Psikolog",
+      "en": "Muratpaşa Psikolog",
+      "ru": "Muratpaşa Psikolog",
+      "de": "Muratpaşa Psikolog"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, İsmet Gökşen Cd. Köşk Apt No:25 D:11/B, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 531 625 26 09",
+    "website": "https://muratpasapsikolog.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3HHMKyp1h6dqifgP8hbY",
+    "title": {
+      "tr": "Mevlüt İnce Personal Coach",
+      "en": "Mevlüt İnce Personal Coach",
+      "ru": "Mevlüt İnce Personal Coach",
+      "de": "Mevlüt İnce Personal Coach"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener Mh. Tekelioğlu cd. 1940/1 sok. Tahsin Hoca Apt. No:6/A, Fener, 07160 Murtapaşa/Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 613 39 97",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3LKk0thwwIaPTFvg9bRd",
+    "title": {
+      "tr": "Doğan Giyim",
+      "en": "Doğan Giyim",
+      "ru": "Doğan Giyim",
+      "de": "Doğan Giyim"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeniköy, Atatürk Cd. No:497, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 532 683 15 21",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3N8Gzmsqh9JEw8ycm3A7",
+    "title": {
+      "tr": "İso Temizlik | Antalya Temizlik Şirketleri",
+      "en": "İso Temizlik | Antalya Temizlik Şirketleri",
+      "ru": "İso Temizlik | Antalya Temizlik Şirketleri",
+      "de": "İso Temizlik | Antalya Temizlik Şirketleri"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Etiler Mahallesi görkem apt, Etiler, Evliya Çelebi Cd. 24/E, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 162 93 69",
+    "website": "https://isotemizlik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3NhAU7jGme43YbiTXwNq",
+    "title": {
+      "tr": "Alt Kültür Store",
+      "en": "Alt Kültür Store",
+      "ru": "Alt Kültür Store",
+      "de": "Alt Kültür Store"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "ATILGAN APARTMANI, Sinan, Hüsnü Karakaş Cd. 10/C, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 507 417 08 08",
+    "website": "https://www.altkulturstore.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3RA4QaGZrj2q7sW2uDSe",
+    "title": {
+      "tr": "Op. Dr. H. Seçkin Okşar Estetik,Plastik ve Rekonstrüktif Cerrahi Kliniği",
+      "en": "Op. Dr. H. Seçkin Okşar Estetik,Plastik ve Rekonstrüktif Cerrahi Kliniği",
+      "ru": "Op. Dr. H. Seçkin Okşar Estetik,Plastik ve Rekonstrüktif Cerrahi Kliniği",
+      "de": "Op. Dr. H. Seçkin Okşar Estetik,Plastik ve Rekonstrüktif Cerrahi Kliniği"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, Metin Kasapoğlu Cd. No:19-A D:9, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 514 04 97",
+    "website": "http://www.aestheticsurgeryart.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3RathfxFCfjNHC0FRYIr",
+    "title": {
+      "tr": "MD Kuaför",
+      "en": "MD Kuaför",
+      "ru": "MD Kuaför",
+      "de": "MD Kuaför"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe mh, Şavaş Cd. No: 3/B, 07150 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 316 29 79",
+    "website": "http://mdkuafor.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3VIaiCGZgOigQOOxL40o",
+    "title": {
+      "tr": "Yasemin Kuru Temizleme",
+      "en": "Yasemin Kuru Temizleme",
+      "ru": "Yasemin Kuru Temizleme",
+      "de": "Yasemin Kuru Temizleme"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızıltoprak mahallesi 914 sokak kayıkent sitesi D blok 25/D, Kızıltoprak, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 555 140 37 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3WrD9OAXWw6aSDXyfi3e",
+    "title": {
+      "tr": "Moonlight Garden Wedding",
+      "en": "Moonlight Garden Wedding",
+      "ru": "Moonlight Garden Wedding",
+      "de": "Moonlight Garden Wedding"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahtılı, Atatürk Cd. no: 575, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 537 742 47 88",
+    "website": "https://instagram.com/moonlightgardenwedding?igshid=MzMyNGUyNmU2YQ==",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3bvYA7wW8emzCj0MRPEF",
+    "title": {
+      "tr": "Antalya | AKHAN HUKUK &amp; DANIŞMANLIK - Av. Arb. Habip Akhan - Av. Sümeyye Akhan Aşçı - Av. Oktay Aşçı",
+      "en": "Antalya | AKHAN HUKUK &amp; DANIŞMANLIK - Av. Arb. Habip Akhan - Av. Sümeyye Akhan Aşçı - Av. Oktay Aşçı",
+      "ru": "Antalya | AKHAN HUKUK &amp; DANIŞMANLIK - Av. Arb. Habip Akhan - Av. Sümeyye Akhan Aşçı - Av. Oktay Aşçı",
+      "de": "Antalya | AKHAN HUKUK &amp; DANIŞMANLIK - Av. Arb. Habip Akhan - Av. Sümeyye Akhan Aşçı - Av. Oktay Aşçı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kışla, Güllük Cd. Selekler Apt No:4 Kat:6 Daire:28, 07000 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 248 06 14",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3eytdfbX2v6tKsxkNY5B",
+    "title": {
+      "tr": "ANTALYA HAVALİMANI ONUR RENT A CAR",
+      "en": "ANTALYA HAVALİMANI ONUR RENT A CAR",
+      "ru": "ANTALYA HAVALİMANI ONUR RENT A CAR",
+      "de": "ANTALYA HAVALİMANI ONUR RENT A CAR"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Antalya Havalimanı, Yenigöl, Antalya Havaalanı dış hatlar terminali, 07500 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 507 762 41 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3fCiYEU64xcWzVUCEQRZ",
+    "title": {
+      "tr": "Reis Reklam Tabela Dijital Baskı",
+      "en": "Reis Reklam Tabela Dijital Baskı",
+      "ru": "Reis Reklam Tabela Dijital Baskı",
+      "de": "Reis Reklam Tabela Dijital Baskı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Akdeniz Sanayi Sitesi 5025, Şafak, Sokak No:65, 07000 Kepez/Antalya, Türkiye",
+    "phone": "+90 535 748 93 69",
+    "website": "https://reisreklamtabela.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3gureTZ5IRRQfhjgszx3",
+    "title": {
+      "tr": "Melli Bistro Kokoreççi Köfteci",
+      "en": "Melli Bistro Kokoreççi Köfteci",
+      "ru": "Melli Bistro Kokoreççi Köfteci",
+      "de": "Melli Bistro Kokoreççi Köfteci"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçeyaka, Atatürk Cd. 432-7, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 539 926 20 20",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3loEPIfYrzkpaOS5zkOR",
+    "title": {
+      "tr": "Vegas Kuru Temizleme",
+      "en": "Vegas Kuru Temizleme",
+      "ru": "Vegas Kuru Temizleme",
+      "de": "Vegas Kuru Temizleme"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, 1486. Sk. 9/B, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 843 28 79",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3q41jJ2MYxqCEhZr5Qqm",
+    "title": {
+      "tr": "TD HALI YIKAMA",
+      "en": "TD HALI YIKAMA",
+      "ru": "TD HALI YIKAMA",
+      "de": "TD HALI YIKAMA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa, Kazım Özalp Cd. No 12, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 530 445 05 30",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3uLSzDevF3KVbOQukqUD",
+    "title": {
+      "tr": "Gems Fitness Club",
+      "en": "Gems Fitness Club",
+      "ru": "Gems Fitness Club",
+      "de": "Gems Fitness Club"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa, Recep Peker Cd. No:5, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 244 39 62",
+    "website": "http://www.gemsfitnessclub.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3v4zduCxiIzhBUPcmsGh",
+    "title": {
+      "tr": "Antalya YNR Gayrimenkul",
+      "en": "Antalya YNR Gayrimenkul",
+      "ru": "Antalya YNR Gayrimenkul",
+      "de": "Antalya YNR Gayrimenkul"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Hasan Ekim, Zerdalilik, Değirmenönü Cd. Apt. No:54, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 545 490 09 09",
+    "website": "https://eremlakeregli.sahibinden.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "3wGqCs8vmp1kb8UBZUSA",
+    "title": {
+      "tr": "Antalya Psikolog Özgür Fırat Çelik",
+      "en": "Antalya Psikolog Özgür Fırat Çelik",
+      "ru": "Antalya Psikolog Özgür Fırat Çelik",
+      "de": "Antalya Psikolog Özgür Fırat Çelik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Pera 57, Yenigün, 1043. Sk. No:2 A Blok Daire:7, 07310 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 501 022 37 07",
+    "website": "https://www.ozgurpsikolog.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "40bivr1LHqxH4ylxoAxk",
+    "title": {
+      "tr": "KURUTEMİZLEME ÜTÜ ÖZDİLEK AVM İÇİNDE ANTALYA",
+      "en": "KURUTEMİZLEME ÜTÜ ÖZDİLEK AVM İÇİNDE ANTALYA",
+      "ru": "KURUTEMİZLEME ÜTÜ ÖZDİLEK AVM İÇİNDE ANTALYA",
+      "de": "KURUTEMİZLEME ÜTÜ ÖZDİLEK AVM İÇİNDE ANTALYA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Özdilek PARK Alışveriş Merkezi, Fabrikalar, Kat : -2, 07100 Kepez/Antalya, Türkiye",
+    "phone": "+90 544 958 83 12",
+    "website": "http://www.kurutemizlemecimiz.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "48nXEqZver10YJOG3das",
+    "title": {
+      "tr": "Antalya Avukat | ZENCİR&amp;ŞAHİN AVUKATLIK",
+      "en": "Antalya Avukat | ZENCİR&amp;ŞAHİN AVUKATLIK",
+      "ru": "Antalya Avukat | ZENCİR&amp;ŞAHİN AVUKATLIK",
+      "de": "Antalya Avukat | ZENCİR&amp;ŞAHİN AVUKATLIK"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, İsmet Gökşen Cd. No:39/5, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 506 146 46 69",
+    "website": "https://www.zencirsahin.av.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4B09XxWVGUXAD0DPcbk5",
+    "title": {
+      "tr": "Asil Kuaför &amp; Güzellik Salonu",
+      "en": "Asil Kuaför &amp; Güzellik Salonu",
+      "ru": "Asil Kuaför &amp; Güzellik Salonu",
+      "de": "Asil Kuaför &amp; Güzellik Salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altınkale, Atatürk Blv. No:359 D:4, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 242 421 40 05",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4DOWvRfEyLbFHXo7hQ0G",
+    "title": {
+      "tr": "ORMAN KIR DÜĞÜNÜ",
+      "en": "ORMAN KIR DÜĞÜNÜ",
+      "ru": "ORMAN KIR DÜĞÜNÜ",
+      "de": "ORMAN KIR DÜĞÜNÜ"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fatih, Antalya Blv. Parkfuntastic içi No:410/62, 07070 Kepez/Antalya, Türkiye",
+    "phone": "+90 551 883 27 08",
+    "website": "https://www.instagram.com/ormankirdugunu/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4F5trqab0RiyWdUhR0qn",
+    "title": {
+      "tr": "Zg Mimarlık - ÖZGE FIRTINA ALP",
+      "en": "Zg Mimarlık - ÖZGE FIRTINA ALP",
+      "ru": "Zg Mimarlık - ÖZGE FIRTINA ALP",
+      "de": "Zg Mimarlık - ÖZGE FIRTINA ALP"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kırcami, Sinanoğlu Cd. MUSA DEMEŞOĞLU apt.No:11 D: 4, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 688 96 27",
+    "website": "http://zgmimarlik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4FSqaEeifXHGXS7Xpgi5",
+    "title": {
+      "tr": "Dry House Kuru Temizleme",
+      "en": "Dry House Kuru Temizleme",
+      "ru": "Dry House Kuru Temizleme",
+      "de": "Dry House Kuru Temizleme"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "M Uysal, Tarım, Perge Blv. Yeşil Evler Sitesi B Blok 43/b, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 321 06 44",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4Ih5NV1lSZI6m04vsA73",
+    "title": {
+      "tr": "Kaanlar Antalya Elektrikçi",
+      "en": "Kaanlar Antalya Elektrikçi",
+      "ru": "Kaanlar Antalya Elektrikçi",
+      "de": "Kaanlar Antalya Elektrikçi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çaybaşı, 1359. Sk. No:7, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 813 75 08",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4LY02Squ8fvmuEQc8m8B",
+    "title": {
+      "tr": "Diyetisyen Buse Kemanoğlu",
+      "en": "Diyetisyen Buse Kemanoğlu",
+      "ru": "Diyetisyen Buse Kemanoğlu",
+      "de": "Diyetisyen Buse Kemanoğlu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, Barınaklar Blv. 155/C D:5, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 474 7128",
+    "website": "https://www.doktorsitesi.com/buse-kemanoglu/diyetisyen/antalya",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4Mp6mec2iavU7Qaggnb8",
+    "title": {
+      "tr": "Ersoy Auto Servis Antalya",
+      "en": "Ersoy Auto Servis Antalya",
+      "ru": "Ersoy Auto Servis Antalya",
+      "de": "Ersoy Auto Servis Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, 671. Sk. Sanayi sit.motor işleri bölümü No:25, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 590 57 45",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4SBxnzsejztiz3hS0U02",
+    "title": {
+      "tr": "Can Can Pide Yemek Salonu",
+      "en": "Can Can Pide Yemek Salonu",
+      "ru": "Can Can Pide Yemek Salonu",
+      "de": "Can Can Pide Yemek Salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Akkaşoğlu Apt, H. İşcan Mah, Arık Cd. 4/A, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 243 25 48",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4UynzOdZTolN2uK8TOvF",
+    "title": {
+      "tr": "Usre Okulları Antalya Muratpaşa Kampüsü",
+      "en": "Usre Okulları Antalya Muratpaşa Kampüsü",
+      "ru": "Usre Okulları Antalya Muratpaşa Kampüsü",
+      "de": "Usre Okulları Antalya Muratpaşa Kampüsü"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızılarık, Köroğlu Blv. No:17, 07070 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 323 33 42",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4We8pEBBWBae1Ca0K0Gf",
+    "title": {
+      "tr": "SHAQQA CAFE",
+      "en": "SHAQQA CAFE",
+      "ru": "SHAQQA CAFE",
+      "de": "SHAQQA CAFE"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "4, Bahçeyaka, 28. Sk., 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 533 351 96 92",
+    "website": "http://www.shaqqa.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.1,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4WluFRPjkyv6WFiDSD19",
+    "title": {
+      "tr": "Kırbaşlar Otomotiv",
+      "en": "Kırbaşlar Otomotiv",
+      "ru": "Kırbaşlar Otomotiv",
+      "de": "Kırbaşlar Otomotiv"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, Fatih Cd. No:27, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 344 23 10",
+    "website": "https://kirbaslarotomotiv.sahibinden.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4Xx5Xdbdr2SlBPU31oQF",
+    "title": {
+      "tr": "Gözde Anahtar Çilingir",
+      "en": "Gözde Anahtar Çilingir",
+      "ru": "Gözde Anahtar Çilingir",
+      "de": "Gözde Anahtar Çilingir"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sinan, Arık Cd. No:5/C, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 283 94 96",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4bHe9Tv3CKAWg8IEL3xF",
+    "title": {
+      "tr": "Tezcan nakliyat Harfiyat antalya",
+      "en": "Tezcan nakliyat Harfiyat antalya",
+      "ru": "Tezcan nakliyat Harfiyat antalya",
+      "de": "Tezcan nakliyat Harfiyat antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yüksekalan, 520. Sk., 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 545 364 74 36",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4cOTr2nAwpcJGF0EC9gl",
+    "title": {
+      "tr": "SOYDANCE",
+      "en": "SOYDANCE",
+      "ru": "SOYDANCE",
+      "de": "SOYDANCE"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Deniz, Güllük Cd. Fatih APt No:3/g, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 241 77 40",
+    "website": "http://www.soydance.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4eD23VaA1BFNDyTlTs1D",
+    "title": {
+      "tr": "Ka Nakliyat",
+      "en": "Ka Nakliyat",
+      "ru": "Ka Nakliyat",
+      "de": "Ka Nakliyat"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altındağ, 166. Sk. 10/B, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "https://www.evdennakliyateve.com/antalya-ka-nakliyat-firmasi/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4ehdy7ZQSfI45DkKvgbf",
+    "title": {
+      "tr": "Tiger Gym",
+      "en": "Tiger Gym",
+      "ru": "Tiger Gym",
+      "de": "Tiger Gym"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Bülent Ecevit Blv. No: 154 / A, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 00 06",
+    "website": "http://www.tigergym.org/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4g4JU0xiQIOu0jAoubht",
+    "title": {
+      "tr": "Ecumasters Antalya Professional Chip Tuning",
+      "en": "Ecumasters Antalya Professional Chip Tuning",
+      "ru": "Ecumasters Antalya Professional Chip Tuning",
+      "de": "Ecumasters Antalya Professional Chip Tuning"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kahraman Egemen Apt, Güvenlik, Turgut Reis Cd. No:134 D:B, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 546 464 87 07",
+    "website": "https://ecumasters.com.tr/blog",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4h8ODXcZm0Anh92XxDit",
+    "title": {
+      "tr": "Güneş &amp; Güneş Hukuk Bürosu | Antalya",
+      "en": "Güneş &amp; Güneş Hukuk Bürosu | Antalya",
+      "ru": "Güneş &amp; Güneş Hukuk Bürosu | Antalya",
+      "de": "Güneş &amp; Güneş Hukuk Bürosu | Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçelievler, Konyaaltı Cd. Yalı Apt No:66/8 Kat:4, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 531 883 33 88",
+    "website": "https://www.gunesgunes.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4oPFawfUXfAPOSxPyKud",
+    "title": {
+      "tr": "Otex",
+      "en": "Otex",
+      "ru": "Otex",
+      "de": "Otex"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Laciver Apt. No: 2, Kızıltoprak, 920. Sk., 07020 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 244 55 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4qRPXHUcMMcrNmec7NxS",
+    "title": {
+      "tr": "Justacandy Sweet Factory",
+      "en": "Justacandy Sweet Factory",
+      "ru": "Justacandy Sweet Factory",
+      "de": "Justacandy Sweet Factory"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kılınçarslan, Hesapcı Geçidi Sk. No:35, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 295 58 90",
+    "website": "http://www.justacandy.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4xRe5DNV3XSgSUhV4wfu",
+    "title": {
+      "tr": "SEYRAN KAYA / PSIKOLOG",
+      "en": "SEYRAN KAYA / PSIKOLOG",
+      "ru": "SEYRAN KAYA / PSIKOLOG",
+      "de": "SEYRAN KAYA / PSIKOLOG"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı mah. 1503 sokak, Şirinyalı, Lara Cd. Kat:1, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 501 950 34 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4xiU1wise1DYYbSwK8HE",
+    "title": {
+      "tr": "Mububa Reformer Pilates Studio",
+      "en": "Mububa Reformer Pilates Studio",
+      "ru": "Mububa Reformer Pilates Studio",
+      "de": "Mububa Reformer Pilates Studio"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Gençlik, 1326. Sk. Gülhan Apt D:24/9, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 507 983 60 28",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "4z7yfiEahXkYZEcsZ1OI",
+    "title": {
+      "tr": "Psikolog Yasemin Yaşa",
+      "en": "Psikolog Yasemin Yaşa",
+      "ru": "Psikolog Yasemin Yaşa",
+      "de": "Psikolog Yasemin Yaşa"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı mah. 1507 sok, Şirinyalı, Lara Cd., 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 534 911 69 66",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "50WEUwuOpJNPvSH70tDk",
+    "title": {
+      "tr": "Av. Furkan Atmaca | Antalya Hukuk Bürosu",
+      "en": "Av. Furkan Atmaca | Antalya Hukuk Bürosu",
+      "ru": "Av. Furkan Atmaca | Antalya Hukuk Bürosu",
+      "de": "Av. Furkan Atmaca | Antalya Hukuk Bürosu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı Mah. İsmet GÖKŞEN Cad, Şirinyalı, 1516. Sk. Villa Şaban Temel apt No:4/2, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 553 374 09 25",
+    "website": "http://www.furkanatmaca.av.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "50qukrJLjs83G6TjTQNz",
+    "title": {
+      "tr": "Petrol Ofisi",
+      "en": "Petrol Ofisi",
+      "ru": "Petrol Ofisi",
+      "de": "Petrol Ofisi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Barınaklar Blv. No:53, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 800 211 0229",
+    "website": "https://www.petrolofisi.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.1,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "52JZI5bVxjBNRJAhNrCl",
+    "title": {
+      "tr": "Avukat Barış Otlu",
+      "en": "Avukat Barış Otlu",
+      "ru": "Avukat Barış Otlu",
+      "de": "Avukat Barış Otlu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "N:54 Hukuk Plaza, Soğuksu, Toroslar Cd. D:2, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 237 57 65",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "53YOY34KGeJen5yCwC6t",
+    "title": {
+      "tr": "Aquavaac Temizlik Hizmetleri - Antalya Temizlik Şirketleri",
+      "en": "Aquavaac Temizlik Hizmetleri - Antalya Temizlik Şirketleri",
+      "ru": "Aquavaac Temizlik Hizmetleri - Antalya Temizlik Şirketleri",
+      "de": "Aquavaac Temizlik Hizmetleri - Antalya Temizlik Şirketleri"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızıltoprak, 937. Sk. No:2/9, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 365 86 48",
+    "website": "http://www.aquavaac.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "56s1GctwH0nDF0uypH66",
+    "title": {
+      "tr": "Çiçek Antalya Flowers Shopping",
+      "en": "Çiçek Antalya Flowers Shopping",
+      "ru": "Çiçek Antalya Flowers Shopping",
+      "de": "Çiçek Antalya Flowers Shopping"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, Rauf Denktaş Cd No:7, 07320 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 662 22 41",
+    "website": "https://www.cicekantalya.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "577F6rsIEkvpGwaWZYmq",
+    "title": {
+      "tr": "Lara Oto Klima Gaz Tamir Bakım Onarım",
+      "en": "Lara Oto Klima Gaz Tamir Bakım Onarım",
+      "ru": "Lara Oto Klima Gaz Tamir Bakım Onarım",
+      "de": "Lara Oto Klima Gaz Tamir Bakım Onarım"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, 2222. Sk. no:4, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 364 27 43",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "58G69X5SHSwjL9JN39L3",
+    "title": {
+      "tr": "Opet",
+      "en": "Opet",
+      "ru": "Opet",
+      "de": "Opet"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "No:, Çağlayan, Barınaklar Blv. No:90, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 4446738",
+    "website": "https://www.opet.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5Ilz6j1rcfipFqtLhrwC",
+    "title": {
+      "tr": "Antalya | CDM İNŞAAT - Cafer Doğrukan Mimarlık",
+      "en": "Antalya | CDM İNŞAAT - Cafer Doğrukan Mimarlık",
+      "ru": "Antalya | CDM İNŞAAT - Cafer Doğrukan Mimarlık",
+      "de": "Antalya | CDM İNŞAAT - Cafer Doğrukan Mimarlık"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Murat Apt, Muratpaşa, 575. Sk. No:2, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 243 50 21",
+    "website": "https://www.cdminsaat.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5JTBmgUEejFuFGDQYm0u",
+    "title": {
+      "tr": "Dr. Serkan İlhan | Aesthetic &amp; Plastic Surgery Clinic Antalya",
+      "en": "Dr. Serkan İlhan | Aesthetic &amp; Plastic Surgery Clinic Antalya",
+      "ru": "Dr. Serkan İlhan | Aesthetic &amp; Plastic Surgery Clinic Antalya",
+      "de": "Dr. Serkan İlhan | Aesthetic &amp; Plastic Surgery Clinic Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Siya Sitesi, Şirinyalı, İsmet Gökşen Cd. 7A, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 443 44 20",
+    "website": "https://cosmeticsurgeryinantalya.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5NHUnfwlUCsWN3W0SgXE",
+    "title": {
+      "tr": "Kırmızı Çizgi Koleji",
+      "en": "Kırmızı Çizgi Koleji",
+      "ru": "Kırmızı Çizgi Koleji",
+      "de": "Kırmızı Çizgi Koleji"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener Mahallesi 1964. Sokak Yalıyar Sitesi No: 30/C-D, Fener, 07070 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 242 99 98",
+    "website": "http://www.kirmizicizgikoleji.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5OlXyqvxdSbp5YWZPM3y",
+    "title": {
+      "tr": "Cubana Pub Cocktail",
+      "en": "Cubana Pub Cocktail",
+      "ru": "Cubana Pub Cocktail",
+      "de": "Cubana Pub Cocktail"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kent Meydanı, Altınkum, Akdeniz Blv. No:174/C A, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 532 307 67 06",
+    "website": "https://webmenu.pardonapp.co/cubana-pub-cocktail",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5XLjjX2Lo0pXLFCbgjiT",
+    "title": {
+      "tr": "Muratpaşa Belediyesi Süleyman Evcilmen Spor ve Sergi Salonu",
+      "en": "Muratpaşa Belediyesi Süleyman Evcilmen Spor ve Sergi Salonu",
+      "ru": "Muratpaşa Belediyesi Süleyman Evcilmen Spor ve Sergi Salonu",
+      "de": "Muratpaşa Belediyesi Süleyman Evcilmen Spor ve Sergi Salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızıltoprak, 971. Sk. No:2, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 316 88 44",
+    "website": "https://www.muratpasa-bld.gov.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5cTMoUIaryE1DOgpu64C",
+    "title": {
+      "tr": "BİR OTO YIKAMA",
+      "en": "BİR OTO YIKAMA",
+      "ru": "BİR OTO YIKAMA",
+      "de": "BİR OTO YIKAMA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloluk, 1830. Sk. 76/C, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 546 533 74 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5dqSbVCuiv8K0nnjgNHz",
+    "title": {
+      "tr": "YurtdışıTatilim Antalya",
+      "en": "YurtdışıTatilim Antalya",
+      "ru": "YurtdışıTatilim Antalya",
+      "de": "YurtdışıTatilim Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "YEŞİLOVA MAHALLESİ ASPENDOS BLV. YILMAZ İŞ HANI NUMARA 202, İÇ KAPI, Yeşilova, NO: 101, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 259 2373",
+    "website": "https://yurtdisitatilim.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5er24FvqFWVWaqltkVdJ",
+    "title": {
+      "tr": "Karakaya Oto Servis",
+      "en": "Karakaya Oto Servis",
+      "ru": "Karakaya Oto Servis",
+      "de": "Karakaya Oto Servis"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, 669. Sk. No:9, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 345 84 61",
+    "website": "https://www.karakayaotoservis.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5g5BqCudy0ihCI4CLIDx",
+    "title": {
+      "tr": "Sıra Konyaaltı",
+      "en": "Sıra Konyaaltı",
+      "ru": "Sıra Konyaaltı",
+      "de": "Sıra Konyaaltı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "İnş. A Blok Büfe, Gürsu, Atatürk Blv. D:1 No:231, 07580 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 532 675 25 77",
+    "website": "http://www.siramezearasicak.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5gq4ytd6ANN1eoJT0aNO",
+    "title": {
+      "tr": "Tömer Antalya Türkçe ve Yabancı Dil Kursları",
+      "en": "Tömer Antalya Türkçe ve Yabancı Dil Kursları",
+      "ru": "Tömer Antalya Türkçe ve Yabancı Dil Kursları",
+      "de": "Tömer Antalya Türkçe ve Yabancı Dil Kursları"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sinan, Cebesoy Cd. Postacıoğlu İş Merkezi, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 530 975 81 08",
+    "website": "http://tomerantalya.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5lgg2q5Z0chBcX6Nlz4M",
+    "title": {
+      "tr": "PAK AUTO SERVICE",
+      "en": "PAK AUTO SERVICE",
+      "ru": "PAK AUTO SERVICE",
+      "de": "PAK AUTO SERVICE"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şafak, 5009. Sk. 40-20, 07220 Kepez/Antalya, Türkiye",
+    "phone": "+90 546 296 07 73",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5liHyrP2GD6zgqO3KoCT",
+    "title": {
+      "tr": "Antalya | Avukat Gökhan AKGÜL | Antalya Lawyer |",
+      "en": "Antalya | Avukat Gökhan AKGÜL | Antalya Lawyer |",
+      "ru": "Antalya | Avukat Gökhan AKGÜL | Antalya Lawyer |",
+      "de": "Antalya | Avukat Gökhan AKGÜL | Antalya Lawyer |"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Soğuksu Mah. Kazım Karabekir Cad. Kral Apt, Soğuksu, No: 95/5, 07030 Merkez/Antalya, Türkiye",
+    "phone": "+90 542 240 76 89",
+    "website": "http://gokhanakgul.av.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5qVG9R90ZynAOjntkLbQ",
+    "title": {
+      "tr": "Thai Rose Massage Saloon Antalya",
+      "en": "Thai Rose Massage Saloon Antalya",
+      "ru": "Thai Rose Massage Saloon Antalya",
+      "de": "Thai Rose Massage Saloon Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, 1967/1. Sk. No:19, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 531 635 24 68",
+    "website": "https://www.thairoseasia.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5rXhlMmsFN27p6RcZuX4",
+    "title": {
+      "tr": "ÇELEBİ ECZANESİ (PHARMACY/APOTHEKE/АПТЕКА)",
+      "en": "ÇELEBİ ECZANESİ (PHARMACY/APOTHEKE/АПТЕКА)",
+      "ru": "ÇELEBİ ECZANESİ (PHARMACY/APOTHEKE/АПТЕКА)",
+      "de": "ÇELEBİ ECZANESİ (PHARMACY/APOTHEKE/АПТЕКА)"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı Mahellesi İsmet Gökşen Caddesi Yurdakul Villa No:130A Laura, Şirinyalı, Kavşağı, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 07 32",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "5ssBwqHMBnbFsYvwHAKU",
+    "title": {
+      "tr": "Antalya Uzman Klinik Psikolog Dirsehan Çağrı Aslan",
+      "en": "Antalya Uzman Klinik Psikolog Dirsehan Çağrı Aslan",
+      "ru": "Antalya Uzman Klinik Psikolog Dirsehan Çağrı Aslan",
+      "de": "Antalya Uzman Klinik Psikolog Dirsehan Çağrı Aslan"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Fener Cd. Zara Apt No: 1 Kat: 2 Daire: 4, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "http://www.pskdirsehancagriaslan.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "60VQsMwUMEQ9JlW5Upmj",
+    "title": {
+      "tr": "Can Anahtar ve Çilingir",
+      "en": "Can Anahtar ve Çilingir",
+      "ru": "Can Anahtar ve Çilingir",
+      "de": "Can Anahtar ve Çilingir"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yavuz Cad, Memurevleri, Aksu Apt 9/A, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 475 07 03",
+    "website": "https://www.cilingiranahtarcı.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "61U1QiJx4wpcc4u6HzxT",
+    "title": {
+      "tr": "BACES Kuaför &amp; Güzellik Salonu",
+      "en": "BACES Kuaför &amp; Güzellik Salonu",
+      "ru": "BACES Kuaför &amp; Güzellik Salonu",
+      "de": "BACES Kuaför &amp; Güzellik Salonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı Mh. 1544 sk. Celal Bey Apt, Şirinyalı, no:2/A, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 316 55 34",
+    "website": "http://www.baceskuafor.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "65vbyN0zSXehT2JN9K4n",
+    "title": {
+      "tr": "Popüler Halı Koltuk Yorgan perde yıkama",
+      "en": "Popüler Halı Koltuk Yorgan perde yıkama",
+      "ru": "Popüler Halı Koltuk Yorgan perde yıkama",
+      "de": "Popüler Halı Koltuk Yorgan perde yıkama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Varlık, Teoman Paşa Cd. 102 /A, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 551 139 52 55",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "669QMRUTavVl0f6RLuSp",
+    "title": {
+      "tr": "Grande Gusto",
+      "en": "Grande Gusto",
+      "ru": "Grande Gusto",
+      "de": "Grande Gusto"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, Lara Cd. No:106, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 318 18 81",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "66WF0tmyhBbIzkNGFNHY",
+    "title": {
+      "tr": "Antalya Muhasebe Barkod Yazılım",
+      "en": "Antalya Muhasebe Barkod Yazılım",
+      "ru": "Antalya Muhasebe Barkod Yazılım",
+      "de": "Antalya Muhasebe Barkod Yazılım"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kışla Mah. Milli Egemenlik Cad Baki Bey Apt, Kışla, 07000 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 544 846 58 27",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6AOler5cCJp6e3q7rHR1",
+    "title": {
+      "tr": "Jeva Güzellik | джева салон | Kalıcı Oje | Kalıcı Makyaj | Buz Lazer",
+      "en": "Jeva Güzellik | джева салон | Kalıcı Oje | Kalıcı Makyaj | Buz Lazer",
+      "ru": "Jeva Güzellik | джева салон | Kalıcı Oje | Kalıcı Makyaj | Buz Lazer",
+      "de": "Jeva Güzellik | джева салон | Kalıcı Oje | Kalıcı Makyaj | Buz Lazer"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Zerdalilik, Burhanettin Onat Cd. No:48/b, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 539 734 00 79",
+    "website": "http://www.jevaguzellikmerkezi.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6CtnpaiR48bAR51oCzPJ",
+    "title": {
+      "tr": "Vav Auto Genel Hasar Servisi",
+      "en": "Vav Auto Genel Hasar Servisi",
+      "ru": "Vav Auto Genel Hasar Servisi",
+      "de": "Vav Auto Genel Hasar Servisi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Ahatlı, Kepez, 3189/7. Sk. Yeşil Antalya sanayi Sit No : 14, 07010 Kepez/Antalya, Türkiye",
+    "phone": "+90 530 391 07 71",
+    "website": "https://vavauto.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6DJ906o4OmkBs7LnNvRj",
+    "title": {
+      "tr": "GALA VETERİNER KLİNİĞİ",
+      "en": "GALA VETERİNER KLİNİĞİ",
+      "ru": "GALA VETERİNER KLİNİĞİ",
+      "de": "GALA VETERİNER KLİNİĞİ"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, Portakal Çiçeği Cd. No:35/C, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 536 316 77 07",
+    "website": "http://www.galaveteriner.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6FUDB13RYGR4btoJnTuK",
+    "title": {
+      "tr": "Uzman Psikolojik Danışman Şenol Baygül",
+      "en": "Uzman Psikolojik Danışman Şenol Baygül",
+      "ru": "Uzman Psikolojik Danışman Şenol Baygül",
+      "de": "Uzman Psikolojik Danışman Şenol Baygül"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Fener Mahallesi, Rüyam Kent 1 Sitesi, Bülent Ecevit Caddesi, C Blok Kat:2, D:aire :3, Fener, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 312 60 13",
+    "website": "http://www.antalyapsikolojikdanisma.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6FnLJeMGQdZYv7LSrv7d",
+    "title": {
+      "tr": "Kaya Oto Servisi",
+      "en": "Kaya Oto Servisi",
+      "ru": "Kaya Oto Servisi",
+      "de": "Kaya Oto Servisi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, 667. Sk., 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 542 233 72 23",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6Gde8wF5VvXOZDDb5XTR",
+    "title": {
+      "tr": "AD RENT A CAR | KONYAALTI - HAVAALANI ARAÇ KİRALAMA",
+      "en": "AD RENT A CAR | KONYAALTI - HAVAALANI ARAÇ KİRALAMA",
+      "ru": "AD RENT A CAR | KONYAALTI - HAVAALANI ARAÇ KİRALAMA",
+      "de": "AD RENT A CAR | KONYAALTI - HAVAALANI ARAÇ KİRALAMA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Arapsuyu Mahallesi Arapsuyu Caddesi &amp; 620. Sk. H.Sevinç Apartmanı, Arapsuyu, D:28, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 850 840 6789",
+    "website": "https://www.adrentacarantalya.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6HNemuGIDWQVcVBUmbJi",
+    "title": {
+      "tr": "Kasaba Mantı",
+      "en": "Kasaba Mantı",
+      "ru": "Kasaba Mantı",
+      "de": "Kasaba Mantı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kösem Sultan Kervansarayı, Altınkale, Atatürk Cd. 264/AD, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 532 699 69 97",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6JTPEP5ot4BDq4pRkcyo",
+    "title": {
+      "tr": "Saray Taksi",
+      "en": "Saray Taksi",
+      "ru": "Saray Taksi",
+      "de": "Saray Taksi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızılsaray, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 248 44 99",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6JfFNGZitCiJdzaPyFas",
+    "title": {
+      "tr": "Çakırtek Mühendislik Mimarlık Ltd. Şti.",
+      "en": "Çakırtek Mühendislik Mimarlık Ltd. Şti.",
+      "ru": "Çakırtek Mühendislik Mimarlık Ltd. Şti.",
+      "de": "Çakırtek Mühendislik Mimarlık Ltd. Şti."
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çamlılar Plaza, Yenigün, 1054. Sk. No:7/10, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 228 06 08",
+    "website": "http://cakirtek.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6S2goMR8gE1JDe15WRES",
+    "title": {
+      "tr": "Lily Çiçekçilik",
+      "en": "Lily Çiçekçilik",
+      "ru": "Lily Çiçekçilik",
+      "de": "Lily Çiçekçilik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, Metin Kasapoğlu Cd. Arkadaş Apartmanı No: 71/A, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 542 201 53 12",
+    "website": "https://www.instagram.com/lily_cicekcilik",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6XLYsj8IoBykEs5tWDm1",
+    "title": {
+      "tr": "Diyetisyen Meltem Arslan Akyüz",
+      "en": "Diyetisyen Meltem Arslan Akyüz",
+      "ru": "Diyetisyen Meltem Arslan Akyüz",
+      "de": "Diyetisyen Meltem Arslan Akyüz"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bayındır, Pınar Cd. Çakmak Apt No:5 Kat:2, Daire:4, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 534 512 08 46",
+    "website": "https://www.meltemarslanakyuz.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6YGoF0mbBSxIMJU7GQ2c",
+    "title": {
+      "tr": "İngiliz Kültür Yabancı Dil Kursu Muratpaşa",
+      "en": "İngiliz Kültür Yabancı Dil Kursu Muratpaşa",
+      "ru": "İngiliz Kültür Yabancı Dil Kursu Muratpaşa",
+      "de": "İngiliz Kültür Yabancı Dil Kursu Muratpaşa"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa, Şarampol Cd Karadeniz İş Hanı No:108 Kat:5 D.506, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 885 88 44",
+    "website": "https://ingilizkulturmuratpasa.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6aOaiQlOWKUMEbxgj0Do",
+    "title": {
+      "tr": "Mehmet Erkan Sürücü Kursu",
+      "en": "Mehmet Erkan Sürücü Kursu",
+      "ru": "Mehmet Erkan Sürücü Kursu",
+      "de": "Mehmet Erkan Sürücü Kursu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, Tekelioğlu Cd. No:26, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 46 46",
+    "website": "http://www.mehmeterkansurucukursu.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6aRSayMziCSNuluPgwKw",
+    "title": {
+      "tr": "doğum fotoğrafçısı özge deniz üçok",
+      "en": "doğum fotoğrafçısı özge deniz üçok",
+      "ru": "doğum fotoğrafçısı özge deniz üçok",
+      "de": "doğum fotoğrafçısı özge deniz üçok"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Gençlik, 1330. Sk. no:3a, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 553 204 74 74",
+    "website": "https://www.ozgedenizucok.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6kdk8qMrHgt0TGSmQuAp",
+    "title": {
+      "tr": "MİSS Antalya Koltuk Yıkama",
+      "en": "MİSS Antalya Koltuk Yıkama",
+      "ru": "MİSS Antalya Koltuk Yıkama",
+      "de": "MİSS Antalya Koltuk Yıkama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Karşıyaka mah 3934.sk no.37 kapı no 4, Karşıyaka, 07000 Kepez/Antalya, Türkiye",
+    "phone": "+90 552 258 07 51",
+    "website": "http://wa.me/905522580751",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6ot7kwPbKkc5msADVjYB",
+    "title": {
+      "tr": "Cinehouse Antalya",
+      "en": "Cinehouse Antalya",
+      "ru": "Cinehouse Antalya",
+      "de": "Cinehouse Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sinan, Hüsnü Karakaş Cd. No:9, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 568 97 86",
+    "website": "https://cinehouse.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6pUMl0dHlly7blXK4Ek6",
+    "title": {
+      "tr": "Cevher kuyumculuk",
+      "en": "Cevher kuyumculuk",
+      "ru": "Cevher kuyumculuk",
+      "de": "Cevher kuyumculuk"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçeyaka mah, Atatürk Cd. 495/A, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 538 726 07 04",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6tX6DKLaNZnF8EQEk82X",
+    "title": {
+      "tr": "Antalya çilingir anahtarcı",
+      "en": "Antalya çilingir anahtarcı",
+      "ru": "Antalya çilingir anahtarcı",
+      "de": "Antalya çilingir anahtarcı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Varlık, 173. Sk. c 12, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 554 195 82 01",
+    "website": "https://www.antalya-merkez-cilingir.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "6uC5DItpjY3aJ9JkiJeT",
+    "title": {
+      "tr": "Serbest Muhasebeci Mali Müşavir Mehmet Zafer Atalay",
+      "en": "Serbest Muhasebeci Mali Müşavir Mehmet Zafer Atalay",
+      "ru": "Serbest Muhasebeci Mali Müşavir Mehmet Zafer Atalay",
+      "de": "Serbest Muhasebeci Mali Müşavir Mehmet Zafer Atalay"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, 1937. Sk. No:6, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 316 44 07",
+    "website": "http://www.mehmetzaferatalay.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "71Ni1CVKk4OG5S0waSXs",
+    "title": {
+      "tr": "Kaskoline",
+      "en": "Kaskoline",
+      "ru": "Kaskoline",
+      "de": "Kaskoline"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kırcami Mahallesi Avni Tolunay Caddesi Alkış Sitesi 113/B B Blok, Kırcami, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 215 3222",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "71OC075oNBPcRa3bwkXN",
+    "title": {
+      "tr": "Perge Fotoğraf Stüdyosu",
+      "en": "Perge Fotoğraf Stüdyosu",
+      "ru": "Perge Fotoğraf Stüdyosu",
+      "de": "Perge Fotoğraf Stüdyosu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Meydankavağı, Şehitler Cd. Yıldırım Apt No:20 D:8, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 555 699 20 12",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "74ieMwkjhTMhwXcJhOrL",
+    "title": {
+      "tr": "Sinem Özsoy Wedding Dress",
+      "en": "Sinem Özsoy Wedding Dress",
+      "ru": "Sinem Özsoy Wedding Dress",
+      "de": "Sinem Özsoy Wedding Dress"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçeyaka, Atatürk Blv. no:428/A, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 530 952 72 88",
+    "website": "http://www.si̇nemozsoy.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "79QJUfdEnrhSR8KWZcJ2",
+    "title": {
+      "tr": "Demir Oto Yıkama ve Oto Kuaförü",
+      "en": "Demir Oto Yıkama ve Oto Kuaförü",
+      "ru": "Demir Oto Yıkama ve Oto Kuaförü",
+      "de": "Demir Oto Yıkama ve Oto Kuaförü"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Meltem, Sakıp Sabancı Bulvarı Caddesi D:2, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 551 590 07 22",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7F7Q0nJ7F8zi731KZBc3",
+    "title": {
+      "tr": "Levent Elektrik",
+      "en": "Levent Elektrik",
+      "ru": "Levent Elektrik",
+      "de": "Levent Elektrik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yavuz Apt D:7, Muratpaşa, 604. Sk., 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 344 20 41",
+    "website": "http://www.leventelektrik.biz/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7FnGh5QFqFkoMcfsf0GH",
+    "title": {
+      "tr": "Antalya Düğün fotoğrafçısı - Düğün Hikayesi - Drone",
+      "en": "Antalya Düğün fotoğrafçısı - Düğün Hikayesi - Drone",
+      "ru": "Antalya Düğün fotoğrafçısı - Düğün Hikayesi - Drone",
+      "de": "Antalya Düğün fotoğrafçısı - Düğün Hikayesi - Drone"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Balbey, Adnan Menderes Blv., 07070 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 543 379 38 35",
+    "website": "https://instagram.com/sahintuncofficial?igshid=6m4krgwqd77d",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7GcNLjBYFmxBhKyckVoX",
+    "title": {
+      "tr": "Legend Sports Club",
+      "en": "Legend Sports Club",
+      "ru": "Legend Sports Club",
+      "de": "Legend Sports Club"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Ünlüler Apartmanı, Konuksever, Kızılırmak Cd. No:101 D:1, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 552 668 98 73",
+    "website": "https://instagram.com/legendsportsclub07?igshid=NjIwNzIyMDk2Mg==",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7JIEm1WGYWAR2dDkzOE9",
+    "title": {
+      "tr": "Çömlekçi Restaurant",
+      "en": "Çömlekçi Restaurant",
+      "ru": "Çömlekçi Restaurant",
+      "de": "Çömlekçi Restaurant"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızılsaray, Güllük Cd. No:48 D:B, 07000 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 377 69 01",
+    "website": "https://comlekcirestaurant.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7OAYkXkaP5W39OdKVGPY",
+    "title": {
+      "tr": "Irish Pub The James Joyce",
+      "en": "Irish Pub The James Joyce",
+      "ru": "Irish Pub The James Joyce",
+      "de": "Irish Pub The James Joyce"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altınkum, 414. Sk. No:25, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 242 228 38 02",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7Qn7WMZFb5mINGTazTyi",
+    "title": {
+      "tr": "Meteks Elektrik Proje Mühendislik",
+      "en": "Meteks Elektrik Proje Mühendislik",
+      "ru": "Meteks Elektrik Proje Mühendislik",
+      "de": "Meteks Elektrik Proje Mühendislik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Üçgen, Şarampol Cad. Demirci Apt No:168/C, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 345 51 08",
+    "website": "https://meteksgroup.blogspot.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7RlyuITFcoiZW8eXe0F5",
+    "title": {
+      "tr": "Cinetime",
+      "en": "Cinetime",
+      "ru": "Cinetime",
+      "de": "Cinetime"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fabrikalar, Fikri Erten Cd. No:2, 07090 Kepez/Antalya, Türkiye",
+    "phone": "+90 242 334 33 99",
+    "website": "https://www.cinetime.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.1,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7VGrdSm6Xf7XniyCzpdT",
+    "title": {
+      "tr": "Dry Ekol&#039;s",
+      "en": "Dry Ekol&#039;s",
+      "ru": "Dry Ekol&#039;s",
+      "de": "Dry Ekol&#039;s"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı mahallesi İsmet Gökşen caddesi Bölükbaşı apartmani, Şirinyalı, No:49/B, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 134 63 71",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7VbgQP361x9j1m02qCn8",
+    "title": {
+      "tr": "Caffe Meet Plus+ Eski Lara",
+      "en": "Caffe Meet Plus+ Eski Lara",
+      "ru": "Caffe Meet Plus+ Eski Lara",
+      "de": "Caffe Meet Plus+ Eski Lara"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, 1504. Sk., 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 04 04",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7Xo3IqrBulpWV7UuOiVc",
+    "title": {
+      "tr": "Sporium Fit Club Antalya",
+      "en": "Sporium Fit Club Antalya",
+      "ru": "Sporium Fit Club Antalya",
+      "de": "Sporium Fit Club Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Antalya, Güzeloba, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 551 210 49 98",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7Y0N0IErnMPOPSbAsj4U",
+    "title": {
+      "tr": "Şirinyalı Veteriner Kliniği ( 7/24 Nöbetçi Acil Veteriner Kliniği )",
+      "en": "Şirinyalı Veteriner Kliniği ( 7/24 Nöbetçi Acil Veteriner Kliniği )",
+      "ru": "Şirinyalı Veteriner Kliniği ( 7/24 Nöbetçi Acil Veteriner Kliniği )",
+      "de": "Şirinyalı Veteriner Kliniği ( 7/24 Nöbetçi Acil Veteriner Kliniği )"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı, İsmet Gökşen Cd. Dostlar Apt No28/B, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 536 617 35 07",
+    "website": "https://sirinyaliveterinerklinigi.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7ZalLkWpCXkoUgXtafKh",
+    "title": {
+      "tr": "Sofraya Buyurun",
+      "en": "Sofraya Buyurun",
+      "ru": "Sofraya Buyurun",
+      "de": "Sofraya Buyurun"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altınkum Mahallesi, Atatürk Bulvarı Nadir Apt. D:151/A1, Altınkum, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 242 229 29 00",
+    "website": "http://www.tiritcizade.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.1,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7a0Ut0RfHH4PWbLeNV8K",
+    "title": {
+      "tr": "Happy Sigorta | Trafik Sigortası, Kasko Sigortası, DASK, Konut ve Sağlık Sigortası",
+      "en": "Happy Sigorta | Trafik Sigortası, Kasko Sigortası, DASK, Konut ve Sağlık Sigortası",
+      "ru": "Happy Sigorta | Trafik Sigortası, Kasko Sigortası, DASK, Konut ve Sağlık Sigortası",
+      "de": "Happy Sigorta | Trafik Sigortası, Kasko Sigortası, DASK, Konut ve Sağlık Sigortası"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sinan, 1255. Sk. tankerler işhanı no: 6, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 554 657 44 52",
+    "website": "http://www.happysigorta.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7bA25N48JArkelKqojRI",
+    "title": {
+      "tr": "Arfa Medya Ajansı Antalya | Web Tasarım | Sosyal Medya",
+      "en": "Arfa Medya Ajansı Antalya | Web Tasarım | Sosyal Medya",
+      "ru": "Arfa Medya Ajansı Antalya | Web Tasarım | Sosyal Medya",
+      "de": "Arfa Medya Ajansı Antalya | Web Tasarım | Sosyal Medya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altındağ, Turgut Reis Cd. Huzur Apt.Alti No: 40/A, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "https://arfamedya.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7hSLiM2lXAJ2quUzms23",
+    "title": {
+      "tr": "Old Town Point Hotel &amp; Spa Antalya",
+      "en": "Old Town Point Hotel &amp; Spa Antalya",
+      "ru": "Old Town Point Hotel &amp; Spa Antalya",
+      "de": "Old Town Point Hotel &amp; Spa Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Altındağ, Güllük Cd. No: 63, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 241 67 67",
+    "website": "http://oldtownpointhotel.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7nuF7kd00eK0ajDbt27S",
+    "title": {
+      "tr": "Diyetisyen Ela Karadağ",
+      "en": "Diyetisyen Ela Karadağ",
+      "ru": "Diyetisyen Ela Karadağ",
+      "de": "Diyetisyen Ela Karadağ"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Arapsuyu, 629. Sk. Cem Apt No :2 , Kat :1 Daire :2, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 544 901 78 91",
+    "website": "http://diyetisyenelakaradag.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7qdyMKnlyuupKr9mKr9O",
+    "title": {
+      "tr": "Özel Lara Ünal Özdal Yabancı Dil Kursu",
+      "en": "Özel Lara Ünal Özdal Yabancı Dil Kursu",
+      "ru": "Özel Lara Ünal Özdal Yabancı Dil Kursu",
+      "de": "Özel Lara Ünal Özdal Yabancı Dil Kursu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Laura AVM ATM&#039;lerinin Karşısı, Fener, 1907/1. Sk. Saraçoğlu Sitesi No:2/1 A Blok, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 346 36 66",
+    "website": "http://unalozdaldilkursu.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "7zTARg99gREPIuwK9esA",
+    "title": {
+      "tr": "Lotus Temizlik Hizmetleri",
+      "en": "Lotus Temizlik Hizmetleri",
+      "ru": "Lotus Temizlik Hizmetleri",
+      "de": "Lotus Temizlik Hizmetleri"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Beyaz Dünya İş Merkezi, Fener, Fener Cd. No:15, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 562 0242",
+    "website": "https://www.lotustemizlik.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "817AwlFW4pkd7djek1gR",
+    "title": {
+      "tr": "Turkuaz Fotoğrafçılık",
+      "en": "Turkuaz Fotoğrafçılık",
+      "ru": "Turkuaz Fotoğrafçılık",
+      "de": "Turkuaz Fotoğrafçılık"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener mah. Bilgehan apt, Turkuaz fotoğrafçılık, Fener, Falez Cd. No:18, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 324 56 90",
+    "website": "http://www.turkuazfotografcilik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "81zBGsOSAIA1q2KGLcE9",
+    "title": {
+      "tr": "TEKİN REALTY GAYRİMENKUL ANTALYA",
+      "en": "TEKİN REALTY GAYRİMENKUL ANTALYA",
+      "ru": "TEKİN REALTY GAYRİMENKUL ANTALYA",
+      "de": "TEKİN REALTY GAYRİMENKUL ANTALYA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Barınaklar Blv. ALPEREN APT NO : 92 DAİRE NO:3, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 540 955 66 66",
+    "website": "https://www.tekinrealty.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "84eGm9cy9b7lMondU1WX",
+    "title": {
+      "tr": "Serap Güzellik",
+      "en": "Serap Güzellik",
+      "ru": "Serap Güzellik",
+      "de": "Serap Güzellik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Mert Sitesi, Çağlayan, 2066. Sk. D:4A, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 538 822 68 38",
+    "website": "http://www.serapguzellik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "85BpynwgKoQa3JuwFv9L",
+    "title": {
+      "tr": "Tolga Kitap Kırtasiye",
+      "en": "Tolga Kitap Kırtasiye",
+      "ru": "Tolga Kitap Kırtasiye",
+      "de": "Tolga Kitap Kırtasiye"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sinan, 1255. Sk. Necatibey İşhanı No:1/C, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 551 551 83 24",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8D2YeYoRWu0dLmNUjYwN",
+    "title": {
+      "tr": "Dönerci Hakkı Baba",
+      "en": "Dönerci Hakkı Baba",
+      "ru": "Dönerci Hakkı Baba",
+      "de": "Dönerci Hakkı Baba"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Mehmetçik, Termessos Bulvarı, Oyak Sitesi Sitesi Karşısı, 07300 Muratpaşa/Antalya, Türkiye",
+    "location": {
+      "lat": 0,
+      "lng": 0
+    },
+    "phone": "+90 532 204 82 04",
+    "website": "https://www.hakkibaba.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8ELZPhQ3dFfBvUPHGXqu",
+    "title": {
+      "tr": "Yumoş halı yıkama",
+      "en": "Yumoş halı yıkama",
+      "ru": "Yumoş halı yıkama",
+      "de": "Yumoş halı yıkama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yener Ulusoy Bulvarı, Kızılsaray, 62. Sk. No:3, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 241 66 66",
+    "website": "http://www.yumoshalitemizleme.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8StVWjuZRk3h6MhIjbwd",
+    "title": {
+      "tr": "Antalya Medya Ajans - Antalya Reklam Ajansı",
+      "en": "Antalya Medya Ajans - Antalya Reklam Ajansı",
+      "ru": "Antalya Medya Ajans - Antalya Reklam Ajansı",
+      "de": "Antalya Medya Ajans - Antalya Reklam Ajansı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Gazi, 6610. Sk. 5/A, 07090 Kepez/Antalya, Türkiye",
+    "phone": "+90 537 439 84 86",
+    "website": "https://www.antalyamedyaajans.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8U8YtALn6UTEEaYi5BCT",
+    "title": {
+      "tr": "Antalya Asansörlu Nakliyat",
+      "en": "Antalya Asansörlu Nakliyat",
+      "ru": "Antalya Asansörlu Nakliyat",
+      "de": "Antalya Asansörlu Nakliyat"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sedir, Pınarbaşı, 720. Sk. 15/A, 07070 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8USVqMR5BVQ5Rzg7g9GY",
+    "title": {
+      "tr": "Azra Kuru Temizleme, Çamaşırhane ve Ütüevi",
+      "en": "Azra Kuru Temizleme, Çamaşırhane ve Ütüevi",
+      "ru": "Azra Kuru Temizleme, Çamaşırhane ve Ütüevi",
+      "de": "Azra Kuru Temizleme, Çamaşırhane ve Ütüevi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe, Çınarlı Cd. No:33 D:B, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 551 050 84 13",
+    "website": "http://www.firmasec.com/firma/ktmfkb-azra-camasirhane-ve-kuru-temizleme/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8VX6fcJ4lApLyWLQ9JTS",
+    "title": {
+      "tr": "Gurukafa Reklam Ajansı",
+      "en": "Gurukafa Reklam Ajansı",
+      "ru": "Gurukafa Reklam Ajansı",
+      "de": "Gurukafa Reklam Ajansı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Utes İş Merkezi, Çağlayan, 2056. Sk. No: 3 D:101, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 255 0713",
+    "website": "https://www.gurukafa.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8bGxigZwA2j0ICCpu1IQ",
+    "title": {
+      "tr": "Auraform Güzellik Merkezi",
+      "en": "Auraform Güzellik Merkezi",
+      "ru": "Auraform Güzellik Merkezi",
+      "de": "Auraform Güzellik Merkezi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sedir, 727. Sk. No: 13, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 506 983 95 83",
+    "website": "http://www.auraform.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8dVFhmM0rvWR5oHp0sWb",
+    "title": {
+      "tr": "Uyar Oto Servis",
+      "en": "Uyar Oto Servis",
+      "ru": "Uyar Oto Servis",
+      "de": "Uyar Oto Servis"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cumhuriyet, 664. Sk. No:16, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 215 50 11",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8h0f96Zi11EmZy5GriIh",
+    "title": {
+      "tr": "MEDWORLD CLINIC",
+      "en": "MEDWORLD CLINIC",
+      "ru": "MEDWORLD CLINIC",
+      "de": "MEDWORLD CLINIC"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa Antalya TR, Meltem, Sakıp Sabancı Blv. No: 3, 07050 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 549 800 41 05",
+    "website": "http://www.medworldclinic.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8hgEthwvM2YXHI6S5A55",
+    "title": {
+      "tr": "EMİR32-DRİVE RENT A CAR HAVAALANI ANTALYA",
+      "en": "EMİR32-DRİVE RENT A CAR HAVAALANI ANTALYA",
+      "ru": "EMİR32-DRİVE RENT A CAR HAVAALANI ANTALYA",
+      "de": "EMİR32-DRİVE RENT A CAR HAVAALANI ANTALYA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızılsaray, 83. Sk. 1/A, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 544 576 38 58",
+    "website": "http://www.antalyavipoto.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8jy2QQcVnQYtaVSR7GBX",
+    "title": {
+      "tr": "MBY Medikal",
+      "en": "MBY Medikal",
+      "ru": "MBY Medikal",
+      "de": "MBY Medikal"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kışla Mah Şehit Binbaşı Cengiz Toytunç Cad Gani Ay İşhanı Blok No:80, Kışla, İç Kapı No:209, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 629 42 47",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8pjdUFPRkjbhg5NkzuKG",
+    "title": {
+      "tr": "Anka Kuru Temizleme Laundry 2 Kundu",
+      "en": "Anka Kuru Temizleme Laundry 2 Kundu",
+      "ru": "Anka Kuru Temizleme Laundry 2 Kundu",
+      "de": "Anka Kuru Temizleme Laundry 2 Kundu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, 2388. Sk. Cihan Kent Sitesi No:8 E/A, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 501 043 32 07",
+    "website": "https://maps.app.goo.gl/H5qyC1fg8FRLoG889?g_st=iw",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8rFHxbZ4TnGFuYmWWNK1",
+    "title": {
+      "tr": "Zengate Medikal Masaj 1",
+      "en": "Zengate Medikal Masaj 1",
+      "ru": "Zengate Medikal Masaj 1",
+      "de": "Zengate Medikal Masaj 1"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe Mahallesi Lara Caddesi Eski Bambus Plaji Karşışı, Yeşilbahçe, D:51 B, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 294 76 00",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "8ynqzsOsjC0bOXeurZEL",
+    "title": {
+      "tr": "Porshce Oto Servis - Yedek Parça Tamir bakım onarım",
+      "en": "Porshce Oto Servis - Yedek Parça Tamir bakım onarım",
+      "ru": "Porshce Oto Servis - Yedek Parça Tamir bakım onarım",
+      "de": "Porshce Oto Servis - Yedek Parça Tamir bakım onarım"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, 2222. Sk. no:6c, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 364 35 73",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "91zUchxVRozEZeo4Zs4B",
+    "title": {
+      "tr": "YILMAZ FOTOĞRAFÇILIK",
+      "en": "YILMAZ FOTOĞRAFÇILIK",
+      "ru": "YILMAZ FOTOĞRAFÇILIK",
+      "de": "YILMAZ FOTOĞRAFÇILIK"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kızıltoprak, Ali Çetinkaya Cd. No:135, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 684 01 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "96ai0CgaAsDhStcdDkNb",
+    "title": {
+      "tr": "Artı Mühendislik Kombi Klima Satış Merkezi",
+      "en": "Artı Mühendislik Kombi Klima Satış Merkezi",
+      "ru": "Artı Mühendislik Kombi Klima Satış Merkezi",
+      "de": "Artı Mühendislik Kombi Klima Satış Merkezi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yenigün, Mevlana Cd. No:32 D:3, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 506 618 82 81",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "97M0YAos6fkzVTAtGDax",
+    "title": {
+      "tr": "Kilit Reklam",
+      "en": "Kilit Reklam",
+      "ru": "Kilit Reklam",
+      "de": "Kilit Reklam"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Dutlubahçe Mah.Gazi Bulv. Çevre Yan Sokak No:162/C, Dutlubahçe, 761. Sk., 07070 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 325 25 03",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "97SN6NdZ9UMdeCwVqJwj",
+    "title": {
+      "tr": "Dry Point Kuru Temizleme",
+      "en": "Dry Point Kuru Temizleme",
+      "ru": "Dry Point Kuru Temizleme",
+      "de": "Dry Point Kuru Temizleme"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Zümrütova, Yalı Cd. No:4, 07121 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 323 24 73",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "97xl3DABfd4lNBclWElN",
+    "title": {
+      "tr": "Çilingir Aydın Anahtar Hırdavat",
+      "en": "Çilingir Aydın Anahtar Hırdavat",
+      "ru": "Çilingir Aydın Anahtar Hırdavat",
+      "de": "Çilingir Aydın Anahtar Hırdavat"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener Mah. Bülent Ecevit Bulvarı Darcanlar Apt, Fener, No: 89/A, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 293 09 62",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "980zHjQqSo7SlD5saItY",
+    "title": {
+      "tr": "KARALİ REKLAM İstanbul- Antalya",
+      "en": "KARALİ REKLAM İstanbul- Antalya",
+      "ru": "KARALİ REKLAM İstanbul- Antalya",
+      "de": "KARALİ REKLAM İstanbul- Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "akay apartmanı, Kızılsaray, 60. Sk. 10 / A, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 243 93 40",
+    "website": "http://www.karalireklam.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9GCsY0BiYtGyj72fiQNi",
+    "title": {
+      "tr": "Asmani Restaurant",
+      "en": "Asmani Restaurant",
+      "ru": "Asmani Restaurant",
+      "de": "Asmani Restaurant"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "10, Akra Hotel, Şirinyalı, Lara Cd. No:24, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 316 20 21",
+    "website": "https://www.asmanirestaurant.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9Hrspz2w5oMD8ynlttLf",
+    "title": {
+      "tr": "Antalya Terapi Merkezi -Antalya Psikolog-Antalya Pedagog -Antalya Psikiyatri",
+      "en": "Antalya Terapi Merkezi -Antalya Psikolog-Antalya Pedagog -Antalya Psikiyatri",
+      "ru": "Antalya Terapi Merkezi -Antalya Psikolog-Antalya Pedagog -Antalya Psikiyatri",
+      "de": "Antalya Terapi Merkezi -Antalya Psikolog-Antalya Pedagog -Antalya Psikiyatri"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "antalya 100. Yıl Bulv. Altındağ Mah.Sülemiş Apt.No:26/A-11-12, 07050 Antalya Merkez, Altındağ, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 545 724 89 02",
+    "website": "https://www.antalyaterapimerkezi.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9JBo0sivXbz4LRjWWtNy",
+    "title": {
+      "tr": "Diyetisyen Gürkan Öztürk",
+      "en": "Diyetisyen Gürkan Öztürk",
+      "ru": "Diyetisyen Gürkan Öztürk",
+      "de": "Diyetisyen Gürkan Öztürk"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Balbey, 405. Sokak Mehmet Ali Gönen İş Merkezi, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 850 811 0256",
+    "website": "https://www.instagram.com/dytgurkanozturk/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9JcnEXuxyrkDk5A1w2aV",
+    "title": {
+      "tr": "Kuaför Erdal Önal",
+      "en": "Kuaför Erdal Önal",
+      "ru": "Kuaför Erdal Önal",
+      "de": "Kuaför Erdal Önal"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çaybaşı Mahallesi Ali Çetinkaya Caddesi külhancı Apartmanı No 122, Önal bayan kuaförü, Çaybaşı, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 870 95 90",
+    "website": "http://www.erdalonal.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9LbnHaSIfTJP8ubzbCqL",
+    "title": {
+      "tr": "Onur Mühendislik Mimarlık Antalya",
+      "en": "Onur Mühendislik Mimarlık Antalya",
+      "ru": "Onur Mühendislik Mimarlık Antalya",
+      "de": "Onur Mühendislik Mimarlık Antalya"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilbahçe Mah. Avni Tolunay Cad. Fehmi Dönmez Apt. A Blok No:76 Kat:1 Daire: 8, Yeşilbahçe, 07160 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 247 84 19",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9P0DJlfiwjxdnUnqw2dl",
+    "title": {
+      "tr": "Lukoil",
+      "en": "Lukoil",
+      "ru": "Lukoil",
+      "de": "Lukoil"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Dutlubahçe, Fatih Cd. No:32, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 4444585",
+    "website": "https://lukoil.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9QtOq7EtziEGmw9Mot82",
+    "title": {
+      "tr": "Zafer Auto Service",
+      "en": "Zafer Auto Service",
+      "ru": "Zafer Auto Service",
+      "de": "Zafer Auto Service"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şafak, 5020. Sk. No : 20, 07220 Kepez/Antalya, Türkiye",
+    "phone": "+90 546 850 06 07",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9UJaxE6pMwgEyJYkYIHS",
+    "title": {
+      "tr": "Antalya Tadilat &amp; Dekorasyon | MC Yapı",
+      "en": "Antalya Tadilat &amp; Dekorasyon | MC Yapı",
+      "ru": "Antalya Tadilat &amp; Dekorasyon | MC Yapı",
+      "de": "Antalya Tadilat &amp; Dekorasyon | MC Yapı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeniköy, Şht. Mustafa Gürcan Cd. Tokaç Apt No: 61/B, 07190 Döşemealtı/Antalya, Türkiye",
+    "phone": "+90 553 982 09 89",
+    "website": "https://www.antalyatadilat.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9VWTOAfl1LcW3GF4Fiwk",
+    "title": {
+      "tr": "CF BlackBox Training Club",
+      "en": "CF BlackBox Training Club",
+      "ru": "CF BlackBox Training Club",
+      "de": "CF BlackBox Training Club"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlyan mah 2044 sok. İdil barış apt. No: 3/S, Çağlayan, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 379 26 30",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9dPrGfj3KRfmG7Xht5JO",
+    "title": {
+      "tr": "Tadım Döner",
+      "en": "Tadım Döner",
+      "ru": "Tadım Döner",
+      "de": "Tadım Döner"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Balbey mahallesi İsmetpaşa caddesi Balbey işhanı No:27/B, Balbey, 07070 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 537 255 17 31",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9fW6RWwCZjqJNddtqHTQ",
+    "title": {
+      "tr": "Burjuva Çilingir",
+      "en": "Burjuva Çilingir",
+      "ru": "Burjuva Çilingir",
+      "de": "Burjuva Çilingir"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Barınaklar Blv. No:22, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 549 107 07 20",
+    "website": "https://www.burcuvacilingir.com/07",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9hcp0f3WsBrhFM6We0ik",
+    "title": {
+      "tr": "Uzman Psikolog Cemal Can",
+      "en": "Uzman Psikolog Cemal Can",
+      "ru": "Uzman Psikolog Cemal Can",
+      "de": "Uzman Psikolog Cemal Can"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "metin kasapoğlu cd. 33/7 saadet apt, Yeşilbahçe, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 533 191 27 72",
+    "website": "http://gelidonyapsikoloji.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9kDiJOEUdwUe0zgSLZ90",
+    "title": {
+      "tr": "HONEST KURU TEMİZLEME",
+      "en": "HONEST KURU TEMİZLEME",
+      "ru": "HONEST KURU TEMİZLEME",
+      "de": "HONEST KURU TEMİZLEME"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa Hızır Reis caddesi, Varlık, sapmaz apt no33B, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 410 04 01",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9pmC7VStcgmt1SQX0PPL",
+    "title": {
+      "tr": "Muratpaşa Mobilya imalat montaj tamir",
+      "en": "Muratpaşa Mobilya imalat montaj tamir",
+      "ru": "Muratpaşa Mobilya imalat montaj tamir",
+      "de": "Muratpaşa Mobilya imalat montaj tamir"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Toros, Atatürk Bulvarı, 07070 Konyaaltı/Antalya, Türkiye",
+    "phone": "+90 506 784 65 35",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9poO2qpFEt1ibuzpOx0T",
+    "title": {
+      "tr": "Antalya Law Firm | Antalya Anwalt | KUNUT ANWALTSKANZLEİ | KUNUT LAW FİRM",
+      "en": "Antalya Law Firm | Antalya Anwalt | KUNUT ANWALTSKANZLEİ | KUNUT LAW FİRM",
+      "ru": "Antalya Law Firm | Antalya Anwalt | KUNUT ANWALTSKANZLEİ | KUNUT LAW FİRM",
+      "de": "Antalya Law Firm | Antalya Anwalt | KUNUT ANWALTSKANZLEİ | KUNUT LAW FİRM"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Muratpaşa, Çatalköprü Cd. Çoruh İş Merkezi No:7 Daire:4, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 242 34 42",
+    "website": "https://www.kunutlaw.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9sTIuLFU6W1BZSvYbCcZ",
+    "title": {
+      "tr": "Antalya Psikolog Ofisi",
+      "en": "Antalya Psikolog Ofisi",
+      "ru": "Antalya Psikolog Ofisi",
+      "de": "Antalya Psikolog Ofisi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kırcami, Göller Cd. No: 2, 07030 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 501 342 30 93",
+    "website": "https://www.antalyapsikologofisi.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9v5a5mncRqTOEBP0jkhy",
+    "title": {
+      "tr": "inovax Danışmanlık Hasta Bakımı",
+      "en": "inovax Danışmanlık Hasta Bakımı",
+      "ru": "inovax Danışmanlık Hasta Bakımı",
+      "de": "inovax Danışmanlık Hasta Bakımı"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, 2056. Sk. İş Merkezi No: 3, İç Kapı No: 201, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 237 83 17",
+    "website": "https://inovaxdanismanlik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "9wqNAK3xBQCErwb3as44",
+    "title": {
+      "tr": "Antalya Diyetisyen - Ali KOŞAR",
+      "en": "Antalya Diyetisyen - Ali KOŞAR",
+      "ru": "Antalya Diyetisyen - Ali KOŞAR",
+      "de": "Antalya Diyetisyen - Ali KOŞAR"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Şirinyalı Mahallesi 1507 sokak, Şirinyalı, 2 Apartmanı no:46 Kat:1 Daire:3, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 390 51 72",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "A5tuI3bP0PHyGCHuhROa",
+    "title": {
+      "tr": "Farklı Reklam",
+      "en": "Farklı Reklam",
+      "ru": "Farklı Reklam",
+      "de": "Farklı Reklam"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "635 NO:, Cumhuriyet Mahallesi, 6. Sokak, Cumhuriyet, 07010 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 796 92 93",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "A7yno3UEZku6sZ2kFugi",
+    "title": {
+      "tr": "Muratpaşa Psikolog | Psikolog M.Zeynep UÇAR-Muratpaşa Psikolog Randevu",
+      "en": "Muratpaşa Psikolog | Psikolog M.Zeynep UÇAR-Muratpaşa Psikolog Randevu",
+      "ru": "Muratpaşa Psikolog | Psikolog M.Zeynep UÇAR-Muratpaşa Psikolog Randevu",
+      "de": "Muratpaşa Psikolog | Psikolog M.Zeynep UÇAR-Muratpaşa Psikolog Randevu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Elmalı, 21. Sk. Şerbetçi Apartmanı Numara:1 Kat:2 Daire:4, 07700 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 072 83 52",
+    "website": "https://www.psikologzeynep.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "ACbz4tgf03EhpjSfmlXe",
+    "title": {
+      "tr": "Seferoğlu Pasta",
+      "en": "Seferoğlu Pasta",
+      "ru": "Seferoğlu Pasta",
+      "de": "Seferoğlu Pasta"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Güzeloba, Havaalanı Cd. 11/2, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 323 76 88",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AEks5Zwuw01rsLJoqWCH",
+    "title": {
+      "tr": "Buy Home Antalya Real Estate Company",
+      "en": "Buy Home Antalya Real Estate Company",
+      "ru": "Buy Home Antalya Real Estate Company",
+      "de": "Buy Home Antalya Real Estate Company"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Zerdalilik, Burhanettin Onat Cd. No:94 D:1, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 501 209 80 80",
+    "website": "https://propertyantalya.net/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AFw3ObmG5XE27cg4o73m",
+    "title": {
+      "tr": "Bosch Car Service - Aktürk Otomotiv",
+      "en": "Bosch Car Service - Aktürk Otomotiv",
+      "ru": "Bosch Car Service - Aktürk Otomotiv",
+      "de": "Bosch Car Service - Aktürk Otomotiv"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Havaalanı Yolu, Yenigöl, Nergiz Sk. No:90, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 506 23 38",
+    "website": "https://akturkbcs.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.4,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AJQBS6j0bj4AGHea9FJ4",
+    "title": {
+      "tr": "Oxygen Fitness Kulübü",
+      "en": "Oxygen Fitness Kulübü",
+      "ru": "Oxygen Fitness Kulübü",
+      "de": "Oxygen Fitness Kulübü"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçelievler, Pamir Cd. No:52, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 536 790 46 90",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AOpdDVr897mMFrBPLYaN",
+    "title": {
+      "tr": "ANTALYA LARA ELEKTRİKÇİ 7/24",
+      "en": "ANTALYA LARA ELEKTRİKÇİ 7/24",
+      "ru": "ANTALYA LARA ELEKTRİKÇİ 7/24",
+      "de": "ANTALYA LARA ELEKTRİKÇİ 7/24"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yıldız, Hamidiye Cd. No:5, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 535 590 71 05",
+    "website": "http://antalyaelektrikariza724.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AQKbjyOYxtcD90LodE2x",
+    "title": {
+      "tr": "TotalEnergies İstasyonu",
+      "en": "TotalEnergies İstasyonu",
+      "ru": "TotalEnergies İstasyonu",
+      "de": "TotalEnergies İstasyonu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Antalya, Kırcami, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "http://www.totalistasyonlari.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.3,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "ATRUhBBUFnX7W5EFH9iN",
+    "title": {
+      "tr": "Foto Can Can",
+      "en": "Foto Can Can",
+      "ru": "Foto Can Can",
+      "de": "Foto Can Can"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yıldız Mahallesi, Kazım Karabekir Cad. Akın Apt. No:54/B, Yıldız, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 238 03 72",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AUf1eBDXa8hOGUGxBWWY",
+    "title": {
+      "tr": "Adil Elektronik Anahtar",
+      "en": "Adil Elektronik Anahtar",
+      "ru": "Adil Elektronik Anahtar",
+      "de": "Adil Elektronik Anahtar"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Bahçelievler, Hızır Reis Cd. Öztürk Apt D:22/c, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 542 779 59 39",
+    "website": "http://www.adilanahtar.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AYSG5xcYTXgVggI3Kq7s",
+    "title": {
+      "tr": "YENİ HAYAT ECZANESİ /takviye_dünyasi",
+      "en": "YENİ HAYAT ECZANESİ /takviye_dünyasi",
+      "ru": "YENİ HAYAT ECZANESİ /takviye_dünyasi",
+      "de": "YENİ HAYAT ECZANESİ /takviye_dünyasi"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yüksekalan, Mevlana Cd. 37/C, 07310 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 555 196 00 66",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "Aam0U3ZKkZ8AWWvMeoGp",
+    "title": {
+      "tr": "Fitintime Antalya EMS PİLATES Studio",
+      "en": "Fitintime Antalya EMS PİLATES Studio",
+      "ru": "Fitintime Antalya EMS PİLATES Studio",
+      "de": "Fitintime Antalya EMS PİLATES Studio"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Cender Hotel, Gençlik, Işıklar Cd., 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 247 61 13",
+    "website": "http://fitintime.com.tr/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AdLiiP4oHqrZ9WAHwnn5",
+    "title": {
+      "tr": "Antalya Su Temizlik Şirketleri | Ofis Temizliği",
+      "en": "Antalya Su Temizlik Şirketleri | Ofis Temizliği",
+      "ru": "Antalya Su Temizlik Şirketleri | Ofis Temizliği",
+      "de": "Antalya Su Temizlik Şirketleri | Ofis Temizliği"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "KIZILARIK MAH. 2818 SK. APT. DURMAZLAR APT NO: 35 A, İÇ KAPI, Kızılarık, NO: 9, 07300 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 122 07 49",
+    "website": "https://www.sutemizlik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AfohYCA0Dw4y0aSftEZn",
+    "title": {
+      "tr": "Mesa Güzellik",
+      "en": "Mesa Güzellik",
+      "ru": "Mesa Güzellik",
+      "de": "Mesa Güzellik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Özmanlar apt, Varlık, 100 Yıl Blv, 07007 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 536 764 15 27",
+    "website": "http://www.mesaguzellik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.9,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "Agqbl3BzuSxrMOpX9k7U",
+    "title": {
+      "tr": "Özel Antalya Envar Anaokulu-İlkokul-Ortaokul (Muratpaşa Kampüsü)",
+      "en": "Özel Antalya Envar Anaokulu-İlkokul-Ortaokul (Muratpaşa Kampüsü)",
+      "ru": "Özel Antalya Envar Anaokulu-İlkokul-Ortaokul (Muratpaşa Kampüsü)",
+      "de": "Özel Antalya Envar Anaokulu-İlkokul-Ortaokul (Muratpaşa Kampüsü)"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Meydankavağı, 1601 Sk No:28, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 4446530",
+    "website": "https://www.envarkoleji.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AmF4DNWLlaKBityzYY18",
+    "title": {
+      "tr": "Seferoğlu Nakliyat",
+      "en": "Seferoğlu Nakliyat",
+      "ru": "Seferoğlu Nakliyat",
+      "de": "Seferoğlu Nakliyat"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kışla Mah, Milli Egemenlik Cad, Saçlı Kuyu Apt B blok Kat2 Daire 16, Kışla, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 532 215 73 38",
+    "website": "http://seferoglulojistik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "Arp5I2VR26d2etDf9JeO",
+    "title": {
+      "tr": "PET POİNT LARA VETERİNER KLİNİĞİ",
+      "en": "PET POİNT LARA VETERİNER KLİNİĞİ",
+      "ru": "PET POİNT LARA VETERİNER KLİNİĞİ",
+      "de": "PET POİNT LARA VETERİNER KLİNİĞİ"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Fener, Bülent Ecevit Blv. SELİN APT NO:84/A, 07260 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 544 947 94 10",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.7,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "AwKVl5HdKKGXf0KhQ9eE",
+    "title": {
+      "tr": "Üçkapılar American Vip Dil Kursu",
+      "en": "Üçkapılar American Vip Dil Kursu",
+      "ru": "Üçkapılar American Vip Dil Kursu",
+      "de": "Üçkapılar American Vip Dil Kursu"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Sinan, 1267. Sk. Başkan İş Hanı No: 1/2, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 506 049 00 09",
+    "website": "https://americanvip.com.tr/antalyauckapilar",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "B5lRZB7RYshEpucDudBO",
+    "title": {
+      "tr": "Gaga park Antalya Lara",
+      "en": "Gaga park Antalya Lara",
+      "ru": "Gaga park Antalya Lara",
+      "de": "Gaga park Antalya Lara"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan, Yalı Cd. No:448, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 534 725 01 77",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.6,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "B7qK3lRQKl5yb9z8CFUD",
+    "title": {
+      "tr": "Zirve Hali Yikama",
+      "en": "Zirve Hali Yikama",
+      "ru": "Zirve Hali Yikama",
+      "de": "Zirve Hali Yikama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yeşilova, 1680. Sk. No:14, 07200 Muratpaşa/Antalya, Türkiye",
+    "phone": "",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "B8YNPCAp0d5xq3i9eaov",
+    "title": {
+      "tr": "Çınar Elektrik",
+      "en": "Çınar Elektrik",
+      "ru": "Çınar Elektrik",
+      "de": "Çınar Elektrik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Lara, Güzeloba, 2239. Sk. No:8 D:A, 07230 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 536 760 30 67",
+    "website": "http://cinarelektrikinsaat.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "B8YPrQ9ieQL5o8HRSIkB",
+    "title": {
+      "tr": "ÇELİK MEDİKAL ANTALYA",
+      "en": "ÇELİK MEDİKAL ANTALYA",
+      "ru": "ÇELİK MEDİKAL ANTALYA",
+      "de": "ÇELİK MEDİKAL ANTALYA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Yıldız, Yıldız Cd. NO:63, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 505 683 34 96",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "B8fumGe8q2V7dx2ygWeH",
+    "title": {
+      "tr": "Antalya Diyetisyen",
+      "en": "Antalya Diyetisyen",
+      "ru": "Antalya Diyetisyen",
+      "de": "Antalya Diyetisyen"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Çağlayan Mahallesi, Fener Caddesi, Çağlayan, 07260 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 323 00 99",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "BAlNC5VBiFDE0qcCdFHO",
+    "title": {
+      "tr": "Diamond luxury Hotel",
+      "en": "Diamond luxury Hotel",
+      "ru": "Diamond luxury Hotel",
+      "de": "Diamond luxury Hotel"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kışla, 40. Sk. No:29, 07040 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 242 238 21 21",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.2,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "BF81lDV18wdHkgk3OngR",
+    "title": {
+      "tr": "ENDER YAPI ANTALYA",
+      "en": "ENDER YAPI ANTALYA",
+      "ru": "ENDER YAPI ANTALYA",
+      "de": "ENDER YAPI ANTALYA"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Kanal, Sakarya Blv. No:37, 07080 Kepez/Antalya, Türkiye",
+    "phone": "+90 553 549 24 87",
+    "website": "http://www.enderyapiantalya.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "BHujWL5l9mVotClYMa5B",
+    "title": {
+      "tr": "Simay Çiçekçilik",
+      "en": "Simay Çiçekçilik",
+      "ru": "Simay Çiçekçilik",
+      "de": "Simay Çiçekçilik"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "100. Yıl caddesi, Altındağ, 151. Sk. No:36, 07050 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 553 341 94 92",
+    "website": "https://simaycicekcilik.com/",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 4.8,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "BJScLWsDi3OAnqCtdad9",
+    "title": {
+      "tr": "Hamarat Koltuk Yıkama",
+      "en": "Hamarat Koltuk Yıkama",
+      "ru": "Hamarat Koltuk Yıkama",
+      "de": "Hamarat Koltuk Yıkama"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "Etiler, 837. Sk. No:23, 07310 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 541 661 55 86",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  },
+  {
+    "id": "BKgjNFR6Ac4WMBcTIBBf",
+    "title": {
+      "tr": "DİYETİSYEN FUNDA ALPASAR",
+      "en": "DİYETİSYEN FUNDA ALPASAR",
+      "ru": "DİYETİSYEN FUNDA ALPASAR",
+      "de": "DİYETİSYEN FUNDA ALPASAR"
+    },
+    "description": {
+      "tr": "Mekan açıklaması belirtilmemiş.",
+      "en": "Mekan açıklaması belirtilmemiş.",
+      "ru": "Mekan açıklaması belirtilmemiş.",
+      "de": "Mekan açıklaması belirtilmemiş."
+    },
+    "categoryId": "REHBER",
+    "district": "Antalya",
+    "address": "TOPRAKOĞLU APARTMANI, Fener, Falez Cd. NO 42 KAT 1 DAİRE 2, 07100 Muratpaşa/Antalya, Türkiye",
+    "phone": "+90 507 030 17 35",
+    "website": "",
+    "coverImage": "https://images.unsplash.com/photo-1514933651103-005eec06c04b",
+    "gallery": [
+      "https://images.unsplash.com/photo-1514933651103-005eec06c04b"
+    ],
+    "features": [],
+    "accessibility": {
+      "wheelchair": false,
+      "childFriendly": false,
+      "parking": false,
+      "wifi": false,
+      "vegan": false
+    },
+    "googleRating": 5,
+    "googleReviewCount": 0,
+    "status": "published"
+  }
+];

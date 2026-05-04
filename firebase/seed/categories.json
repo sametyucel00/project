@@ -1,0 +1,22 @@
+[
+  {
+    "id": "restaurants",
+    "icon": "utensils",
+    "title": {
+      "tr": "Restoran",
+      "en": "Restaurant",
+      "ru": "Ресторан",
+      "de": "Restaurant"
+    }
+  },
+  {
+    "id": "coffee",
+    "icon": "coffee",
+    "title": {
+      "tr": "Kahve",
+      "en": "Coffee",
+      "ru": "Кофе",
+      "de": "Kaffee"
+    }
+  }
+]
