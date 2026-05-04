@@ -8,7 +8,21 @@ const projectId =
 
 module.exports = {
   ...expo,
+  name: "Nar Rehberi",
+  version: "9.1.0",
+  icon: "./assets/icon.png",
   owner: process.env.EXPO_OWNER || "simic52",
+  ios: {
+    ...(expo.ios ?? {}),
+    supportsTablet: true,
+    bundleIdentifier: "com.narrehberi.app",
+    buildNumber: "1.2"
+  },
+  android: {
+    ...(expo.android ?? {}),
+    package: "narrehberi.com",
+    versionCode: 9100
+  },
   extra: {
     ...(expo.extra ?? {}),
     eas: { ...(expo.extra?.eas ?? {}), projectId }

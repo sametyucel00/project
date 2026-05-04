@@ -4,7 +4,10 @@ const groqEndpoint = "https://api.groq.com/openai/v1/chat/completions";
 const cache = new Map<string, string>();
 
 function getApiKey() {
-  return process.env.GROQ_API_KEY ?? process.env.EXPO_PUBLIC_GROQ_API_KEY ?? "";
+  return process.env.EXPO_PUBLIC_GROQ_API_KEY
+    ?? process.env.NEXT_PUBLIC_GROQ_API_KEY
+    ?? process.env.GROQ_API_KEY
+    ?? "";
 }
 
 export async function translateText(text: string, targetLocale: Locale, sourceLocale: Locale = "tr") {
