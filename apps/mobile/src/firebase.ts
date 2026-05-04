@@ -3,15 +3,13 @@ import { connectAuthEmulator, getAuth, initializeAuth } from "firebase/auth";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
+import { getRuntimeFirebaseConfig } from "./runtimeConfig";
 
-const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "demo-api-key",
-  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN || "demo.firebaseapp.com",
-  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID || "demo-nar-rehberi",
-  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET || "demo-nar-rehberi.appspot.com",
-  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "000000000000",
-  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID || "1:000000000000:web:demo"
-};
+const firebaseConfig = getRuntimeFirebaseConfig();
+
+if (!firebaseConfig.apiKey || !firebaseConfig.projectId || firebaseConfig.apiKey === "demo-api-key") {
+  throw new Error("Mobil Firebase ayarlari eksik. EXPO_PUBLIC_FIREBASE_* degerleri build ortaminda gorunmeli.");
+}
 
 export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const isWebEnvironment = typeof window !== "undefined" && typeof document !== "undefined";

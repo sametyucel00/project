@@ -29,6 +29,7 @@ import {
 import { httpsCallable } from "firebase/functions";
 import { Platform } from "react-native";
 import { auth, db, functions } from "../firebase";
+import { getAppleServiceId, getGoogleWebClientId } from "../runtimeConfig";
 import { normalizeLocale, normalizeThemeMode, type MobileUserPreferences } from "./preferences";
 
 export type MobileTab = "Ana Sayfa" | "Mekanlar" | "Etkinlikler" | "Fırsatlar" | "Profil";
@@ -82,16 +83,6 @@ function isWebEnvironment() {
   return typeof window !== "undefined" && typeof document !== "undefined";
 }
 
-function getGoogleClientId() {
-  return (
-    process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID ||
-    process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID ||
-    process.env.GOOGLE_WEB_CLIENT_ID ||
-    process.env.GOOGLE_CLIENT_ID ||
-    ""
-  ).trim();
-}
-
 function getGoogleRedirectUri() {
   return AuthSession.makeRedirectUri({
     scheme: "narrehberi",
@@ -110,15 +101,6 @@ function buildGoogleAuthUrl(clientId: string) {
     prompt: "select_account"
   });
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-}
-
-function getAppleServiceId() {
-  return (
-    process.env.EXPO_PUBLIC_APPLE_SERVICE_ID ||
-    process.env.EXPO_PUBLIC_APPLE_WEB_CLIENT_ID ||
-    process.env.APPLE_SERVICE_ID ||
-    ""
-  ).trim();
 }
 
 function getAppleRedirectUri() {
@@ -299,7 +281,7 @@ export async function loginWithGoogleToken(input: GoogleTokenInput | string) {
 
 export async function loginWithGooglePopup() {
   if (!isWebEnvironment()) {
-    const clientId = getGoogleClientId();
+    const clientId = getGoogleWebClientId();
     if (!clientId) {
       throw new Error("Google girişi için EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID gerekli.");
     }
