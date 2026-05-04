@@ -1,3 +1,5 @@
+"use client";
+
 import { panelMenus, type UserRole } from "@nar/core";
 import { Bell, ChartNoAxesCombined, ChevronRight, PlusCircle, QrCode, ShieldCheck } from "lucide-react";
 import { AdminOps } from "./AdminOps";
