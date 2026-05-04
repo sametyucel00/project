@@ -154,6 +154,14 @@ export default function App() {
     await requestLocationAccess();
   }
 
+  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading)) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.startupBlank} />
+      </SafeAreaProvider>
+    );
+  }
+
   if (needsOnboarding) {
     return (
       <SafeAreaProvider>

@@ -1,5 +1,7 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, initializeAuth } from "firebase/auth";
+import * as FirebaseAuthRuntime from "@firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
@@ -13,9 +15,20 @@ if (!firebaseConfig.apiKey || !firebaseConfig.projectId || firebaseConfig.apiKey
 
 export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const isWebEnvironment = typeof window !== "undefined" && typeof document !== "undefined";
-export const auth = isWebEnvironment
-  ? getAuth(firebaseApp)
-  : initializeAuth(firebaseApp);
+const reactNativePersistence = (FirebaseAuthRuntime as unknown as {
+  getReactNativePersistence?: (storage: typeof AsyncStorage) => unknown;
+}).getReactNativePersistence;
+
+export const auth = (() => {
+  if (isWebEnvironment) return getAuth(firebaseApp);
+  try {
+    return initializeAuth(firebaseApp, {
+      persistence: reactNativePersistence ? [reactNativePersistence(AsyncStorage) as never] : undefined
+    });
+  } catch {
+    return getAuth(firebaseApp);
+  }
+})();
 export const db = getFirestore(firebaseApp);
 export const functions = getFunctions(firebaseApp, "europe-west1");
 export const storage = getStorage(firebaseApp);

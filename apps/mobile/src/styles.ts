@@ -95,6 +95,7 @@ function buildStyles() {
     tabText: { color: theme.muted, fontSize: 11 },
     tabActive: { color: theme.nar, fontWeight: "800" },
     startupScreen: { flex: 1, backgroundColor: theme.paper },
+    startupBlank: { flex: 1, backgroundColor: "#ffffff" },
     startupScroll: { flex: 1 },
     startupContent: { padding: 20, paddingTop: 14, paddingBottom: 28, gap: 14, minHeight: "100%" },
     splashCard: { minHeight: 210, borderRadius: 32, backgroundColor: theme.surface, padding: 22, justifyContent: "space-between", overflow: "hidden", borderWidth: StyleSheet.hairlineWidth, borderColor: theme.line },

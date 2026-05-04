@@ -20,18 +20,21 @@ module.exports = {
   name: "Nar Rehberi",
   version: "9.1.0",
   icon: "./assets/icon.png",
+  splash: {
+    backgroundColor: "#ffffff"
+  },
   owner: process.env.EXPO_OWNER || "simic52",
   plugins: [...(expo.plugins ?? []), "expo-web-browser"],
   ios: {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.3"
+    buildNumber: "1.4"
   },
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9105
+    versionCode: 9106
   },
   extra: {
     ...(expo.extra ?? {}),

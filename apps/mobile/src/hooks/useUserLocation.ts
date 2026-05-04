@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import * as Location from "expo-location";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { DeviceLocation } from "../utils/location";
 
 export interface UserLocationState {
@@ -42,16 +43,19 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       const current = await tryGetCurrentPosition();
       if (current) {
         setLocation(current);
+        void saveCachedLocation(current);
         startWatchingLocation(setLocation, watchState);
         return;
       }
 
       const lastKnown = await Location.getLastKnownPositionAsync();
       if (lastKnown?.coords && Number.isFinite(lastKnown.coords.latitude) && Number.isFinite(lastKnown.coords.longitude)) {
-        setLocation({
+        const cachedLastKnown = {
           latitude: lastKnown.coords.latitude,
           longitude: lastKnown.coords.longitude
-        });
+        };
+        setLocation(cachedLastKnown);
+        void saveCachedLocation(cachedLastKnown);
         startWatchingLocation(setLocation, watchState);
         return;
       }
@@ -59,6 +63,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       const browserLocation = await tryBrowserGeolocation();
       if (browserLocation) {
         setLocation(browserLocation);
+        void saveCachedLocation(browserLocation);
         startWatchingLocation(setLocation, watchState);
         return;
       }
@@ -79,7 +84,14 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       setLoading(false);
       return;
     }
+    let active = true;
+    void loadCachedLocation().then((cached) => {
+      if (active && cached) setLocation(cached);
+    });
     void requestAccess();
+    return () => {
+      active = false;
+    };
   }, [autoRequest, requestAccess]);
 
   useEffect(() => {
@@ -134,14 +146,38 @@ function startWatchingLocation(setLocation: (value: DeviceLocation) => void, wat
     },
     (current) => {
       if (!Number.isFinite(current.coords.latitude) || !Number.isFinite(current.coords.longitude)) return;
-      setLocation({
+      const nextLocation = {
         latitude: current.coords.latitude,
         longitude: current.coords.longitude
-      });
+      };
+      setLocation(nextLocation);
+      void saveCachedLocation(nextLocation);
     }
   )
     .then((subscription) => {
       watchState.stop = () => subscription.remove();
     })
     .catch(() => undefined);
+}
+
+const cachedLocationKey = "narrehberi:mobile:last-location";
+
+async function saveCachedLocation(location: DeviceLocation) {
+  try {
+    await AsyncStorage.setItem(cachedLocationKey, JSON.stringify(location));
+  } catch {
+    // Best effort only.
+  }
+}
+
+async function loadCachedLocation() {
+  try {
+    const raw = await AsyncStorage.getItem(cachedLocationKey);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<DeviceLocation>;
+    if (!Number.isFinite(parsed.latitude) || !Number.isFinite(parsed.longitude)) return null;
+    return { latitude: Number(parsed.latitude), longitude: Number(parsed.longitude) };
+  } catch {
+    return null;
+  }
 }
