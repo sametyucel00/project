@@ -2,7 +2,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
 const root = process.cwd();
-const blockedDirs = new Set(["node_modules", ".git", ".next", ".expo", "dist", "build", "coverage"]);
+const blockedDirs = new Set(["node_modules", ".git", ".next", ".expo", "dist", "build", "coverage", "out"]);
 const textExtensions = new Set([
   ".css",
   ".csv",
