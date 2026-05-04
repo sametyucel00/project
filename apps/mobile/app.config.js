@@ -1,4 +1,11 @@
-const { expo } = require("./app.json");
+const expo = {
+  name: "Nar Rehberi",
+  slug: "nar-rehberi",
+  scheme: "narrehberi",
+  orientation: "portrait",
+  userInterfaceStyle: "automatic",
+  plugins: []
+};
 
 const projectId =
   process.env.EXPO_PUBLIC_EAS_PROJECT_ID ||
@@ -24,12 +31,27 @@ module.exports = {
     backgroundColor: "#ffffff"
   },
   owner: process.env.EXPO_OWNER || "simic52",
-  plugins: [...(expo.plugins ?? []), "expo-web-browser"],
+  plugins: [
+    ...(expo.plugins ?? []),
+    "expo-web-browser",
+    [
+      "expo-location",
+      {
+        locationWhenInUsePermission:
+          "Nar Rehberi, yakındaki mekan ve etkinlik mesafelerini göstermek için konumunuzu kullanır."
+      }
+    ]
+  ],
   ios: {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.6"
+    buildNumber: "1.7",
+    infoPlist: {
+      ...(expo.ios?.infoPlist ?? {}),
+      NSLocationWhenInUseUsageDescription:
+        "Nar Rehberi, yakındaki mekan ve etkinlik mesafelerini göstermek için konumunuzu kullanır."
+    }
   },
   android: {
     ...(expo.android ?? {}),
