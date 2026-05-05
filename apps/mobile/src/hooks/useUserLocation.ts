@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { InteractionManager } from "react-native";
@@ -17,15 +17,15 @@ export function useUserLocation(autoRequest = true): UserLocationState {
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [watchState] = useState<{ stop?: () => void }>({});
+  const watchState = useRef<{ stop?: () => void }>({});
 
   const requestAccess = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
 
-      watchState.stop?.();
-      watchState.stop = undefined;
+      watchState.current.stop?.();
+      watchState.current.stop = undefined;
 
       const currentPermission = await Location.getForegroundPermissionsAsync();
       const permission = currentPermission.status === "granted"
@@ -41,14 +41,6 @@ export function useUserLocation(autoRequest = true): UserLocationState {
 
       setPermissionGranted(true);
 
-      const current = await tryGetCurrentPosition();
-      if (current) {
-        setLocation(current);
-        void saveCachedLocation(current);
-        startWatchingLocation(setLocation, watchState);
-        return;
-      }
-
       const lastKnown = await Location.getLastKnownPositionAsync();
       if (lastKnown?.coords && Number.isFinite(lastKnown.coords.latitude) && Number.isFinite(lastKnown.coords.longitude)) {
         const cachedLastKnown = {
@@ -57,7 +49,16 @@ export function useUserLocation(autoRequest = true): UserLocationState {
         };
         setLocation(cachedLastKnown);
         void saveCachedLocation(cachedLastKnown);
-        startWatchingLocation(setLocation, watchState);
+        startWatchingLocation(setLocation, watchState.current);
+        void warmCurrentPosition();
+        return;
+      }
+
+      const current = await tryGetCurrentPosition();
+      if (current) {
+        setLocation(current);
+        void saveCachedLocation(current);
+        startWatchingLocation(setLocation, watchState.current);
         return;
       }
 
@@ -65,7 +66,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       if (browserLocation) {
         setLocation(browserLocation);
         void saveCachedLocation(browserLocation);
-        startWatchingLocation(setLocation, watchState);
+        startWatchingLocation(setLocation, watchState.current);
         return;
       }
 
@@ -78,7 +79,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
     } finally {
       setLoading(false);
     }
-  }, [watchState]);
+  }, []);
 
   useEffect(() => {
     if (!autoRequest) {
@@ -93,19 +94,14 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       InteractionManager.runAfterInteractions(() => {
         if (active) void requestAccess();
       });
-    }, 900);
+    }, 500);
     return () => {
       active = false;
       clearTimeout(timer);
+      watchState.current.stop?.();
+      watchState.current.stop = undefined;
     };
   }, [autoRequest, requestAccess]);
-
-  useEffect(() => {
-    return () => {
-      watchState.stop?.();
-      watchState.stop = undefined;
-    };
-  }, [watchState]);
 
   return { location, permissionGranted, loading, error, requestAccess };
 }
@@ -122,6 +118,22 @@ async function tryGetCurrentPosition() {
     };
   } catch {
     return null;
+  }
+}
+
+async function warmCurrentPosition() {
+  try {
+    const current = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced
+    });
+    if (!Number.isFinite(current.coords.latitude) || !Number.isFinite(current.coords.longitude)) return;
+    const nextLocation = {
+      latitude: current.coords.latitude,
+      longitude: current.coords.longitude
+    };
+    void saveCachedLocation(nextLocation);
+  } catch {
+    // Best effort only.
   }
 }
 

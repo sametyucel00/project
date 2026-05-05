@@ -65,11 +65,6 @@ export function setMobileThemeMode(mode: MobileThemeMode) {
   activeTheme = { ...resolveThemePalette(mode) };
   Object.assign(theme, activeTheme);
   applyThemeToDocument(mode, activeTheme);
-  if (typeof window !== "undefined") {
-    window.setTimeout(() => {
-      applyThemeToDocument(activeMode, activeTheme);
-    }, 80);
-  }
   themeVersion += 1;
   themeListeners.forEach((listener) => listener());
 }
@@ -103,11 +98,6 @@ export function reapplyMobileTheme() {
   activeTheme = { ...resolveThemePalette(activeMode) };
   Object.assign(theme, activeTheme);
   applyThemeToDocument(activeMode, activeTheme);
-  if (typeof window !== "undefined") {
-    window.setTimeout(() => {
-      applyThemeToDocument(activeMode, activeTheme);
-    }, 80);
-  }
 }
 
 function resolveSystemScheme() {
@@ -148,11 +138,6 @@ function refreshSystemTheme() {
   activeTheme = { ...resolveThemePalette("system") };
   Object.assign(theme, activeTheme);
   applyThemeToDocument("system", activeTheme);
-  if (typeof window !== "undefined") {
-    window.setTimeout(() => {
-      if (activeMode === "system") applyThemeToDocument("system", activeTheme);
-    }, 80);
-  }
   themeVersion += 1;
   themeListeners.forEach((listener) => listener());
 }

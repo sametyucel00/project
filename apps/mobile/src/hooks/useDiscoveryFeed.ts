@@ -36,14 +36,17 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
 
     void readJsonCache<DiscoveryFeedState>(feedCacheKey).then((cached) => {
       if (!active || !cached) return;
-      setState((current) => ({
-        places: cached.places?.length ? cached.places : current.places,
-        events: cached.events?.length ? cached.events : current.events,
-        offers: cached.offers?.length ? cached.offers : current.offers,
-        loading: current.loading,
-        error: current.error
-      }));
-      cachedFeed = cached;
+      setState((current) => {
+        const nextState = {
+          places: cached.places?.length ? cached.places : current.places,
+          events: cached.events?.length ? cached.events : current.events,
+          offers: cached.offers?.length ? cached.offers : current.offers,
+          loading: current.loading,
+          error: current.error
+        };
+        cachedFeed = nextState;
+        return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+      });
     });
 
     async function load(limitSet: { places: number; events: number; offers: number }, quiet = false) {
@@ -63,6 +66,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
             loading: false,
             error: null
           });
+          if (sameDiscoveryFeedState(current, nextState)) return current;
           void writeJsonCache(feedCacheKey, nextState);
           return nextState;
         });
@@ -75,8 +79,9 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
             events: current.events.length ? current.events : featuredEvents,
             offers: current.offers.length ? current.offers : featuredOffers,
             loading: false,
-            error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
+            error: error instanceof Error ? error.message : "KeÅŸif verisi alÄ±namadÄ±."
           });
+          if (sameDiscoveryFeedState(current, nextState)) return current;
           void writeJsonCache(feedCacheKey, nextState);
           return nextState;
         });
@@ -103,4 +108,23 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
   }, [enabled]);
 
   return state;
+}
+
+function sameDiscoveryFeedState(current: DiscoveryFeedState, next: DiscoveryFeedState) {
+  return (
+    current.loading === next.loading &&
+    current.error === next.error &&
+    sameIdList(current.places, next.places) &&
+    sameIdList(current.events, next.events) &&
+    sameIdList(current.offers, next.offers)
+  );
+}
+
+function sameIdList<T extends { id: string }>(first: T[], second: T[]) {
+  if (first === second) return true;
+  if (first.length !== second.length) return false;
+  for (let index = 0; index < first.length; index += 1) {
+    if (first[index]?.id !== second[index]?.id) return false;
+  }
+  return true;
 }
