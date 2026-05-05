@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { InteractionManager } from "react-native";
 import type { DeviceLocation } from "../utils/location";
 
 export interface UserLocationState {
@@ -88,9 +89,14 @@ export function useUserLocation(autoRequest = true): UserLocationState {
     void loadCachedLocation().then((cached) => {
       if (active && cached) setLocation(cached);
     });
-    void requestAccess();
+    const timer = setTimeout(() => {
+      InteractionManager.runAfterInteractions(() => {
+        if (active) void requestAccess();
+      });
+    }, 900);
     return () => {
       active = false;
+      clearTimeout(timer);
     };
   }, [autoRequest, requestAccess]);
 
@@ -107,7 +113,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
 async function tryGetCurrentPosition() {
   try {
     const current = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Highest
+      accuracy: Location.Accuracy.Balanced
     });
     if (!Number.isFinite(current.coords.latitude) || !Number.isFinite(current.coords.longitude)) return null;
     return {
@@ -140,9 +146,9 @@ async function tryBrowserGeolocation() {
 function startWatchingLocation(setLocation: (value: DeviceLocation) => void, watchState: { stop?: () => void }) {
   void Location.watchPositionAsync(
     {
-      accuracy: Location.Accuracy.Highest,
-      timeInterval: 15_000,
-      distanceInterval: 5
+      accuracy: Location.Accuracy.Balanced,
+      timeInterval: 60_000,
+      distanceInterval: 50
     },
     (current) => {
       if (!Number.isFinite(current.coords.latitude) || !Number.isFinite(current.coords.longitude)) return;

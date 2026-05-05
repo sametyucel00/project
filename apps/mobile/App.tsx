@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import { Component, type ErrorInfo, type ReactElement, type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
+import { Component, type ErrorInfo, type ReactElement, type ReactNode, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
@@ -86,8 +86,9 @@ function MobileApp() {
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const [sessionWaitExpired, setSessionWaitExpired] = useState(false);
-  const feed = useDiscoveryFeed();
   const { session, loading: sessionLoading } = useSession();
+  const shouldLoadFeed = onboardingCompleted === true && Boolean(session);
+  const feed = useDiscoveryFeed(shouldLoadFeed);
   const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
   const themeSnapshot = useSyncExternalStore(subscribeMobileTheme, getMobileThemeVersion, getMobileThemeVersion);
   useSyncExternalStore(subscribeMobileLocale, getMobileLocale, getMobileLocale);
@@ -98,6 +99,10 @@ function MobileApp() {
   useEffect(() => {
     reapplyMobileTheme();
   }, [themeSnapshot]);
+
+  useEffect(() => {
+    void (Ionicons as typeof Ionicons & { loadFont?: () => Promise<void> }).loadFont?.();
+  }, []);
 
   useEffect(() => {
     const requestedThemeVersion = getMobileThemeVersion();
@@ -120,7 +125,7 @@ function MobileApp() {
     let active = true;
     const fallbackTimer = setTimeout(() => {
       if (active) setOnboardingCompleted(false);
-    }, 2500);
+    }, 700);
     void getOnboardingCompleted().then((completed) => {
       if (!active) return;
       clearTimeout(fallbackTimer);
@@ -137,7 +142,7 @@ function MobileApp() {
       setSessionWaitExpired(false);
       return;
     }
-    const timer = setTimeout(() => setSessionWaitExpired(true), 3500);
+    const timer = setTimeout(() => setSessionWaitExpired(true), 1200);
     return () => clearTimeout(timer);
   }, [needsOnboarding, sessionLoading]);
 
@@ -252,7 +257,7 @@ function MobileApp() {
     );
   }
 
-  const screenProps: MobileScreenProps = {
+  const screenProps: MobileScreenProps = useMemo(() => ({
     feed,
     session,
     userLocation,
@@ -264,7 +269,7 @@ function MobileApp() {
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  };
+  }), [feed, session, userLocation]);
 
   return (
     <SafeAreaProvider>

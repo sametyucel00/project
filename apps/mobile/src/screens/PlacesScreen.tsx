@@ -1,4 +1,4 @@
-import { Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import { getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
 import { FilterRow, SearchBar, Section, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
@@ -21,11 +21,16 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
+  const [renderLimit, setRenderLimit] = useState(40);
 
   useEffect(() => {
     setActiveCategory(c.all);
     setActiveFilter(c.all);
   }, [c.all]);
+
+  useEffect(() => {
+    setRenderLimit(40);
+  }, [activeCategory, activeFilter, query]);
 
   const categories = useMemo(() => [
     c.all,
@@ -52,7 +57,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
       <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
       <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
       <Section title={`${c.places} (${filteredPlaces.length})`}>
-        {filteredPlaces.length ? filteredPlaces.map((place) => {
+        {filteredPlaces.length ? filteredPlaces.slice(0, renderLimit).map((place) => {
           const category = pickText(placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place))?.title, locale) || c.place;
           return (
             <WideItem
@@ -64,6 +69,11 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
             />
           );
         }) : <Text style={styles.emptyText}>{c.notFound}</Text>}
+        {filteredPlaces.length > renderLimit ? (
+          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 40)} style={[styles.actionPill, styles.actionPillSecondary]}>
+            <Text style={styles.actionPillTextSecondary}>Daha fazla göster</Text>
+          </Pressable>
+        ) : null}
       </Section>
     </>
   );

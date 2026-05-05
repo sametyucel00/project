@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { t } from "@nar/core";
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
 import { ImageBackground, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
@@ -74,7 +74,7 @@ export function Section({ title, children }: { title: string; children: ReactNod
   );
 }
 
-export function WideItem({ image, title, meta, onPress }: { image: string; title: string; meta: string; onPress?: () => void }) {
+export const WideItem = memo(function WideItem({ image, title, meta, onPress }: { image: string; title: string; meta: string; onPress?: () => void }) {
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.wideItem}>
       <ImageBackground source={{ uri: resolveImageSource(image) }} imageStyle={styles.wideImage} style={styles.wideImageBox} />
@@ -84,7 +84,7 @@ export function WideItem({ image, title, meta, onPress }: { image: string; title
       </View>
     </Pressable>
   );
-}
+});
 
 export function Mini({ title, subtitle, icon, onPress }: { title: string; subtitle: string; icon: keyof typeof Ionicons.glyphMap; onPress?: () => void }) {
   return (
@@ -134,7 +134,7 @@ const storyLabels = {
   de: { featured: "Empfohlen", theater: "Theater", coffee: "Kaffee", ancient: "Antike", emergency: "Hilfe" }
 } as const;
 
-export function OfferItem({ title, discount, meta, onPress }: { title: string; discount: string; meta: string; onPress?: () => void }) {
+export const OfferItem = memo(function OfferItem({ title, discount, meta, onPress }: { title: string; discount: string; meta: string; onPress?: () => void }) {
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.offerItem}>
       <Text style={styles.offerDiscount}>{discount}</Text>
@@ -144,7 +144,7 @@ export function OfferItem({ title, discount, meta, onPress }: { title: string; d
       </View>
     </Pressable>
   );
-}
+});
 
 export function DetailLinkRow({
   icon,
