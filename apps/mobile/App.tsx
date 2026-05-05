@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import { Component, type ErrorInfo, type ReactElement, type ReactNode, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { Component, type ErrorInfo, type ReactElement, type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
@@ -257,7 +257,7 @@ function MobileApp() {
     );
   }
 
-  const screenProps: MobileScreenProps = useMemo(() => ({
+  const screenProps: MobileScreenProps = {
     feed,
     session,
     userLocation,
@@ -269,7 +269,7 @@ function MobileApp() {
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  }), [feed, session, userLocation]);
+  };
 
   return (
     <SafeAreaProvider>
