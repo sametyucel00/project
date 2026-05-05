@@ -91,7 +91,7 @@ function getGoogleRedirectUri() {
 }
 
 function getHostedAuthCallbackUrl(provider: "google" | "apple") {
-  return `${getAuthCallbackBaseUrl().replace(/\/$/, "")}/auth/${provider}/callback/`;
+  return `${getAuthCallbackBaseUrl().replace(/\/$/, "")}/auth/${provider}/callback`;
 }
 
 function buildGoogleAuthUrl(clientId: string) {
