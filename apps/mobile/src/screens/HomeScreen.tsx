@@ -8,7 +8,7 @@ import { styles } from "../styles";
 import { theme } from "../theme";
 import { compareDistance, resolveDistanceLabel } from "../utils/location";
 import type { MobileScreenProps } from "./types";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 
 type TimeKey = "morning" | "noon" | "evening" | "night";
 type StoryKey = "Tiyatro" | "Kahve" | "Antik" | "Acil";
@@ -70,6 +70,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
   const [activeStory, setActiveStory] = useState<string | undefined>();
   const [touristItems, setTouristItems] = useState<SurvivalKitItem[]>(touristSurvivalKit);
   const [ancientStops, setAncientStops] = useState<AncientGuideStop[]>(ancientGuideStops);
+  const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
     let active = true;
@@ -97,7 +98,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
     };
   }, []);
 
-  const normalizedQuery = normalize(query);
+  const normalizedQuery = normalize(deferredQuery);
   const todayEvents = useMemo(() => feed.events
     .filter((event) => isToday(event.startsAt))
     .filter((event) => matchesText([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district], normalizedQuery))

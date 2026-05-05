@@ -198,6 +198,20 @@ function MobileApp() {
     await requestLocationAccess();
   }
 
+  const screenProps: MobileScreenProps = useMemo(() => ({
+    feed,
+    session,
+    userLocation,
+    onOpenPlace: openPlace,
+    onOpenEvent: openEvent,
+    onOpenOffer: openOffer,
+    onOpenTouristGuide: openTouristGuide,
+    onOpenAncientGuide: openAncientGuide,
+    onOpenTab: openTab,
+    onOpenAuth: openAuth,
+    onOpenLegal: openLegal
+  }), [feed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+
   if (onboardingCompleted === null || (!needsOnboarding && sessionLoading)) {
     return (
       <SafeAreaProvider>
@@ -246,20 +260,6 @@ function MobileApp() {
       </SafeAreaProvider>
     );
   }
-
-  const screenProps: MobileScreenProps = useMemo(() => ({
-    feed,
-    session,
-    userLocation,
-    onOpenPlace: openPlace,
-    onOpenEvent: openEvent,
-    onOpenOffer: openOffer,
-    onOpenTouristGuide: openTouristGuide,
-    onOpenAncientGuide: openAncientGuide,
-    onOpenTab: openTab,
-    onOpenAuth: openAuth,
-    onOpenLegal: openLegal
-  }), [feed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
 
   return (
     <SafeAreaProvider>

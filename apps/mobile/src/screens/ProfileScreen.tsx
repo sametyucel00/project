@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { badges, compactValue, defaultPushPreferences, getEventById, getOfferById, getPlaceById, userTasks } from "@nar/core";
 import { ActionPill, ActionRow, DetailPreview, StatStrip } from "../components/ui";
@@ -29,6 +29,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
   const [favoriteRows, setFavoriteRows] = useState<Array<[string, string]>>([]);
   const [status, setStatus] = useState("Profil bilgilerin hazır.");
   const [saving, setSaving] = useState(false);
+  const favoriteTitleLookup = useMemo(() => buildFavoriteTitleLookup(feed), [feed.events, feed.offers, feed.places]);
   const lastSavedRef = useRef("");
   const languageRef = useRef(language);
   const themeModeRef = useRef(themeMode);
@@ -88,7 +89,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
         const rows = snapshot.docs.map((favorite) => {
           const data = favorite.data() as { entityType?: string; entityId?: string };
           return [
-            resolveFavoriteTitle(data.entityType ?? "", data.entityId ?? "", feed),
+            resolveFavoriteTitle(data.entityType ?? "", data.entityId ?? "", favoriteTitleLookup),
             translateFavoriteType(data.entityType ?? "", language)
           ] as [string, string];
         });
@@ -100,7 +101,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
     );
 
     return () => unsubscribe();
-  }, [feed, language, uid]);
+  }, [favoriteTitleLookup, language, uid]);
 
   useEffect(() => {
     const requestedThemeVersion = getMobileThemeVersion();
@@ -479,10 +480,18 @@ function serializeSettings({
   });
 }
 
-function resolveFavoriteTitle(entityType: string, entityId: string, feed: MobileScreenProps["feed"]) {
-  if (entityType === "place") return feed.places.find((place) => place.id === entityId)?.title.tr ?? getPlaceById(entityId)?.title.tr ?? entityId;
-  if (entityType === "event") return feed.events.find((event) => event.id === entityId)?.title.tr ?? getEventById(entityId)?.title.tr ?? entityId;
-  if (entityType === "offer") return feed.offers.find((offer) => offer.id === entityId)?.title.tr ?? getOfferById(entityId)?.title.tr ?? entityId;
+function buildFavoriteTitleLookup(feed: MobileScreenProps["feed"]) {
+  const lookup = new Map<string, string>();
+  for (const place of feed.places) lookup.set(`place:${place.id}`, place.title.tr);
+  for (const event of feed.events) lookup.set(`event:${event.id}`, event.title.tr);
+  for (const offer of feed.offers) lookup.set(`offer:${offer.id}`, offer.title.tr);
+  return lookup;
+}
+
+function resolveFavoriteTitle(entityType: string, entityId: string, lookup: Map<string, string>) {
+  if (entityType === "place") return lookup.get(`place:${entityId}`) ?? getPlaceById(entityId)?.title.tr ?? entityId;
+  if (entityType === "event") return lookup.get(`event:${entityId}`) ?? getEventById(entityId)?.title.tr ?? entityId;
+  if (entityType === "offer") return lookup.get(`offer:${entityId}`) ?? getOfferById(entityId)?.title.tr ?? entityId;
   return entityId || "Belirtilmemiş";
 }
 

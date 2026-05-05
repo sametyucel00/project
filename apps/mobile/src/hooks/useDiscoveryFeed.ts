@@ -11,11 +11,13 @@ export interface DiscoveryFeedState {
   error: string | null;
 }
 
+let cachedFeed: DiscoveryFeedState | null = null;
+
 export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
   const [state, setState] = useState<DiscoveryFeedState>({
-    places: featuredPlaces,
-    events: featuredEvents,
-    offers: featuredOffers,
+    places: cachedFeed?.places ?? featuredPlaces,
+    events: cachedFeed?.events ?? featuredEvents,
+    offers: cachedFeed?.offers ?? featuredOffers,
     loading: enabled,
     error: null
   });
@@ -39,17 +41,17 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
         ]);
 
         if (!active) return;
-        setState((current) => ({
-          places: places.length ? places : current.places.length ? current.places : featuredPlaces,
-          events: events.length ? events : current.events.length ? current.events : featuredEvents,
-          offers: offers.length ? offers : current.offers.length ? current.offers : featuredOffers,
+        setState((current) => commitFeed({
+          places: places.length ? places : current.places,
+          events: events.length ? events : current.events,
+          offers: offers.length ? offers : current.offers,
           loading: false,
           error: null
         }));
       } catch (error) {
         if (!active) return;
         if (quiet) return;
-        setState((current) => ({
+        setState((current) => commitFeed({
           places: current.places.length ? current.places : featuredPlaces,
           events: current.events.length ? current.events : featuredEvents,
           offers: current.offers.length ? current.offers : featuredOffers,
@@ -59,11 +61,16 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
       }
     }
 
+    function commitFeed(next: DiscoveryFeedState) {
+      cachedFeed = next;
+      return next;
+    }
+
     interactionTask = InteractionManager.runAfterInteractions(() => {
-      void load({ places: 48, events: 24, offers: 10 });
+      void load({ places: 36, events: 18, offers: 8 });
       fullLoadTimer = setTimeout(() => {
         void load({ places: 220, events: 80, offers: 24 }, true);
-      }, 6500);
+      }, 8500);
     });
 
     return () => {

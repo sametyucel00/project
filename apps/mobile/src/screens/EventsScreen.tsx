@@ -4,7 +4,7 @@ import { FilterRow, SearchBar, Section, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { resolveDistanceLabel } from "../utils/location";
 
 const eventCopy = {
@@ -23,6 +23,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [viewMode, setViewMode] = useState<EventViewMode>("list");
   const [renderLimit, setRenderLimit] = useState(12);
+  const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
     setActiveType(c.all);
@@ -31,7 +32,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
 
   useEffect(() => {
     setRenderLimit(12);
-  }, [activeFilter, activeType, query, viewMode]);
+  }, [activeFilter, activeType, deferredQuery, viewMode]);
 
   const typeFilters = useMemo(() => [
     c.all,
@@ -40,13 +41,16 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       .map((type) => normalizeTypeLabel(pickText(type.title, locale), c.workshop))
   ], [c.all, c.workshop, feed.events, locale]);
 
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
+  const todayStartTime = useMemo(() => {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    return todayStart.getTime();
+  }, []);
   const filteredEvents = useMemo(() => feed.events
     .filter((event) => {
       const typeLabel = normalizeTypeLabel(pickText(getEventTypeMeta(event).title, locale), c.workshop);
       const haystack = normalize([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district, typeLabel].join(" "));
-      if (query.trim() && !haystack.includes(normalize(query))) return false;
+      if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
       if (activeType !== c.all && typeLabel !== activeType) return false;
       if (activeFilter === c.today && !isToday(event.startsAt)) return false;
       if (activeFilter === c.week && !isThisWeek(event.startsAt)) return false;
@@ -59,11 +63,11 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     .sort((first, second) => {
       const firstTime = new Date(first.startsAt).getTime();
       const secondTime = new Date(second.startsAt).getTime();
-      const firstUpcoming = firstTime >= todayStart.getTime();
-      const secondUpcoming = secondTime >= todayStart.getTime();
+      const firstUpcoming = firstTime >= todayStartTime;
+      const secondUpcoming = secondTime >= todayStartTime;
       if (firstUpcoming !== secondUpcoming) return firstUpcoming ? -1 : 1;
       return firstUpcoming ? firstTime - secondTime : secondTime - firstTime;
-    }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, feed.events, locale, query, todayStart, viewMode]);
+    }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, feed.events, locale, todayStartTime, viewMode]);
 
   const visibleEvents = useMemo(() => filteredEvents.map((event) => {
     const venuePlace = resolveEventVenue(feed.places, event.venueName, event.district, locale);

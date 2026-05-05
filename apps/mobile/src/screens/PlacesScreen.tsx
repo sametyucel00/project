@@ -4,7 +4,7 @@ import { FilterRow, SearchBar, Section, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { resolveDistanceLabel } from "../utils/location";
 
 const placeCopy = {
@@ -22,6 +22,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const [activeCategory, setActiveCategory] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [renderLimit, setRenderLimit] = useState(14);
+  const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
     setActiveCategory(c.all);
@@ -30,7 +31,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
 
   useEffect(() => {
     setRenderLimit(14);
-  }, [activeCategory, activeFilter, query]);
+  }, [activeCategory, activeFilter, deferredQuery]);
 
   const categories = useMemo(() => [
     c.all,
@@ -43,13 +44,13 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     const category = placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place));
     const categoryTitle = pickText(category?.title, locale);
     const haystack = normalize([pickText(place.title, locale), pickText(place.description, locale), place.district, categoryTitle, place.address].join(" "));
-    if (query.trim() && !haystack.includes(normalize(query))) return false;
+    if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
     if (activeCategory !== c.all && categoryTitle !== activeCategory) return false;
     if (activeFilter === c.open && !place.openNow) return false;
     if (activeFilter === c.popular && (place.googleReviewCount ?? 0) < 100) return false;
     if (activeFilter === c.offers && !feed.offers.some((offer) => offer.placeId === place.id)) return false;
     return true;
-  }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, feed.offers, feed.places, locale, query]);
+  }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, deferredQuery, feed.offers, feed.places, locale]);
 
   return (
     <>

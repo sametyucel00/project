@@ -3,7 +3,7 @@ import { compactValue } from "@nar/core";
 import { FilterRow, OfferItem, SearchBar, Section, StoryRail } from "../components/ui";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 
 const offerFilters = ["Tümü", "QR ile", "Puanla", "Sınırlı", "Öne çıkan"];
 
@@ -12,20 +12,21 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
   const [activeStory, setActiveStory] = useState<string | undefined>();
   const [activeFilter, setActiveFilter] = useState("Tümü");
   const [renderLimit, setRenderLimit] = useState(12);
+  const deferredQuery = useDeferredValue(query);
 
   const filteredOffers = useMemo(() => feed.offers.filter((offer) => {
     const haystack = normalize([offer.title.tr, offer.description.tr, offer.conditions.tr, offer.discountLabel].join(" "));
-    if (query.trim() && !haystack.includes(normalize(query))) return false;
+    if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
     if (activeFilter === "QR ile" && !offer.requiresQr) return false;
     if (activeFilter === "Puanla" && !offer.pointCost) return false;
     if (activeFilter === "Sınırlı" && !offer.useLimit) return false;
     if (activeFilter === "Öne çıkan" && !offer.featured && !offer.storyEnabled) return false;
     return true;
-  }), [activeFilter, feed.offers, query]);
+  }), [activeFilter, deferredQuery, feed.offers]);
 
   useEffect(() => {
     setRenderLimit(12);
-  }, [activeFilter, query]);
+  }, [activeFilter, deferredQuery]);
 
   const firstOffer = filteredOffers[0];
   const remainingUse = firstOffer?.useLimit ? Math.max(firstOffer.useLimit - (firstOffer.usedCount ?? 0), 0) : null;
