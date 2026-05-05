@@ -15,3 +15,7 @@ ui-debug.log
 *.log
 android
 ios
+!apps/mobile/android/
+!apps/mobile/android/**
+!apps/mobile/ios/
+!apps/mobile/ios/**
