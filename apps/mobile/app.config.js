@@ -11,7 +11,7 @@ const projectId =
   process.env.EXPO_PUBLIC_EAS_PROJECT_ID ||
   process.env.EAS_PROJECT_ID ||
   expo?.extra?.eas?.projectId ||
-  "9030216f-8d34-4765-9b87-89b8cd4892aa";
+  "1bb2e55f-da34-4acf-a038-b7bd4f98626c";
 
 const publicFirebaseConfig = {
   apiKey:
@@ -33,7 +33,7 @@ module.exports = {
   splash: {
     backgroundColor: "#ffffff"
   },
-  owner: process.env.EXPO_OWNER || "smtycl",
+  owner: process.env.EXPO_OWNER || "samet52",
   plugins: [
     ...(expo.plugins ?? []),
     "expo-web-browser",

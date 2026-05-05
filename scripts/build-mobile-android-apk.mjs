@@ -7,14 +7,20 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(scriptDir, "..");
 const mobileRoot = path.join(repoRoot, "apps", "mobile");
 const androidRoot = path.join(mobileRoot, "android");
-const gradleBinary = process.platform === "win32" ? "gradlew.bat" : "./gradlew";
 
 if (!existsSync(androidRoot)) {
   console.error("Android native project not found. Run `npm run prebuild:android` first.");
   process.exit(1);
 }
 
-execFileSync(gradleBinary, ["assembleDebug"], {
-  cwd: androidRoot,
-  stdio: "inherit"
-});
+if (process.platform === "win32") {
+  execFileSync("cmd.exe", ["/d", "/s", "/c", "gradlew.bat assembleDebug"], {
+    cwd: androidRoot,
+    stdio: "inherit"
+  });
+} else {
+  execFileSync("./gradlew", ["assembleDebug"], {
+    cwd: androidRoot,
+    stdio: "inherit"
+  });
+}
