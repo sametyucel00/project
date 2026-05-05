@@ -2,6 +2,7 @@ import { featuredEvents, featuredOffers, featuredPlaces, type EventItem, type Of
 import { useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
+import { readJsonCache, writeJsonCache } from "../services/cache";
 
 export interface DiscoveryFeedState {
   places: Place[];
@@ -12,6 +13,7 @@ export interface DiscoveryFeedState {
 }
 
 let cachedFeed: DiscoveryFeedState | null = null;
+const feedCacheKey = "narrehberi:mobile:discovery-feed:v2";
 
 export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
   const [state, setState] = useState<DiscoveryFeedState>({
@@ -32,6 +34,18 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     let fullLoadTimer: ReturnType<typeof setTimeout> | undefined;
     let interactionTask: { cancel?: () => void } | undefined;
 
+    void readJsonCache<DiscoveryFeedState>(feedCacheKey).then((cached) => {
+      if (!active || !cached) return;
+      setState((current) => ({
+        places: cached.places?.length ? cached.places : current.places,
+        events: cached.events?.length ? cached.events : current.events,
+        offers: cached.offers?.length ? cached.offers : current.offers,
+        loading: current.loading,
+        error: current.error
+      }));
+      cachedFeed = cached;
+    });
+
     async function load(limitSet: { places: number; events: number; offers: number }, quiet = false) {
       try {
         const [places, events, offers] = await Promise.all([
@@ -41,23 +55,31 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
         ]);
 
         if (!active) return;
-        setState((current) => commitFeed({
-          places: places.length ? places : current.places,
-          events: events.length ? events : current.events,
-          offers: offers.length ? offers : current.offers,
-          loading: false,
-          error: null
-        }));
+        setState((current) => {
+          const nextState = commitFeed({
+            places: places.length ? places : current.places,
+            events: events.length ? events : current.events,
+            offers: offers.length ? offers : current.offers,
+            loading: false,
+            error: null
+          });
+          void writeJsonCache(feedCacheKey, nextState);
+          return nextState;
+        });
       } catch (error) {
         if (!active) return;
         if (quiet) return;
-        setState((current) => commitFeed({
-          places: current.places.length ? current.places : featuredPlaces,
-          events: current.events.length ? current.events : featuredEvents,
-          offers: current.offers.length ? current.offers : featuredOffers,
-          loading: false,
-          error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
-        }));
+        setState((current) => {
+          const nextState = commitFeed({
+            places: current.places.length ? current.places : featuredPlaces,
+            events: current.events.length ? current.events : featuredEvents,
+            offers: current.offers.length ? current.offers : featuredOffers,
+            loading: false,
+            error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
+          });
+          void writeJsonCache(feedCacheKey, nextState);
+          return nextState;
+        });
       }
     }
 
