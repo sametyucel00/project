@@ -11,7 +11,7 @@ const projectId =
   process.env.EXPO_PUBLIC_EAS_PROJECT_ID ||
   process.env.EAS_PROJECT_ID ||
   expo?.extra?.eas?.projectId ||
-  "556d7144-5b3c-4b9f-a785-916ae5d35a28";
+  "";
 
 const publicFirebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "AIzaSyA9QfI2_s10k8HL-uAglDYHVqADG5wx0v0",
@@ -30,7 +30,7 @@ module.exports = {
   splash: {
     backgroundColor: "#ffffff"
   },
-  owner: process.env.EXPO_OWNER || "simic52",
+  owner: process.env.EXPO_OWNER || "smtycl",
   plugins: [
     ...(expo.plugins ?? []),
     "expo-web-browser",
@@ -73,6 +73,6 @@ module.exports = {
     },
     authCallbackBaseUrl: process.env.EXPO_PUBLIC_AUTH_CALLBACK_BASE_URL || "https://narrehberi.com",
     googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-    eas: { ...(expo.extra?.eas ?? {}), projectId }
+    eas: projectId ? { ...(expo.extra?.eas ?? {}), projectId } : { ...(expo.extra?.eas ?? {}) }
   }
 };
