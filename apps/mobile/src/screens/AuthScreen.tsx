@@ -236,13 +236,15 @@ function formatAuthError(error: unknown, fallback: string) {
 
   if (
     message.includes("auth/requests-to-this-api") ||
+    message.includes("auth/requests-from-referer") ||
+    message.includes("referer-<empty>") ||
     message.includes("auth/api-key-not-valid") ||
     message.includes("identitytoolkit")
   ) {
-    return "Giriş servisleri şu anda yapılandırma kontrolü bekliyor. Lütfen kısa süre sonra tekrar deneyin.";
+    return "Giriş servisinin mobil API anahtarı kısıtı güncellenmeli. Lütfen ayar kontrolünden sonra tekrar deneyin.";
   }
 
-  if (message.includes("invalid_request") || message.includes("redirect_uri") || message.includes("redirect url")) {
+  if (message.includes("invalid_request") || message.includes("redirect_uri") || message.includes("redirect url") || message.includes("nonce")) {
     return "Sosyal giriş bağlantısı doğrulanamadı. Lütfen e-posta ile devam edin veya daha sonra tekrar deneyin.";
   }
 

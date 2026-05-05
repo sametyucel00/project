@@ -94,14 +94,25 @@ function getHostedAuthCallbackUrl(provider: "google" | "apple") {
   return `${getAuthCallbackBaseUrl().replace(/\/$/, "")}/auth/${provider}/callback`;
 }
 
+function createAuthNonce() {
+  const randomPart =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2);
+  return `narrehberi-${Date.now()}-${randomPart}`;
+}
+
 function buildGoogleAuthUrl(clientId: string) {
+  const nonce = createAuthNonce();
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: getHostedAuthCallbackUrl("google"),
     response_type: "id_token token",
     scope: "openid profile email",
     include_granted_scopes: "true",
-    prompt: "select_account"
+    prompt: "select_account",
+    nonce,
+    state: nonce
   });
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
