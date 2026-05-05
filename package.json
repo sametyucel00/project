@@ -51,6 +51,24 @@
     "node": ">=20"
   },
   "dependencies": {
-    "playwright": "^1.59.1"
+    "playwright": "^1.59.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.6"
+  },
+  "overrides": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.6",
+    "@react-native/assets-registry": "0.79.6",
+    "@react-native/community-cli-plugin": "0.79.6",
+    "@react-native/debugger-frontend": "0.79.6",
+    "@react-native/dev-middleware": "0.79.6",
+    "@react-native/gradle-plugin": "0.79.6",
+    "@react-native/js-polyfills": "0.79.6",
+    "@react-native/virtualized-lists": "0.79.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.14"
   }
 }
