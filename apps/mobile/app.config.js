@@ -46,7 +46,7 @@ module.exports = {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.12",
+    buildNumber: "1.13",
     infoPlist: {
       ...(expo.ios?.infoPlist ?? {}),
       NSLocationWhenInUseUsageDescription:
@@ -56,7 +56,7 @@ module.exports = {
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9112
+    versionCode: 9113
   },
   extra: {
     ...(expo.extra ?? {}),

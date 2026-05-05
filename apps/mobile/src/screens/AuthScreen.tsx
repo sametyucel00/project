@@ -244,6 +244,14 @@ function formatAuthError(error: unknown, fallback: string) {
     return "Giriş servisinin mobil API anahtarı kısıtı güncellenmeli. Lütfen ayar kontrolünden sonra tekrar deneyin.";
   }
 
+  if (
+    message.includes("audience in ID Token") ||
+    message.includes("expected audience") ||
+    (message.includes("auth/invalid-credential") && message.includes("Apple"))
+  ) {
+    return "Apple giriş kimliği Firebase ile eşleşmiyor. Firebase Apple sağlayıcısındaki Services ID ile uygulamadaki Apple Service ID aynı olmalı.";
+  }
+
   if (message.includes("invalid_request") || message.includes("redirect_uri") || message.includes("redirect url") || message.includes("nonce")) {
     return "Sosyal giriş bağlantısı doğrulanamadı. Lütfen e-posta ile devam edin veya daha sonra tekrar deneyin.";
   }
