@@ -4,6 +4,7 @@ type RuntimeExtra = {
   firebase?: Record<string, string | undefined>;
   auth?: Record<string, string | undefined>;
   googleMapsApiKey?: string;
+  authCallbackBaseUrl?: string;
 };
 
 const constants = Constants as typeof Constants & {
@@ -48,6 +49,11 @@ export function getGoogleWebClientId() {
     || readValue("EXPO_PUBLIC_GOOGLE_CLIENT_ID", extra.auth?.googleClientId)
     || readValue("GOOGLE_WEB_CLIENT_ID")
     || readValue("GOOGLE_CLIENT_ID");
+}
+
+export function getAuthCallbackBaseUrl() {
+  return readValue("EXPO_PUBLIC_AUTH_CALLBACK_BASE_URL", extra.authCallbackBaseUrl)
+    || "https://narrehberi.com";
 }
 
 export function getAppleServiceId() {

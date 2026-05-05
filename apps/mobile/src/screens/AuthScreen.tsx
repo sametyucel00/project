@@ -127,7 +127,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
       if (result === AUTH_REDIRECT_STARTED) return;
       onSignedIn();
     } catch (error) {
-      setStatus(error instanceof Error && error.message ? error.message : c.statusError);
+      setStatus(formatAuthError(error, c.statusError));
     }
   }
 
@@ -137,7 +137,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
       await action();
       setStatus(successMessage ?? c.statusResetSent);
     } catch (error) {
-      setStatus(error instanceof Error && error.message ? error.message : c.statusError);
+      setStatus(formatAuthError(error, c.statusError));
     }
   }
 
@@ -228,4 +228,23 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
       </ScrollView>
     </View>
   );
+}
+
+function formatAuthError(error: unknown, fallback: string) {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  if (!message) return fallback;
+
+  if (
+    message.includes("auth/requests-to-this-api") ||
+    message.includes("auth/api-key-not-valid") ||
+    message.includes("identitytoolkit")
+  ) {
+    return "Giriş servisleri şu anda yapılandırma kontrolü bekliyor. Lütfen kısa süre sonra tekrar deneyin.";
+  }
+
+  if (message.includes("invalid_request") || message.includes("redirect_uri") || message.includes("redirect url")) {
+    return "Sosyal giriş bağlantısı doğrulanamadı. Lütfen e-posta ile devam edin veya daha sonra tekrar deneyin.";
+  }
+
+  return message;
 }

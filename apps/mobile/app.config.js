@@ -46,7 +46,7 @@ module.exports = {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.7",
+    buildNumber: "1.8",
     infoPlist: {
       ...(expo.ios?.infoPlist ?? {}),
       NSLocationWhenInUseUsageDescription:
@@ -56,7 +56,7 @@ module.exports = {
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9107
+    versionCode: 9108
   },
   extra: {
     ...(expo.extra ?? {}),
@@ -71,6 +71,7 @@ module.exports = {
       appleServiceId: process.env.EXPO_PUBLIC_APPLE_SERVICE_ID || "",
       appleWebClientId: process.env.EXPO_PUBLIC_APPLE_WEB_CLIENT_ID || ""
     },
+    authCallbackBaseUrl: process.env.EXPO_PUBLIC_AUTH_CALLBACK_BASE_URL || "https://narrehberi.com",
     googleMapsApiKey: process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY || "",
     eas: { ...(expo.extra?.eas ?? {}), projectId }
   }
