@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import { Component, type ErrorInfo, type ReactElement, type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
+import { Component, type ErrorInfo, type ReactElement, type ReactNode, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
@@ -158,41 +158,41 @@ function MobileApp() {
           : surface.kind === "offer" ? "Fırsat Detayı"
             : t(locale, "appName");
 
-  function openTab(tab: TabLabel) {
+  const openTab = useCallback((tab: TabLabel) => {
     setActiveTab(tab);
     setSurface({ kind: "tab", tab });
-  }
+  }, []);
 
-  function openPlace(placeId: string) {
+  const openPlace = useCallback((placeId: string) => {
     setActiveTab("Mekanlar");
     setSurface({ kind: "place", placeId });
-  }
+  }, []);
 
-  function openEvent(eventId: string) {
+  const openEvent = useCallback((eventId: string) => {
     setActiveTab("Etkinlikler");
     setSurface({ kind: "event", eventId });
-  }
+  }, []);
 
-  function openOffer(offerId: string) {
+  const openOffer = useCallback((offerId: string) => {
     setActiveTab("Fırsatlar");
     setSurface({ kind: "offer", offerId });
-  }
+  }, []);
 
-  function openTouristGuide() {
+  const openTouristGuide = useCallback(() => {
     setSurface({ kind: "tourist" });
-  }
+  }, []);
 
-  function openAncientGuide() {
+  const openAncientGuide = useCallback(() => {
     setSurface({ kind: "ancient" });
-  }
+  }, []);
 
-  function openAuth() {
+  const openAuth = useCallback(() => {
     setSurface({ kind: "auth" });
-  }
+  }, []);
 
-  function openLegal(page: "privacy" | "terms") {
+  const openLegal = useCallback((page: "privacy" | "terms") => {
     setSurface({ kind: "legal", page });
-  }
+  }, []);
 
   function backToTabs() {
     setSurface({ kind: "tab", tab: activeTab });
@@ -257,7 +257,7 @@ function MobileApp() {
     );
   }
 
-  const screenProps: MobileScreenProps = {
+  const screenProps: MobileScreenProps = useMemo(() => ({
     feed,
     session,
     userLocation,
@@ -269,7 +269,7 @@ function MobileApp() {
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  };
+  }), [feed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
 
   return (
     <SafeAreaProvider>

@@ -21,7 +21,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
-  const [renderLimit, setRenderLimit] = useState(40);
+  const [renderLimit, setRenderLimit] = useState(14);
 
   useEffect(() => {
     setActiveCategory(c.all);
@@ -29,7 +29,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   }, [c.all]);
 
   useEffect(() => {
-    setRenderLimit(40);
+    setRenderLimit(14);
   }, [activeCategory, activeFilter, query]);
 
   const categories = useMemo(() => [
@@ -70,7 +70,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
           );
         }) : <Text style={styles.emptyText}>{c.notFound}</Text>}
         {filteredPlaces.length > renderLimit ? (
-          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 40)} style={[styles.actionPill, styles.actionPillSecondary]}>
+          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 14)} style={[styles.actionPill, styles.actionPillSecondary]}>
             <Text style={styles.actionPillTextSecondary}>Daha fazla göster</Text>
           </Pressable>
         ) : null}

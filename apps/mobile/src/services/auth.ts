@@ -173,6 +173,12 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
   };
 }
 
+function shouldGrantInitialPoints(user: User, data: Record<string, unknown> | null) {
+  if (user.isAnonymous) return false;
+  const points = typeof data?.points === "number" ? data.points : null;
+  return (points === null || points < defaultUserPoints) && !data?.initialPointsGrantedAt;
+}
+
 export async function ensureMobileUserProfile(user: User, requestedRole?: SelfServiceRole): Promise<MobileSession> {
   try {
     const userRef = doc(db, "users", user.uid);
@@ -180,13 +186,12 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
     const storedData = snapshot.exists() ? (snapshot.data() as Record<string, unknown>) : null;
 
     if (snapshot.exists() && !user.isAnonymous) {
-      const storedPoints = typeof storedData?.points === "number" ? storedData.points : null;
-      const hasSeedMarker = Boolean(storedData?.pointsSeededAt);
-      if ((storedPoints === null || storedPoints === 0) && !hasSeedMarker) {
+      if (shouldGrantInitialPoints(user, storedData)) {
         await setDoc(
           userRef,
           {
             points: defaultUserPoints,
+            initialPointsGrantedAt: serverTimestamp(),
             pointsSeededAt: serverTimestamp(),
             updatedAt: serverTimestamp()
           },
@@ -226,6 +231,7 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
         themeMode: "system",
         notificationPreferences: defaultPushPreferences,
         points,
+        initialPointsGrantedAt: user.isAnonymous ? null : serverTimestamp(),
         pointsSeededAt: user.isAnonymous ? null : serverTimestamp(),
         qrCodeId: "qr_" + user.uid,
         favoritePlaceIds: [],

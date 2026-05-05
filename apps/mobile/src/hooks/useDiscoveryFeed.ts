@@ -60,10 +60,10 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     }
 
     interactionTask = InteractionManager.runAfterInteractions(() => {
-      void load({ places: 80, events: 40, offers: 16 });
+      void load({ places: 48, events: 24, offers: 10 });
       fullLoadTimer = setTimeout(() => {
-        void load({ places: 300, events: 120, offers: 30 }, true);
-      }, 1800);
+        void load({ places: 220, events: 80, offers: 24 }, true);
+      }, 6500);
     });
 
     return () => {

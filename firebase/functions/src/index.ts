@@ -47,7 +47,18 @@ export const ensureUserProfile = onCall(async (request) => {
   const existing = await userRef.get();
   if (existing.exists) {
     const data = existing.data() ?? {};
-    return { id: uid, created: false, role: data.role ?? "individual" };
+    const isAnonymous = request.auth?.token.firebase?.sign_in_provider === "anonymous";
+    const currentPoints = typeof data.points === "number" ? data.points : null;
+    if (!isAnonymous && (currentPoints === null || currentPoints < 500) && !data.initialPointsGrantedAt) {
+      await userRef.set({
+        points: 500,
+        initialPointsGrantedAt: FieldValue.serverTimestamp(),
+        pointsSeededAt: FieldValue.serverTimestamp(),
+        updatedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+      return { id: uid, created: false, role: data.role ?? "individual", points: 500 };
+    }
+    return { id: uid, created: false, role: data.role ?? "individual", points: isAnonymous ? 0 : data.points ?? 500 };
   }
 
   const requestedRole = String(request.data?.requestedRole ?? "individual");
@@ -61,7 +72,9 @@ export const ensureUserProfile = onCall(async (request) => {
     email: request.auth?.token.email ?? "",
     city: "Antalya",
     preferredLocale: "tr",
-    points: 500,
+    points: request.auth?.token.firebase?.sign_in_provider === "anonymous" ? 0 : 500,
+    initialPointsGrantedAt: request.auth?.token.firebase?.sign_in_provider === "anonymous" ? null : FieldValue.serverTimestamp(),
+    pointsSeededAt: request.auth?.token.firebase?.sign_in_provider === "anonymous" ? null : FieldValue.serverTimestamp(),
     qrCodeId: `nar-${uid}`,
     favoritePlaceIds: [],
     favoriteEventIds: [],

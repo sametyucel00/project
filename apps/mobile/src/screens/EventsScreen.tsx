@@ -22,7 +22,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   const [activeType, setActiveType] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [viewMode, setViewMode] = useState<EventViewMode>("list");
-  const [renderLimit, setRenderLimit] = useState(35);
+  const [renderLimit, setRenderLimit] = useState(12);
 
   useEffect(() => {
     setActiveType(c.all);
@@ -30,7 +30,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   }, [c.all]);
 
   useEffect(() => {
-    setRenderLimit(35);
+    setRenderLimit(12);
   }, [activeFilter, activeType, query, viewMode]);
 
   const typeFilters = useMemo(() => [
@@ -107,7 +107,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
           <WideItem key={event.id} image={event.coverImage} title={pickText(event.title, locale)} meta={`${formatDate(event.startsAt, locale)} · ${event.venueName} · ${distance}`} onPress={() => onOpenEvent?.(event.id)} />
         )) : <Text style={styles.emptyText}>{c.noMatch}</Text>}
         {visibleEvents.length > renderLimit ? (
-          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 35)} style={[styles.actionPill, styles.actionPillSecondary]}>
+          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 12)} style={[styles.actionPill, styles.actionPillSecondary]}>
             <Text style={styles.actionPillTextSecondary}>Daha fazla göster</Text>
           </Pressable>
         ) : null}

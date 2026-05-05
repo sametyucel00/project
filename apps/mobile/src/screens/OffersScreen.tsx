@@ -11,7 +11,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
   const [query, setQuery] = useState("");
   const [activeStory, setActiveStory] = useState<string | undefined>();
   const [activeFilter, setActiveFilter] = useState("Tümü");
-  const [renderLimit, setRenderLimit] = useState(24);
+  const [renderLimit, setRenderLimit] = useState(12);
 
   const filteredOffers = useMemo(() => feed.offers.filter((offer) => {
     const haystack = normalize([offer.title.tr, offer.description.tr, offer.conditions.tr, offer.discountLabel].join(" "));
@@ -24,7 +24,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
   }), [activeFilter, feed.offers, query]);
 
   useEffect(() => {
-    setRenderLimit(24);
+    setRenderLimit(12);
   }, [activeFilter, query]);
 
   const firstOffer = filteredOffers[0];
@@ -45,7 +45,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
           <OfferItem key={offer.id} title={offer.title.tr} discount={offer.discountLabel} meta={offer.conditions.tr} onPress={() => onOpenOffer?.(offer.id)} />
         )) : <Text style={styles.emptyText}>Seçtiğin filtreye uygun fırsat bulunamadı.</Text>}
         {filteredOffers.length > renderLimit ? (
-          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 24)} style={[styles.actionPill, styles.actionPillSecondary]}>
+          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 12)} style={[styles.actionPill, styles.actionPillSecondary]}>
             <Text style={styles.actionPillTextSecondary}>Daha fazla göster</Text>
           </Pressable>
         ) : null}
