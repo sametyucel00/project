@@ -11,7 +11,7 @@ const projectId =
   process.env.EXPO_PUBLIC_EAS_PROJECT_ID ||
   process.env.EAS_PROJECT_ID ||
   expo?.extra?.eas?.projectId ||
-  "";
+  "9030216f-8d34-4765-9b87-89b8cd4892aa";
 
 const publicFirebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "AIzaSyA9QfI2_s10k8HL-uAglDYHVqADG5wx0v0",
