@@ -32,6 +32,7 @@ import { Platform } from "react-native";
 import { auth, db, functions } from "../firebase";
 import { getAppleServiceId, getAuthCallbackBaseUrl, getGoogleWebClientId } from "../runtimeConfig";
 import { normalizeLocale, normalizeThemeMode, type MobileUserPreferences } from "./preferences";
+import { clearCachedMobileSession, readCachedMobileSession, writeCachedMobileSession } from "./sessionCache";
 
 export type MobileTab = "Ana Sayfa" | "Mekanlar" | "Etkinlikler" | "Fırsatlar" | "Profil";
 
@@ -139,7 +140,7 @@ function buildAppleAuthUrl(serviceId: string) {
 
 function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): MobileSession {
   const role: SelfServiceRole = user.isAnonymous ? "individual" : requestedRole ?? "individual";
-  return {
+  const session: MobileSession = {
     uid: user.uid,
     email: user.email ?? "",
     displayName: user.displayName ?? "Nar kullanıcısı",
@@ -152,11 +153,13 @@ function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): Mobi
     points: user.isAnonymous ? 0 : defaultUserPoints,
     nextTab: resolveRoleTab(role)
   };
+  void writeCachedMobileSession(session);
+  return session;
 }
 
 function toSession(user: User, data: Record<string, unknown>): MobileSession {
   const role = (data.role ?? "individual") as UserRole;
-  return {
+  const session: MobileSession = {
     uid: user.uid,
     email: typeof data.email === "string" ? data.email : user.email ?? "",
     displayName: typeof data.displayName === "string" ? data.displayName : user.displayName ?? "Nar kullanıcısı",
@@ -172,6 +175,8 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
     points: user.isAnonymous ? 0 : typeof data.points === "number" ? data.points : defaultUserPoints,
     nextTab: resolveRoleTab(role)
   };
+  void writeCachedMobileSession(session);
+  return session;
 }
 
 function shouldGrantInitialPoints(user: User, data: Record<string, unknown> | null) {
@@ -198,7 +203,7 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
           },
           { merge: true }
         );
-        return {
+        const session: MobileSession = {
           uid: user.uid,
           email: typeof storedData?.email === "string" ? storedData.email : user.email ?? "",
           displayName: typeof storedData?.displayName === "string" ? storedData.displayName : user.displayName ?? "Nar kullanıcısı",
@@ -214,6 +219,8 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
           points: defaultUserPoints,
           nextTab: resolveRoleTab((storedData?.role ?? "individual") as UserRole)
         };
+        void writeCachedMobileSession(session);
+        return session;
       }
     }
 
@@ -244,7 +251,7 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
       };
 
       await setDoc(userRef, profile);
-      return {
+      const session: MobileSession = {
         uid: user.uid,
         email: profile.email,
         displayName: profile.displayName,
@@ -257,11 +264,17 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
         points: profile.points,
         nextTab: resolveRoleTab(profile.role)
       };
+      void writeCachedMobileSession(session);
+      return session;
     }
 
-    return toSession(user, snapshot.data() as Record<string, unknown>);
+    const session = toSession(user, snapshot.data() as Record<string, unknown>);
+    void writeCachedMobileSession(session);
+    return session;
   } catch {
-    return buildFallbackSession(user, requestedRole);
+    const session = buildFallbackSession(user, requestedRole);
+    void writeCachedMobileSession(session);
+    return session;
   }
 }
 
@@ -378,6 +391,7 @@ export async function loginWithApplePopup() {
 
 export async function logout() {
   await signOut(auth);
+  await clearCachedMobileSession();
 }
 
 export async function deleteCurrentAccount() {
@@ -397,9 +411,11 @@ export async function deleteCurrentAccount() {
     await deleteUser(currentUser).catch(async () => {
       await signOut(auth);
     });
+    await clearCachedMobileSession();
     return;
   }
   if (auth.currentUser) await signOut(auth);
+  await clearCachedMobileSession();
 }
 
 export function watchAuthSession(onSession: (session: MobileSession | null) => void, onError?: (error: Error) => void) {
@@ -410,12 +426,19 @@ export function watchAuthSession(onSession: (session: MobileSession | null) => v
       unsubscribeProfile = undefined;
 
       if (!user) {
+        await clearCachedMobileSession();
         onSession(null);
         return;
       }
 
+      const cachedSession = await readCachedMobileSession();
+      if (cachedSession?.uid === user.uid) {
+        onSession(cachedSession);
+      }
+
       const current = await ensureMobileUserProfile(user);
       onSession(current);
+      void writeCachedMobileSession(current);
 
       const userRef = doc(db, "users", user.uid);
       unsubscribeProfile = onSnapshot(

@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import { Component, type ErrorInfo, type ReactElement, type ReactNode, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { Component, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
@@ -149,39 +149,47 @@ function MobileApp() {
             : t(locale, "appName");
 
   const openTab = useCallback((tab: TabLabel) => {
-    setActiveTab(tab);
-    setSurface({ kind: "tab", tab });
+    startTransition(() => {
+      setActiveTab(tab);
+      setSurface({ kind: "tab", tab });
+    });
   }, []);
 
   const openPlace = useCallback((placeId: string) => {
-    setActiveTab("Mekanlar");
-    setSurface({ kind: "place", placeId });
+    startTransition(() => {
+      setActiveTab("Mekanlar");
+      setSurface({ kind: "place", placeId });
+    });
   }, []);
 
   const openEvent = useCallback((eventId: string) => {
-    setActiveTab("Etkinlikler");
-    setSurface({ kind: "event", eventId });
+    startTransition(() => {
+      setActiveTab("Etkinlikler");
+      setSurface({ kind: "event", eventId });
+    });
   }, []);
 
   const openOffer = useCallback((offerId: string) => {
-    setActiveTab("Fırsatlar");
-    setSurface({ kind: "offer", offerId });
+    startTransition(() => {
+      setActiveTab("Fırsatlar");
+      setSurface({ kind: "offer", offerId });
+    });
   }, []);
 
   const openTouristGuide = useCallback(() => {
-    setSurface({ kind: "tourist" });
+    startTransition(() => setSurface({ kind: "tourist" }));
   }, []);
 
   const openAncientGuide = useCallback(() => {
-    setSurface({ kind: "ancient" });
+    startTransition(() => setSurface({ kind: "ancient" }));
   }, []);
 
   const openAuth = useCallback(() => {
-    setSurface({ kind: "auth" });
+    startTransition(() => setSurface({ kind: "auth" }));
   }, []);
 
   const openLegal = useCallback((page: "privacy" | "terms") => {
-    setSurface({ kind: "legal", page });
+    startTransition(() => setSurface({ kind: "legal", page }));
   }, []);
 
   function backToTabs() {
@@ -190,8 +198,10 @@ function MobileApp() {
 
   async function completeOnboarding() {
     await markOnboardingCompleted();
-    setOnboardingCompleted(true);
-    setSurface({ kind: "auth" });
+    startTransition(() => {
+      setOnboardingCompleted(true);
+      setSurface({ kind: "auth" });
+    });
   }
 
   async function grantLocationAccess() {
