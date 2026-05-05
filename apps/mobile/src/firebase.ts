@@ -1,6 +1,5 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth, initializeAuth } from "firebase/auth";
-import * as FirebaseAuthRuntime from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
@@ -15,15 +14,50 @@ if (!firebaseConfig.apiKey || !firebaseConfig.projectId || firebaseConfig.apiKey
 
 export const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const isWebEnvironment = typeof window !== "undefined" && typeof document !== "undefined";
-const reactNativePersistence = (FirebaseAuthRuntime as unknown as {
-  getReactNativePersistence?: (storage: typeof AsyncStorage) => unknown;
-}).getReactNativePersistence;
+
+function getAsyncStoragePersistence(storage: typeof AsyncStorage) {
+  return class ReactNativeAsyncStoragePersistence {
+    static type = "LOCAL";
+    readonly type = "LOCAL";
+
+    async _isAvailable() {
+      try {
+        await storage.setItem("firebase:auth-storage-check", "1");
+        await storage.removeItem("firebase:auth-storage-check");
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    _set(key: string, value: unknown) {
+      return storage.setItem(key, JSON.stringify(value));
+    }
+
+    async _get(key: string) {
+      const json = await storage.getItem(key);
+      return json ? JSON.parse(json) : null;
+    }
+
+    _remove(key: string) {
+      return storage.removeItem(key);
+    }
+
+    _addListener() {
+      return undefined;
+    }
+
+    _removeListener() {
+      return undefined;
+    }
+  };
+}
 
 export const auth = (() => {
   if (isWebEnvironment) return getAuth(firebaseApp);
   try {
     return initializeAuth(firebaseApp, {
-      persistence: reactNativePersistence ? [reactNativePersistence(AsyncStorage) as never] : undefined
+      persistence: [getAsyncStoragePersistence(AsyncStorage) as never]
     });
   } catch {
     return getAuth(firebaseApp);

@@ -85,7 +85,6 @@ function MobileApp() {
   const [activeTab, setActiveTab] = useState<TabLabel>("Ana Sayfa");
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
-  const [sessionWaitExpired, setSessionWaitExpired] = useState(false);
   const { session, loading: sessionLoading } = useSession();
   const shouldLoadFeed = onboardingCompleted === true && Boolean(session);
   const feed = useDiscoveryFeed(shouldLoadFeed);
@@ -136,15 +135,6 @@ function MobileApp() {
       clearTimeout(fallbackTimer);
     };
   }, []);
-
-  useEffect(() => {
-    if (needsOnboarding || !sessionLoading) {
-      setSessionWaitExpired(false);
-      return;
-    }
-    const timer = setTimeout(() => setSessionWaitExpired(true), 1200);
-    return () => clearTimeout(timer);
-  }, [needsOnboarding, sessionLoading]);
 
   const showAuth = surface.kind === "auth" || (!needsOnboarding && !session);
   const showLegal = surface.kind === "legal";
@@ -208,7 +198,7 @@ function MobileApp() {
     await requestLocationAccess();
   }
 
-  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading && !sessionWaitExpired)) {
+  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading)) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.startupBlank} />

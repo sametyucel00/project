@@ -73,8 +73,16 @@ export async function completeUserTask(input: { taskId: string; rewardPoints: nu
 }
 
 export async function resetCurrentUserScanHistory() {
-  const result = await resetCurrentUserScanHistoryCallable();
-  return result.data;
+  try {
+    const result = await resetCurrentUserScanHistoryCallable();
+    return result.data;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes("not-found") || message.includes("functions/not-found")) {
+      return { ok: true, deletedCount: 0 };
+    }
+    throw error;
+  }
 }
 
 export async function fetchUserQrTransactions(userId: string, limitCount = 20) {

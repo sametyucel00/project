@@ -4,6 +4,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   GoogleAuthProvider,
   OAuthProvider,
   onAuthStateChanged,
@@ -386,8 +387,19 @@ export async function deleteCurrentAccount() {
   }
 
   const deleteCurrentAccountCallable = httpsCallable<undefined, { ok: boolean }>(functions, "deleteCurrentAccount");
-  await deleteCurrentAccountCallable();
-  await signOut(auth);
+  try {
+    await deleteCurrentAccountCallable();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!message.includes("not-found") && !message.includes("functions/not-found")) {
+      throw error;
+    }
+    await deleteUser(currentUser).catch(async () => {
+      await signOut(auth);
+    });
+    return;
+  }
+  if (auth.currentUser) await signOut(auth);
 }
 
 export function watchAuthSession(onSession: (session: MobileSession | null) => void, onError?: (error: Error) => void) {

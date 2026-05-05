@@ -97,7 +97,12 @@ export const deleteCurrentAccount = onCall(async (request) => {
   const userRef = db.doc(`users/${uid}`);
 
   await deleteDocumentTree(userRef);
-  await getAuth().deleteUser(uid);
+  try {
+    await getAuth().deleteUser(uid);
+  } catch (error) {
+    const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
+    if (code !== "auth/user-not-found") throw error;
+  }
 
   await db.collection("auditLogs").add({
     actorId: uid,
