@@ -1,7 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import type { ReactElement } from "react";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { Component, type ErrorInfo, type ReactElement, type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
@@ -27,6 +26,33 @@ import { t } from "@nar/core";
 
 WebBrowser.maybeCompleteAuthSession();
 
+class MobileErrorBoundary extends Component<{ children: ReactNode }, { error: string | null }> {
+  state = { error: null };
+
+  static getDerivedStateFromError(error: unknown) {
+    return { error: error instanceof Error ? error.message : "Uygulama başlatılırken bir sorun oluştu." };
+  }
+
+  componentDidCatch(error: unknown, info: ErrorInfo) {
+    console.warn("Nar Rehberi runtime error", error, info.componentStack);
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children;
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.startupScreen}>
+          <View style={styles.onboardingCard}>
+            <Text style={styles.splashBadge}>Nar Rehberi</Text>
+            <Text style={styles.splashTagline}>Uygulama açılırken sorun oluştu</Text>
+            <Text style={styles.onboardingText}>{this.state.error}</Text>
+          </View>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    );
+  }
+}
+
 const tabs = [
   { label: "Ana Sayfa", icon: "home-outline", screen: HomeScreen },
   { label: "Mekanlar", icon: "location-outline", screen: PlacesScreen },
@@ -48,15 +74,26 @@ type Surface =
   | { kind: "offer"; offerId: string };
 
 export default function App() {
+  return (
+    <MobileErrorBoundary>
+      <MobileApp />
+    </MobileErrorBoundary>
+  );
+}
+
+function MobileApp() {
   const [activeTab, setActiveTab] = useState<TabLabel>("Ana Sayfa");
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
+  const [sessionWaitExpired, setSessionWaitExpired] = useState(false);
   const feed = useDiscoveryFeed();
   const { session, loading: sessionLoading } = useSession();
   const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
   const themeSnapshot = useSyncExternalStore(subscribeMobileTheme, getMobileThemeVersion, getMobileThemeVersion);
   useSyncExternalStore(subscribeMobileLocale, getMobileLocale, getMobileLocale);
   const deviceLocale = getDeviceLocale();
+  const locale = getMobileLocale();
+  const needsOnboarding = onboardingCompleted !== true;
 
   useEffect(() => {
     reapplyMobileTheme();
@@ -81,17 +118,29 @@ export default function App() {
 
   useEffect(() => {
     let active = true;
+    const fallbackTimer = setTimeout(() => {
+      if (active) setOnboardingCompleted(false);
+    }, 2500);
     void getOnboardingCompleted().then((completed) => {
       if (!active) return;
+      clearTimeout(fallbackTimer);
       setOnboardingCompleted(completed);
     });
     return () => {
       active = false;
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
-  const locale = getMobileLocale();
-  const needsOnboarding = onboardingCompleted !== true;
+  useEffect(() => {
+    if (needsOnboarding || !sessionLoading) {
+      setSessionWaitExpired(false);
+      return;
+    }
+    const timer = setTimeout(() => setSessionWaitExpired(true), 3500);
+    return () => clearTimeout(timer);
+  }, [needsOnboarding, sessionLoading]);
+
   const showAuth = surface.kind === "auth" || (!needsOnboarding && !session);
   const showLegal = surface.kind === "legal";
 
@@ -154,7 +203,7 @@ export default function App() {
     await requestLocationAccess();
   }
 
-  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading)) {
+  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading && !sessionWaitExpired)) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.startupBlank} />
