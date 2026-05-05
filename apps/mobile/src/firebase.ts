@@ -30,7 +30,7 @@ export const auth = (() => {
   }
 })();
 export const db = getFirestore(firebaseApp);
-export const functions = getFunctions(firebaseApp, "europe-west1");
+export const functions = getFunctions(firebaseApp, process.env.EXPO_PUBLIC_FIREBASE_FUNCTIONS_REGION || "us-central1");
 export const storage = getStorage(firebaseApp);
 
 const emulatorState = globalThis as typeof globalThis & { __narMobileFirebaseEmulators?: boolean };
