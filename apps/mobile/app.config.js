@@ -14,7 +14,10 @@ const projectId =
   "9030216f-8d34-4765-9b87-89b8cd4892aa";
 
 const publicFirebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY || "AIzaSyA9QfI2_s10k8HL-uAglDYHVqADG5wx0v0",
+  apiKey:
+    process.env.EXPO_PUBLIC_FIREBASE_MOBILE_API_KEY ||
+    process.env.EXPO_PUBLIC_FIREBASE_API_KEY ||
+    "AIzaSyA9QfI2_s10k8HL-uAglDYHVqADG5wx0v0",
   authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN || "nar-rehberi-pro.firebaseapp.com",
   projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID || "nar-rehberi-pro",
   storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET || "nar-rehberi-pro.firebasestorage.app",

@@ -1,4 +1,5 @@
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 
 type RuntimeExtra = {
   firebase?: Record<string, string | undefined>;
@@ -33,9 +34,20 @@ function readValue(envName: string, extraValue?: string) {
   return (process.env[envName] || extraValue || "").trim();
 }
 
+function resolveFirebaseApiKey(extraValue?: string) {
+  const mobileApiKey = readValue("EXPO_PUBLIC_FIREBASE_MOBILE_API_KEY", extraValue);
+  const webApiKey = readValue("EXPO_PUBLIC_FIREBASE_API_KEY", extraValue);
+
+  if (Platform.OS === "web") {
+    return webApiKey || mobileApiKey || defaultFirebaseConfig.apiKey;
+  }
+
+  return mobileApiKey || webApiKey || defaultFirebaseConfig.apiKey;
+}
+
 export function getRuntimeFirebaseConfig() {
   return {
-    apiKey: readValue("EXPO_PUBLIC_FIREBASE_API_KEY", extra.firebase?.apiKey) || defaultFirebaseConfig.apiKey,
+    apiKey: resolveFirebaseApiKey(extra.firebase?.apiKey),
     authDomain: readValue("EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN", extra.firebase?.authDomain) || defaultFirebaseConfig.authDomain,
     projectId: readValue("EXPO_PUBLIC_FIREBASE_PROJECT_ID", extra.firebase?.projectId) || defaultFirebaseConfig.projectId,
     storageBucket: readValue("EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET", extra.firebase?.storageBucket) || defaultFirebaseConfig.storageBucket,
