@@ -3,13 +3,6 @@
     "version": ">= 12.8.0"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      }
-    },
     "preview": {
       "distribution": "internal",
       "buildArtifactPaths": [
