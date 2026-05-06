@@ -19,6 +19,11 @@ const catalogPlacesKey = "narrehberi:mobile:catalog:places:v1";
 const catalogEventsKey = "narrehberi:mobile:catalog:events:v1";
 const catalogOffersKey = "narrehberi:mobile:catalog:offers:v1";
 const catalogTtlMs = 12 * 60 * 60 * 1000;
+const expectedCatalogCounts = {
+  places: 250,
+  events: 124,
+  offers: 10
+} as const;
 
 interface CatalogManifest {
   version: number;
@@ -118,9 +123,9 @@ export function isDiscoveryCatalogFresh(snapshot: DiscoveryCatalogSnapshot | nul
 export function isDiscoveryCatalogComplete(snapshot: DiscoveryCatalogSnapshot | null) {
   if (!snapshot) return false;
   return (
-    (snapshot.placesCount ?? snapshot.places.length) >= 100 &&
-    (snapshot.eventsCount ?? snapshot.events.length) >= 50 &&
-    (snapshot.offersCount ?? snapshot.offers.length) >= 10
+    (snapshot.placesCount ?? snapshot.places.length) >= expectedCatalogCounts.places &&
+    (snapshot.eventsCount ?? snapshot.events.length) >= expectedCatalogCounts.events &&
+    (snapshot.offersCount ?? snapshot.offers.length) >= expectedCatalogCounts.offers
   );
 }
 
