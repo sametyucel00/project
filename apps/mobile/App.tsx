@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+﻿import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { Component, memo, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -31,7 +31,7 @@ class MobileErrorBoundary extends Component<{ children: ReactNode }, { error: st
   state = { error: null };
 
   static getDerivedStateFromError(error: unknown) {
-    return { error: error instanceof Error ? error.message : "Uygulama başlatılırken bir sorun oluştu." };
+    return { error: error instanceof Error ? error.message : "Uygulama baÅŸlatÄ±lÄ±rken bir sorun oluÅŸtu." };
   }
 
   componentDidCatch(error: unknown, info: ErrorInfo) {
@@ -45,7 +45,7 @@ class MobileErrorBoundary extends Component<{ children: ReactNode }, { error: st
         <SafeAreaView style={styles.startupScreen}>
           <View style={styles.onboardingCard}>
             <Text style={styles.splashBadge}>Nar Rehberi</Text>
-            <Text style={styles.splashTagline}>Uygulama açılırken sorun oluştu</Text>
+            <Text style={styles.splashTagline}>Uygulama aÃ§Ä±lÄ±rken sorun oluÅŸtu</Text>
             <Text style={styles.onboardingText}>{this.state.error}</Text>
           </View>
         </SafeAreaView>
@@ -144,9 +144,9 @@ function MobileApp() {
   const isTabSurface = surface.kind === "tab";
   const pageTitle = surface.kind === "tourist" ? t(locale, "touristSurvivalKit")
     : surface.kind === "ancient" ? t(locale, "ancientGuide")
-      : surface.kind === "place" ? "Mekan Detayı"
-        : surface.kind === "event" ? "Etkinlik Detayı"
-          : surface.kind === "offer" ? "Fırsat Detayı"
+      : surface.kind === "place" ? "Mekan DetayÄ±"
+        : surface.kind === "event" ? "Etkinlik DetayÄ±"
+          : surface.kind === "offer" ? "FÄ±rsat DetayÄ±"
             : t(locale, "appName");
 
   const openTab = useCallback((tab: TabLabel) => {
@@ -295,7 +295,7 @@ function MobileApp() {
                   <Text style={styles.headerBackText}>{pageTitle}</Text>
                 </Pressable>
               )}
-              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR kodunu aç">
+              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR kodunu aç" onPress={() => (session ? openTab("Profil") : openAuth())}>
                 <Ionicons name="qr-code-outline" size={22} color={theme.ink} />
               </Pressable>
             </View>
@@ -334,7 +334,7 @@ function MobileApp() {
           {permissionGranted ? null : locationError ? (
             <View style={{ paddingHorizontal: 18 }}>
               <View style={styles.settingsCard}>
-                <Text style={styles.settingsTitle}>Konum erişimi</Text>
+                <Text style={styles.settingsTitle}>Konum eriÅŸimi</Text>
                 <Text style={styles.profileText}>{locationError}</Text>
               </View>
             </View>
@@ -367,3 +367,5 @@ function MobileApp() {
     </SafeAreaProvider>
   );
 }
+
+
