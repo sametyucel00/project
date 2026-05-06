@@ -89,8 +89,7 @@ function MobileApp() {
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const { session, loading: sessionLoading } = useSession();
   const shouldLoadFeed = onboardingCompleted === true && Boolean(session);
-  const feedPriority = activeTab === "Ana Sayfa" ? "home" : "catalog";
-  const feed = useDiscoveryFeed(shouldLoadFeed, feedPriority);
+  const feed = useDiscoveryFeed(shouldLoadFeed, "home");
   const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
   const themeSnapshot = useSyncExternalStore(subscribeMobileTheme, getMobileThemeVersion, getMobileThemeVersion);
   useSyncExternalStore(subscribeMobileLocale, getMobileLocale, getMobileLocale);

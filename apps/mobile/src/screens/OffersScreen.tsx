@@ -1,9 +1,9 @@
-import { Text, View, FlatList } from "react-native";
 import { compactValue } from "@nar/core";
 import { FilterRow, OfferItem, SearchBar, StoryRail } from "../components/ui";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
-import { useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { InteractionManager, Text, View, FlatList } from "react-native";
 
 const offerFilters = ["Tümü", "QR ile", "Puanla", "Sınırlı", "Öne çıkan"];
 
@@ -11,6 +11,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
   const [query, setQuery] = useState("");
   const [activeStory, setActiveStory] = useState<string | undefined>();
   const [activeFilter, setActiveFilter] = useState("Tümü");
+  const [visibleCount, setVisibleCount] = useState(10);
   const deferredQuery = useDeferredValue(query);
 
   const filteredOffers = useMemo(
@@ -29,15 +30,27 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
 
   const firstOffer = filteredOffers[0];
   const remainingUse = firstOffer?.useLimit ? Math.max(firstOffer.useLimit - (firstOffer.usedCount ?? 0), 0) : null;
+  const visibleOffers = useMemo(() => filteredOffers.slice(0, visibleCount), [filteredOffers, visibleCount]);
 
   function handleStorySelect(story: string) {
     setActiveStory(story);
     onOpenOffer?.(story);
   }
 
+  useEffect(() => {
+    setVisibleCount(Math.min(10, filteredOffers.length));
+    const task = InteractionManager.runAfterInteractions(() => {
+      const timer = setTimeout(() => setVisibleCount(filteredOffers.length), 4500);
+      return { cancel: () => clearTimeout(timer) };
+    });
+    return () => {
+      task.cancel();
+    };
+  }, [filteredOffers.length]);
+
   return (
     <FlatList
-      data={filteredOffers}
+      data={visibleOffers}
       keyExtractor={(offer) => offer.id}
       renderItem={({ item: offer }) => (
         <OfferItem title={offer.title.tr} discount={offer.discountLabel} meta={offer.conditions.tr} onPress={() => onOpenOffer?.(offer.id)} />

@@ -5,6 +5,7 @@ import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { InteractionManager } from "react-native";
 import { resolveDistanceLabel } from "../utils/location";
 
 const eventCopy = {
@@ -78,6 +79,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   const [activeType, setActiveType] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [viewMode, setViewMode] = useState<EventViewMode>("list");
+  const [visibleCount, setVisibleCount] = useState(12);
   const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
@@ -137,9 +139,21 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
         }),
     [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventTypeLabels, feed.events, todayStartTime, viewMode, locale]
   );
+  const visibleEvents = useMemo(() => filteredEvents.slice(0, visibleCount), [filteredEvents, visibleCount]);
 
   const venueIndex = useMemo(() => buildVenueIndex(feed.places, locale), [feed.places, locale]);
   const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : viewMode === "map" ? c.mapList : c.events;
+
+  useEffect(() => {
+    setVisibleCount(Math.min(12, filteredEvents.length));
+    const task = InteractionManager.runAfterInteractions(() => {
+      const timer = setTimeout(() => setVisibleCount(filteredEvents.length), 4500);
+      return { cancel: () => clearTimeout(timer) };
+    });
+    return () => {
+      task.cancel();
+    };
+  }, [filteredEvents.length]);
 
   const header = useMemo(() => {
     const firstEvent = filteredEvents[0];
@@ -185,7 +199,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
 
   return (
     <FlatList
-      data={filteredEvents}
+      data={visibleEvents}
       keyExtractor={(event) => event.id}
       renderItem={({ item }) => {
         const venuePlace = resolveEventVenue(venueIndex, item.venueName, item.district);

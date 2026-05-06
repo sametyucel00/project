@@ -5,6 +5,7 @@ import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { InteractionManager } from "react-native";
 import { resolveDistanceLabel } from "../utils/location";
 
 const placeCopy = {
@@ -21,6 +22,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
+  const [visibleCount, setVisibleCount] = useState(12);
   const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
@@ -64,10 +66,22 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     if (activeFilter === c.offers && !offerPlaceIds.has(place.id)) return false;
     return true;
   }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, categoryTitleByPlaceId, deferredQuery, feed.places, offerPlaceIds, locale]);
+  const visiblePlaces = useMemo(() => filteredPlaces.slice(0, visibleCount), [filteredPlaces, visibleCount]);
+
+  useEffect(() => {
+    setVisibleCount(Math.min(12, filteredPlaces.length));
+    const task = InteractionManager.runAfterInteractions(() => {
+      const timer = setTimeout(() => setVisibleCount(filteredPlaces.length), 4500);
+      return { cancel: () => clearTimeout(timer) };
+    });
+    return () => {
+      task.cancel();
+    };
+  }, [filteredPlaces.length]);
 
   return (
     <FlatList
-      data={filteredPlaces}
+      data={visiblePlaces}
       keyExtractor={(place) => place.id}
       renderItem={({ item: place }) => {
         const category = categoryTitleByPlaceId.get(place.id) || c.place;
@@ -86,7 +100,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
           <SearchBar value={query} onChangeText={setQuery} />
           <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
           <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
-          <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
+      <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
         </View>
       )}
       ListEmptyComponent={<Text style={styles.emptyText}>{c.notFound}</Text>}
