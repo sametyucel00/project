@@ -17,7 +17,7 @@ export interface DiscoveryFeedState {
 export type DiscoveryFeedPriority = "home" | "catalog";
 
 const cachedFeeds: Partial<Record<DiscoveryFeedPriority, DiscoveryFeedState>> = {};
-const homePreviewCacheKey = "narrehberi:mobile:discovery-home:v1";
+const homePreviewCacheKey = "narrehberi:mobile:discovery-home:v2";
 const feedCacheLimits = {
   places: 300,
   events: 300,
@@ -203,7 +203,7 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
 
     interactionTask = InteractionManager.runAfterInteractions(() => {
       if (priority === "home") {
-        void load({ places: 24, events: 12, offers: 6 }, true);
+        void load({ places: 24, events: 36, offers: 6 }, true);
         return;
       }
 

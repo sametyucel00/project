@@ -354,7 +354,13 @@ function MobileApp() {
                   <Text style={styles.location}>{session?.city ?? "Antalya"} · bugün</Text>
                 </View>
               ) : (
-                <Pressable accessibilityRole="button" onPress={backToTabs} style={styles.headerBack}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel="Geri dön"
+                  onPress={backToTabs}
+                  hitSlop={12}
+                  style={styles.headerBack}
+                >
                   <Ionicons name="arrow-back" size={20} color={theme.ink} />
                   <Text style={styles.headerBackText}>{pageTitle}</Text>
                 </Pressable>

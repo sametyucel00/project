@@ -7,7 +7,7 @@ function buildStyles() {
     screen: { flex: 1 },
     content: { padding: 18, paddingBottom: 108 },
     header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 18, gap: 12 },
-    headerBack: { flexDirection: "row", alignItems: "center", gap: 10, minWidth: 0, flex: 1 },
+    headerBack: { flexDirection: "row", alignItems: "center", gap: 10, minWidth: 0, flex: 1, minHeight: 44, paddingVertical: 8, paddingRight: 10 },
     headerBackText: { color: theme.ink, fontSize: 18, fontWeight: "800", flexShrink: 1 },
     logo: { color: theme.ink, fontSize: 24, fontWeight: "800" },
     location: { color: theme.muted, marginTop: 4 },

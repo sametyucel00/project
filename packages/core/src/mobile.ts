@@ -114,8 +114,7 @@ export const placeCategoryOptions = [
 export const eventViewModes: Array<{ id: EventViewMode; label: string }> = [
   { id: "month", label: "Aylık" },
   { id: "week", label: "Haftalık" },
-  { id: "list", label: "Liste" },
-  { id: "map", label: "Harita" }
+  { id: "list", label: "Liste" }
 ];
 
 export const eventFilters = [

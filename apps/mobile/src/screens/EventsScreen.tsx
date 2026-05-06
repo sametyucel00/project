@@ -1,5 +1,5 @@
-import { ImageBackground, FlatList, Pressable, Text, View } from "react-native";
-import { createStaticMapUrl, eventTypes, eventViewModes, type EventViewMode } from "@nar/core";
+import { FlatList, Pressable, Text, View } from "react-native";
+import { eventTypes, eventViewModes, type EventViewMode } from "@nar/core";
 import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
@@ -153,7 +153,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
 
   const visibleEvents = useMemo(() => filteredEvents.slice(0, visibleCount), [filteredEvents, visibleCount]);
   const venueIndex = useMemo(() => buildVenueIndex(feed.places, locale), [feed.places, locale]);
-  const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : viewMode === "map" ? c.mapList : c.events;
+  const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : c.events;
   const handleViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: Array<unknown> }) => {
     if (firstListPaintedRef.current || viewableItems.length === 0) return;
     firstListPaintedRef.current = true;
@@ -167,15 +167,13 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   }, [filteredEvents.length]);
 
   const header = useMemo(() => {
-    const firstEvent = filteredEvents[0];
-    const firstVenue = firstEvent ? resolveEventVenue(venueIndex, firstEvent.venueName, firstEvent.district) : undefined;
     return (
       <View style={{ paddingHorizontal: 18 }}>
         <SearchBar value={query} onChangeText={setQuery} />
         <FilterRow filters={typeFilters} activeFilter={activeType} onSelect={setActiveType} />
         <FilterRow filters={quickFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
         <View style={styles.calendarBand}>
-          {eventViewModes.map((mode) => (
+          {eventViewModes.filter((mode) => mode.id !== "map").map((mode) => (
             <Pressable
               key={mode.id}
               accessibilityRole="button"
@@ -188,25 +186,10 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
             </Pressable>
           ))}
         </View>
-        {viewMode === "map" && firstEvent ? (
-          <View style={styles.settingsCard}>
-            <Text style={styles.settingsTitle}>{c.mapView}</Text>
-            <Text style={styles.profileText}>{firstEvent.venueName}</Text>
-            {firstVenue?.location ? (
-              <ImageBackground
-                source={{ uri: createStaticMapUrl(firstVenue.location, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) }}
-                style={{ height: 170, borderRadius: 18, overflow: "hidden" }}
-                imageStyle={{ borderRadius: 18 }}
-              />
-            ) : (
-              <Text style={styles.emptyText}>{c.noMap}</Text>
-            )}
-          </View>
-        ) : null}
         <Text style={styles.sectionTitle}>{`${sectionTitle} (${filteredEvents.length})`}</Text>
       </View>
     );
-  }, [activeFilter, activeType, c.mapView, c.noMap, filteredEvents, locale, query, quickFilters, sectionTitle, typeFilters, venueIndex, viewMode]);
+  }, [activeFilter, activeType, filteredEvents, locale, query, quickFilters, sectionTitle, typeFilters, viewMode]);
 
   return (
     <FlatList

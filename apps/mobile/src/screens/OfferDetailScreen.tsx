@@ -1,5 +1,5 @@
 import { ImageBackground, ScrollView, Text, View } from "react-native";
-import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl } from "@nar/core";
+import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getOfferById, getPlaceById } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
@@ -10,8 +10,8 @@ import { hasMeaningfulMapPoint } from "../utils/location";
 
 export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScreenProps & { offerId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
-  const offer = useMemo(() => feed.offers.find((item) => item.id === offerId), [feed.offers, offerId]);
-  const place = useMemo(() => feed.places.find((item) => item.id === offer?.placeId), [feed.places, offer?.placeId]);
+  const offer = useMemo(() => feed.offers.find((item) => item.id === offerId) ?? getOfferById(offerId), [feed.offers, offerId]);
+  const place = useMemo(() => feed.places.find((item) => item.id === offer?.placeId) ?? (offer?.placeId ? getPlaceById(offer.placeId) : undefined), [feed.places, offer?.placeId]);
   const remainingUse = offer?.useLimit ? Math.max(offer.useLimit - (offer.usedCount ?? 0), 0) : null;
   const placeLocation = place?.location;
   const mapUrl = hasMeaningfulMapPoint(placeLocation) ? createStaticMapUrl(placeLocation, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
