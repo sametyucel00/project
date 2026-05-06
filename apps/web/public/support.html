@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Nar Rehberi destek, gizlilik ve hesap silme sayfası." />
+    <title>Nar Rehberi Support</title>
+    <style>
+      :root {
+        --bg: #fbf7f1;
+        --surface: #ffffff;
+        --text: #211b16;
+        --muted: #675f58;
+        --brand: #c94131;
+        --line: rgba(33, 27, 22, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 16px 48px rgba(33, 27, 22, 0.08);
+        margin-bottom: 16px;
+      }
+      h1, h2 { margin: 0 0 12px; line-height: 1.1; }
+      h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+      p, li { color: var(--muted); line-height: 1.65; }
+      .pill {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        text-decoration: none;
+        color: var(--text);
+        margin: 0 8px 8px 0;
+      }
+      .button {
+        display: inline-block;
+        background: var(--brand);
+        color: white;
+        text-decoration: none;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        margin-top: 8px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      @media (max-width: 720px) {
+        .grid { grid-template-columns: 1fr; }
+        .wrap { padding: 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="card">
+        <h1>Nar Rehberi</h1>
+        <p>
+          Nar Rehberi; mekanlar, etkinlikler, fırsatlar, QR sadakat ve rol bazlı paneller için geliştirilen şehir
+          keşif uygulamasıdır. Bu sayfa App Store destek, gizlilik ve hesap silme gereksinimlerini karşılamak için hazırlanmıştır.
+        </p>
+        <a class="button" href="mailto:sametyucel52@gmail.com?subject=Nar%20Rehberi%20Support">sametyucel52@gmail.com</a>
+        <div style="margin-top:16px">
+          <a class="pill" href="https://narrehberi.com">narrehberi.com</a>
+          <a class="pill" href="https://narrehberi.com/privacy-policy.html">Privacy Policy</a>
+          <a class="pill" href="https://narrehberi.com/support.html#delete-account">Delete Account</a>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Support</h2>
+          <p>Uygulama sorunları, geri bildirim ve hesap silme talepleri için e-posta desteği sunuyoruz.</p>
+          <p>Yanıt kanalı: <strong>sametyucel52@gmail.com</strong></p>
+        </article>
+        <article class="card">
+          <h2>Privacy</h2>
+          <p>
+            Uygulama; hesap, tercih, konum izni verildiyse yakınlık bilgisi, bildirim tercihleri ve QR kullanım verilerini
+            yalnızca hizmeti sunmak için işler.
+          </p>
+        </article>
+        <article class="card" id="delete-account">
+          <h2>Delete Account</h2>
+          <p>
+            Hesabınızı uygulama içindeki Ayarlar ekranından silebilirsiniz. Talep için doğrudan destek e-postasını da
+            kullanabilirsiniz.
+          </p>
+        </article>
+        <article class="card">
+          <h2>App Info</h2>
+          <p><strong>App:</strong> Nar Rehberi</p>
+          <p><strong>Platforms:</strong> iOS, Android, Web</p>
+          <p><strong>Updated:</strong> 6 Mayıs 2026</p>
+        </article>
+      </section>
+    </main>
+  </body>
+ </html>
