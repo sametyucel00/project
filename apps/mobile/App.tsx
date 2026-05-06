@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
-import { Component, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { Component, memo, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { Pressable, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
@@ -54,11 +54,11 @@ class MobileErrorBoundary extends Component<{ children: ReactNode }, { error: st
 }
 
 const tabs = [
-  { label: "Ana Sayfa", icon: "home-outline", screen: HomeScreen },
-  { label: "Mekanlar", icon: "location-outline", screen: PlacesScreen },
-  { label: "Etkinlikler", icon: "calendar-outline", screen: EventsScreen },
-  { label: "Fırsatlar", icon: "gift-outline", screen: OffersScreen },
-  { label: "Profil", icon: "person-outline", screen: ProfileScreen }
+  { label: "Ana Sayfa", icon: "home-outline", screen: memo(HomeScreen) },
+  { label: "Mekanlar", icon: "location-outline", screen: memo(PlacesScreen) },
+  { label: "Etkinlikler", icon: "calendar-outline", screen: memo(EventsScreen) },
+  { label: "Fırsatlar", icon: "gift-outline", screen: memo(OffersScreen) },
+  { label: "Profil", icon: "person-outline", screen: memo(ProfileScreen) }
 ] as const;
 
 type TabLabel = (typeof tabs)[number]["label"];
@@ -83,6 +83,7 @@ export default function App() {
 
 function MobileApp() {
   const [activeTab, setActiveTab] = useState<TabLabel>("Ana Sayfa");
+  const [mountedTabs, setMountedTabs] = useState<TabLabel[]>(["Ana Sayfa"]);
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const { session, loading: sessionLoading } = useSession();
@@ -139,7 +140,6 @@ function MobileApp() {
   const showAuth = surface.kind === "auth" || (!needsOnboarding && !session);
   const showLegal = surface.kind === "legal";
 
-  const ActiveScreen = (tabs.find((tab) => tab.label === activeTab)?.screen ?? HomeScreen) as ScreenComponent;
   const isTabSurface = surface.kind === "tab";
   const pageTitle = surface.kind === "tourist" ? t(locale, "touristSurvivalKit")
     : surface.kind === "ancient" ? t(locale, "ancientGuide")
@@ -152,6 +152,7 @@ function MobileApp() {
     startTransition(() => {
       setActiveTab(tab);
       setSurface({ kind: "tab", tab });
+      setMountedTabs((current) => (current.includes(tab) ? current : [...current, tab]));
     });
   }, []);
 
@@ -296,7 +297,18 @@ function MobileApp() {
 
           <View style={{ flex: 1 }}>
             {surface.kind === "tab" ? (
-              <ActiveScreen {...screenProps} />
+              <View style={{ flex: 1 }}>
+                {tabs.map((tab) => {
+                  const Screen = tab.screen as ScreenComponent;
+                  const visible = tab.label === activeTab;
+                  if (!mountedTabs.includes(tab.label)) return null;
+                  return (
+                    <View key={tab.label} style={{ flex: 1, display: visible ? "flex" : "none" }} pointerEvents={visible ? "auto" : "none"}>
+                      <Screen {...screenProps} />
+                    </View>
+                  );
+                })}
+              </View>
             ) : surface.kind === "tourist" ? (
               <GuideScreen {...screenProps} mode="tourist" onBack={backToTabs} />
             ) : surface.kind === "ancient" ? (

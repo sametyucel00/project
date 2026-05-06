@@ -9,6 +9,7 @@ import { theme } from "../theme";
 import { compareDistance, resolveDistanceLabel } from "../utils/location";
 import type { MobileScreenProps } from "./types";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { InteractionManager } from "react-native";
 
 type TimeKey = "morning" | "noon" | "evening" | "night";
 type StoryKey = "Tiyatro" | "Kahve" | "Antik" | "Acil";
@@ -56,6 +57,19 @@ const homeStoryActions = {
   }
 } as const;
 
+let cachedMiniModules:
+  | {
+      touristItems: SurvivalKitItem[];
+      ancientStops: AncientGuideStop[];
+    }
+  | null = null;
+let cachedMiniModulesPromise:
+  | Promise<{
+      touristItems: SurvivalKitItem[];
+      ancientStops: AncientGuideStop[];
+    }>
+  | null = null;
+
 export function getTimeDiscovery() {
   const hour = new Date().getHours();
   const key: TimeKey = hour < 11 ? "morning" : hour < 16 ? "noon" : hour < 22 ? "evening" : "night";
@@ -74,27 +88,49 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
 
   useEffect(() => {
     let active = true;
-
-    async function loadMiniModules() {
-      try {
-        const [liveTouristItems, liveAncientStops] = await Promise.all([
-          fetchTouristSurvivalKit(12),
-          fetchAncientGuideStops(12)
-        ]);
-        if (!active) return;
-        setTouristItems(liveTouristItems.length ? liveTouristItems : touristSurvivalKit);
-        setAncientStops(liveAncientStops.length ? liveAncientStops : ancientGuideStops);
-      } catch {
-        if (!active) return;
-        setTouristItems(touristSurvivalKit);
-        setAncientStops(ancientGuideStops);
-      }
+    if (cachedMiniModules) {
+      setTouristItems(cachedMiniModules.touristItems);
+      setAncientStops(cachedMiniModules.ancientStops);
+      return () => {
+        active = false;
+      };
     }
 
-    void loadMiniModules();
+    const task = InteractionManager.runAfterInteractions(() => {
+      const loadMiniModules = cachedMiniModulesPromise ?? (cachedMiniModulesPromise = (async () => {
+        try {
+          const [liveTouristItems, liveAncientStops] = await Promise.all([
+            fetchTouristSurvivalKit(12),
+            fetchAncientGuideStops(12)
+          ]);
+          const next = {
+            touristItems: liveTouristItems.length ? liveTouristItems : touristSurvivalKit,
+            ancientStops: liveAncientStops.length ? liveAncientStops : ancientGuideStops
+          };
+          cachedMiniModules = next;
+          return next;
+        } catch {
+          const fallback = {
+            touristItems: touristSurvivalKit,
+            ancientStops: ancientGuideStops
+          };
+          cachedMiniModules = fallback;
+          return fallback;
+        } finally {
+          cachedMiniModulesPromise = null;
+        }
+      })());
+
+      void loadMiniModules.then((value) => {
+        if (!active) return;
+        setTouristItems(value.touristItems);
+        setAncientStops(value.ancientStops);
+      });
+    });
 
     return () => {
       active = false;
+      task.cancel();
     };
   }, []);
 
