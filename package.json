@@ -12,8 +12,6 @@
     "dev:web": "npm --workspace apps/web run dev",
     "export:web": "npm --workspace apps/web run build",
     "dev:mobile": "npm --workspace apps/mobile run start",
-    "build:android:apk": "npm --workspace apps/mobile run android:apk",
-    "prebuild:android": "npm --workspace apps/mobile run android:prebuild",
     "dev:functions": "npm --workspace firebase/functions run serve",
     "lint": "npm --workspaces --if-present run lint",
     "typecheck": "npm --workspaces --if-present run typecheck",
