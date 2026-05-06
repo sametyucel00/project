@@ -275,21 +275,23 @@ function MobileApp() {
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe}>
         <View style={styles.screen}>
-          <View style={styles.header}>
-            {isTabSurface ? (
-              <View>
-                <Text style={styles.logo}>{t(locale, "appName")}</Text>
-                <Text style={styles.location}>{session?.city ?? "Antalya"} · bugün</Text>
-              </View>
-            ) : (
-              <Pressable accessibilityRole="button" onPress={backToTabs} style={styles.headerBack}>
-                <Ionicons name="arrow-back" size={20} color={theme.ink} />
-                <Text style={styles.headerBackText}>{pageTitle}</Text>
+          <View style={{ paddingHorizontal: 18 }}>
+            <View style={styles.header}>
+              {isTabSurface ? (
+                <View>
+                  <Text style={styles.logo}>{t(locale, "appName")}</Text>
+                  <Text style={styles.location}>{session?.city ?? "Antalya"} · bugün</Text>
+                </View>
+              ) : (
+                <Pressable accessibilityRole="button" onPress={backToTabs} style={styles.headerBack}>
+                  <Ionicons name="arrow-back" size={20} color={theme.ink} />
+                  <Text style={styles.headerBackText}>{pageTitle}</Text>
+                </Pressable>
+              )}
+              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR kodunu aç">
+                <Ionicons name="qr-code-outline" size={22} color={theme.ink} />
               </Pressable>
-            )}
-            <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR kodunu aç">
-              <Ionicons name="qr-code-outline" size={22} color={theme.ink} />
-            </Pressable>
+            </View>
           </View>
 
           <View style={{ flex: 1 }}>
@@ -309,9 +311,11 @@ function MobileApp() {
           </View>
 
           {permissionGranted ? null : locationError ? (
-            <View style={styles.settingsCard}>
-              <Text style={styles.settingsTitle}>Konum erişimi</Text>
-              <Text style={styles.profileText}>{locationError}</Text>
+            <View style={{ paddingHorizontal: 18 }}>
+              <View style={styles.settingsCard}>
+                <Text style={styles.settingsTitle}>Konum erişimi</Text>
+                <Text style={styles.profileText}>{locationError}</Text>
+              </View>
             </View>
           ) : null}
 
