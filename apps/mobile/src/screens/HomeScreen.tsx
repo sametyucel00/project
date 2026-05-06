@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { ancientGuideStops, timeBasedDiscovery, touristSurvivalKit, type AncientGuideStop, type SurvivalKitItem } from "@nar/core";
 import { SearchBar, Section, StoryRail, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
@@ -133,7 +133,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
   }
 
   return (
-    <>
+    <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
       <SearchBar value={query} onChangeText={setQuery} />
       <View style={[styles.timeCard, { backgroundColor: timeColors[discovery.key] }]}>
         <Ionicons
@@ -162,7 +162,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
           <WideItem key={place.id} image={place.coverImage} title={pickText(place.title, locale)} meta={`${place.district} · ${place.googleRating ?? labels.noRating} · ${resolveDistanceLabel(userLocation, place)}`} onPress={() => onOpenPlace?.(place.id)} />
         )) : <Text style={styles.emptyText}>{labels.noPlaces}</Text>}
       </Section>
-    </>
+    </ScrollView>
   );
 }
 

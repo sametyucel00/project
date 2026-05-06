@@ -1,4 +1,4 @@
-import { ImageBackground, Text, View } from "react-native";
+import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getEventTypeMeta, normalizeSynopsisText, translateText } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
@@ -50,7 +50,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
   }
 
   return (
-    <View>
+    <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
       <ActionRow>
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
         {event.ticketUrl ? <ActionPill label="Bilet aç" onPress={() => openExternalUrl(event.ticketUrl)} /> : null}
@@ -89,7 +89,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         <ActionPill label="Bilet al" variant="secondary" onPress={() => void createTicketOrder({ eventId: event.id, eventTitle: event.title.tr, ticketUrl: event.ticketUrl })} />
       </ActionRow>
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim işlemleri kapalıdır.</Text> : null}
-    </View>
+    </ScrollView>
   );
 }
 

@@ -1,4 +1,4 @@
-import { ImageBackground, Text, View } from "react-native";
+import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
@@ -28,7 +28,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
   }
 
   return (
-    <View>
+    <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
       <ActionRow>
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
         <ActionPill label="Haritada aç" onPress={() => openAddressInMaps(place.address)} />
@@ -72,6 +72,6 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
         <DetailLinkRow icon="share-outline" label="Sosyal medya" value={socialLinks.length ? socialLinks.join(" · ") : "Belirtilmemiş"} />
         <DetailLinkRow icon="navigate-outline" label="Yol tarifi" value="Bağlantı" onPress={() => place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address)} />
       </View>
-    </View>
+    </ScrollView>
   );
 }

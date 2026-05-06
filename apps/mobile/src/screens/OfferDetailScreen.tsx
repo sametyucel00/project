@@ -1,4 +1,4 @@
-import { ImageBackground, Text, View } from "react-native";
+import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
@@ -26,7 +26,7 @@ export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScre
   }
 
   return (
-    <View>
+    <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
       <ActionRow>
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
         {!isGuest ? <ActionPill label="Kaydet" onPress={() => void toggleFavorite("offer", offer.id)} /> : null}
@@ -63,7 +63,7 @@ export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScre
         <ActionPill label="Mekan aç" variant="secondary" onPress={() => place?.website ? openExternalUrl(place.website) : undefined} />
       </ActionRow>
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda fırsat kullanımı ve takvim işlemleri kapalıdır.</Text> : null}
-    </View>
+    </ScrollView>
   );
 }
 

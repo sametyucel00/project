@@ -1,4 +1,5 @@
 import { ImageBackground, Text, View } from "react-native";
+import { ScrollView } from "react-native";
 import { compactValue, createGoogleMapsDirectionsUrl } from "@nar/core";
 import { ActionPill, ActionRow, DetailLinkRow, StatStrip } from "../components/ui";
 import { styles } from "../styles";
@@ -9,12 +10,12 @@ import { ancientGuideDetails, touristGuideDetails } from "../data/guideData";
 
 export function GuideScreen({ onBack, mode }: MobileScreenProps & { mode: "tourist" | "ancient"; onBack: () => void }) {
   return (
-    <View>
+    <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
       <ActionRow>
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
       </ActionRow>
       {mode === "tourist" ? <TouristGuide /> : <AncientGuide />}
-    </View>
+    </ScrollView>
   );
 }
 

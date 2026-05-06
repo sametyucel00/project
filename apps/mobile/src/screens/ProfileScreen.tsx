@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { badges, compactValue, defaultPushPreferences, getEventById, getOfferById, getPlaceById, userTasks } from "@nar/core";
 import { ActionPill, ActionRow, DetailPreview, StatStrip } from "../components/ui";
 import { completeUserTask, deleteCurrentAccount, fetchUserOrders, fetchUserQrTransactions, logout, resetCurrentUserScanHistory, useQrTransaction } from "../services";
@@ -263,6 +263,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
   }
 
   return (
+    <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
     <View style={styles.profileSurface}>
       <Text style={styles.profilePoints}>{points}</Text>
       <Text style={styles.profileTitle}>{!isGuest ? `${session?.displayName}, ${copy.pointsReady}` : copy.guestPoints}</Text>
@@ -355,6 +356,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
         <Text style={styles.emptyText}>{copy.guestLocked}</Text>
       )}
     </View>
+    </ScrollView>
   );
 }
 

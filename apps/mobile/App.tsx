@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { Component, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
 import { PlacesScreen } from "./src/screens/PlacesScreen";
@@ -274,7 +274,7 @@ function MobileApp() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safe}>
-        <ScrollView style={styles.screen} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.screen}>
           <View style={styles.header}>
             {isTabSurface ? (
               <View>
@@ -292,19 +292,21 @@ function MobileApp() {
             </Pressable>
           </View>
 
-          {surface.kind === "tab" ? (
-            <ActiveScreen {...screenProps} />
-          ) : surface.kind === "tourist" ? (
-            <GuideScreen {...screenProps} mode="tourist" onBack={backToTabs} />
-          ) : surface.kind === "ancient" ? (
-            <GuideScreen {...screenProps} mode="ancient" onBack={backToTabs} />
-          ) : surface.kind === "place" ? (
-            <PlaceDetailScreen {...screenProps} placeId={surface.placeId} onBack={backToTabs} />
-          ) : surface.kind === "event" ? (
-            <EventDetailScreen {...screenProps} eventId={surface.eventId} onBack={backToTabs} />
-          ) : surface.kind === "offer" ? (
-            <OfferDetailScreen {...screenProps} offerId={surface.offerId} onBack={backToTabs} />
-          ) : null}
+          <View style={{ flex: 1 }}>
+            {surface.kind === "tab" ? (
+              <ActiveScreen {...screenProps} />
+            ) : surface.kind === "tourist" ? (
+              <GuideScreen {...screenProps} mode="tourist" onBack={backToTabs} />
+            ) : surface.kind === "ancient" ? (
+              <GuideScreen {...screenProps} mode="ancient" onBack={backToTabs} />
+            ) : surface.kind === "place" ? (
+              <PlaceDetailScreen {...screenProps} placeId={surface.placeId} onBack={backToTabs} />
+            ) : surface.kind === "event" ? (
+              <EventDetailScreen {...screenProps} eventId={surface.eventId} onBack={backToTabs} />
+            ) : surface.kind === "offer" ? (
+              <OfferDetailScreen {...screenProps} offerId={surface.offerId} onBack={backToTabs} />
+            ) : null}
+          </View>
 
           {permissionGranted ? null : locationError ? (
             <View style={styles.settingsCard}>
@@ -312,7 +314,6 @@ function MobileApp() {
               <Text style={styles.profileText}>{locationError}</Text>
             </View>
           ) : null}
-        </ScrollView>
 
           {isTabSurface ? (
           <View style={styles.tabBar}>
@@ -336,6 +337,7 @@ function MobileApp() {
             ))}
           </View>
         ) : null}
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

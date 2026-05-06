@@ -1,6 +1,6 @@
-import { Pressable, Text } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
-import { FilterRow, SearchBar, Section, WideItem } from "../components/ui";
+import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
@@ -21,17 +21,12 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
-  const [renderLimit, setRenderLimit] = useState(14);
   const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
     setActiveCategory(c.all);
     setActiveFilter(c.all);
   }, [c.all]);
-
-  useEffect(() => {
-    setRenderLimit(14);
-  }, [activeCategory, activeFilter, deferredQuery]);
 
   const categoryTitleById = useMemo(() => {
     const titles = new Map<string, string>();
@@ -71,30 +66,36 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, categoryTitleByPlaceId, deferredQuery, feed.places, offerPlaceIds, locale]);
 
   return (
-    <>
-      <SearchBar value={query} onChangeText={setQuery} />
-      <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
-      <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
-      <Section title={`${c.places} (${filteredPlaces.length})`}>
-        {filteredPlaces.length ? filteredPlaces.slice(0, renderLimit).map((place) => {
-          const category = categoryTitleByPlaceId.get(place.id) || c.place;
-          return (
-            <WideItem
-              key={place.id}
-              image={place.coverImage}
-              title={pickText(place.title, locale)}
-              meta={`${category} · ${place.district} · ${place.openNow ? c.openNow : c.hoursMissing} · ${resolveDistanceLabel(userLocation, place)}`}
-              onPress={() => onOpenPlace?.(place.id)}
-            />
-          );
-        }) : <Text style={styles.emptyText}>{c.notFound}</Text>}
-        {filteredPlaces.length > renderLimit ? (
-          <Pressable accessibilityRole="button" onPress={() => setRenderLimit((current) => current + 14)} style={[styles.actionPill, styles.actionPillSecondary]}>
-            <Text style={styles.actionPillTextSecondary}>Daha fazla göster</Text>
-          </Pressable>
-        ) : null}
-      </Section>
-    </>
+    <FlatList
+      data={filteredPlaces}
+      keyExtractor={(place) => place.id}
+      renderItem={({ item: place }) => {
+        const category = categoryTitleByPlaceId.get(place.id) || c.place;
+        return (
+          <WideItem
+            image={place.coverImage}
+            title={pickText(place.title, locale)}
+            meta={`${category} · ${place.district} · ${place.openNow ? c.openNow : c.hoursMissing} · ${resolveDistanceLabel(userLocation, place)}`}
+            onPress={() => onOpenPlace?.(place.id)}
+          />
+        );
+      }}
+      ListHeaderComponent={(
+        <View>
+          <SearchBar value={query} onChangeText={setQuery} />
+          <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
+          <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
+          <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
+        </View>
+      )}
+      ListEmptyComponent={<Text style={styles.emptyText}>{c.notFound}</Text>}
+      contentContainerStyle={{ paddingBottom: 120 }}
+      showsVerticalScrollIndicator={false}
+      initialNumToRender={8}
+      maxToRenderPerBatch={8}
+      windowSize={7}
+      removeClippedSubviews
+    />
   );
 }
 
