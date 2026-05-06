@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { type MobileSession, watchAuthSession } from "../services";
+import { readCachedMobileSession } from "../services/sessionCache";
 
 export interface SessionState {
   session: MobileSession | null;
@@ -16,6 +17,15 @@ export function useSession(): SessionState {
   const lastSignature = useRef<string | null>(null);
 
   useEffect(() => {
+    let active = true;
+    void readCachedMobileSession().then((cached) => {
+      if (!active || !cached) return;
+      const signature = buildSessionSignature(cached);
+      if (signature === lastSignature.current) return;
+      lastSignature.current = signature;
+      setState({ session: cached, loading: false, error: null });
+    });
+
     const unsubscribe = watchAuthSession(
       (session) => {
         const signature = buildSessionSignature(session);
@@ -35,7 +45,10 @@ export function useSession(): SessionState {
       }
     );
 
-    return unsubscribe;
+    return () => {
+      active = false;
+      unsubscribe();
+    };
   }, []);
 
   return state;

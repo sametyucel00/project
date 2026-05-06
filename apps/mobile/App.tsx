@@ -1,7 +1,7 @@
 ﻿import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { Component, memo, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { Pressable, Text, View } from "react-native";
+import { InteractionManager, Pressable, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HomeScreen } from "./src/screens/HomeScreen";
 import { PlacesScreen } from "./src/screens/PlacesScreen";
@@ -26,13 +26,15 @@ import { perfMark } from "./src/services/perf";
 import { t } from "@nar/core";
 import { rememberLocationPromptSuppressed, clearLocationPromptSuppressed } from "./src/hooks/useUserLocation";
 
-WebBrowser.maybeCompleteAuthSession();
+if (typeof window !== "undefined") {
+  void WebBrowser.maybeCompleteAuthSession();
+}
 
 class MobileErrorBoundary extends Component<{ children: ReactNode }, { error: string | null }> {
   state = { error: null };
 
   static getDerivedStateFromError(error: unknown) {
-    return { error: error instanceof Error ? error.message : "Uygulama baÅŸlatÄ±lÄ±rken bir sorun oluÅŸtu." };
+    return { error: error instanceof Error ? error.message : "Uygulama başlatılırken bir sorun oluştu." };
   }
 
   componentDidCatch(error: unknown, info: ErrorInfo) {
@@ -46,7 +48,7 @@ class MobileErrorBoundary extends Component<{ children: ReactNode }, { error: st
         <SafeAreaView style={styles.startupScreen}>
           <View style={styles.onboardingCard}>
             <Text style={styles.splashBadge}>Nar Rehberi</Text>
-            <Text style={styles.splashTagline}>Uygulama aÃ§Ä±lÄ±rken sorun oluÅŸtu</Text>
+            <Text style={styles.splashTagline}>Uygulama açılırken sorun oluştu</Text>
             <Text style={styles.onboardingText}>{this.state.error}</Text>
           </View>
         </SafeAreaView>
@@ -90,7 +92,8 @@ function MobileApp() {
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const { session, loading: sessionLoading } = useSession();
   const shouldLoadFeed = onboardingCompleted === true && Boolean(session);
-  const feed = useDiscoveryFeed(shouldLoadFeed, "home");
+  const feedPriority = surface.kind === "tab" && surface.tab === "Ana Sayfa" ? "home" : "catalog";
+  const feed = useDiscoveryFeed(shouldLoadFeed, feedPriority);
   const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
   const themeSnapshot = useSyncExternalStore(subscribeMobileTheme, getMobileThemeVersion, getMobileThemeVersion);
   useSyncExternalStore(subscribeMobileLocale, getMobileLocale, getMobileLocale);
@@ -103,23 +106,29 @@ function MobileApp() {
   }, [themeSnapshot]);
 
   useEffect(() => {
-    void (Ionicons as typeof Ionicons & { loadFont?: () => Promise<void> }).loadFont?.();
+    const task = InteractionManager.runAfterInteractions(() => {
+      void (Ionicons as typeof Ionicons & { loadFont?: () => Promise<void> }).loadFont?.();
+    });
+    return () => task.cancel();
   }, []);
 
   useEffect(() => {
     const requestedThemeVersion = getMobileThemeVersion();
     let active = true;
-    void loadStoredAppSettings().then((stored) => {
-      if (!active) return;
-      if (getMobileThemeMode() !== "system") return;
-      if (getMobileThemeVersion() !== requestedThemeVersion) return;
-      const locale = stored.preferredLocale ?? deviceLocale;
-      const themeMode = stored.themeMode ?? "system";
-      setMobileLocale(locale);
-      setMobileThemeMode(themeMode);
+    const task = InteractionManager.runAfterInteractions(() => {
+      void loadStoredAppSettings().then((stored) => {
+        if (!active) return;
+        if (getMobileThemeMode() !== "system") return;
+        if (getMobileThemeVersion() !== requestedThemeVersion) return;
+        const locale = stored.preferredLocale ?? deviceLocale;
+        const themeMode = stored.themeMode ?? "system";
+        setMobileLocale(locale);
+        setMobileThemeMode(themeMode);
+      });
     });
     return () => {
       active = false;
+      task.cancel();
     };
   }, [deviceLocale]);
 
@@ -145,9 +154,9 @@ function MobileApp() {
   const isTabSurface = surface.kind === "tab";
   const pageTitle = surface.kind === "tourist" ? t(locale, "touristSurvivalKit")
     : surface.kind === "ancient" ? t(locale, "ancientGuide")
-      : surface.kind === "place" ? "Mekan DetayÄ±"
-        : surface.kind === "event" ? "Etkinlik DetayÄ±"
-          : surface.kind === "offer" ? "FÄ±rsat DetayÄ±"
+      : surface.kind === "place" ? "Mekan Detayı"
+        : surface.kind === "event" ? "Etkinlik Detayı"
+          : surface.kind === "offer" ? "Fırsat Detayı"
             : t(locale, "appName");
 
   const openTab = useCallback((tab: TabLabel) => {
@@ -335,7 +344,7 @@ function MobileApp() {
           {permissionGranted ? null : locationError ? (
             <View style={{ paddingHorizontal: 18 }}>
               <View style={styles.settingsCard}>
-                <Text style={styles.settingsTitle}>Konum eriÅŸimi</Text>
+                <Text style={styles.settingsTitle}>Konum erişimi</Text>
                 <Text style={styles.profileText}>{locationError}</Text>
               </View>
             </View>

@@ -10,7 +10,7 @@ import { db } from "../firebase";
 import { styles } from "../styles";
 import { getMobileLocale, setMobileLocale } from "../locale";
 import { getMobileThemeMode, getMobileThemeVersion, setMobileThemeMode } from "../theme";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import type { MobileScreenProps } from "./types";
 
 type ProfileLocale = "tr" | "en" | "ru" | "de";
@@ -90,10 +90,10 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
       return;
     }
 
-    const favoritesRef = query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc"));
-    const unsubscribe = onSnapshot(
-      favoritesRef,
-      (snapshot) => {
+    let active = true;
+    void getDocs(query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc")))
+      .then((snapshot) => {
+        if (!active) return;
         const rows = snapshot.docs.map((favorite) => {
           const data = favorite.data() as { entityType?: string; entityId?: string };
           return [
@@ -102,13 +102,14 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
           ] as [string, string];
         });
         setFavoriteRows(rows);
-      },
-      () => {
-        setFavoriteRows([]);
-      }
-    );
+      })
+      .catch(() => {
+        if (active) setFavoriteRows([]);
+      });
 
-    return () => unsubscribe();
+    return () => {
+      active = false;
+    };
   }, [language, uid]);
 
   useEffect(() => {

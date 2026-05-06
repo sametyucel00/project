@@ -232,9 +232,6 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
     interactionTask = InteractionManager.runAfterInteractions(() => {
       if (priority === "home") {
         void load({ places: 24, events: 12, offers: 6 }, true);
-        fullLoadTimer = setTimeout(() => {
-          void load({ places: 300, events: 300, offers: 30 }, true);
-        }, 10000);
         return;
       }
 

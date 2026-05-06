@@ -1,9 +1,9 @@
 import { compactValue } from "@nar/core";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { FlatList, Text, View } from "react-native";
 import { FilterRow, OfferItem, SearchBar, StoryRail } from "../components/ui";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import { InteractionManager, Text, View, FlatList } from "react-native";
 
 const offerFilters = ["Tümü", "QR ile", "Puanla", "Sınırlı", "Öne çıkan"];
 
@@ -39,13 +39,6 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
 
   useEffect(() => {
     setVisibleCount(Math.min(10, filteredOffers.length));
-    const task = InteractionManager.runAfterInteractions(() => {
-      const timer = setTimeout(() => setVisibleCount(filteredOffers.length), 4500);
-      return { cancel: () => clearTimeout(timer) };
-    });
-    return () => {
-      task.cancel();
-    };
   }, [filteredOffers.length]);
 
   return (
@@ -56,18 +49,26 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
         <OfferItem title={offer.title.tr} discount={offer.discountLabel} meta={offer.conditions.tr} onPress={() => onOpenOffer?.(offer.id)} />
       )}
       ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-      ListHeaderComponent={(
+      ListHeaderComponent={
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
           <StoryRail offers={feed.offers.slice(0, 5)} activeStory={activeStory} onSelect={handleStorySelect} />
           <FilterRow filters={offerFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
           <Text style={styles.sectionTitle}>{`Nar fırsatları (${filteredOffers.length})`}</Text>
         </View>
-      )}
+      }
       ListEmptyComponent={<Text style={styles.emptyText}>Seçtiğin filtreye uygun fırsat bulunamadı.</Text>}
-      ListFooterComponent={firstOffer ? <Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>{`Seçili fırsat: ${firstOffer.title.tr} · indirim ${firstOffer.discountLabel} · kalan ${compactValue(remainingUse)}`}</Text> : null}
+      ListFooterComponent={
+        firstOffer ? (
+          <Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>
+            {`Seçili fırsat: ${firstOffer.title.tr} · indirim ${firstOffer.discountLabel} · kalan ${compactValue(remainingUse)}`}
+          </Text>
+        ) : null
+      }
       contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
+      onEndReached={() => setVisibleCount((current) => Math.min(filteredOffers.length, current + 24))}
+      onEndReachedThreshold={0.35}
       initialNumToRender={8}
       maxToRenderPerBatch={8}
       windowSize={7}
@@ -79,3 +80,4 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
 function normalize(value: string) {
   return value.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
