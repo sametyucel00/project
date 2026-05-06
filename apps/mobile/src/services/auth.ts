@@ -432,13 +432,17 @@ export function watchAuthSession(onSession: (session: MobileSession | null) => v
       }
 
       const cachedSession = await readCachedMobileSession();
-      if (cachedSession?.uid === user.uid) {
-        onSession(cachedSession);
-      }
+      const fastSession = cachedSession?.uid === user.uid ? cachedSession : buildFallbackSession(user);
+      onSession(fastSession);
 
-      const current = await ensureMobileUserProfile(user);
-      onSession(current);
-      void writeCachedMobileSession(current);
+      void ensureMobileUserProfile(user)
+        .then((current) => {
+          onSession(current);
+          void writeCachedMobileSession(current);
+        })
+        .catch((error) => {
+          onError?.(error instanceof Error ? error : new Error("Oturum profili okunamadı."));
+        });
 
       const userRef = doc(db, "users", user.uid);
       unsubscribeProfile = onSnapshot(

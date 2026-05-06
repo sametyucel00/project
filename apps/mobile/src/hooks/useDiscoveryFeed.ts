@@ -1,4 +1,4 @@
-import { featuredEvents, featuredOffers, featuredPlaces, loadLegacyDiscoveryFallbacks, type EventItem, type Offer, type Place } from "@nar/core";
+import { featuredEvents, featuredOffers, featuredPlaces, type EventItem, type Offer, type Place } from "@nar/core";
 import { startTransition, useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
@@ -13,15 +13,17 @@ export interface DiscoveryFeedState {
   error: string | null;
 }
 
+export type DiscoveryFeedPriority = "home" | "catalog";
+
 let cachedFeed: DiscoveryFeedState | null = null;
-const feedCacheKey = "narrehberi:mobile:discovery-feed:v3";
+const homePreviewCacheKey = "narrehberi:mobile:discovery-home:v1";
 const feedCacheLimits = {
   places: 300,
   events: 300,
   offers: 30
 } as const;
 
-export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
+export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority = "home"): DiscoveryFeedState {
   const [state, setState] = useState<DiscoveryFeedState>({
     places: cachedFeed?.places ?? featuredPlaces,
     events: cachedFeed?.events ?? featuredEvents,
@@ -41,67 +43,59 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     let active = true;
     let fullLoadTimer: ReturnType<typeof setTimeout> | undefined;
     let interactionTask: { cancel?: () => void } | undefined;
-    let shouldSkipNetwork = false;
-    let shouldLoadLegacyFallbacks = true;
     let legacyMergeStarted = false;
+    let skippedCatalogLoad = false;
 
-    void readDiscoveryCatalogCache().then((cachedCatalog) => {
-      if (!active || !cachedCatalog) return;
-      startTransition(() => {
-        setState((current) => {
-          const nextState = commitFeed({
-            places: cachedCatalog.places.length ? cachedCatalog.places : current.places,
-            events: cachedCatalog.events.length ? cachedCatalog.events : current.events,
-            offers: cachedCatalog.offers.length ? cachedCatalog.offers : current.offers,
-            loading: current.loading,
-            error: current.error
-          });
-          cachedFeed = nextState;
-          return sameDiscoveryFeedState(current, nextState) ? current : nextState;
-        });
-      });
+    if (priority === "home") {
+      void readJsonCache<DiscoveryFeedState>(homePreviewCacheKey).then((cached) => {
+        if (!active || !cached) return;
+        const normalized = normalizeCachedFeed(cached);
+        if (!normalized) {
+          void removeCache(homePreviewCacheKey);
+          return;
+        }
 
-      if (isDiscoveryCatalogFresh(cachedCatalog) && isDiscoveryCatalogComplete(cachedCatalog)) {
-        shouldSkipNetwork = true;
-        shouldLoadLegacyFallbacks = false;
         startTransition(() => {
-          setState((current) => (current.loading ? { ...current, loading: false } : current));
-        });
-      }
-    });
-
-    void readJsonCache<DiscoveryFeedState>(feedCacheKey).then((cached) => {
-      if (!active || !cached) return;
-      const normalized = normalizeCachedFeed(cached);
-      if (!normalized) {
-        void removeCache(feedCacheKey);
-        return;
-      }
-
-      if (
-        normalized.places.length >= feedCacheLimits.places &&
-        normalized.events.length >= feedCacheLimits.events &&
-        normalized.offers.length >= feedCacheLimits.offers
-      ) {
-        shouldLoadLegacyFallbacks = false;
-      }
-
-      startTransition(() => {
-        setState((current) => {
-          const nextState = {
-            places: normalized.places.length ? normalized.places : current.places,
-            events: normalized.events.length ? normalized.events : current.events,
-            offers: normalized.offers.length ? normalized.offers : current.offers,
-            loading: current.loading,
-            error: current.error
-          };
-          cachedFeed = nextState;
-          return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+          setState((current) => {
+            const nextState = commitFeed({
+              places: normalized.places.length ? normalized.places : current.places,
+              events: normalized.events.length ? normalized.events : current.events,
+              offers: normalized.offers.length ? normalized.offers : current.offers,
+              loading: current.loading,
+              error: current.error
+            });
+            cachedFeed = nextState;
+            return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+          });
         });
       });
-    });
+    } else {
+      void readDiscoveryCatalogCache().then((cachedCatalog) => {
+        if (!active || !cachedCatalog) return;
+        startTransition(() => {
+          setState((current) => {
+            const nextState = commitFeed({
+              places: cachedCatalog.places.length ? cachedCatalog.places : current.places,
+              events: cachedCatalog.events.length ? cachedCatalog.events : current.events,
+              offers: cachedCatalog.offers.length ? cachedCatalog.offers : current.offers,
+              loading: current.loading,
+              error: current.error
+            });
+            cachedFeed = nextState;
+            return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+          });
+        });
 
-    if (shouldLoadLegacyFallbacks) {
+        if (isDiscoveryCatalogFresh(cachedCatalog) && isDiscoveryCatalogComplete(cachedCatalog)) {
+          skippedCatalogLoad = true;
+          startTransition(() => {
+            setState((current) => (current.loading ? { ...current, loading: false } : current));
+          });
+        }
+      });
+    }
+
+    if (priority === "catalog") {
       void mergeLegacyFallbacks();
     }
 
@@ -124,7 +118,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
               error: null
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
-            void writeJsonCache(feedCacheKey, trimFeedForCache(nextState));
+            void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
             void writeDiscoveryCatalogCache({
               places: nextState.places,
               events: nextState.events,
@@ -147,7 +141,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
               error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
-            void writeJsonCache(feedCacheKey, trimFeedForCache(nextState));
+            void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
             void writeDiscoveryCatalogCache({
               places: nextState.places,
               events: nextState.events,
@@ -162,32 +156,34 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     }
 
     function mergeLegacyFallbacks() {
-      if (legacyMergeStarted) return;
+      if (legacyMergeStarted || skippedCatalogLoad) return;
       legacyMergeStarted = true;
-      void loadLegacyDiscoveryFallbacks().then((legacy) => {
-        if (!active) return;
-        startTransition(() => {
-          setState((current) => {
-            const merged = commitFeed({
-              places: mergeUniqueById(legacy.places, current.places, feedCacheLimits.places),
-              events: mergeUniqueById(legacy.events, current.events, feedCacheLimits.events),
-              offers: current.offers,
-              loading: false,
-              error: current.error
+      void import("@nar/core")
+        .then(({ loadLegacyDiscoveryFallbacks }) => loadLegacyDiscoveryFallbacks())
+        .then((legacy) => {
+          if (!active) return;
+          startTransition(() => {
+            setState((current) => {
+              const merged = commitFeed({
+                places: mergeUniqueById(legacy.places, current.places, feedCacheLimits.places),
+                events: mergeUniqueById(legacy.events, current.events, feedCacheLimits.events),
+                offers: current.offers,
+                loading: false,
+                error: current.error
+              });
+              if (sameDiscoveryFeedState(current, merged)) return current;
+              void writeJsonCache(homePreviewCacheKey, trimFeedForCache(merged));
+              void writeDiscoveryCatalogCache({
+                places: merged.places,
+                events: merged.events,
+                offers: merged.offers,
+                syncedAt: new Date().toISOString(),
+                version: 1
+              });
+              return merged;
             });
-            if (sameDiscoveryFeedState(current, merged)) return current;
-            void writeJsonCache(feedCacheKey, trimFeedForCache(merged));
-            void writeDiscoveryCatalogCache({
-              places: merged.places,
-              events: merged.events,
-              offers: merged.offers,
-              syncedAt: new Date().toISOString(),
-              version: 1
-            });
-            return merged;
           });
         });
-      });
     }
 
     function commitFeed(next: DiscoveryFeedState) {
@@ -196,13 +192,19 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     }
 
     interactionTask = InteractionManager.runAfterInteractions(() => {
-      if (shouldSkipNetwork) {
+      if (priority === "home") {
+        void load({ places: 24, events: 12, offers: 6 }, true);
         return;
       }
-      void load({ places: 36, events: 18, offers: 8 });
+
+      if (skippedCatalogLoad) {
+        return;
+      }
+
+      void load({ places: 48, events: 24, offers: 8 });
       fullLoadTimer = setTimeout(() => {
         void load({ places: 300, events: 300, offers: 30 }, true);
-      }, 8500);
+      }, 7500);
     });
 
     return () => {
@@ -210,7 +212,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
       interactionTask?.cancel?.();
       if (fullLoadTimer) clearTimeout(fullLoadTimer);
     };
-  }, [enabled]);
+  }, [enabled, priority]);
 
   return state;
 }
