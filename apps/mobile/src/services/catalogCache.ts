@@ -7,6 +7,9 @@ export interface DiscoveryCatalogSnapshot {
   offers: Offer[];
   syncedAt: string;
   version: number;
+  placesCount?: number;
+  eventsCount?: number;
+  offersCount?: number;
 }
 
 const catalogVersion = 1;
@@ -42,7 +45,10 @@ export async function readDiscoveryCatalogCache() {
       events,
       offers,
       syncedAt: manifest.syncedAt,
-      version: manifest.version
+      version: manifest.version,
+      placesCount: manifest.placesCount,
+      eventsCount: manifest.eventsCount,
+      offersCount: manifest.offersCount
     } satisfies DiscoveryCatalogSnapshot;
   } catch {
     return null;
@@ -54,9 +60,9 @@ export async function writeDiscoveryCatalogCache(snapshot: DiscoveryCatalogSnaps
     const manifest: CatalogManifest = {
       version: catalogVersion,
       syncedAt: snapshot.syncedAt,
-      placesCount: snapshot.places.length,
-      eventsCount: snapshot.events.length,
-      offersCount: snapshot.offers.length
+      placesCount: snapshot.placesCount ?? snapshot.places.length,
+      eventsCount: snapshot.eventsCount ?? snapshot.events.length,
+      offersCount: snapshot.offersCount ?? snapshot.offers.length
     };
     await AsyncStorage.multiSet([
       [catalogPlacesKey, JSON.stringify(snapshot.places)],
@@ -81,6 +87,15 @@ export function isDiscoveryCatalogFresh(snapshot: DiscoveryCatalogSnapshot | nul
   if (!snapshot?.syncedAt) return false;
   const age = Date.now() - new Date(snapshot.syncedAt).getTime();
   return Number.isFinite(age) && age >= 0 && age < catalogTtlMs;
+}
+
+export function isDiscoveryCatalogComplete(snapshot: DiscoveryCatalogSnapshot | null) {
+  if (!snapshot) return false;
+  return (
+    (snapshot.placesCount ?? snapshot.places.length) >= 100 ||
+    (snapshot.eventsCount ?? snapshot.events.length) >= 50 ||
+    (snapshot.offersCount ?? snapshot.offers.length) >= 10
+  );
 }
 
 function safeParseArray<T>(value: string | null | undefined) {

@@ -2,7 +2,7 @@ import { featuredEvents, featuredOffers, featuredPlaces, loadLegacyDiscoveryFall
 import { startTransition, useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
-import { isDiscoveryCatalogFresh, readDiscoveryCatalogCache, writeDiscoveryCatalogCache } from "../services/catalogCache";
+import { isDiscoveryCatalogComplete, isDiscoveryCatalogFresh, readDiscoveryCatalogCache, writeDiscoveryCatalogCache } from "../services/catalogCache";
 import { readJsonCache, removeCache, writeJsonCache } from "../services/cache";
 
 export interface DiscoveryFeedState {
@@ -59,7 +59,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
         });
       });
 
-      if (isDiscoveryCatalogFresh(cachedCatalog)) {
+      if (isDiscoveryCatalogFresh(cachedCatalog) && isDiscoveryCatalogComplete(cachedCatalog)) {
         shouldSkipNetwork = true;
         startTransition(() => {
           setState((current) => (current.loading ? { ...current, loading: false } : current));
