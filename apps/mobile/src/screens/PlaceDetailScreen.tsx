@@ -5,11 +5,21 @@ import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { openAddressInMaps, openEmailAddress, openExternalUrl, openPhoneNumber } from "../utils/links";
 import { toggleFavorite } from "../services";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { hasMeaningfulMapPoint, readMapPoint, resolveDistanceLabel } from "../utils/location";
+import { perfMark, perfMeasure } from "../services/perf";
 
 export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack }: MobileScreenProps & { placeId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
+  useEffect(() => {
+    perfMark("placeDetail:screenMount");
+    perfMeasure("placeDetail:navigationToMount", "nav:place-detail:press");
+    queueMicrotask(() => {
+      perfMark("placeDetail:firstPaint");
+      perfMeasure("placeDetail:mountToFirstPaint", "placeDetail:screenMount");
+      perfMeasure("placeDetail:navigationToFirstPaint", "nav:place-detail:press");
+    });
+  }, []);
   const place = useMemo(() => feed.places.find((item) => item.id === placeId), [feed.places, placeId]);
   const category = place ? placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place))?.title.tr ?? "Mekan" : "Mekan";
   const placeLocation = place;

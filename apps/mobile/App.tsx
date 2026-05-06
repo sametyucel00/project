@@ -85,6 +85,18 @@ export default function App() {
   );
 }
 
+function getRouteMark(surface: Surface, activeTab: TabLabel) {
+  if (surface.kind === "tab") return `nav:${surface.tab}:route`;
+  if (surface.kind === "place") return "nav:place-detail:route";
+  if (surface.kind === "event") return "nav:event-detail:route";
+  if (surface.kind === "offer") return "nav:offer-detail:route";
+  if (surface.kind === "tourist") return "nav:tourist:route";
+  if (surface.kind === "ancient") return "nav:ancient:route";
+  if (surface.kind === "auth") return "nav:auth:route";
+  if (surface.kind === "legal") return "nav:legal:route";
+  return `nav:${activeTab}:route`;
+}
+
 function MobileApp() {
   const [activeTab, setActiveTab] = useState<TabLabel>("Ana Sayfa");
   const [mountedTabs, setMountedTabs] = useState<TabLabel[]>(["Ana Sayfa"]);
@@ -149,6 +161,10 @@ function MobileApp() {
     };
   }, []);
 
+  useEffect(() => {
+    perfMark(getRouteMark(surface, activeTab));
+  }, [activeTab, surface]);
+
   const showAuth = surface.kind === "auth" || (!needsOnboarding && !session);
   const showLegal = surface.kind === "legal";
 
@@ -162,7 +178,9 @@ function MobileApp() {
 
   const openTab = useCallback((tab: TabLabel) => {
     perfMark(`nav:${tab}:press`);
+    perfMark(`nav:${tab}:handler`);
     if (tab !== "Ana Sayfa") setCatalogEnabled(true);
+    perfMark(`nav:${tab}:navigate`);
     setActiveTab(tab);
     setSurface({ kind: "tab", tab });
     setMountedTabs((current) => (current.includes(tab) ? current : [...current, tab]));
@@ -170,46 +188,63 @@ function MobileApp() {
 
   const openPlace = useCallback((placeId: string) => {
     perfMark("nav:place-detail:press", { placeId });
+    perfMark("nav:place-detail:handler", { placeId });
     setCatalogEnabled(true);
     setActiveTab("Mekanlar");
+    perfMark("nav:place-detail:navigate", { placeId });
     setSurface({ kind: "place", placeId });
   }, []);
 
   const openEvent = useCallback((eventId: string) => {
     perfMark("nav:event-detail:press", { eventId });
+    perfMark("nav:event-detail:handler", { eventId });
     setCatalogEnabled(true);
     setActiveTab("Etkinlikler");
+    perfMark("nav:event-detail:navigate", { eventId });
     setSurface({ kind: "event", eventId });
   }, []);
 
   const openOffer = useCallback((offerId: string) => {
     perfMark("nav:offer-detail:press", { offerId });
+    perfMark("nav:offer-detail:handler", { offerId });
     setCatalogEnabled(true);
     setActiveTab("Fırsatlar");
+    perfMark("nav:offer-detail:navigate", { offerId });
     setSurface({ kind: "offer", offerId });
   }, []);
 
   const openTouristGuide = useCallback(() => {
     perfMark("nav:tourist:press");
+    perfMark("nav:tourist:handler");
+    perfMark("nav:tourist:navigate");
     setSurface({ kind: "tourist" });
   }, []);
 
   const openAncientGuide = useCallback(() => {
     perfMark("nav:ancient:press");
+    perfMark("nav:ancient:handler");
+    perfMark("nav:ancient:navigate");
     setSurface({ kind: "ancient" });
   }, []);
 
   const openAuth = useCallback(() => {
     perfMark("nav:auth:press");
+    perfMark("nav:auth:handler");
+    perfMark("nav:auth:navigate");
     setSurface({ kind: "auth" });
   }, []);
 
   const openLegal = useCallback((page: "privacy" | "terms") => {
     perfMark("nav:legal:press", { page });
+    perfMark("nav:legal:handler", { page });
+    perfMark("nav:legal:navigate", { page });
     setSurface({ kind: "legal", page });
   }, []);
 
   function backToTabs() {
+    perfMark("nav:back:press", { tab: activeTab });
+    perfMark("nav:back:handler", { tab: activeTab });
+    perfMark("nav:back:navigate", { tab: activeTab });
     setSurface({ kind: "tab", tab: activeTab });
   }
 

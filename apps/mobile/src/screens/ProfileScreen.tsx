@@ -10,6 +10,7 @@ import { db } from "../firebase";
 import { styles } from "../styles";
 import { getMobileLocale, setMobileLocale } from "../locale";
 import { getMobileThemeMode, getMobileThemeVersion, setMobileThemeMode } from "../theme";
+import { perfMark, perfMeasure } from "../services/perf";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import type { MobileScreenProps } from "./types";
 
@@ -38,6 +39,16 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
   const hydratedRef = useRef(false);
   const copy = getProfileCopy(language);
   const ui = getProfileUi(language);
+  useEffect(() => {
+    perfMark("profile:screenMount");
+    perfMeasure("profile:navigationToMount", "nav:Profil:press");
+    queueMicrotask(() => {
+      perfMark("profile:firstPaint");
+      perfMeasure("profile:mountToFirstPaint", "profile:screenMount");
+      perfMeasure("profile:navigationToFirstPaint", "nav:Profil:press");
+    });
+  }, []);
+
   const markSettingsEdited = () => {
     userEditedSettingsRef.current = true;
   };

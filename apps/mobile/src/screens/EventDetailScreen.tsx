@@ -8,9 +8,19 @@ import { createTicketOrder, scheduleReminder, toggleFavorite } from "../services
 import { useEffect, useMemo, useState } from "react";
 import { getMobileLocale } from "../locale";
 import { hasMeaningfulMapPoint, readMapPoint, resolveDistanceLabel } from "../utils/location";
+import { perfMark, perfMeasure } from "../services/perf";
 
 export function EventDetailScreen({ feed, userLocation, session, eventId, onBack }: MobileScreenProps & { eventId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
+  useEffect(() => {
+    perfMark("eventDetail:screenMount");
+    perfMeasure("eventDetail:navigationToMount", "nav:event-detail:press");
+    queueMicrotask(() => {
+      perfMark("eventDetail:firstPaint");
+      perfMeasure("eventDetail:mountToFirstPaint", "eventDetail:screenMount");
+      perfMeasure("eventDetail:navigationToFirstPaint", "nav:event-detail:press");
+    });
+  }, []);
   const locale = getMobileLocale();
   const event = useMemo(() => feed.events.find((item) => item.id === eventId), [eventId, feed.events]);
   const venue = useMemo(() => event ? resolveEventVenue(feed.places, event.venueName, event.district, locale) : undefined, [event, feed.places, locale]);

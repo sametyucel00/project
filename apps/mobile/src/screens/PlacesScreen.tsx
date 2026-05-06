@@ -1,6 +1,6 @@
 import { FlatList, Text, View } from "react-native";
 import { getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { perfCount, perfFlag, perfMark, perfMeasure } from "../services/perf";
@@ -107,6 +107,13 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   }, [activeCategory, activeFilter, c.all, c.offers, c.open, c.place, c.popular, categoryTitleByPlaceId, deferredQuery, disableHeavyCompute, feed.places, offerPlaceIds, locale]);
 
   const visiblePlaces = useMemo(() => filteredPlaces.slice(0, visibleCount), [filteredPlaces, visibleCount]);
+  const handleViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: Array<unknown> }) => {
+    if (firstListPaintLogged.current || !viewableItems.length) return;
+    firstListPaintLogged.current = true;
+    perfMark("places:firstListPaint");
+    perfMeasure("places:mountToFirstListPaint", "places:screenMount", { items: viewableItems.length });
+    perfMeasure("places:navigationToFirstListPaint", "nav:Mekanlar:press", { items: viewableItems.length });
+  }, []);
 
   useEffect(() => {
     setVisibleCount(Math.min(12, filteredPlaces.length));
@@ -117,13 +124,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
       data={visiblePlaces}
       keyExtractor={(place) => place.id}
       viewabilityConfig={viewabilityConfigRef.current}
-      onViewableItemsChanged={({ viewableItems }) => {
-        if (firstListPaintLogged.current || !viewableItems.length) return;
-        firstListPaintLogged.current = true;
-        perfMark("places:firstListPaint");
-        perfMeasure("places:mountToFirstListPaint", "places:screenMount", { items: viewableItems.length });
-        perfMeasure("places:navigationToFirstListPaint", "nav:Mekanlar:press", { items: viewableItems.length });
-      }}
+      onViewableItemsChanged={handleViewableItemsChanged}
       renderItem={({ item: place }) => {
         const category = categoryTitleByPlaceId.get(place.id) ?? c.place;
         const distance = disableDistance ? null : resolveDistanceLabel(userLocation, place);

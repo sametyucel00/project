@@ -4,8 +4,9 @@ import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { resolveDistanceLabel } from "../utils/location";
+import { perfMark, perfMeasure } from "../services/perf";
 
 const eventCopy = {
   tr: {
@@ -80,6 +81,17 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   const [viewMode, setViewMode] = useState<EventViewMode>("list");
   const [visibleCount, setVisibleCount] = useState(12);
   const deferredQuery = useDeferredValue(query);
+  const firstListPaintedRef = useRef(false);
+
+  useEffect(() => {
+    perfMark("events:screenMount");
+    perfMeasure("events:navigationToMount", "nav:Etkinlikler:press", { events: feed.events.length });
+    queueMicrotask(() => {
+      perfMark("events:firstPaint");
+      perfMeasure("events:mountToFirstPaint", "events:screenMount");
+      perfMeasure("events:navigationToFirstPaint", "nav:Etkinlikler:press");
+    });
+  }, []);
 
   useEffect(() => {
     setActiveType(c.all);
@@ -142,6 +154,13 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   const visibleEvents = useMemo(() => filteredEvents.slice(0, visibleCount), [filteredEvents, visibleCount]);
   const venueIndex = useMemo(() => buildVenueIndex(feed.places, locale), [feed.places, locale]);
   const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : viewMode === "map" ? c.mapList : c.events;
+  const handleViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: Array<unknown> }) => {
+    if (firstListPaintedRef.current || viewableItems.length === 0) return;
+    firstListPaintedRef.current = true;
+    perfMark("events:firstListPaint");
+    perfMeasure("events:mountToFirstListPaint", "events:screenMount", { items: viewableItems.length });
+    perfMeasure("events:navigationToFirstListPaint", "nav:Etkinlikler:press", { items: viewableItems.length });
+  }, []);
 
   useEffect(() => {
     setVisibleCount(Math.min(12, filteredEvents.length));
@@ -216,6 +235,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       maxToRenderPerBatch={8}
       windowSize={7}
       removeClippedSubviews
+      onViewableItemsChanged={handleViewableItemsChanged}
     />
   );
 }

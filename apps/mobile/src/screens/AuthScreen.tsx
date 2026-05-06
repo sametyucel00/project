@@ -3,6 +3,7 @@ import { t, type Locale } from "@nar/core";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { AUTH_REDIRECT_STARTED, loginAnonymously, loginWithApplePopup, loginWithEmail, loginWithGooglePopup, registerWithEmailAndRole, resetPassword } from "../services";
+import { perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
 import { theme } from "../theme";
 import type { SelfServiceRole } from "../services";
@@ -120,11 +121,14 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
 
   const c = copy[locale] ?? copy.tr;
 
-  async function runAuth(action: () => Promise<unknown>) {
+  async function runAuth(name: string, action: () => Promise<unknown>) {
+    perfMark(`${name}:handler`);
     setStatus(c.statusSigning);
     try {
       const result = await action();
+      perfMeasure(`${name}:await`, `${name}:handler`);
       if (result === AUTH_REDIRECT_STARTED) return;
+      perfMark(`${name}:navigate`);
       onSignedIn();
     } catch (error) {
       setStatus(formatAuthError(error, c.statusError));
@@ -193,24 +197,28 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
 
           <Pressable
             accessibilityRole="button"
-            onPress={() => void runAuth(() => mode === "login"
-              ? loginWithEmail(email.trim(), password)
-              : registerWithEmailAndRole(email.trim(), password, displayName.trim(), role))}
+            onPress={() => {
+              const name = mode === "login" ? "auth:email-login" : "auth:email-register";
+              perfMark(`${name}:press`);
+              void runAuth(name, () => mode === "login"
+                ? loginWithEmail(email.trim(), password)
+                : registerWithEmailAndRole(email.trim(), password, displayName.trim(), role));
+            }}
             style={styles.onboardingAction}
           >
             <Text style={styles.onboardingActionText}>{c.continue}</Text>
           </Pressable>
 
           <View style={styles.authRow}>
-            <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginWithGooglePopup())} style={styles.authChoice}>
+            <Pressable accessibilityRole="button" onPress={() => { perfMark("auth:google:press"); void runAuth("auth:google", () => loginWithGooglePopup()); }} style={styles.authChoice}>
               <Text style={styles.authChoiceText}>{c.google}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginWithApplePopup())} style={styles.authChoice}>
+            <Pressable accessibilityRole="button" onPress={() => { perfMark("auth:apple:press"); void runAuth("auth:apple", () => loginWithApplePopup()); }} style={styles.authChoice}>
               <Text style={styles.authChoiceText}>{c.apple}</Text>
             </Pressable>
           </View>
 
-          <Pressable accessibilityRole="button" onPress={() => void runAuth(() => loginAnonymously())} style={styles.onboardingAction}>
+          <Pressable accessibilityRole="button" onPress={() => { perfMark("auth:guest:press"); void runAuth("auth:guest", () => loginAnonymously()); }} style={styles.onboardingAction}>
             <Text style={styles.onboardingActionText}>{c.guest}</Text>
           </Pressable>
 
