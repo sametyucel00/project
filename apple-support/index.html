@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Nar Rehberi uygulaması için destek, gizlilik politikası, hesap silme ve veri işleme bilgileri." />
+    <title>Nar Rehberi - Destek ve Gizlilik</title>
+    <style>
+      :root {
+        --bg: #fbf7f1;
+        --surface: rgba(255, 255, 255, 0.8);
+        --surface-strong: #ffffff;
+        --text: #221b16;
+        --muted: #6b625b;
+        --line: rgba(35, 27, 22, 0.12);
+        --brand: #c94131;
+        --brand-dark: #9d2f24;
+        --brand-soft: #fff2ef;
+        --shadow: 0 18px 60px rgba(35, 27, 22, 0.08);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #161210;
+          --surface: rgba(28, 23, 20, 0.82);
+          --surface-strong: #1f1916;
+          --text: #f5eee7;
+          --muted: #b6aca4;
+          --line: rgba(255, 255, 255, 0.12);
+          --brand: #ff6c57;
+          --brand-dark: #ff8a77;
+          --brand-soft: rgba(255, 108, 87, 0.14);
+          --shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(201, 65, 49, 0.12), transparent 34%),
+          var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .hero {
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--surface);
+        backdrop-filter: blur(16px);
+        box-shadow: var(--shadow);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .title {
+        margin: 18px 0 8px;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+      }
+
+      .subtitle {
+        margin: 0;
+        max-width: 70ch;
+        font-size: 1.04rem;
+        color: var(--muted);
+      }
+
+      .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+        text-decoration: none;
+        font-size: 0.94rem;
+      }
+
+      .pill strong {
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 18px;
+        margin-top: 18px;
+      }
+
+      .card {
+        grid-column: span 6;
+        padding: 22px;
+        border-radius: 24px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow);
+      }
+
+      .card.full {
+        grid-column: 1 / -1;
+      }
+
+      .card h2,
+      .card h3 {
+        margin: 0 0 10px;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+      }
+
+      .card h2 {
+        font-size: 1.35rem;
+      }
+
+      .card h3 {
+        font-size: 1.08rem;
+      }
+
+      .card p,
+      .card li {
+        color: var(--muted);
+      }
+
+      .list {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .list li + li {
+        margin-top: 8px;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 46px;
+        padding: 0 16px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 150ms ease, border-color 150ms ease, background 150ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button.primary {
+        background: var(--brand);
+        color: white;
+      }
+
+      .button.secondary {
+        background: var(--surface-strong);
+        color: var(--text);
+        border-color: var(--line);
+      }
+
+      .button.ghost {
+        background: transparent;
+        color: var(--text);
+        border-color: var(--line);
+      }
+
+      .note {
+        margin-top: 14px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(201, 65, 49, 0.08);
+        border: 1px solid rgba(201, 65, 49, 0.18);
+        color: var(--text);
+      }
+
+      .kv {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .kv div {
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: var(--surface-strong);
+        border: 1px solid var(--line);
+      }
+
+      .kv span {
+        display: block;
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .footer {
+        margin: 18px 0 8px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 840px) {
+        .card {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 14px;
+        }
+
+        .hero,
+        .card {
+          border-radius: 20px;
+          padding: 18px;
+        }
+
+        .kv {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero" id="top">
+        <div class="eyebrow">Nar Rehberi · App Store Review / Support</div>
+        <h1 class="title">Nar Rehberi</h1>
+        <p class="subtitle">
+          Şehir keşfi, mekanlar, etkinlikler, fırsatlar, QR sadakat ve rol bazlı paneller için geliştirilmiş
+          mobil ve web platformu. Bu sayfa; Apple incelemesi, kullanıcı desteği, gizlilik, hesap silme ve veri
+          işleme bilgilerini tek yerde toplar.
+        </p>
+        <div class="meta-row">
+          <a class="pill" href="mailto:sametyucel52@gmail.com"><strong>Destek:</strong> sametyucel52@gmail.com</a>
+          <a class="pill" href="https://narrehberi.com" target="_blank" rel="noreferrer"><strong>Web:</strong> narrehberi.com</a>
+          <a class="pill" href="https://apps.apple.com/tr/app/nar-rehberi/id6761314584" target="_blank" rel="noreferrer"><strong>App Store</strong></a>
+          <a class="pill" href="https://play.google.com/store/apps/details?id=narrehberi.com&hl=tr" target="_blank" rel="noreferrer"><strong>Google Play</strong></a>
+        </div>
+      </section>
+
+      <section class="grid" aria-label="Nar Rehberi bilgi alanları">
+        <article class="card">
+          <h2>Destek / Support</h2>
+          <p>
+            Uygulamayla ilgili soru, hata bildirimi, hesap silme talebi veya gizlilik isteği için bize e-posta ile
+            ulaşabilirsiniz. Yanıtlar mümkün olan en kısa sürede döndürülür.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="mailto:sametyucel52@gmail.com?subject=Nar%20Rehberi%20Destek%20Talebi">Destek e-postası gönder</a>
+            <a class="button secondary" href="#delete-account">Hesap silme</a>
+          </div>
+          <div class="note">
+            App Store değerlendirmesi için gerekli iletişim kanalı bu sayfada açıkça sunulmaktadır.
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Uygulama Bilgisi</h2>
+          <div class="kv">
+            <div>
+              <span>Ad</span>
+              Nar Rehberi
+            </div>
+            <div>
+              <span>Platform</span>
+              iOS · Android · Web
+            </div>
+            <div>
+              <span>Geliştirici</span>
+              Samet Yücel
+            </div>
+            <div>
+              <span>Son güncelleme</span>
+              6 Mayıs 2026
+            </div>
+          </div>
+        </article>
+
+        <article class="card full" id="privacy-policy">
+          <h2>Gizlilik Politikası / Privacy Policy</h2>
+          <p>
+            Nar Rehberi, kullanıcı deneyimini sağlamak ve uygulama işlevlerini çalıştırmak için gerekli olan sınırlı
+            verileri işler. Kişisel veriler yalnızca uygulama içi işlevler için kullanılır.
+          </p>
+          <ul class="list">
+            <li><strong>Hesap bilgileri:</strong> ad, e-posta, hesap rolü ve oturum bilgileri.</li>
+            <li><strong>Kullanıcı tercihleri:</strong> dil, tema, bildirim izinleri ve favoriler.</li>
+            <li><strong>Konum bilgisi:</strong> yalnızca kullanıcı izin verirse, yakın mekan ve etkinlikleri göstermek için.</li>
+            <li><strong>QR / tarama geçmişi:</strong> ödül, puan ve kullanım akışlarını göstermek için.</li>
+            <li><strong>Teknik veriler:</strong> uygulama kararlılığı ve bildirimler için gerekli cihaz/oturum bilgileri.</li>
+          </ul>
+          <div class="note">
+            Veriler reklam takibi amacıyla tasarlanmamıştır. Konum izni opsiyoneldir; kullanıcı isterse cihaz ayarlarından
+            kapatabilir.
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Veri kullanımı</h3>
+          <ul class="list">
+            <li>Yakındaki mekan ve etkinlik mesafesini göstermek.</li>
+            <li>Favorileri, puanları ve görevleri kullanıcı hesabıyla eşleştirmek.</li>
+            <li>Bildirim tercihlerini ve oturumu hatırlamak.</li>
+            <li>Uygulama içi performans ve hata durumlarını iyileştirmek.</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Veri paylaşımı</h3>
+          <p>
+            Nar Rehberi kullanıcı verilerini üçüncü taraflarla pazarlama amacıyla satmaz. Firebase ve ilgili altyapı
+            servisleri, uygulamanın çalışması için kullanılır.
+          </p>
+          <p>
+            Konum, bildirim ve oturum verileri yalnızca ilgili özelliği sunmak için işlenir.
+          </p>
+        </article>
+
+        <article class="card full">
+          <h2 id="delete-account">Hesap Silme / Account Deletion</h2>
+          <p>
+            Kullanıcı hesabını uygulama içindeki <strong>Ayarlar</strong> ekranından silebilir. Silme işlemi tamamlandığında
+            oturum kapatılır ve hesapla ilişkilendirilen ana kullanıcı verileri kaldırılır.
+          </p>
+          <ul class="list">
+            <li>Uygulamayı açın.</li>
+            <li>Ayarlar bölümüne gidin.</li>
+            <li><strong>Hesabımı sil</strong> seçeneğine dokunun.</li>
+          </ul>
+          <p>
+            Uygulama içi silme çalışmazsa, hesap silme talebinizi e-posta ile iletebilirsiniz:
+            <a href="mailto:sametyucel52@gmail.com?subject=Nar%20Rehberi%20Hesap%20Silme%20Talebi">sametyucel52@gmail.com</a>
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Toplanan veriler</h3>
+          <ul class="list">
+            <li>E-posta ve profil bilgileri</li>
+            <li>Favoriler ve puan geçmişi</li>
+            <li>QR kullanım kayıtları</li>
+            <li>Bildirim tercihleri</li>
+            <li>Konum izni verilirse yaklaşık konum</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Saklama ve silme</h3>
+          <p>
+            Veriler, hizmet sunmak için gerekli olduğu sürece saklanır. Hesap silme talebi alınması halinde, kullanıcı
+            hesabına bağlı veriler mümkün olan en kısa sürede kaldırılır; yasal zorunluluklar varsa yalnızca gerekli asgari
+            veri saklanır.
+          </p>
+        </article>
+
+        <article class="card full" id="terms">
+          <h2>Kullanım Şartları / Terms</h2>
+          <ul class="list">
+            <li>Uygulama, şehir keşfi ve etkinlik bilgilerini kullanıcıya sunmak için hazırlanmıştır.</li>
+            <li>Kullanıcı hesabı bilgilerinin doğru tutulması kullanıcının sorumluluğundadır.</li>
+            <li>Konum ve bildirim izinleri isteğe bağlıdır; ilgili özellikler yalnızca izin verilirse çalışır.</li>
+            <li>Uygulama içi içerikler ve veriler, hizmet sürekliliği için zaman içinde güncellenebilir.</li>
+          </ul>
+        </article>
+
+        <article class="card full">
+          <h2>Apple için kısa özet</h2>
+          <p>
+            Nar Rehberi, kullanıcıların mekan, etkinlik ve fırsat keşfetmesini sağlar. Uygulama destek sayfası, gizlilik
+            bilgileri ve hesap silme akışı tek sayfada sunulmuştur. Kullanıcı izinleri (özellikle konum) yalnızca ilgili
+            özellikleri çalıştırmak için kullanılır.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#top">Yukarı dön</a>
+            <a class="button ghost" href="mailto:sametyucel52@gmail.com?subject=Nar%20Rehberi%20Privacy%20Question">Privacy sorusu gönder</a>
+          </div>
+        </article>
+      </section>
+
+      <p class="footer">
+        Nar Rehberi · Support & Privacy landing page · Last updated: 6 Mayıs 2026
+      </p>
+    </main>
+  </body>
+</html>
