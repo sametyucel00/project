@@ -1,8 +1,8 @@
 import { featuredEvents, featuredOffers, featuredPlaces, type EventItem, type Offer, type Place } from "@nar/core";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
-import { readJsonCache, writeJsonCache } from "../services/cache";
+import { readJsonCache, removeCache, writeJsonCache } from "../services/cache";
 
 export interface DiscoveryFeedState {
   places: Place[];
@@ -13,7 +13,12 @@ export interface DiscoveryFeedState {
 }
 
 let cachedFeed: DiscoveryFeedState | null = null;
-const feedCacheKey = "narrehberi:mobile:discovery-feed:v2";
+const feedCacheKey = "narrehberi:mobile:discovery-feed:v3";
+const feedCacheLimits = {
+  places: 36,
+  events: 18,
+  offers: 8
+} as const;
 
 export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
   const [state, setState] = useState<DiscoveryFeedState>({
@@ -26,7 +31,9 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
 
   useEffect(() => {
     if (!enabled) {
-      setState((current) => ({ ...current, loading: false }));
+      startTransition(() => {
+        setState((current) => ({ ...current, loading: false }));
+      });
       return;
     }
 
@@ -36,16 +43,24 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
 
     void readJsonCache<DiscoveryFeedState>(feedCacheKey).then((cached) => {
       if (!active || !cached) return;
-      setState((current) => {
-        const nextState = {
-          places: cached.places?.length ? cached.places : current.places,
-          events: cached.events?.length ? cached.events : current.events,
-          offers: cached.offers?.length ? cached.offers : current.offers,
-          loading: current.loading,
-          error: current.error
-        };
-        cachedFeed = nextState;
-        return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+      const normalized = normalizeCachedFeed(cached);
+      if (!normalized) {
+        void removeCache(feedCacheKey);
+        return;
+      }
+
+      startTransition(() => {
+        setState((current) => {
+          const nextState = {
+            places: normalized.places.length ? normalized.places : current.places,
+            events: normalized.events.length ? normalized.events : current.events,
+            offers: normalized.offers.length ? normalized.offers : current.offers,
+            loading: current.loading,
+            error: current.error
+          };
+          cachedFeed = nextState;
+          return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+        });
       });
     });
 
@@ -58,32 +73,35 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
         ]);
 
         if (!active) return;
-        setState((current) => {
-          const nextState = commitFeed({
-            places: places.length ? places : current.places,
-            events: events.length ? events : current.events,
-            offers: offers.length ? offers : current.offers,
-            loading: false,
-            error: null
+        startTransition(() => {
+          setState((current) => {
+            const nextState = commitFeed({
+              places: places.length ? places : current.places,
+              events: events.length ? events : current.events,
+              offers: offers.length ? offers : current.offers,
+              loading: false,
+              error: null
+            });
+            if (sameDiscoveryFeedState(current, nextState)) return current;
+            void writeJsonCache(feedCacheKey, trimFeedForCache(nextState));
+            return nextState;
           });
-          if (sameDiscoveryFeedState(current, nextState)) return current;
-          void writeJsonCache(feedCacheKey, nextState);
-          return nextState;
         });
       } catch (error) {
-        if (!active) return;
-        if (quiet) return;
-        setState((current) => {
-          const nextState = commitFeed({
-            places: current.places.length ? current.places : featuredPlaces,
-            events: current.events.length ? current.events : featuredEvents,
-            offers: current.offers.length ? current.offers : featuredOffers,
-            loading: false,
-            error: error instanceof Error ? error.message : "KeÅŸif verisi alÄ±namadÄ±."
+        if (!active || quiet) return;
+        startTransition(() => {
+          setState((current) => {
+            const nextState = commitFeed({
+              places: current.places.length ? current.places : featuredPlaces,
+              events: current.events.length ? current.events : featuredEvents,
+              offers: current.offers.length ? current.offers : featuredOffers,
+              loading: false,
+              error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
+            });
+            if (sameDiscoveryFeedState(current, nextState)) return current;
+            void writeJsonCache(feedCacheKey, trimFeedForCache(nextState));
+            return nextState;
           });
-          if (sameDiscoveryFeedState(current, nextState)) return current;
-          void writeJsonCache(feedCacheKey, nextState);
-          return nextState;
         });
       }
     }
@@ -96,7 +114,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     interactionTask = InteractionManager.runAfterInteractions(() => {
       void load({ places: 36, events: 18, offers: 8 });
       fullLoadTimer = setTimeout(() => {
-        void load({ places: 220, events: 80, offers: 24 }, true);
+        void load({ places: 72, events: 30, offers: 12 }, true);
       }, 8500);
     });
 
@@ -108,6 +126,31 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
   }, [enabled]);
 
   return state;
+}
+
+function normalizeCachedFeed(cached: DiscoveryFeedState | null): DiscoveryFeedState | null {
+  if (!cached) return null;
+  const places = Array.isArray(cached.places) ? cached.places.slice(0, feedCacheLimits.places) : [];
+  const events = Array.isArray(cached.events) ? cached.events.slice(0, feedCacheLimits.events) : [];
+  const offers = Array.isArray(cached.offers) ? cached.offers.slice(0, feedCacheLimits.offers) : [];
+  if (!places.length && !events.length && !offers.length) return null;
+  return {
+    places,
+    events,
+    offers,
+    loading: Boolean(cached.loading),
+    error: typeof cached.error === "string" ? cached.error : null
+  };
+}
+
+function trimFeedForCache(nextState: DiscoveryFeedState): DiscoveryFeedState {
+  return {
+    places: nextState.places.slice(0, feedCacheLimits.places),
+    events: nextState.events.slice(0, feedCacheLimits.events),
+    offers: nextState.offers.slice(0, feedCacheLimits.offers),
+    loading: nextState.loading,
+    error: nextState.error
+  };
 }
 
 function sameDiscoveryFeedState(current: DiscoveryFeedState, next: DiscoveryFeedState) {
