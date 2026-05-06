@@ -224,19 +224,8 @@ textarea {
   width: 34px;
   height: 34px;
   object-fit: contain;
+  border-radius: 9px;
   flex: 0 0 auto;
-}
-
-.brand-logo-dark {
-  display: none;
-}
-
-:root[data-theme="dark"] .brand-logo-light {
-  display: none;
-}
-
-:root[data-theme="dark"] .brand-logo-dark {
-  display: inline-block;
 }
 
 .nav-links {
@@ -619,6 +608,12 @@ h1 {
 .footer-brand {
   display: grid;
   gap: 6px;
+}
+
+.footer-brand-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .footer-brand strong {
@@ -2091,16 +2086,35 @@ html[data-a11y-motion="reduced"] *::after {
 
 @media (max-width: 980px) {
   .nav {
-    grid-template-columns: 1fr auto;
-    gap: 14px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: start;
   }
 
   .hero {
     grid-template-columns: 1fr;
+    gap: 24px;
+    min-height: auto;
+    padding-top: 28px;
+    padding-bottom: 52px;
   }
 
   .nav-links {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 2px 0 8px;
+    margin: 0;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
     display: none;
+  }
+
+  .nav-links a {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   .rail,
@@ -2108,8 +2122,19 @@ html[data-a11y-motion="reduced"] *::after {
     grid-template-columns: 1fr;
   }
 
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .section-head > * {
+    width: 100%;
+  }
+
   .phone-screen {
-    min-height: 590px;
+    min-height: 540px;
   }
 
   .panel-page {
@@ -2226,17 +2251,19 @@ html[data-a11y-motion="reduced"] *::after {
   }
 
   .nav-tools {
+    width: 100%;
     flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 6px;
+    justify-content: flex-start;
+    gap: 8px;
   }
 
   .nav-action {
+    margin-left: auto;
     padding: 0 14px;
   }
 
   .hero {
-    padding-bottom: 62px;
+    padding-bottom: 48px;
   }
 
   .account-type-grid {
@@ -2259,9 +2286,63 @@ html[data-a11y-motion="reduced"] *::after {
   .orders-list article {
     gap: 10px;
   }
+
+  .discovery-list {
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .discovery-item {
+    gap: 12px;
+    align-items: start;
+    padding-bottom: 14px;
+  }
+
+  .detail-hero {
+    min-height: auto;
+    padding-top: 28px;
+    padding-bottom: 40px;
+    align-items: start;
+  }
+
+  .detail-image {
+    min-height: 300px;
+  }
+
+  .fact-grid {
+    gap: 12px;
+    padding-bottom: 72px;
+  }
+
+  .action-strip {
+    padding-bottom: 20px;
+  }
+
+  .filter-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-pills button {
+    flex: 0 0 auto;
+  }
+
+  .map-surface {
+    padding-bottom: 72px;
+  }
 }
 
 @media (max-width: 720px) {
+  .nav {
+    padding: 10px 16px 12px;
+  }
+
   .panel-sidebar {
     padding: 14px 12px;
   }
@@ -2308,6 +2389,51 @@ html[data-a11y-motion="reduced"] *::after {
     min-width: 0;
     width: 100%;
     min-height: 42px;
+  }
+
+  .hero-actions {
+    margin-top: 26px;
+    gap: 10px;
+  }
+
+  .hero-actions a,
+  .hero-actions button {
+    flex: 1 1 160px;
+  }
+
+  .nav-tools {
+    justify-content: flex-start;
+  }
+
+  .nav-action {
+    flex: 1 1 160px;
+    margin-left: 0;
+  }
+
+  .nav-links {
+    gap: 8px;
+    padding-bottom: 6px;
+  }
+
+  .nav-links a {
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .hero-copy {
+    max-width: 100%;
+  }
+
+  .lead {
+    margin-top: 18px;
+    font-size: 17px;
+  }
+
+  .phone {
+    width: 100%;
+    padding: 10px;
+    border-radius: 34px;
   }
 
   .metric-strip,
@@ -2366,9 +2492,152 @@ html[data-a11y-motion="reduced"] *::after {
   .qr-preview {
     gap: 10px;
   }
+
+  .section {
+    padding: 38px 16px 68px;
+  }
+
+  .section h2 {
+    font-size: clamp(24px, 7vw, 34px);
+  }
+
+  .phone-screen {
+    min-height: 500px;
+    border-radius: 28px;
+  }
+
+  .app-top {
+    padding: 18px 14px 8px;
+  }
+
+  .app-search {
+    margin-top: 14px;
+    min-height: 40px;
+    border-radius: 20px;
+    padding: 0 12px;
+  }
+
+  .time-panel {
+    margin: 14px 12px;
+    min-height: 152px;
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .stories {
+    gap: 10px;
+    padding: 6px 12px 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .stories::-webkit-scrollbar {
+    display: none;
+  }
+
+  .story {
+    width: 66px;
+    flex-basis: 66px;
+  }
+
+  .story-dot {
+    width: 54px;
+    height: 54px;
+  }
+
+  .app-list {
+    gap: 10px;
+    padding: 0 12px 18px;
+  }
+
+  .app-row {
+    grid-template-columns: 66px 1fr;
+    gap: 10px;
+  }
+
+  .app-thumb {
+    border-radius: 16px;
+  }
+
+  .map-image,
+  .map-placeholder,
+  .map-frame {
+    min-height: 240px;
+  }
 }
 
 @media (max-width: 430px) {
+  .nav {
+    padding: 10px 14px 12px;
+  }
+
+  .brand span {
+    font-size: 15px;
+  }
+
+  .nav-links {
+    gap: 6px;
+  }
+
+  .nav-links a {
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .nav-tools {
+    gap: 6px;
+  }
+
+  .nav-tools > * {
+    flex: 1 1 auto;
+  }
+
+  .theme-toggle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .nav-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero {
+    padding: 22px 14px 44px;
+  }
+
+  .eyebrow {
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: clamp(32px, 11vw, 42px);
+    line-height: 1.08;
+  }
+
+  .lead {
+    font-size: 16px;
+  }
+
+  .search-row {
+    width: calc(100% - 28px);
+    padding: 0 10px;
+  }
+
+  .hero-actions {
+    margin-top: 20px;
+  }
+
+  .primary,
+  .secondary {
+    width: 100%;
+  }
+
+  .section {
+    padding-inline: 14px;
+  }
+
   .panel-menu a {
     min-width: 0;
   }
@@ -2400,5 +2669,27 @@ html[data-a11y-motion="reduced"] *::after {
   .role-flow span,
   .role-flow label {
     width: 100%;
+  }
+
+  .filter-pills {
+    margin-top: 24px;
+    margin-bottom: 22px;
+  }
+
+  .filter-pills button {
+    min-height: 38px;
+    padding: 0 14px;
+  }
+
+  .detail-image {
+    min-height: 220px;
+  }
+
+  .discovery-item h3 {
+    font-size: 19px;
+  }
+
+  .map-surface {
+    padding-inline: 14px;
   }
 }
