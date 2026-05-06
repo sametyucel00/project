@@ -2102,14 +2102,11 @@ html[data-a11y-motion="reduced"] *::after {
   .nav-links {
     display: flex;
     justify-content: flex-start;
-    overflow-x: auto;
-    padding: 2px 0 8px;
+    flex-wrap: wrap;
+    overflow: visible;
+    gap: 8px 6px;
+    padding: 2px 0 6px;
     margin: 0;
-    scrollbar-width: none;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    display: none;
   }
 
   .nav-links a {
@@ -2160,6 +2157,15 @@ html[data-a11y-motion="reduced"] *::after {
 
   .panel-menu a {
     min-width: 0;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .panel-menu a span {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 1.2;
   }
 
   .panel-hero,
@@ -2242,12 +2248,21 @@ html[data-a11y-motion="reduced"] *::after {
   .footer {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: 16px;
   }
 
   .footer-links,
   .social-links,
   .language-switcher {
     flex-wrap: wrap;
+  }
+
+  .footer-links {
+    justify-content: flex-start;
+  }
+
+  .footer-links a {
+    flex: 0 0 auto;
   }
 
   .nav-tools {
@@ -2589,8 +2604,10 @@ html[data-a11y-motion="reduced"] *::after {
     gap: 6px;
   }
 
-  .nav-tools > * {
-    flex: 1 1 auto;
+  .nav-tools > .a11y-shell,
+  .nav-tools > .language-switcher,
+  .nav-tools > .theme-toggle {
+    flex: 0 0 auto;
   }
 
   .theme-toggle {
@@ -2599,6 +2616,7 @@ html[data-a11y-motion="reduced"] *::after {
   }
 
   .nav-action {
+    flex: 1 1 100%;
     width: 100%;
     justify-content: center;
   }
@@ -2638,6 +2656,25 @@ html[data-a11y-motion="reduced"] *::after {
     padding-inline: 14px;
   }
 
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+
+  .footer-links a {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .social-links,
+  .language-switcher {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
   .panel-menu a {
     min-width: 0;
   }
@@ -2669,6 +2706,15 @@ html[data-a11y-motion="reduced"] *::after {
   .role-flow span,
   .role-flow label {
     width: 100%;
+  }
+
+  .panel-menu {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-menu a {
+    min-height: 42px;
+    padding: 8px 10px;
   }
 
   .filter-pills {
