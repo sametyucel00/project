@@ -80,6 +80,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
           />
         );
       }}
+      ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       ListHeaderComponent={(
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />

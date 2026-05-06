@@ -199,6 +199,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
           />
         );
       }}
+      ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       ListHeaderComponent={header}
       ListEmptyComponent={<Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>{c.noMatch}</Text>}
       contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}

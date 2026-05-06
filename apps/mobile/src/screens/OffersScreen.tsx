@@ -42,6 +42,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
       renderItem={({ item: offer }) => (
         <OfferItem title={offer.title.tr} discount={offer.discountLabel} meta={offer.conditions.tr} onPress={() => onOpenOffer?.(offer.id)} />
       )}
+      ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       ListHeaderComponent={(
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
