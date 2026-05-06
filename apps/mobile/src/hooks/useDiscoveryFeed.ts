@@ -16,9 +16,9 @@ export interface DiscoveryFeedState {
 let cachedFeed: DiscoveryFeedState | null = null;
 const feedCacheKey = "narrehberi:mobile:discovery-feed:v3";
 const feedCacheLimits = {
-  places: 36,
-  events: 18,
-  offers: 8
+  places: 300,
+  events: 300,
+  offers: 30
 } as const;
 
 export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
@@ -42,6 +42,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     let fullLoadTimer: ReturnType<typeof setTimeout> | undefined;
     let interactionTask: { cancel?: () => void } | undefined;
     let shouldSkipNetwork = false;
+    let legacyMergeStarted = false;
 
     void readDiscoveryCatalogCache().then((cachedCatalog) => {
       if (!active || !cachedCatalog) return;
@@ -90,6 +91,8 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
       });
     });
 
+    void mergeLegacyFallbacks();
+
     async function load(limitSet: { places: number; events: number; offers: number }, quiet = false) {
       try {
         const [places, events, offers] = await Promise.all([
@@ -102,9 +105,9 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
         startTransition(() => {
           setState((current) => {
             const nextState = commitFeed({
-              places: places.length ? places : current.places,
-              events: events.length ? events : current.events,
-              offers: offers.length ? offers : current.offers,
+              places: mergeUniqueById(places.length ? places : current.places, current.places, feedCacheLimits.places),
+              events: mergeUniqueById(events.length ? events : current.events, current.events, feedCacheLimits.events),
+              offers: mergeUniqueById(offers.length ? offers : current.offers, current.offers, feedCacheLimits.offers),
               loading: false,
               error: null
             });
@@ -120,33 +123,6 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
             return nextState;
           });
         });
-
-        if (places.length < limitSet.places || events.length < limitSet.events) {
-          void loadLegacyDiscoveryFallbacks().then((legacy) => {
-            if (!active) return;
-            startTransition(() => {
-              setState((current) => {
-                const merged = commitFeed({
-                  places: mergeUniqueById(legacy.places, current.places, feedCacheLimits.places),
-                  events: mergeUniqueById(legacy.events, current.events, feedCacheLimits.events),
-                  offers: current.offers,
-                  loading: false,
-                  error: current.error
-                });
-                if (sameDiscoveryFeedState(current, merged)) return current;
-                void writeJsonCache(feedCacheKey, trimFeedForCache(merged));
-                void writeDiscoveryCatalogCache({
-                  places: merged.places,
-                  events: merged.events,
-                  offers: merged.offers,
-                  syncedAt: new Date().toISOString(),
-                  version: 1
-                });
-                return merged;
-              });
-            });
-          });
-        }
       } catch (error) {
         if (!active || quiet) return;
         startTransition(() => {
@@ -171,6 +147,35 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
           });
         });
       }
+    }
+
+    function mergeLegacyFallbacks() {
+      if (legacyMergeStarted) return;
+      legacyMergeStarted = true;
+      void loadLegacyDiscoveryFallbacks().then((legacy) => {
+        if (!active) return;
+        startTransition(() => {
+          setState((current) => {
+            const merged = commitFeed({
+              places: mergeUniqueById(legacy.places, current.places, feedCacheLimits.places),
+              events: mergeUniqueById(legacy.events, current.events, feedCacheLimits.events),
+              offers: current.offers,
+              loading: false,
+              error: current.error
+            });
+            if (sameDiscoveryFeedState(current, merged)) return current;
+            void writeJsonCache(feedCacheKey, trimFeedForCache(merged));
+            void writeDiscoveryCatalogCache({
+              places: merged.places,
+              events: merged.events,
+              offers: merged.offers,
+              syncedAt: new Date().toISOString(),
+              version: 1
+            });
+            return merged;
+          });
+        });
+      });
     }
 
     function commitFeed(next: DiscoveryFeedState) {
