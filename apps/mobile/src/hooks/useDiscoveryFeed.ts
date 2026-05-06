@@ -2,6 +2,7 @@ import { featuredEvents, featuredOffers, featuredPlaces, loadLegacyDiscoveryFall
 import { startTransition, useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
+import { isDiscoveryCatalogFresh, readDiscoveryCatalogCache, writeDiscoveryCatalogCache } from "../services/catalogCache";
 import { readJsonCache, removeCache, writeJsonCache } from "../services/cache";
 
 export interface DiscoveryFeedState {
@@ -40,6 +41,31 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     let active = true;
     let fullLoadTimer: ReturnType<typeof setTimeout> | undefined;
     let interactionTask: { cancel?: () => void } | undefined;
+    let shouldSkipNetwork = false;
+
+    void readDiscoveryCatalogCache().then((cachedCatalog) => {
+      if (!active || !cachedCatalog) return;
+      startTransition(() => {
+        setState((current) => {
+          const nextState = commitFeed({
+            places: cachedCatalog.places.length ? cachedCatalog.places : current.places,
+            events: cachedCatalog.events.length ? cachedCatalog.events : current.events,
+            offers: cachedCatalog.offers.length ? cachedCatalog.offers : current.offers,
+            loading: current.loading,
+            error: current.error
+          });
+          cachedFeed = nextState;
+          return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+        });
+      });
+
+      if (isDiscoveryCatalogFresh(cachedCatalog)) {
+        shouldSkipNetwork = true;
+        startTransition(() => {
+          setState((current) => (current.loading ? { ...current, loading: false } : current));
+        });
+      }
+    });
 
     void readJsonCache<DiscoveryFeedState>(feedCacheKey).then((cached) => {
       if (!active || !cached) return;
@@ -84,6 +110,13 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
             void writeJsonCache(feedCacheKey, trimFeedForCache(nextState));
+            void writeDiscoveryCatalogCache({
+              places: nextState.places,
+              events: nextState.events,
+              offers: nextState.offers,
+              syncedAt: new Date().toISOString(),
+              version: 1
+            });
             return nextState;
           });
         });
@@ -102,6 +135,13 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
                 });
                 if (sameDiscoveryFeedState(current, merged)) return current;
                 void writeJsonCache(feedCacheKey, trimFeedForCache(merged));
+                void writeDiscoveryCatalogCache({
+                  places: merged.places,
+                  events: merged.events,
+                  offers: merged.offers,
+                  syncedAt: new Date().toISOString(),
+                  version: 1
+                });
                 return merged;
               });
             });
@@ -120,6 +160,13 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
             void writeJsonCache(feedCacheKey, trimFeedForCache(nextState));
+            void writeDiscoveryCatalogCache({
+              places: nextState.places,
+              events: nextState.events,
+              offers: nextState.offers,
+              syncedAt: new Date().toISOString(),
+              version: 1
+            });
             return nextState;
           });
         });
@@ -132,9 +179,12 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     }
 
     interactionTask = InteractionManager.runAfterInteractions(() => {
+      if (shouldSkipNetwork) {
+        return;
+      }
       void load({ places: 36, events: 18, offers: 8 });
       fullLoadTimer = setTimeout(() => {
-        void load({ places: 72, events: 30, offers: 12 }, true);
+        void load({ places: 300, events: 300, offers: 30 }, true);
       }, 8500);
     });
 
