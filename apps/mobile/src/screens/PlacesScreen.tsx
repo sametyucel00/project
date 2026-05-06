@@ -81,7 +81,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
         );
       }}
       ListHeaderComponent={(
-        <View>
+        <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
           <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
           <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
@@ -89,7 +89,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
         </View>
       )}
       ListEmptyComponent={<Text style={styles.emptyText}>{c.notFound}</Text>}
-      contentContainerStyle={{ paddingBottom: 120 }}
+      contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
       initialNumToRender={8}
       maxToRenderPerBatch={8}

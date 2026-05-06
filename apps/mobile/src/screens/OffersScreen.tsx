@@ -43,7 +43,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
         <OfferItem title={offer.title.tr} discount={offer.discountLabel} meta={offer.conditions.tr} onPress={() => onOpenOffer?.(offer.id)} />
       )}
       ListHeaderComponent={(
-        <View>
+        <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
           <StoryRail offers={feed.offers.slice(0, 5)} activeStory={activeStory} onSelect={handleStorySelect} />
           <FilterRow filters={offerFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
@@ -51,8 +51,8 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
         </View>
       )}
       ListEmptyComponent={<Text style={styles.emptyText}>Seçtiğin filtreye uygun fırsat bulunamadı.</Text>}
-      ListFooterComponent={firstOffer ? <Text style={styles.emptyText}>{`Seçili fırsat: ${firstOffer.title.tr} · indirim ${firstOffer.discountLabel} · kalan ${compactValue(remainingUse)}`}</Text> : null}
-      contentContainerStyle={{ paddingBottom: 120 }}
+      ListFooterComponent={firstOffer ? <Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>{`Seçili fırsat: ${firstOffer.title.tr} · indirim ${firstOffer.discountLabel} · kalan ${compactValue(remainingUse)}`}</Text> : null}
+      contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
       initialNumToRender={8}
       maxToRenderPerBatch={8}
