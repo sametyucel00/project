@@ -7,7 +7,7 @@ import type { MobileScreenProps } from "./types";
 
 const offerFilters = ["Tümü", "QR ile", "Puanla", "Sınırlı", "Öne çıkan"];
 
-export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
+export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide, onOpenTouristGuide }: MobileScreenProps) {
   const [query, setQuery] = useState("");
   const [activeStory, setActiveStory] = useState<string | undefined>();
   const [activeFilter, setActiveFilter] = useState("Tümü");
@@ -36,6 +36,22 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
 
   function handleStorySelect(story: string) {
     setActiveStory(story);
+    if (story === "Antik") {
+      onOpenAncientGuide?.();
+      return;
+    }
+    if (story === "Acil") {
+      onOpenTouristGuide?.();
+      return;
+    }
+    if (story === "Tiyatro") {
+      onOpenTab?.("Etkinlikler");
+      return;
+    }
+    if (story === "Kahve") {
+      onOpenOffer?.("coffee-qr-week");
+      return;
+    }
     onOpenOffer?.(story);
   }
 

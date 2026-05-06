@@ -218,7 +218,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
       return;
     }
     if (story === "Kahve") {
-      onOpenTab?.("Mekanlar");
+      onOpenOffer?.("coffee-qr-week");
       return;
     }
     onOpenOffer?.(story);
