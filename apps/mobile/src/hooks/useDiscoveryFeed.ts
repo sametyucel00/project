@@ -4,6 +4,7 @@ import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
 import { isDiscoveryCatalogComplete, isDiscoveryCatalogFresh, readDiscoveryCatalogCache, writeDiscoveryCatalogCache } from "../services/catalogCache";
 import { readJsonCache, removeCache, writeJsonCache } from "../services/cache";
+import { perfCount, perfFlag, perfMark, perfMeasure } from "../services/perf";
 
 export interface DiscoveryFeedState {
   places: Place[];
@@ -45,9 +46,17 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
     let interactionTask: { cancel?: () => void } | undefined;
     let legacyMergeStarted = false;
     let skippedCatalogLoad = false;
+    const cacheDisabled = perfFlag("nocache");
+    const firebaseDisabled = perfFlag("nofirebase");
 
-    if (priority === "home") {
+    if (priority === "home" && !cacheDisabled) {
+      perfMark(`feed:${priority}:cacheRead:start`);
       void readJsonCache<DiscoveryFeedState>(homePreviewCacheKey).then((cached) => {
+        perfMeasure(`feed:${priority}:cacheRead:end`, `feed:${priority}:cacheRead:start`, {
+          places: cached?.places?.length ?? 0,
+          events: cached?.events?.length ?? 0,
+          offers: cached?.offers?.length ?? 0
+        });
         if (!active || !cached) return;
         const normalized = normalizeCachedFeed(cached);
         if (!normalized) {
@@ -69,8 +78,14 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
           });
         });
       });
-    } else {
+    } else if (!cacheDisabled) {
+      perfMark(`feed:${priority}:cacheRead:start`);
       void readDiscoveryCatalogCache().then((cachedCatalog) => {
+        perfMeasure(`feed:${priority}:cacheRead:end`, `feed:${priority}:cacheRead:start`, {
+          places: cachedCatalog?.places?.length ?? 0,
+          events: cachedCatalog?.events?.length ?? 0,
+          offers: cachedCatalog?.offers?.length ?? 0
+        });
         if (!active || !cachedCatalog) return;
         startTransition(() => {
           setState((current) => {
@@ -100,12 +115,28 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
     }
 
     async function load(limitSet: { places: number; events: number; offers: number }, quiet = false) {
+      if (firebaseDisabled) {
+        perfCount(`feed:${priority}:firebase:skipped`, limitSet);
+        if (!quiet) {
+          startTransition(() => {
+            setState((current) => (current.loading ? { ...current, loading: false } : current));
+          });
+        }
+        return;
+      }
+
+      perfMark(`feed:${priority}:firebase:start`, limitSet);
       try {
         const [places, events, offers] = await Promise.all([
           fetchPlaces({ limitCount: limitSet.places }),
           fetchEvents({ limitCount: limitSet.events }),
           fetchOffers({ activeAt: new Date().toISOString(), limitCount: limitSet.offers })
         ]);
+        perfMeasure(`feed:${priority}:firebase:end`, `feed:${priority}:firebase:start`, {
+          places: places.length,
+          events: events.length,
+          offers: offers.length
+        });
 
         if (!active) return;
         startTransition(() => {
@@ -118,18 +149,21 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
               error: null
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
-            void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
-            void writeDiscoveryCatalogCache({
-              places: nextState.places,
-              events: nextState.events,
-              offers: nextState.offers,
-              syncedAt: new Date().toISOString(),
-              version: 1
-            });
+            if (!cacheDisabled) {
+              void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
+              void writeDiscoveryCatalogCache({
+                places: nextState.places,
+                events: nextState.events,
+                offers: nextState.offers,
+                syncedAt: new Date().toISOString(),
+                version: 1
+              });
+            }
             return nextState;
           });
         });
       } catch (error) {
+        perfMeasure(`feed:${priority}:firebase:error`, `feed:${priority}:firebase:start`);
         if (!active || quiet) return;
         startTransition(() => {
           setState((current) => {
@@ -141,14 +175,16 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
               error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
-            void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
-            void writeDiscoveryCatalogCache({
-              places: nextState.places,
-              events: nextState.events,
-              offers: nextState.offers,
-              syncedAt: new Date().toISOString(),
-              version: 1
-            });
+            if (!cacheDisabled) {
+              void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
+              void writeDiscoveryCatalogCache({
+                places: nextState.places,
+                events: nextState.events,
+                offers: nextState.offers,
+                syncedAt: new Date().toISOString(),
+                version: 1
+              });
+            }
             return nextState;
           });
         });
@@ -172,14 +208,16 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
                 error: current.error
               });
               if (sameDiscoveryFeedState(current, merged)) return current;
-              void writeJsonCache(homePreviewCacheKey, trimFeedForCache(merged));
-              void writeDiscoveryCatalogCache({
-                places: merged.places,
-                events: merged.events,
-                offers: merged.offers,
-                syncedAt: new Date().toISOString(),
-                version: 1
-              });
+              if (!cacheDisabled) {
+                void writeJsonCache(homePreviewCacheKey, trimFeedForCache(merged));
+                void writeDiscoveryCatalogCache({
+                  places: merged.places,
+                  events: merged.events,
+                  offers: merged.offers,
+                  syncedAt: new Date().toISOString(),
+                  version: 1
+                });
+              }
               return merged;
             });
           });

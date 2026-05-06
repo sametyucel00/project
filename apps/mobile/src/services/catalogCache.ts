@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { EventItem, Offer, Place } from "@nar/core";
+import { perfFlag, perfMark, perfMeasure } from "./perf";
 
 export interface DiscoveryCatalogSnapshot {
   places: Place[];
@@ -28,17 +29,41 @@ interface CatalogManifest {
 }
 
 export async function readDiscoveryCatalogCache() {
+  const diagnosticsDisabled = perfFlag("nocache");
+  if (diagnosticsDisabled) return null;
   try {
+    perfMark("catalogCache:read:start");
     const manifestRaw = await AsyncStorage.getItem(catalogManifestKey);
-    if (!manifestRaw) return null;
+    if (!manifestRaw) {
+      perfMeasure("catalogCache:read:end", "catalogCache:read:start", { hit: false });
+      return null;
+    }
     const manifest = JSON.parse(manifestRaw) as CatalogManifest;
-    if (manifest.version !== catalogVersion || !manifest.syncedAt) return null;
+    if (manifest.version !== catalogVersion || !manifest.syncedAt) {
+      perfMeasure("catalogCache:read:end", "catalogCache:read:start", { hit: false, invalid: true });
+      return null;
+    }
 
     const [placesRaw, eventsRaw, offersRaw] = await AsyncStorage.multiGet([catalogPlacesKey, catalogEventsKey, catalogOffersKey]);
     const places = safeParseArray<Place>(placesRaw?.[1]);
     const events = safeParseArray<EventItem>(eventsRaw?.[1]);
     const offers = safeParseArray<Offer>(offersRaw?.[1]);
-    if (!places.length && !events.length && !offers.length) return null;
+    if (!places.length && !events.length && !offers.length) {
+      perfMeasure("catalogCache:read:end", "catalogCache:read:start", { hit: false, empty: true });
+      return null;
+    }
+
+    perfMeasure("catalogCache:read:end", "catalogCache:read:start", {
+      hit: true,
+      places: places.length,
+      events: events.length,
+      offers: offers.length,
+      bytes:
+        (manifestRaw?.length ?? 0) +
+        (placesRaw?.[1]?.length ?? 0) +
+        (eventsRaw?.[1]?.length ?? 0) +
+        (offersRaw?.[1]?.length ?? 0)
+    });
 
     return {
       places,
@@ -51,6 +76,7 @@ export async function readDiscoveryCatalogCache() {
       offersCount: manifest.offersCount
     } satisfies DiscoveryCatalogSnapshot;
   } catch {
+    perfMeasure("catalogCache:read:error", "catalogCache:read:start");
     return null;
   }
 }

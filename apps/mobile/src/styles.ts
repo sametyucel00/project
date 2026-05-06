@@ -38,6 +38,7 @@ function buildStyles() {
     wideItem: { flexDirection: "row", alignItems: "center", gap: 12 },
     wideImageBox: { width: 82, height: 82 },
     wideImage: { borderRadius: 20 },
+    wideImagePlaceholder: { borderRadius: 20, backgroundColor: theme.surface },
     wideCopy: { flex: 1, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: theme.line, paddingBottom: 12, minWidth: 0 },
     wideTitle: { color: theme.ink, fontWeight: "800", fontSize: 16 },
     wideMeta: { color: theme.muted, marginTop: 5 },

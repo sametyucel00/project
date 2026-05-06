@@ -5,7 +5,6 @@ import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import { InteractionManager } from "react-native";
 import { resolveDistanceLabel } from "../utils/location";
 
 const eventCopy = {
@@ -146,13 +145,6 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
 
   useEffect(() => {
     setVisibleCount(Math.min(12, filteredEvents.length));
-    const task = InteractionManager.runAfterInteractions(() => {
-      const timer = setTimeout(() => setVisibleCount(filteredEvents.length), 4500);
-      return { cancel: () => clearTimeout(timer) };
-    });
-    return () => {
-      task.cancel();
-    };
   }, [filteredEvents.length]);
 
   const header = useMemo(() => {
@@ -218,6 +210,8 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       ListEmptyComponent={<Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>{c.noMatch}</Text>}
       contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
+      onEndReached={() => setVisibleCount((current) => Math.min(filteredEvents.length, current + 24))}
+      onEndReachedThreshold={0.35}
       initialNumToRender={8}
       maxToRenderPerBatch={8}
       windowSize={7}

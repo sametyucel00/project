@@ -1,12 +1,12 @@
 import { FlatList, Text, View } from "react-native";
 import { getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
+import { perfCount, perfFlag, perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
-import type { MobileScreenProps } from "./types";
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
-import { InteractionManager } from "react-native";
 import { resolveDistanceLabel } from "../utils/location";
+import type { MobileScreenProps } from "./types";
 
 const placeCopy = {
   tr: { all: "Tümü", open: "Açık", popular: "Popüler", offers: "Fırsatlı", places: "Mekanlar", place: "Mekan", notFound: "Aramana uygun mekan bulunamadı.", openNow: "Açık", hoursMissing: "Saat belirtilmemiş" },
@@ -18,17 +18,35 @@ const placeCopy = {
 export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenProps) {
   const locale = getMobileLocale();
   const c = placeCopy[locale] ?? placeCopy.tr;
+  const disableDistance = perfFlag("nodistance");
+  const disableImage = perfFlag("noimage");
+  const disableHeavyCompute = perfFlag("nocompute");
   const primaryFilters = [c.all, c.open, c.popular, c.offers];
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [visibleCount, setVisibleCount] = useState(12);
   const deferredQuery = useDeferredValue(query);
+  const firstListPaintLogged = useRef(false);
+  const viewabilityConfigRef = useRef({ itemVisiblePercentThreshold: 20 });
+
+  perfCount("places:render", { places: feed.places.length, visibleCount });
 
   useEffect(() => {
     setActiveCategory(c.all);
     setActiveFilter(c.all);
   }, [c.all]);
+
+  useEffect(() => {
+    perfMark("places:screenMount");
+    perfMeasure("places:navigationToMount", "nav:Mekanlar:press", { places: feed.places.length });
+    const frame = requestAnimationFrame(() => {
+      perfMark("places:firstPaint");
+      perfMeasure("places:mountToFirstPaint", "places:screenMount");
+      perfMeasure("places:navigationToFirstPaint", "nav:Mekanlar:press");
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [feed.places.length]);
 
   const categoryTitleById = useMemo(() => {
     const titles = new Map<string, string>();
@@ -40,6 +58,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
 
   const availableCategoryIds = useMemo(() => new Set(feed.places.map((place) => getPlaceCategoryId(place))), [feed.places]);
   const offerPlaceIds = useMemo(() => new Set(feed.offers.map((offer) => offer.placeId)), [feed.offers]);
+
   const categoryTitleByPlaceId = useMemo(() => {
     const titles = new Map<string, string>();
     for (const place of feed.places) {
@@ -49,63 +68,90 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     return titles;
   }, [c.place, categoryTitleById, feed.places]);
 
-  const categories = useMemo(() => [
-    c.all,
-    ...placeCategoryOptions
-      .filter((category) => availableCategoryIds.has(category.id))
-      .map((category) => categoryTitleById.get(category.id) ?? c.place)
-  ], [availableCategoryIds, c.all, c.place, categoryTitleById]);
+  const categories = useMemo(
+    () => [
+      c.all,
+      ...placeCategoryOptions
+        .filter((category) => availableCategoryIds.has(category.id))
+        .map((category) => categoryTitleById.get(category.id) ?? c.place)
+    ],
+    [availableCategoryIds, c.all, c.place, categoryTitleById]
+  );
 
-  const filteredPlaces = useMemo(() => feed.places.filter((place) => {
-    const categoryTitle = categoryTitleByPlaceId.get(place.id) ?? c.place;
-    const haystack = normalize([pickText(place.title, locale), pickText(place.description, locale), place.district, categoryTitle, place.address].join(" "));
-    if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
-    if (activeCategory !== c.all && categoryTitle !== activeCategory) return false;
-    if (activeFilter === c.open && !place.openNow) return false;
-    if (activeFilter === c.popular && (place.googleReviewCount ?? 0) < 100) return false;
-    if (activeFilter === c.offers && !offerPlaceIds.has(place.id)) return false;
-    return true;
-  }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, categoryTitleByPlaceId, deferredQuery, feed.places, offerPlaceIds, locale]);
+  const filteredPlaces = useMemo(() => {
+    perfMark("places:heavyCompute:start", {
+      feedPlaces: feed.places.length,
+      query: deferredQuery.length,
+      mode: disableHeavyCompute ? "bypass" : "full"
+    });
+
+    if (disableHeavyCompute) {
+      const quick = feed.places.slice(0, 12);
+      perfMeasure("places:heavyCompute:end", "places:heavyCompute:start", { result: quick.length });
+      return quick;
+    }
+
+    const next = feed.places.filter((place) => {
+      const categoryTitle = categoryTitleByPlaceId.get(place.id) ?? c.place;
+      const haystack = normalize([pickText(place.title, locale), pickText(place.description, locale), place.district, categoryTitle, place.address].join(" "));
+      if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
+      if (activeCategory !== c.all && categoryTitle !== activeCategory) return false;
+      if (activeFilter === c.open && !place.openNow) return false;
+      if (activeFilter === c.popular && (place.googleReviewCount ?? 0) < 100) return false;
+      if (activeFilter === c.offers && !offerPlaceIds.has(place.id)) return false;
+      return true;
+    });
+
+    perfMeasure("places:heavyCompute:end", "places:heavyCompute:start", { result: next.length });
+    return next;
+  }, [activeCategory, activeFilter, c.all, c.offers, c.open, c.place, c.popular, categoryTitleByPlaceId, deferredQuery, disableHeavyCompute, feed.places, offerPlaceIds, locale]);
+
   const visiblePlaces = useMemo(() => filteredPlaces.slice(0, visibleCount), [filteredPlaces, visibleCount]);
 
   useEffect(() => {
     setVisibleCount(Math.min(12, filteredPlaces.length));
-    const task = InteractionManager.runAfterInteractions(() => {
-      const timer = setTimeout(() => setVisibleCount(filteredPlaces.length), 4500);
-      return { cancel: () => clearTimeout(timer) };
-    });
-    return () => {
-      task.cancel();
-    };
   }, [filteredPlaces.length]);
 
   return (
     <FlatList
       data={visiblePlaces}
       keyExtractor={(place) => place.id}
+      viewabilityConfig={viewabilityConfigRef.current}
+      onViewableItemsChanged={({ viewableItems }) => {
+        if (firstListPaintLogged.current || !viewableItems.length) return;
+        firstListPaintLogged.current = true;
+        perfMark("places:firstListPaint");
+        perfMeasure("places:mountToFirstListPaint", "places:screenMount", { items: viewableItems.length });
+        perfMeasure("places:navigationToFirstListPaint", "nav:Mekanlar:press", { items: viewableItems.length });
+      }}
       renderItem={({ item: place }) => {
-        const category = categoryTitleByPlaceId.get(place.id) || c.place;
+        const category = categoryTitleByPlaceId.get(place.id) ?? c.place;
+        const distance = disableDistance ? null : resolveDistanceLabel(userLocation, place);
+        const meta = `${category} · ${place.district} · ${place.openNow ? c.openNow : c.hoursMissing}${distance ? ` · ${distance}` : ""}`;
         return (
           <WideItem
             image={place.coverImage}
+            disableImage={disableImage}
             title={pickText(place.title, locale)}
-            meta={`${category} · ${place.district} · ${place.openNow ? c.openNow : c.hoursMissing} · ${resolveDistanceLabel(userLocation, place)}`}
+            meta={meta}
             onPress={() => onOpenPlace?.(place.id)}
           />
         );
       }}
       ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-      ListHeaderComponent={(
+      ListHeaderComponent={
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
           <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
           <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
-      <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
+          <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
         </View>
-      )}
+      }
       ListEmptyComponent={<Text style={styles.emptyText}>{c.notFound}</Text>}
       contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
+      onEndReached={() => setVisibleCount((current) => Math.min(filteredPlaces.length, current + 24))}
+      onEndReachedThreshold={0.35}
       initialNumToRender={8}
       maxToRenderPerBatch={8}
       windowSize={7}

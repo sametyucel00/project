@@ -22,6 +22,7 @@ import { getMobileThemeMode, getMobileThemeVersion, reapplyMobileTheme, setMobil
 import { getDeviceLocale, getMobileLocale, setMobileLocale, subscribeMobileLocale } from "./src/locale";
 import { getOnboardingCompleted, markOnboardingCompleted } from "./src/services/onboarding";
 import { loadStoredAppSettings } from "./src/services/appSettings";
+import { perfMark } from "./src/services/perf";
 import { t } from "@nar/core";
 import { rememberLocationPromptSuppressed, clearLocationPromptSuppressed } from "./src/hooks/useUserLocation";
 
@@ -150,48 +151,48 @@ function MobileApp() {
             : t(locale, "appName");
 
   const openTab = useCallback((tab: TabLabel) => {
-    startTransition(() => {
-      setActiveTab(tab);
-      setSurface({ kind: "tab", tab });
-      setMountedTabs((current) => (current.includes(tab) ? current : [...current, tab]));
-    });
+    perfMark(`nav:${tab}:press`);
+    setActiveTab(tab);
+    setSurface({ kind: "tab", tab });
+    setMountedTabs((current) => (current.includes(tab) ? current : [...current, tab]));
   }, []);
 
   const openPlace = useCallback((placeId: string) => {
-    startTransition(() => {
-      setActiveTab("Mekanlar");
-      setSurface({ kind: "place", placeId });
-    });
+    perfMark("nav:place-detail:press", { placeId });
+    setActiveTab("Mekanlar");
+    setSurface({ kind: "place", placeId });
   }, []);
 
   const openEvent = useCallback((eventId: string) => {
-    startTransition(() => {
-      setActiveTab("Etkinlikler");
-      setSurface({ kind: "event", eventId });
-    });
+    perfMark("nav:event-detail:press", { eventId });
+    setActiveTab("Etkinlikler");
+    setSurface({ kind: "event", eventId });
   }, []);
 
   const openOffer = useCallback((offerId: string) => {
-    startTransition(() => {
-      setActiveTab("Fırsatlar");
-      setSurface({ kind: "offer", offerId });
-    });
+    perfMark("nav:offer-detail:press", { offerId });
+    setActiveTab("Fırsatlar");
+    setSurface({ kind: "offer", offerId });
   }, []);
 
   const openTouristGuide = useCallback(() => {
-    startTransition(() => setSurface({ kind: "tourist" }));
+    perfMark("nav:tourist:press");
+    setSurface({ kind: "tourist" });
   }, []);
 
   const openAncientGuide = useCallback(() => {
-    startTransition(() => setSurface({ kind: "ancient" }));
+    perfMark("nav:ancient:press");
+    setSurface({ kind: "ancient" });
   }, []);
 
   const openAuth = useCallback(() => {
-    startTransition(() => setSurface({ kind: "auth" }));
+    perfMark("nav:auth:press");
+    setSurface({ kind: "auth" });
   }, []);
 
   const openLegal = useCallback((page: "privacy" | "terms") => {
-    startTransition(() => setSurface({ kind: "legal", page }));
+    perfMark("nav:legal:press", { page });
+    setSurface({ kind: "legal", page });
   }, []);
 
   function backToTabs() {

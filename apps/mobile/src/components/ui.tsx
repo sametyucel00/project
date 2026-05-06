@@ -74,10 +74,10 @@ export function Section({ title, children }: { title: string; children: ReactNod
   );
 }
 
-export const WideItem = memo(function WideItem({ image, title, meta, onPress }: { image: string; title: string; meta: string; onPress?: () => void }) {
+export const WideItem = memo(function WideItem({ image, title, meta, onPress, disableImage = false }: { image: string; title: string; meta: string; onPress?: () => void; disableImage?: boolean }) {
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={styles.wideItem}>
-      <ImageBackground source={{ uri: resolveImageSource(image) }} imageStyle={styles.wideImage} style={styles.wideImageBox} />
+      {disableImage ? <View style={[styles.wideImageBox, styles.wideImagePlaceholder]} /> : <ImageBackground source={{ uri: resolveImageSource(image) }} imageStyle={styles.wideImage} style={styles.wideImageBox} />}
       <View style={styles.wideCopy}>
         <Text style={styles.wideTitle}>{title}</Text>
         <Text style={styles.wideMeta}>{meta}</Text>
