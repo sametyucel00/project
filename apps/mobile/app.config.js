@@ -4,6 +4,7 @@ const expo = {
   scheme: "narrehberi",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
+  jsEngine: "hermes",
   plugins: []
 };
 
