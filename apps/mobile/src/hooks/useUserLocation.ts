@@ -50,9 +50,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
     try {
       setLoading(true);
       setError(null);
-
-      watchState.current.stop?.();
-      watchState.current.stop = undefined;
+      stopWatchingLocation(watchState.current);
 
       const currentPermission = await Location.getForegroundPermissionsAsync();
       const permission = currentPermission.status === "granted"
@@ -135,8 +133,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
     return () => {
       active = false;
       if (timer) clearTimeout(timer);
-      watchState.current.stop?.();
-      watchState.current.stop = undefined;
+      stopWatchingLocation(watchState.current);
     };
   }, [autoRequest, requestAccess]);
 
@@ -210,9 +207,29 @@ function startWatchingLocation(setLocation: (value: DeviceLocation) => void, wat
     }
   )
     .then((subscription) => {
-      watchState.stop = () => subscription.remove();
+      watchState.stop = () => {
+        try {
+          const remove = (subscription as { remove?: () => void }).remove;
+          if (typeof remove === "function") {
+            remove.call(subscription);
+          }
+        } catch {
+          // Cleanup should never crash the app.
+        }
+      };
     })
     .catch(() => undefined);
+}
+
+function stopWatchingLocation(watchState: { stop?: () => void }) {
+  const stop = watchState.stop;
+  watchState.stop = undefined;
+  if (!stop) return;
+  try {
+    stop();
+  } catch {
+    // Cleanup should never crash the app.
+  }
 }
 
 async function saveCachedLocation(location: DeviceLocation) {
