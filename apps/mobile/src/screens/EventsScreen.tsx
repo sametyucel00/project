@@ -34,12 +34,26 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     setRenderLimit(12);
   }, [activeFilter, activeType, deferredQuery, viewMode]);
 
+  const eventMetaById = useMemo(() => {
+    const metaById = new Map<string, { typeId: string; typeLabel: string }>();
+    for (const event of feed.events) {
+      const meta = getEventTypeMeta(event);
+      metaById.set(event.id, {
+        typeId: meta.id,
+        typeLabel: normalizeTypeLabel(pickText(meta.title, locale), c.workshop)
+      });
+    }
+    return metaById;
+  }, [c.workshop, feed.events, locale]);
+
+  const eventTypeIds = useMemo(() => new Set(Array.from(eventMetaById.values(), (meta) => meta.typeId)), [eventMetaById]);
+
   const typeFilters = useMemo(() => [
     c.all,
     ...eventTypes
-      .filter((type) => feed.events.some((event) => getEventTypeMeta(event).id === type.id))
+      .filter((type) => eventTypeIds.has(type.id))
       .map((type) => normalizeTypeLabel(pickText(type.title, locale), c.workshop))
-  ], [c.all, c.workshop, feed.events, locale]);
+  ], [c.all, c.workshop, eventTypeIds, locale]);
 
   const todayStartTime = useMemo(() => {
     const todayStart = new Date();
@@ -48,7 +62,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   }, []);
   const filteredEvents = useMemo(() => feed.events
     .filter((event) => {
-      const typeLabel = normalizeTypeLabel(pickText(getEventTypeMeta(event).title, locale), c.workshop);
+      const typeLabel = eventMetaById.get(event.id)?.typeLabel ?? normalizeTypeLabel(pickText(getEventTypeMeta(event).title, locale), c.workshop);
       const haystack = normalize([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district, typeLabel].join(" "));
       if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
       if (activeType !== c.all && typeLabel !== activeType) return false;
@@ -67,12 +81,13 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       const secondUpcoming = secondTime >= todayStartTime;
       if (firstUpcoming !== secondUpcoming) return firstUpcoming ? -1 : 1;
       return firstUpcoming ? firstTime - secondTime : secondTime - firstTime;
-    }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, feed.events, locale, todayStartTime, viewMode]);
+    }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventMetaById, feed.events, locale, todayStartTime, viewMode]);
 
   const visibleEvents = useMemo(() => filteredEvents.map((event) => {
     const venuePlace = resolveEventVenue(feed.places, event.venueName, event.district, locale);
     return {
       event,
+      venuePlace,
       distance: resolveDistanceLabel(userLocation, venuePlace ?? event)
     };
   }), [feed.places, filteredEvents, locale, userLocation]);
@@ -91,13 +106,13 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
           </Pressable>
         ))}
       </View>
-      {viewMode === "map" && filteredEvents[0] ? (
+      {viewMode === "map" && visibleEvents[0] ? (
         <View style={styles.settingsCard}>
           <Text style={styles.settingsTitle}>{c.mapView}</Text>
-          <Text style={styles.profileText}>{filteredEvents[0].venueName}</Text>
-          {resolveEventVenue(feed.places, filteredEvents[0].venueName, filteredEvents[0].district, locale)?.location ? (
+          <Text style={styles.profileText}>{visibleEvents[0].event.venueName}</Text>
+          {visibleEvents[0].venuePlace?.location ? (
             <ImageBackground
-              source={{ uri: createStaticMapUrl(resolveEventVenue(feed.places, filteredEvents[0].venueName, filteredEvents[0].district, locale)?.location, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) }}
+              source={{ uri: createStaticMapUrl(visibleEvents[0].venuePlace.location, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) }}
               style={{ height: 170, borderRadius: 18, overflow: "hidden" }}
               imageStyle={{ borderRadius: 18 }}
             />

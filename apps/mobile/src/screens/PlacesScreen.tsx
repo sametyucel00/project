@@ -33,24 +33,42 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     setRenderLimit(14);
   }, [activeCategory, activeFilter, deferredQuery]);
 
+  const categoryTitleById = useMemo(() => {
+    const titles = new Map<string, string>();
+    for (const category of placeCategoryOptions) {
+      titles.set(category.id, pickText(category.title, locale));
+    }
+    return titles;
+  }, [locale]);
+
+  const availableCategoryIds = useMemo(() => new Set(feed.places.map((place) => getPlaceCategoryId(place))), [feed.places]);
+  const offerPlaceIds = useMemo(() => new Set(feed.offers.map((offer) => offer.placeId)), [feed.offers]);
+  const categoryTitleByPlaceId = useMemo(() => {
+    const titles = new Map<string, string>();
+    for (const place of feed.places) {
+      const categoryId = getPlaceCategoryId(place);
+      titles.set(place.id, categoryTitleById.get(categoryId) ?? c.place);
+    }
+    return titles;
+  }, [c.place, categoryTitleById, feed.places]);
+
   const categories = useMemo(() => [
     c.all,
     ...placeCategoryOptions
-      .filter((category) => feed.places.some((place) => getPlaceCategoryId(place) === category.id))
-      .map((category) => pickText(category.title, locale))
-  ], [c.all, feed.places, locale]);
+      .filter((category) => availableCategoryIds.has(category.id))
+      .map((category) => categoryTitleById.get(category.id) ?? c.place)
+  ], [availableCategoryIds, c.all, c.place, categoryTitleById]);
 
   const filteredPlaces = useMemo(() => feed.places.filter((place) => {
-    const category = placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place));
-    const categoryTitle = pickText(category?.title, locale);
+    const categoryTitle = categoryTitleByPlaceId.get(place.id) ?? c.place;
     const haystack = normalize([pickText(place.title, locale), pickText(place.description, locale), place.district, categoryTitle, place.address].join(" "));
     if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
     if (activeCategory !== c.all && categoryTitle !== activeCategory) return false;
     if (activeFilter === c.open && !place.openNow) return false;
     if (activeFilter === c.popular && (place.googleReviewCount ?? 0) < 100) return false;
-    if (activeFilter === c.offers && !feed.offers.some((offer) => offer.placeId === place.id)) return false;
+    if (activeFilter === c.offers && !offerPlaceIds.has(place.id)) return false;
     return true;
-  }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, deferredQuery, feed.offers, feed.places, locale]);
+  }), [activeCategory, activeFilter, c.all, c.offers, c.open, c.popular, categoryTitleByPlaceId, deferredQuery, feed.places, offerPlaceIds, locale]);
 
   return (
     <>
@@ -59,7 +77,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
       <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
       <Section title={`${c.places} (${filteredPlaces.length})`}>
         {filteredPlaces.length ? filteredPlaces.slice(0, renderLimit).map((place) => {
-          const category = pickText(placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place))?.title, locale) || c.place;
+          const category = categoryTitleByPlaceId.get(place.id) || c.place;
           return (
             <WideItem
               key={place.id}
