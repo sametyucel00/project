@@ -1,5 +1,5 @@
 import { ImageBackground, Pressable, Text, View } from "react-native";
-import { createStaticMapUrl, eventTypes, eventViewModes, getEventTypeMeta, type EventViewMode } from "@nar/core";
+import { createStaticMapUrl, eventTypes, eventViewModes, type EventViewMode } from "@nar/core";
 import { FilterRow, SearchBar, Section, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
 import { styles } from "../styles";
@@ -34,26 +34,22 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     setRenderLimit(12);
   }, [activeFilter, activeType, deferredQuery, viewMode]);
 
-  const eventMetaById = useMemo(() => {
-    const metaById = new Map<string, { typeId: string; typeLabel: string }>();
-    for (const event of feed.events) {
-      const meta = getEventTypeMeta(event);
-      metaById.set(event.id, {
-        typeId: meta.id,
-        typeLabel: normalizeTypeLabel(pickText(meta.title, locale), c.workshop)
-      });
+  const eventTypeLabels = useMemo(() => {
+    const labels = new Map<string, string>();
+    for (const type of eventTypes) {
+      labels.set(type.id, normalizeTypeLabel(pickText(type.title, locale), c.workshop));
     }
-    return metaById;
-  }, [c.workshop, feed.events, locale]);
+    return labels;
+  }, [c.workshop, locale]);
 
-  const eventTypeIds = useMemo(() => new Set(Array.from(eventMetaById.values(), (meta) => meta.typeId)), [eventMetaById]);
+  const eventTypeIds = useMemo(() => new Set(feed.events.map((event) => event.type)), [feed.events]);
 
   const typeFilters = useMemo(() => [
     c.all,
     ...eventTypes
       .filter((type) => eventTypeIds.has(type.id))
-      .map((type) => normalizeTypeLabel(pickText(type.title, locale), c.workshop))
-  ], [c.all, c.workshop, eventTypeIds, locale]);
+      .map((type) => eventTypeLabels.get(type.id) ?? c.workshop)
+  ], [c.all, c.workshop, eventTypeIds, eventTypeLabels]);
 
   const todayStartTime = useMemo(() => {
     const todayStart = new Date();
@@ -62,7 +58,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   }, []);
   const filteredEvents = useMemo(() => feed.events
     .filter((event) => {
-      const typeLabel = eventMetaById.get(event.id)?.typeLabel ?? normalizeTypeLabel(pickText(getEventTypeMeta(event).title, locale), c.workshop);
+      const typeLabel = eventTypeLabels.get(event.type) ?? c.workshop;
       const haystack = normalize([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district, typeLabel].join(" "));
       if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
       if (activeType !== c.all && typeLabel !== activeType) return false;
@@ -81,16 +77,16 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       const secondUpcoming = secondTime >= todayStartTime;
       if (firstUpcoming !== secondUpcoming) return firstUpcoming ? -1 : 1;
       return firstUpcoming ? firstTime - secondTime : secondTime - firstTime;
-    }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventMetaById, feed.events, locale, todayStartTime, viewMode]);
+    }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventTypeLabels, feed.events, todayStartTime, viewMode]);
 
-  const visibleEvents = useMemo(() => filteredEvents.map((event) => {
+  const visibleEvents = useMemo(() => filteredEvents.slice(0, renderLimit).map((event) => {
     const venuePlace = resolveEventVenue(feed.places, event.venueName, event.district, locale);
     return {
       event,
       venuePlace,
       distance: resolveDistanceLabel(userLocation, venuePlace ?? event)
     };
-  }), [feed.places, filteredEvents, locale, userLocation]);
+  }), [feed.places, filteredEvents, locale, renderLimit, userLocation]);
 
   const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : viewMode === "map" ? c.mapList : c.events;
 
@@ -122,7 +118,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
         </View>
       ) : null}
       <Section title={`${sectionTitle} (${filteredEvents.length})`}>
-        {visibleEvents.length ? visibleEvents.slice(0, renderLimit).map(({ event, distance }) => (
+        {visibleEvents.length ? visibleEvents.map(({ event, distance }) => (
           <WideItem key={event.id} image={event.coverImage} title={pickText(event.title, locale)} meta={`${formatDate(event.startsAt, locale)} · ${event.venueName} · ${distance}`} onPress={() => onOpenEvent?.(event.id)} />
         )) : <Text style={styles.emptyText}>{c.noMatch}</Text>}
         {visibleEvents.length > renderLimit ? (
