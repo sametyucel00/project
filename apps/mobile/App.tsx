@@ -23,6 +23,7 @@ import { getDeviceLocale, getMobileLocale, setMobileLocale, subscribeMobileLocal
 import { getOnboardingCompleted, markOnboardingCompleted } from "./src/services/onboarding";
 import { loadStoredAppSettings } from "./src/services/appSettings";
 import { t } from "@nar/core";
+import { rememberLocationPromptSuppressed, clearLocationPromptSuppressed } from "./src/hooks/useUserLocation";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -199,6 +200,11 @@ function MobileApp() {
 
   async function completeOnboarding() {
     await markOnboardingCompleted();
+    if (!permissionGranted) {
+      await rememberLocationPromptSuppressed();
+    } else {
+      await clearLocationPromptSuppressed();
+    }
     startTransition(() => {
       setOnboardingCompleted(true);
       setSurface({ kind: "auth" });

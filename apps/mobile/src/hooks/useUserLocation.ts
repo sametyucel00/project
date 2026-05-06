@@ -12,6 +12,33 @@ export interface UserLocationState {
   requestAccess: () => Promise<void>;
 }
 
+const locationPromptSuppressedKey = "narrehberi:mobile:location-prompt-suppressed";
+const cachedLocationKey = "narrehberi:mobile:last-location";
+
+export async function rememberLocationPromptSuppressed() {
+  try {
+    await AsyncStorage.setItem(locationPromptSuppressedKey, "1");
+  } catch {
+    // Best effort only.
+  }
+}
+
+export async function clearLocationPromptSuppressed() {
+  try {
+    await AsyncStorage.removeItem(locationPromptSuppressedKey);
+  } catch {
+    // Best effort only.
+  }
+}
+
+async function isLocationPromptSuppressed() {
+  try {
+    return (await AsyncStorage.getItem(locationPromptSuppressedKey)) === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function useUserLocation(autoRequest = true): UserLocationState {
   const [location, setLocation] = useState<DeviceLocation | null>(null);
   const [permissionGranted, setPermissionGranted] = useState(false);
@@ -36,10 +63,12 @@ export function useUserLocation(autoRequest = true): UserLocationState {
         setPermissionGranted(false);
         setLocation(null);
         setError("Konum izni verilmedi.");
+        void rememberLocationPromptSuppressed();
         return;
       }
 
       setPermissionGranted(true);
+      void clearLocationPromptSuppressed();
 
       const lastKnown = await Location.getLastKnownPositionAsync();
       if (lastKnown?.coords && Number.isFinite(lastKnown.coords.latitude) && Number.isFinite(lastKnown.coords.longitude)) {
@@ -87,17 +116,25 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       return;
     }
     let active = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     void loadCachedLocation().then((cached) => {
       if (active && cached) setLocation(cached);
     });
-    const timer = setTimeout(() => {
-      InteractionManager.runAfterInteractions(() => {
-        if (active) void requestAccess();
-      });
-    }, 500);
+    void isLocationPromptSuppressed().then((suppressed) => {
+      if (!active) return;
+      if (suppressed) {
+        setLoading(false);
+        return;
+      }
+      timer = setTimeout(() => {
+        InteractionManager.runAfterInteractions(() => {
+          if (active) void requestAccess();
+        });
+      }, 500);
+    });
     return () => {
       active = false;
-      clearTimeout(timer);
+      if (timer) clearTimeout(timer);
       watchState.current.stop?.();
       watchState.current.stop = undefined;
     };
@@ -177,8 +214,6 @@ function startWatchingLocation(setLocation: (value: DeviceLocation) => void, wat
     })
     .catch(() => undefined);
 }
-
-const cachedLocationKey = "narrehberi:mobile:last-location";
 
 async function saveCachedLocation(location: DeviceLocation) {
   try {

@@ -29,10 +29,50 @@ const staticStoryActions: Record<StoryKey, { label: string; description: string 
 };
 
 const homeLabels = {
-  tr: { todayEvents: "Bugünkü etkinlikler", noTodayEvents: "Bugün için kayıtlı etkinlik bulunmuyor.", nearbyPlaces: "Yakındaki mekanlar", noPlaces: "Aramana uygun mekan bulunamadı.", paid: "Ücretli", free: "Ücretsiz", noRating: "Puan belirtilmemiş" },
-  en: { todayEvents: "Today's events", noTodayEvents: "No events listed for today.", nearbyPlaces: "Nearby places", noPlaces: "No places match your search.", paid: "Paid", free: "Free", noRating: "Rating not specified" },
-  ru: { todayEvents: "События сегодня", noTodayEvents: "На сегодня событий нет.", nearbyPlaces: "Места рядом", noPlaces: "Места по запросу не найдены.", paid: "Платно", free: "Бесплатно", noRating: "Рейтинг не указан" },
-  de: { todayEvents: "Heutige Veranstaltungen", noTodayEvents: "Für heute sind keine Veranstaltungen gelistet.", nearbyPlaces: "Orte in der Nähe", noPlaces: "Keine passenden Orte gefunden.", paid: "Kostenpflichtig", free: "Kostenlos", noRating: "Bewertung nicht angegeben" }
+  tr: {
+    todayEvents: "Bugünkü etkinlikler",
+    nearbyPlaces: "Yakındaki mekanlar",
+    offers: "Fırsatlar",
+    noTodayEvents: "Bugün için kayıtlı etkinlik bulunmuyor.",
+    noPlaces: "Aramana uygun mekan bulunamadı.",
+    noOffers: "Aramana uygun fırsat bulunamadı.",
+    paid: "Ücretli",
+    free: "Ücretsiz",
+    noRating: "Puan belirtilmemiş"
+  },
+  en: {
+    todayEvents: "Today's events",
+    nearbyPlaces: "Nearby places",
+    offers: "Offers",
+    noTodayEvents: "No events listed for today.",
+    noPlaces: "No places match your search.",
+    noOffers: "No offers match your search.",
+    paid: "Paid",
+    free: "Free",
+    noRating: "Rating not specified"
+  },
+  ru: {
+    todayEvents: "События сегодня",
+    nearbyPlaces: "Места рядом",
+    offers: "Предложения",
+    noTodayEvents: "На сегодня событий нет.",
+    noPlaces: "Места по запросу не найдены.",
+    noOffers: "Предложения по запросу не найдены.",
+    paid: "Платно",
+    free: "Бесплатно",
+    noRating: "Рейтинг не указан"
+  },
+  de: {
+    todayEvents: "Heutige Veranstaltungen",
+    nearbyPlaces: "Orte in der Nähe",
+    offers: "Angebote",
+    noTodayEvents: "Für heute sind keine Veranstaltungen gelistet.",
+    noPlaces: "Keine passenden Orte gefunden.",
+    noOffers: "Keine passenden Angebote gefunden.",
+    paid: "Kostenpflichtig",
+    free: "Kostenlos",
+    noRating: "Bewertung nicht angegeben"
+  }
 } as const;
 
 const homeStoryActions = {
@@ -44,10 +84,10 @@ const homeStoryActions = {
     Acil: { label: "Tourist Support", description: "Open emergency and consulate info" }
   },
   ru: {
-    Tiyatro: { label: "События", description: "Открыть театры и сцены" },
-    Kahve: { label: "Места", description: "Показать кофе и места для перерыва" },
+    Tiyatro: { label: "События", description: "Открыть театры и сценические программы" },
+    Kahve: { label: "Места", description: "Показать кофейные и паузные точки" },
     Antik: { label: "Античный гид", description: "Открыть исторические места" },
-    Acil: { label: "Помощь туристу", description: "Открыть экстренные и консульские данные" }
+    Acil: { label: "Помощь туристам", description: "Открыть аварийную и консульскую информацию" }
   },
   de: {
     Tiyatro: { label: "Veranstaltungen", description: "Theater- und Bühnenprogramm öffnen" },
@@ -135,15 +175,31 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
   }, []);
 
   const normalizedQuery = normalize(deferredQuery);
-  const todayEvents = useMemo(() => feed.events
-    .filter((event) => isToday(event.startsAt))
-    .filter((event) => matchesText([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district], normalizedQuery))
-    .slice(0, 8), [feed.events, locale, normalizedQuery]);
+  const todayEvents = useMemo(
+    () =>
+      feed.events
+        .filter((event) => isToday(event.startsAt))
+        .filter((event) => matchesText([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district], normalizedQuery))
+        .slice(0, 8),
+    [feed.events, locale, normalizedQuery]
+  );
 
-  const nearbyPlaces = useMemo(() => feed.places
-    .filter((place) => matchesText([pickText(place.title, locale), pickText(place.description, locale), place.district, place.categoryId], normalizedQuery))
-    .sort((left, right) => compareDistance(userLocation, left, right))
-    .slice(0, 5), [feed.places, locale, normalizedQuery, userLocation]);
+  const matchingOffers = useMemo(
+    () =>
+      feed.offers
+        .filter((offer) => matchesText([pickText(offer.title, locale), pickText(offer.description, locale), pickText(offer.conditions, locale), offer.discountLabel], normalizedQuery))
+        .slice(0, 4),
+    [feed.offers, locale, normalizedQuery]
+  );
+
+  const nearbyPlaces = useMemo(
+    () =>
+      feed.places
+        .filter((place) => matchesText([pickText(place.title, locale), pickText(place.description, locale), place.district, place.categoryId], normalizedQuery))
+        .sort((left, right) => compareDistance(userLocation, left, right))
+        .slice(0, 5),
+    [feed.places, locale, normalizedQuery, userLocation]
+  );
 
   const selectedStory = isStoryKey(activeStory) ? (homeStoryActions[locale] ?? homeStoryActions.tr)[activeStory] : null;
 
@@ -192,6 +248,20 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
         {todayEvents.length ? todayEvents.map((event) => (
           <WideItem key={event.id} image={event.coverImage} title={pickText(event.title, locale)} meta={`${event.venueName} · ${event.priceType === "paid" ? labels.paid : labels.free}`} onPress={() => onOpenEvent?.(event.id)} />
         )) : <Text style={styles.emptyText}>{labels.noTodayEvents}</Text>}
+      </Section>
+      <Section title={labels.offers}>
+        {matchingOffers.length ? matchingOffers.map((offer) => {
+          const offerPlace = feed.places.find((place) => place.id === offer.placeId);
+          return (
+            <WideItem
+              key={offer.id}
+              image={offerPlace?.coverImage ?? ""}
+              title={pickText(offer.title, locale)}
+              meta={`${offer.discountLabel} · ${pickText(offer.description, locale)}`}
+              onPress={() => onOpenOffer?.(offer.id)}
+            />
+          );
+        }) : <Text style={styles.emptyText}>{labels.noOffers}</Text>}
       </Section>
       <Section title={labels.nearbyPlaces}>
         {nearbyPlaces.length ? nearbyPlaces.map((place) => (
