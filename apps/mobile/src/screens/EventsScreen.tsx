@@ -79,14 +79,16 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       return firstUpcoming ? firstTime - secondTime : secondTime - firstTime;
     }), [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventTypeLabels, feed.events, todayStartTime, viewMode]);
 
+  const venueIndex = useMemo(() => buildVenueIndex(feed.places, locale), [feed.places, locale]);
+
   const visibleEvents = useMemo(() => filteredEvents.slice(0, renderLimit).map((event) => {
-    const venuePlace = resolveEventVenue(feed.places, event.venueName, event.district, locale);
+    const venuePlace = resolveEventVenue(venueIndex, event.venueName, event.district);
     return {
       event,
       venuePlace,
       distance: resolveDistanceLabel(userLocation, venuePlace ?? event)
     };
-  }), [feed.places, filteredEvents, locale, renderLimit, userLocation]);
+  }), [filteredEvents, renderLimit, userLocation, venueIndex]);
 
   const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : viewMode === "map" ? c.mapList : c.events;
 
@@ -170,13 +172,38 @@ function normalizeTypeLabel(value: string, workshopLabel: string) {
   return value === "Workshop" ? workshopLabel : value;
 }
 
-function resolveEventVenue(places: Array<{ title: Record<string, string>; district: string; address: string; location?: { lat: number; lng: number } }>, venueName: string, district: string, locale: string) {
+function buildVenueIndex(places: Array<{ title: Record<string, string>; district: string; address: string; location?: { lat: number; lng: number } }>, locale: string) {
+  const index = new Map<string, typeof places[number]>();
+  for (const place of places) {
+    const keys = [
+      pickText(place.title, locale),
+      place.title.tr,
+      place.title.en,
+      place.address,
+      place.district
+    ];
+    for (const key of keys) {
+      const normalized = normalize(key);
+      if (normalized && !index.has(normalized)) {
+        index.set(normalized, place);
+      }
+    }
+  }
+  return index;
+}
+
+function resolveEventVenue(index: Map<string, { title: Record<string, string>; district: string; address: string; location?: { lat: number; lng: number } }>, venueName: string, district: string) {
   const normalizedVenue = normalize(venueName);
   const normalizedDistrict = normalize(district);
-  return places.find((place) => {
-    const titles = [pickText(place.title, locale), place.title.tr, place.title.en, place.address].map(normalize);
-    return titles.some((title) => title === normalizedVenue || title.includes(normalizedVenue) || normalizedVenue.includes(title));
-  }) ?? places.find((place) => normalize(place.district) === normalizedDistrict);
+  return index.get(normalizedVenue) ?? index.get(normalizedDistrict) ?? findLooseVenue(index, normalizedVenue, normalizedDistrict);
+}
+
+function findLooseVenue(index: Map<string, { title: Record<string, string>; district: string; address: string; location?: { lat: number; lng: number } }>, normalizedVenue: string, normalizedDistrict: string) {
+  for (const [key, place] of index.entries()) {
+    if (key === normalizedVenue || key.includes(normalizedVenue) || normalizedVenue.includes(key)) return place;
+    if (!normalizedVenue && key === normalizedDistrict) return place;
+  }
+  return undefined;
 }
 
 function translateViewMode(mode: EventViewMode, locale: string) {
