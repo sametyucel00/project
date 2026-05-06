@@ -4,7 +4,7 @@ declare global {
 }
 
 function isPerfEnabled() {
-  return typeof __DEV__ !== "undefined" ? __DEV__ : true;
+  return perfFlag("log");
 }
 
 export function perfNow() {
@@ -23,40 +23,35 @@ function getCounters() {
 }
 
 export function perfMark(name: string, detail?: Record<string, unknown>) {
+  if (!isPerfEnabled()) return null;
   const timestamp = perfNow();
   getMarks().set(name, timestamp);
-  if (isPerfEnabled()) {
-    console.info(`[nar-perf] ${name} @${timestamp.toFixed(1)}ms${detail ? ` ${compactDetail(detail)}` : ""}`);
-  }
+  console.info(`[nar-perf] ${name} @${timestamp.toFixed(1)}ms${detail ? ` ${compactDetail(detail)}` : ""}`);
   return timestamp;
 }
 
 export function perfMeasure(name: string, startMark: string, detail?: Record<string, unknown>) {
+  if (!isPerfEnabled()) return null;
   const marks = getMarks();
   const start = marks.get(startMark);
   const end = perfNow();
   if (start === undefined) {
-    if (isPerfEnabled()) {
-      console.info(`[nar-perf] ${name} missing-start:${startMark}${detail ? ` ${compactDetail(detail)}` : ""}`);
-    }
+    console.info(`[nar-perf] ${name} missing-start:${startMark}${detail ? ` ${compactDetail(detail)}` : ""}`);
     return null;
   }
 
   const duration = end - start;
   marks.set(name, end);
-  if (isPerfEnabled()) {
-    console.info(`[nar-perf] ${name} ${duration.toFixed(1)}ms${detail ? ` ${compactDetail(detail)}` : ""}`);
-  }
+  console.info(`[nar-perf] ${name} ${duration.toFixed(1)}ms${detail ? ` ${compactDetail(detail)}` : ""}`);
   return duration;
 }
 
 export function perfCount(name: string, detail?: Record<string, unknown>) {
+  if (!isPerfEnabled()) return 0;
   const counters = getCounters();
   const next = (counters.get(name) ?? 0) + 1;
   counters.set(name, next);
-  if (isPerfEnabled()) {
-    console.info(`[nar-perf] ${name}#${next}${detail ? ` ${compactDetail(detail)}` : ""}`);
-  }
+  console.info(`[nar-perf] ${name}#${next}${detail ? ` ${compactDetail(detail)}` : ""}`);
   return next;
 }
 
@@ -87,4 +82,3 @@ function formatValue(value: unknown) {
   if (Array.isArray(value)) return `[${value.length}]`;
   return "{...}";
 }
-
