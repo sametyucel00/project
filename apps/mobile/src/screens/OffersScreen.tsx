@@ -1,4 +1,4 @@
-import { compactValue } from "@nar/core";
+import { compactValue, featuredOffers } from "@nar/core";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { FilterRow, OfferItem, SearchBar, StoryRail } from "../components/ui";
@@ -14,9 +14,11 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
   const [visibleCount, setVisibleCount] = useState(10);
   const deferredQuery = useDeferredValue(query);
 
+  const mergedOffers = useMemo(() => mergeOffers(feed.offers, featuredOffers), [feed.offers]);
+
   const filteredOffers = useMemo(
     () =>
-      feed.offers.filter((offer) => {
+      mergedOffers.filter((offer) => {
         const haystack = normalize([offer.title.tr, offer.description.tr, offer.conditions.tr, offer.discountLabel].join(" "));
         if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
         if (activeFilter === "QR ile" && !offer.requiresQr) return false;
@@ -25,7 +27,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
         if (activeFilter === "Öne çıkan" && !offer.featured && !offer.storyEnabled) return false;
         return true;
       }),
-    [activeFilter, deferredQuery, feed.offers]
+    [activeFilter, deferredQuery, mergedOffers]
   );
 
   const firstOffer = filteredOffers[0];
@@ -52,7 +54,7 @@ export function OffersScreen({ feed, onOpenOffer }: MobileScreenProps) {
       ListHeaderComponent={
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
-          <StoryRail offers={feed.offers.slice(0, 5)} activeStory={activeStory} onSelect={handleStorySelect} />
+          <StoryRail offers={mergedOffers.slice(0, 5)} activeStory={activeStory} onSelect={handleStorySelect} />
           <FilterRow filters={offerFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
           <Text style={styles.sectionTitle}>{`Nar fırsatları (${filteredOffers.length})`}</Text>
         </View>
@@ -81,3 +83,13 @@ function normalize(value: string) {
   return value.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+function mergeOffers(first: typeof featuredOffers, second: typeof featuredOffers) {
+  const seen = new Set<string>();
+  const merged: typeof featuredOffers = [];
+  for (const item of [...first, ...second]) {
+    if (seen.has(item.id)) continue;
+    seen.add(item.id);
+    merged.push(item);
+  }
+  return merged;
+}
