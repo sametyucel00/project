@@ -1,6 +1,6 @@
 const expo = {
   name: "Nar Rehberi",
-  slug: "nar-rehberi",
+  slug: "nar-rehberi-sametycl",
   scheme: "narrehberi",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
@@ -10,8 +10,7 @@ const expo = {
 const projectId =
   process.env.EXPO_PUBLIC_EAS_PROJECT_ID ||
   process.env.EAS_PROJECT_ID ||
-  expo?.extra?.eas?.projectId ||
-  "1bb2e55f-da34-4acf-a038-b7bd4f98626c";
+  "d1176f69-5436-4387-9176-42d1498848d6";
 
 const publicFirebaseConfig = {
   apiKey:
@@ -33,7 +32,7 @@ module.exports = {
   splash: {
     backgroundColor: "#ffffff"
   },
-  owner: process.env.EXPO_OWNER || "samet52",
+  owner: process.env.EXPO_OWNER || "sametycl",
   plugins: [
     ...(expo.plugins ?? []),
     "expo-web-browser",
