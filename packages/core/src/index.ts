@@ -1232,6 +1232,13 @@ export function getEventTypeMeta(event: EventItem) {
   return eventTypes.find((type) => type.id === typeId) ?? eventTypes[0];
 }
 
+export async function loadLegacyDiscoveryFallbacks() {
+  return {
+    places: legacyPlaces,
+    events: [...legacyAntalyaEvents, ...biletinialAutfFestivalEvents, ...antalyaMay2026Events]
+  };
+}
+
 export const timeBasedDiscovery = {
   morning: {
     label: "Sabah",

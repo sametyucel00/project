@@ -1,4 +1,4 @@
-import { featuredEvents, featuredOffers, featuredPlaces, type EventItem, type Offer, type Place } from "@nar/core";
+import { featuredEvents, featuredOffers, featuredPlaces, loadLegacyDiscoveryFallbacks, type EventItem, type Offer, type Place } from "@nar/core";
 import { startTransition, useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
 import { fetchEvents, fetchOffers, fetchPlaces } from "../services";
@@ -87,6 +87,26 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
             return nextState;
           });
         });
+
+        if (places.length < limitSet.places || events.length < limitSet.events) {
+          void loadLegacyDiscoveryFallbacks().then((legacy) => {
+            if (!active) return;
+            startTransition(() => {
+              setState((current) => {
+                const merged = commitFeed({
+                  places: mergeUniqueById(legacy.places, current.places, feedCacheLimits.places),
+                  events: mergeUniqueById(legacy.events, current.events, feedCacheLimits.events),
+                  offers: current.offers,
+                  loading: false,
+                  error: current.error
+                });
+                if (sameDiscoveryFeedState(current, merged)) return current;
+                void writeJsonCache(feedCacheKey, trimFeedForCache(merged));
+                return merged;
+              });
+            });
+          });
+        }
       } catch (error) {
         if (!active || quiet) return;
         startTransition(() => {
@@ -170,4 +190,16 @@ function sameIdList<T extends { id: string }>(first: T[], second: T[]) {
     if (first[index]?.id !== second[index]?.id) return false;
   }
   return true;
+}
+
+function mergeUniqueById<T extends { id: string }>(first: T[], second: T[], limit: number) {
+  const seen = new Set<string>();
+  const merged: T[] = [];
+  for (const item of [...first, ...second]) {
+    if (!item || seen.has(item.id)) continue;
+    seen.add(item.id);
+    merged.push(item);
+    if (merged.length >= limit) break;
+  }
+  return merged;
 }

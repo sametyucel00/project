@@ -560,3 +560,20 @@ export function getEventTypeMeta(event: EventItem) {
   return eventTypes.find((type) => type.id === typeId) ?? eventTypes[0];
 }
 
+export async function loadLegacyDiscoveryFallbacks() {
+  const [placesModule, legacyEventsModule, festivalEventsModule, mayEventsModule] = await Promise.all([
+    import("./legacyPlaces"),
+    import("./legacyEvents"),
+    import("./biletinialAutfFestivalEvents"),
+    import("./antalyaMay2026Events")
+  ]);
+
+  return {
+    places: placesModule.legacyPlaces,
+    events: [
+      ...legacyEventsModule.legacyAntalyaEvents,
+      ...festivalEventsModule.biletinialAutfFestivalEvents,
+      ...mayEventsModule.antalyaMay2026Events
+    ]
+  };
+}
