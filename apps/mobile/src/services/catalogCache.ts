@@ -92,8 +92,8 @@ export function isDiscoveryCatalogFresh(snapshot: DiscoveryCatalogSnapshot | nul
 export function isDiscoveryCatalogComplete(snapshot: DiscoveryCatalogSnapshot | null) {
   if (!snapshot) return false;
   return (
-    (snapshot.placesCount ?? snapshot.places.length) >= 100 ||
-    (snapshot.eventsCount ?? snapshot.events.length) >= 50 ||
+    (snapshot.placesCount ?? snapshot.places.length) >= 100 &&
+    (snapshot.eventsCount ?? snapshot.events.length) >= 50 &&
     (snapshot.offersCount ?? snapshot.offers.length) >= 10
   );
 }
