@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { getMobileThemeVersion, theme } from "./theme";
 
 function buildStyles() {
@@ -90,7 +90,21 @@ function buildStyles() {
     settingsRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, paddingVertical: 8, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: theme.line },
     settingsLabel: { flex: 1, color: theme.ink, fontWeight: "700" },
     settingsValue: { color: theme.muted, textAlign: "right" },
-    tabBar: { position: "absolute", left: 12, right: 12, bottom: 10, height: 72, borderRadius: 28, backgroundColor: theme.surface, flexDirection: "row", alignItems: "center", justifyContent: "space-around", shadowColor: theme.shadow, shadowOpacity: 0.12, shadowRadius: 28, shadowOffset: { width: 0, height: 12 } },
+    tabBar: {
+      position: "absolute",
+      left: 12,
+      right: 12,
+      bottom: 10,
+      height: 72,
+      borderRadius: 28,
+      backgroundColor: theme.surface,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-around",
+      ...(Platform.OS === "web"
+        ? { boxShadow: "0px 12px 28px rgba(0, 0, 0, 0.12)" }
+        : { shadowColor: theme.shadow, shadowOpacity: 0.12, shadowRadius: 28, shadowOffset: { width: 0, height: 12 } })
+    },
     tab: { alignItems: "center", gap: 4, minWidth: 54 },
     tabText: { color: theme.muted, fontSize: 11 },
     tabActive: { color: theme.nar, fontWeight: "800" },

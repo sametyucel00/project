@@ -309,7 +309,10 @@ function MobileApp() {
                   const visible = tab.label === activeTab;
                   if (!mountedTabs.includes(tab.label)) return null;
                   return (
-                    <View key={tab.label} style={{ flex: 1, display: visible ? "flex" : "none" }} pointerEvents={visible ? "auto" : "none"}>
+                    <View
+                      key={tab.label}
+                      style={{ flex: 1, display: visible ? "flex" : "none", pointerEvents: visible ? "auto" : "none" }}
+                    >
                       <Screen {...screenProps} />
                     </View>
                   );

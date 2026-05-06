@@ -42,6 +42,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
     let fullLoadTimer: ReturnType<typeof setTimeout> | undefined;
     let interactionTask: { cancel?: () => void } | undefined;
     let shouldSkipNetwork = false;
+    let shouldLoadLegacyFallbacks = true;
     let legacyMergeStarted = false;
 
     void readDiscoveryCatalogCache().then((cachedCatalog) => {
@@ -62,6 +63,7 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
 
       if (isDiscoveryCatalogFresh(cachedCatalog) && isDiscoveryCatalogComplete(cachedCatalog)) {
         shouldSkipNetwork = true;
+        shouldLoadLegacyFallbacks = false;
         startTransition(() => {
           setState((current) => (current.loading ? { ...current, loading: false } : current));
         });
@@ -74,6 +76,14 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
       if (!normalized) {
         void removeCache(feedCacheKey);
         return;
+      }
+
+      if (
+        normalized.places.length >= feedCacheLimits.places &&
+        normalized.events.length >= feedCacheLimits.events &&
+        normalized.offers.length >= feedCacheLimits.offers
+      ) {
+        shouldLoadLegacyFallbacks = false;
       }
 
       startTransition(() => {
@@ -91,7 +101,9 @@ export function useDiscoveryFeed(enabled = true): DiscoveryFeedState {
       });
     });
 
-    void mergeLegacyFallbacks();
+    if (shouldLoadLegacyFallbacks) {
+      void mergeLegacyFallbacks();
+    }
 
     async function load(limitSet: { places: number; events: number; offers: number }, quiet = false) {
       try {
