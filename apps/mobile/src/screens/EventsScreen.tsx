@@ -138,8 +138,8 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
         }),
     [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventTypeLabels, feed.events, todayStartTime, viewMode, locale]
   );
-  const visibleEvents = useMemo(() => filteredEvents.slice(0, visibleCount), [filteredEvents, visibleCount]);
 
+  const visibleEvents = useMemo(() => filteredEvents.slice(0, visibleCount), [filteredEvents, visibleCount]);
   const venueIndex = useMemo(() => buildVenueIndex(feed.places, locale), [feed.places, locale]);
   const sectionTitle = viewMode === "month" ? c.monthly : viewMode === "week" ? c.weekly : viewMode === "map" ? c.mapList : c.events;
 
@@ -207,7 +207,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       }}
       ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
       ListHeaderComponent={header}
-      ListEmptyComponent={<Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>{c.noMatch}</Text>}
+      ListEmptyComponent={<Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>{feed.loading ? "Etkinlikler hazırlanıyor..." : c.noMatch}</Text>}
       contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
       onEndReached={() => setVisibleCount((current) => Math.min(filteredEvents.length, current + 24))}

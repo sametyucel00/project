@@ -16,7 +16,7 @@ export interface DiscoveryFeedState {
 
 export type DiscoveryFeedPriority = "home" | "catalog";
 
-let cachedFeed: DiscoveryFeedState | null = null;
+const cachedFeeds: Partial<Record<DiscoveryFeedPriority, DiscoveryFeedState>> = {};
 const homePreviewCacheKey = "narrehberi:mobile:discovery-home:v1";
 const feedCacheLimits = {
   places: 300,
@@ -25,10 +25,11 @@ const feedCacheLimits = {
 } as const;
 
 export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority = "home"): DiscoveryFeedState {
+  const initialState = cachedFeeds[priority];
   const [state, setState] = useState<DiscoveryFeedState>({
-    places: cachedFeed?.places ?? featuredPlaces,
-    events: cachedFeed?.events ?? featuredEvents,
-    offers: cachedFeed?.offers ?? featuredOffers,
+    places: initialState?.places ?? (priority === "home" ? featuredPlaces : []),
+    events: initialState?.events ?? (priority === "home" ? featuredEvents : []),
+    offers: initialState?.offers ?? (priority === "home" ? featuredOffers : []),
     loading: enabled,
     error: null
   });
@@ -42,7 +43,6 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
     }
 
     let active = true;
-    let fullLoadTimer: ReturnType<typeof setTimeout> | undefined;
     let interactionTask: { cancel?: () => void } | undefined;
     let legacyMergeStarted = false;
     let skippedCatalogLoad = false;
@@ -66,14 +66,13 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
 
         startTransition(() => {
           setState((current) => {
-            const nextState = commitFeed({
+            const nextState = commitFeed(priority, {
               places: normalized.places.length ? normalized.places : current.places,
               events: normalized.events.length ? normalized.events : current.events,
               offers: normalized.offers.length ? normalized.offers : current.offers,
               loading: current.loading,
               error: current.error
             });
-            cachedFeed = nextState;
             return sameDiscoveryFeedState(current, nextState) ? current : nextState;
           });
         });
@@ -89,14 +88,13 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
         if (!active || !cachedCatalog) return;
         startTransition(() => {
           setState((current) => {
-            const nextState = commitFeed({
+            const nextState = commitFeed(priority, {
               places: cachedCatalog.places.length ? cachedCatalog.places : current.places,
               events: cachedCatalog.events.length ? cachedCatalog.events : current.events,
               offers: cachedCatalog.offers.length ? cachedCatalog.offers : current.offers,
               loading: current.loading,
               error: current.error
             });
-            cachedFeed = nextState;
             return sameDiscoveryFeedState(current, nextState) ? current : nextState;
           });
         });
@@ -104,7 +102,10 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
         if (isDiscoveryCatalogFresh(cachedCatalog) && isDiscoveryCatalogComplete(cachedCatalog)) {
           skippedCatalogLoad = true;
           startTransition(() => {
-            setState((current) => (current.loading ? { ...current, loading: false } : current));
+            setState((current) => {
+              const nextState = commitFeed(priority, current.loading ? { ...current, loading: false } : current);
+              return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+            });
           });
         }
       });
@@ -119,7 +120,10 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
         perfCount(`feed:${priority}:firebase:skipped`, limitSet);
         if (!quiet) {
           startTransition(() => {
-            setState((current) => (current.loading ? { ...current, loading: false } : current));
+            setState((current) => {
+              const nextState = commitFeed(priority, current.loading ? { ...current, loading: false } : current);
+              return sameDiscoveryFeedState(current, nextState) ? current : nextState;
+            });
           });
         }
         return;
@@ -141,7 +145,7 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
         if (!active) return;
         startTransition(() => {
           setState((current) => {
-            const nextState = commitFeed({
+            const nextState = commitFeed(priority, {
               places: mergeUniqueById(places.length ? places : current.places, current.places, feedCacheLimits.places),
               events: mergeUniqueById(events.length ? events : current.events, current.events, feedCacheLimits.events),
               offers: mergeUniqueById(offers.length ? offers : current.offers, current.offers, feedCacheLimits.offers),
@@ -149,16 +153,7 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
               error: null
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
-            if (!cacheDisabled) {
-              void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
-              void writeDiscoveryCatalogCache({
-                places: nextState.places,
-                events: nextState.events,
-                offers: nextState.offers,
-                syncedAt: new Date().toISOString(),
-                version: 1
-              });
-            }
+            persistFeed(priority, nextState, cacheDisabled);
             return nextState;
           });
         });
@@ -167,24 +162,15 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
         if (!active || quiet) return;
         startTransition(() => {
           setState((current) => {
-            const nextState = commitFeed({
-              places: current.places.length ? current.places : featuredPlaces,
-              events: current.events.length ? current.events : featuredEvents,
-              offers: current.offers.length ? current.offers : featuredOffers,
+            const nextState = commitFeed(priority, {
+              places: current.places.length ? current.places : (priority === "home" ? featuredPlaces : []),
+              events: current.events.length ? current.events : (priority === "home" ? featuredEvents : []),
+              offers: current.offers.length ? current.offers : (priority === "home" ? featuredOffers : []),
               loading: false,
               error: error instanceof Error ? error.message : "Keşif verisi alınamadı."
             });
             if (sameDiscoveryFeedState(current, nextState)) return current;
-            if (!cacheDisabled) {
-              void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
-              void writeDiscoveryCatalogCache({
-                places: nextState.places,
-                events: nextState.events,
-                offers: nextState.offers,
-                syncedAt: new Date().toISOString(),
-                version: 1
-              });
-            }
+            persistFeed(priority, nextState, cacheDisabled);
             return nextState;
           });
         });
@@ -200,7 +186,7 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
           if (!active) return;
           startTransition(() => {
             setState((current) => {
-              const merged = commitFeed({
+              const merged = commitFeed(priority, {
                 places: mergeUniqueById(legacy.places, current.places, feedCacheLimits.places),
                 events: mergeUniqueById(legacy.events, current.events, feedCacheLimits.events),
                 offers: current.offers,
@@ -208,25 +194,11 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
                 error: current.error
               });
               if (sameDiscoveryFeedState(current, merged)) return current;
-              if (!cacheDisabled) {
-                void writeJsonCache(homePreviewCacheKey, trimFeedForCache(merged));
-                void writeDiscoveryCatalogCache({
-                  places: merged.places,
-                  events: merged.events,
-                  offers: merged.offers,
-                  syncedAt: new Date().toISOString(),
-                  version: 1
-                });
-              }
+              persistFeed(priority, merged, cacheDisabled);
               return merged;
             });
           });
         });
-    }
-
-    function commitFeed(next: DiscoveryFeedState) {
-      cachedFeed = next;
-      return next;
     }
 
     interactionTask = InteractionManager.runAfterInteractions(() => {
@@ -236,21 +208,37 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
       }
 
       if (skippedCatalogLoad) return;
-
       void load({ places: 48, events: 24, offers: 8 });
-      fullLoadTimer = setTimeout(() => {
-        void load({ places: 300, events: 300, offers: 30 }, true);
-      }, 7500);
     });
 
     return () => {
       active = false;
       interactionTask?.cancel?.();
-      if (fullLoadTimer) clearTimeout(fullLoadTimer);
     };
   }, [enabled, priority]);
 
   return state;
+}
+
+function commitFeed(priority: DiscoveryFeedPriority, next: DiscoveryFeedState) {
+  cachedFeeds[priority] = next;
+  return next;
+}
+
+function persistFeed(priority: DiscoveryFeedPriority, nextState: DiscoveryFeedState, cacheDisabled: boolean) {
+  if (cacheDisabled) return;
+  if (priority === "home") {
+    void writeJsonCache(homePreviewCacheKey, trimFeedForCache(nextState));
+    return;
+  }
+
+  void writeDiscoveryCatalogCache({
+    places: nextState.places,
+    events: nextState.events,
+    offers: nextState.offers,
+    syncedAt: new Date().toISOString(),
+    version: 1
+  });
 }
 
 function normalizeCachedFeed(cached: DiscoveryFeedState | null): DiscoveryFeedState | null {

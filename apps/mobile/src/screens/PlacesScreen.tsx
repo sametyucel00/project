@@ -147,7 +147,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
           <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
         </View>
       }
-      ListEmptyComponent={<Text style={styles.emptyText}>{c.notFound}</Text>}
+      ListEmptyComponent={<Text style={styles.emptyText}>{feed.loading ? "Mekanlar hazırlanıyor..." : c.notFound}</Text>}
       contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 18 }}
       showsVerticalScrollIndicator={false}
       onEndReached={() => setVisibleCount((current) => Math.min(filteredPlaces.length, current + 24))}

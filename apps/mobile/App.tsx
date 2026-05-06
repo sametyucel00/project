@@ -89,11 +89,12 @@ function MobileApp() {
   const [activeTab, setActiveTab] = useState<TabLabel>("Ana Sayfa");
   const [mountedTabs, setMountedTabs] = useState<TabLabel[]>(["Ana Sayfa"]);
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
+  const [catalogEnabled, setCatalogEnabled] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const { session, loading: sessionLoading } = useSession();
   const shouldLoadFeed = onboardingCompleted === true && Boolean(session);
-  const feedPriority = surface.kind === "tab" && surface.tab === "Ana Sayfa" ? "home" : "catalog";
-  const feed = useDiscoveryFeed(shouldLoadFeed, feedPriority);
+  const homeFeed = useDiscoveryFeed(shouldLoadFeed, "home");
+  const catalogFeed = useDiscoveryFeed(shouldLoadFeed && catalogEnabled, "catalog");
   const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
   const themeSnapshot = useSyncExternalStore(subscribeMobileTheme, getMobileThemeVersion, getMobileThemeVersion);
   useSyncExternalStore(subscribeMobileLocale, getMobileLocale, getMobileLocale);
@@ -161,6 +162,7 @@ function MobileApp() {
 
   const openTab = useCallback((tab: TabLabel) => {
     perfMark(`nav:${tab}:press`);
+    if (tab !== "Ana Sayfa") setCatalogEnabled(true);
     setActiveTab(tab);
     setSurface({ kind: "tab", tab });
     setMountedTabs((current) => (current.includes(tab) ? current : [...current, tab]));
@@ -168,18 +170,21 @@ function MobileApp() {
 
   const openPlace = useCallback((placeId: string) => {
     perfMark("nav:place-detail:press", { placeId });
+    setCatalogEnabled(true);
     setActiveTab("Mekanlar");
     setSurface({ kind: "place", placeId });
   }, []);
 
   const openEvent = useCallback((eventId: string) => {
     perfMark("nav:event-detail:press", { eventId });
+    setCatalogEnabled(true);
     setActiveTab("Etkinlikler");
     setSurface({ kind: "event", eventId });
   }, []);
 
   const openOffer = useCallback((offerId: string) => {
     perfMark("nav:offer-detail:press", { offerId });
+    setCatalogEnabled(true);
     setActiveTab("Fırsatlar");
     setSurface({ kind: "offer", offerId });
   }, []);
@@ -225,8 +230,8 @@ function MobileApp() {
     await requestLocationAccess();
   }
 
-  const screenProps: MobileScreenProps = useMemo(() => ({
-    feed,
+  const homeScreenProps: MobileScreenProps = useMemo(() => ({
+    feed: homeFeed,
     session,
     userLocation,
     onOpenPlace: openPlace,
@@ -237,7 +242,21 @@ function MobileApp() {
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  }), [feed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+  }), [homeFeed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+
+  const catalogScreenProps: MobileScreenProps = useMemo(() => ({
+    feed: catalogFeed,
+    session,
+    userLocation,
+    onOpenPlace: openPlace,
+    onOpenEvent: openEvent,
+    onOpenOffer: openOffer,
+    onOpenTouristGuide: openTouristGuide,
+    onOpenAncientGuide: openAncientGuide,
+    onOpenTab: openTab,
+    onOpenAuth: openAuth,
+    onOpenLegal: openLegal
+  }), [catalogFeed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
 
   if (onboardingCompleted === null || (!needsOnboarding && sessionLoading)) {
     return (
@@ -317,6 +336,7 @@ function MobileApp() {
                 {tabs.map((tab) => {
                   const Screen = tab.screen as ScreenComponent;
                   const visible = tab.label === activeTab;
+                  const screenProps = tab.label === "Ana Sayfa" ? homeScreenProps : catalogScreenProps;
                   if (!mountedTabs.includes(tab.label)) return null;
                   return (
                     <View
@@ -329,15 +349,15 @@ function MobileApp() {
                 })}
               </View>
             ) : surface.kind === "tourist" ? (
-              <GuideScreen {...screenProps} mode="tourist" onBack={backToTabs} />
+              <GuideScreen {...homeScreenProps} mode="tourist" onBack={backToTabs} />
             ) : surface.kind === "ancient" ? (
-              <GuideScreen {...screenProps} mode="ancient" onBack={backToTabs} />
+              <GuideScreen {...homeScreenProps} mode="ancient" onBack={backToTabs} />
             ) : surface.kind === "place" ? (
-              <PlaceDetailScreen {...screenProps} placeId={surface.placeId} onBack={backToTabs} />
+              <PlaceDetailScreen {...catalogScreenProps} placeId={surface.placeId} onBack={backToTabs} />
             ) : surface.kind === "event" ? (
-              <EventDetailScreen {...screenProps} eventId={surface.eventId} onBack={backToTabs} />
+              <EventDetailScreen {...catalogScreenProps} eventId={surface.eventId} onBack={backToTabs} />
             ) : surface.kind === "offer" ? (
-              <OfferDetailScreen {...screenProps} offerId={surface.offerId} onBack={backToTabs} />
+              <OfferDetailScreen {...catalogScreenProps} offerId={surface.offerId} onBack={backToTabs} />
             ) : null}
           </View>
 
