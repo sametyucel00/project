@@ -116,8 +116,14 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   }, []);
 
   useEffect(() => {
-    setVisibleCount(Math.min(12, filteredPlaces.length));
+    if (!filteredPlaces.length) return;
+    setVisibleCount((current) => {
+      const seed = current > 0 ? current : 12;
+      return Math.min(seed, filteredPlaces.length);
+    });
   }, [filteredPlaces.length]);
+
+  const sectionTitle = feed.loading && filteredPlaces.length === 0 ? c.places : `${c.places} (${filteredPlaces.length})`;
 
   return (
     <FlatList
@@ -145,7 +151,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
           <SearchBar value={query} onChangeText={setQuery} />
           <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
           <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
-          <Text style={styles.sectionTitle}>{`${c.places} (${filteredPlaces.length})`}</Text>
+          <Text style={styles.sectionTitle}>{sectionTitle}</Text>
         </View>
       }
       ListEmptyComponent={<Text style={styles.emptyText}>{feed.loading ? "Mekanlar hazırlanıyor..." : c.notFound}</Text>}

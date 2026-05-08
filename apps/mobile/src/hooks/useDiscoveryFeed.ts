@@ -49,6 +49,10 @@ export function useDiscoveryFeed(enabled = true, priority: DiscoveryFeedPriority
     const cacheDisabled = perfFlag("nocache");
     const firebaseDisabled = perfFlag("nofirebase");
 
+    startTransition(() => {
+      setState((current) => (current.loading ? current : { ...current, loading: true, error: null }));
+    });
+
     if (priority === "home" && !cacheDisabled) {
       perfMark(`feed:${priority}:cacheRead:start`);
       void readJsonCache<DiscoveryFeedState>(homePreviewCacheKey).then((cached) => {

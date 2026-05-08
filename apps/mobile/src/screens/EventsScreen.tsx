@@ -163,8 +163,14 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
   }, []);
 
   useEffect(() => {
-    setVisibleCount(Math.min(12, filteredEvents.length));
+    if (!filteredEvents.length) return;
+    setVisibleCount((current) => {
+      const seed = current > 0 ? current : 12;
+      return Math.min(seed, filteredEvents.length);
+    });
   }, [filteredEvents.length]);
+
+  const sectionTitleLabel = feed.loading && filteredEvents.length === 0 ? sectionTitle : `${sectionTitle} (${filteredEvents.length})`;
 
   const header = useMemo(() => {
     return (
@@ -186,10 +192,10 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
             </Pressable>
           ))}
         </View>
-        <Text style={styles.sectionTitle}>{`${sectionTitle} (${filteredEvents.length})`}</Text>
+        <Text style={styles.sectionTitle}>{sectionTitleLabel}</Text>
       </View>
     );
-  }, [activeFilter, activeType, filteredEvents, locale, query, quickFilters, sectionTitle, typeFilters, viewMode]);
+  }, [activeFilter, activeType, filteredEvents, locale, query, quickFilters, sectionTitle, sectionTitleLabel, typeFilters, viewMode]);
 
   return (
     <FlatList
