@@ -3,6 +3,7 @@ import { t, type Locale } from "@nar/core";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { AUTH_REDIRECT_STARTED, loginAnonymously, loginWithApplePopup, loginWithEmail, loginWithGooglePopup, registerWithEmailAndRole, resetPassword } from "../services";
+import type { MobileSession } from "../services";
 import { perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
 import { theme } from "../theme";
@@ -10,7 +11,7 @@ import type { SelfServiceRole } from "../services";
 
 type AuthProps = {
   locale: Locale;
-  onSignedIn: () => void;
+  onSignedIn: (session?: MobileSession | null) => void;
   onOpenLegal: (kind: "privacy" | "terms") => void;
 };
 
@@ -129,7 +130,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
       perfMeasure(`${name}:await`, `${name}:handler`);
       if (result === AUTH_REDIRECT_STARTED) return;
       perfMark(`${name}:navigate`);
-      onSignedIn();
+      onSignedIn(result instanceof Object ? (result as MobileSession) : null);
     } catch (error) {
       setStatus(formatAuthError(error, c.statusError));
     }

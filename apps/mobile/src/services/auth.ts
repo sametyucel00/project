@@ -157,6 +157,14 @@ function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): Mobi
   return session;
 }
 
+function primeSession(user: User, requestedRole?: SelfServiceRole) {
+  const session = buildFallbackSession(user, requestedRole);
+  void ensureMobileUserProfile(user, requestedRole).catch(() => {
+    // The auth flow should stay responsive even if the profile hydrate fails.
+  });
+  return session;
+}
+
 function toSession(user: User, data: Record<string, unknown>): MobileSession {
   const role = (data.role ?? "individual") as UserRole;
   const session: MobileSession = {
@@ -281,23 +289,23 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
 export async function registerWithEmail(email: string, password: string, displayName: string) {
   const credential = await createUserWithEmailAndPassword(auth, email, password);
   if (displayName.trim()) await updateProfile(credential.user, { displayName: displayName.trim() });
-  return ensureMobileUserProfile(credential.user);
+  return primeSession(credential.user);
 }
 
 export async function registerWithEmailAndRole(email: string, password: string, displayName: string, role: SelfServiceRole) {
   const credential = await createUserWithEmailAndPassword(auth, email, password);
   if (displayName.trim()) await updateProfile(credential.user, { displayName: displayName.trim() });
-  return ensureMobileUserProfile(credential.user, role);
+  return primeSession(credential.user, role);
 }
 
 export async function loginWithEmail(email: string, password: string) {
   const credential = await signInWithEmailAndPassword(auth, email, password);
-  return ensureMobileUserProfile(credential.user);
+  return primeSession(credential.user);
 }
 
 export async function loginAnonymously() {
   const credential = await signInAnonymously(auth);
-  return ensureMobileUserProfile(credential.user);
+  return primeSession(credential.user);
 }
 
 export async function resetPassword(email: string) {
@@ -309,7 +317,7 @@ export async function loginWithGoogleToken(input: GoogleTokenInput | string) {
   const tokenInput = typeof input === "string" ? { idToken: input } : input;
   const credential = GoogleAuthProvider.credential(tokenInput.idToken, tokenInput.accessToken);
   const result = await signInWithCredential(auth, credential);
-  return ensureMobileUserProfile(result.user);
+  return primeSession(result.user);
 }
 
 export async function loginWithGooglePopup() {
@@ -336,7 +344,7 @@ export async function loginWithGooglePopup() {
     return AUTH_REDIRECT_STARTED;
   }
   const result = await signInWithPopup(auth, new GoogleAuthProvider());
-  return ensureMobileUserProfile(result.user);
+  return primeSession(result.user);
 }
 
 export async function loginWithAppleToken(input: AppleTokenInput | string) {
@@ -386,7 +394,7 @@ export async function loginWithApplePopup() {
     return AUTH_REDIRECT_STARTED;
   }
   const result = await signInWithPopup(auth, new OAuthProvider("apple.com"));
-  return ensureMobileUserProfile(result.user);
+  return primeSession(result.user);
 }
 
 export async function logout() {

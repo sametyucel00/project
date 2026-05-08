@@ -16,6 +16,7 @@ import { OnboardingScreen } from "./src/screens/OnboardingScreen";
 import { AuthScreen } from "./src/screens/AuthScreen";
 import { LegalScreen } from "./src/screens/LegalScreen";
 import type { MobileScreenProps } from "./src/screens/types";
+import type { MobileSession } from "./src/services";
 import { useDiscoveryFeed, useSession, useUserLocation } from "./src/hooks";
 import { styles } from "./src/styles";
 import { getMobileThemeMode, getMobileThemeVersion, reapplyMobileTheme, setMobileThemeMode, subscribeMobileTheme, theme } from "./src/theme";
@@ -103,8 +104,10 @@ function MobileApp() {
   const [surface, setSurface] = useState<Surface>({ kind: "tab", tab: "Ana Sayfa" });
   const [catalogEnabled, setCatalogEnabled] = useState(false);
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
+  const [optimisticSession, setOptimisticSession] = useState<MobileSession | null>(null);
   const { session, loading: sessionLoading } = useSession();
-  const shouldLoadFeed = onboardingCompleted === true && Boolean(session);
+  const effectiveSession = session ?? optimisticSession;
+  const shouldLoadFeed = onboardingCompleted === true && Boolean(effectiveSession);
   const homeFeed = useDiscoveryFeed(shouldLoadFeed, "home");
   const catalogFeed = useDiscoveryFeed(shouldLoadFeed && catalogEnabled, "catalog");
   const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
@@ -113,6 +116,14 @@ function MobileApp() {
   const deviceLocale = getDeviceLocale();
   const locale = getMobileLocale();
   const needsOnboarding = onboardingCompleted !== true;
+
+  useEffect(() => {
+    if (session) {
+      setOptimisticSession(session);
+      return;
+    }
+    setOptimisticSession(null);
+  }, [session]);
 
   useEffect(() => {
     reapplyMobileTheme();
@@ -165,7 +176,7 @@ function MobileApp() {
     perfMark(getRouteMark(surface, activeTab));
   }, [activeTab, surface]);
 
-  const showAuth = surface.kind === "auth" || (!needsOnboarding && !session);
+  const showAuth = surface.kind === "auth" || (!needsOnboarding && !effectiveSession);
   const showLegal = surface.kind === "legal";
 
   const isTabSurface = surface.kind === "tab";
@@ -267,7 +278,7 @@ function MobileApp() {
 
   const homeScreenProps: MobileScreenProps = useMemo(() => ({
     feed: homeFeed,
-    session,
+    session: effectiveSession,
     userLocation,
     onOpenPlace: openPlace,
     onOpenEvent: openEvent,
@@ -277,11 +288,11 @@ function MobileApp() {
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  }), [homeFeed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+  }), [homeFeed, effectiveSession, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
 
   const catalogScreenProps: MobileScreenProps = useMemo(() => ({
     feed: catalogFeed,
-    session,
+    session: effectiveSession,
     userLocation,
     onOpenPlace: openPlace,
     onOpenEvent: openEvent,
@@ -291,9 +302,9 @@ function MobileApp() {
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  }), [catalogFeed, session, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+  }), [catalogFeed, effectiveSession, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
 
-  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading)) {
+  if (onboardingCompleted === null || (!needsOnboarding && sessionLoading && !effectiveSession)) {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.startupBlank} />
@@ -332,9 +343,17 @@ function MobileApp() {
     return (
       <SafeAreaProvider>
         <SafeAreaView style={styles.safe}>
-          <AuthScreen
+              <AuthScreen
             locale={locale}
-            onSignedIn={() => setSurface({ kind: "tab", tab: activeTab })}
+            onSignedIn={(nextSession) => {
+              if (nextSession) {
+                setOptimisticSession(nextSession);
+                setActiveTab(nextSession.nextTab);
+                setSurface({ kind: "tab", tab: nextSession.nextTab });
+                return;
+              }
+              setSurface({ kind: "tab", tab: activeTab });
+            }}
             onOpenLegal={openLegal}
           />
         </SafeAreaView>
