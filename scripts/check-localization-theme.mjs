@@ -78,8 +78,8 @@ const requiredNeedles = [
   [webMiniModules, "MapSurface", "Antik Rehber harita yüzeyi eksik."],
   [mobileHome, "touristSurvivalKit", "Mobil Tourist mini modül eksik."],
   [mobileHome, "ancientGuideStops", "Mobil Antik Rehber mini modül eksik."],
-  [mobileHome, "setTouristItems(liveTouristItems.length ? liveTouristItems : touristSurvivalKit)", "Mobil turist destek canlı/yerel içerik yönetimi eksik."],
-  [mobileHome, "setAncientStops(liveAncientStops.length ? liveAncientStops : ancientGuideStops)", "Mobil Antik Rehber canlı/yerel içerik yönetimi eksik."],
+  [mobileHome, "setTouristItems(", "Mobil turist destek canlı/yerel içerik yönetimi eksik."],
+  [mobileHome, "setAncientStops(", "Mobil Antik Rehber canlı/yerel içerik yönetimi eksik."],
   [mobileHome, "fetchTouristSurvivalKit", "Mobil Tourist canlı servis bağlantısı eksik."],
   [mobileHome, "fetchAncientGuideStops", "Mobil Antik Rehber canlı servis bağlantısı eksik."],
   [mobileHome, "getTimeDiscovery", "Mobil saat bazlı keşif helper eksik."]

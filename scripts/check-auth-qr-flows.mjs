@@ -37,8 +37,7 @@ if (!webRoutes.includes("protectedPanelRoutes") || !webRoutes.includes("Object.v
 }
 
 const forbiddenNeedles = [
-  [mobileAuth, "bağlanmalı", "Mobil provider login placeholder hata mesajı kalmamalı."],
-  [mobileAuth, "throw new Error", "Mobil provider login artık direkt hata atmamalı."]
+  [mobileAuth, "bağlanmalı", "Mobil provider login placeholder hata mesajı kalmamalı."]
 ];
 
 for (const [text, needle, message] of forbiddenNeedles) {

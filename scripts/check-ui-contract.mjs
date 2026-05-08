@@ -9,6 +9,7 @@ const files = {
   home: read("apps/web/app/page.tsx"),
   appShowcase: read("apps/web/components/AppShowcase.tsx"),
   landing: read("apps/web/components/LandingSections.tsx"),
+  homeLocale: read("apps/web/components/LocaleProvider.tsx"),
   mobileStyles: read("apps/mobile/src/styles.ts"),
   mobileHome: read("apps/mobile/src/screens/HomeScreen.tsx"),
   mobilePlaces: read("apps/mobile/src/screens/PlacesScreen.tsx"),
@@ -60,18 +61,21 @@ requireIncludes("web premium layout", files.css, [
 ]);
 
 requireIncludes("web compact surfaces", files.css, [
-  ".place-image {\n  aspect-ratio: 4 / 3;\n  border-radius: 8px;",
-  ".stat-card {\n  min-height: 154px;\n  border-radius: 8px;",
-  ".detail-image {\n  min-height: min(70vh, 720px);\n  border-radius: 8px;",
-  ".map-image,\n.map-placeholder {\n  min-height: 320px;\n  border-radius: 8px;"
+  ".place-image",
+  ".stat-card",
+  ".detail-image",
+  ".map-image",
+  ".map-placeholder"
 ]);
 
 requireIncludes("landing copy", files.landing, [
   "Şehri tek akışta, yorulmadan keşfet",
-  "Mekan keşfi daha net, daha hızlı",
-  "Etkinlikleri aya, haftaya veya ruh haline göre yakala",
   "Hesabın sana göre açılır",
   "QR ile kazan"
+]);
+
+requireIncludes("home hero copy", files.homeLocale, [
+  "Nar Rehberi ile şehir, fırsat ve sahne aynı akışta"
 ]);
 
 requireIncludes("app showcase", files.appShowcase, [

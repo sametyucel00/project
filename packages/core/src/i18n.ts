@@ -1,4 +1,4 @@
-﻿import type { Locale, LocalizedText } from "./index";
+import type { Locale, LocalizedText } from "./index";
 
 export const dictionary: Record<Locale, Record<string, string>> = {
   tr: {

@@ -1,4 +1,4 @@
-﻿import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { Component, memo, type ErrorInfo, type ReactElement, type ReactNode, startTransition, useCallback, useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { InteractionManager, Pressable, Text, View } from "react-native";

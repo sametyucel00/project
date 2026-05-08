@@ -16,7 +16,9 @@ const firebaseRc = readFileSync(join(root, "firebase", ".firebaserc"), "utf8");
 const webFirebase = readFileSync(join(root, "apps", "web", "lib", "firebase.ts"), "utf8");
 const webFunctions = readFileSync(join(root, "apps", "web", "lib", "functions.ts"), "utf8");
 const mobileFirebase = readFileSync(join(root, "apps", "mobile", "src", "firebase.ts"), "utf8");
-const mobileApp = readFileSync(join(root, "apps", "mobile", "app.json"), "utf8");
+const mobileRuntimeConfig = readFileSync(join(root, "apps", "mobile", "src", "runtimeConfig.ts"), "utf8");
+const mobileAppConfigPath = join(root, "apps", "mobile", "app.config.js");
+const mobileApp = readFileSync(mobileAppConfigPath, "utf8");
 const seedImport = readFileSync(join(root, "scripts", "import-seed-firestore.mjs"), "utf8");
 
 const failures = [];
@@ -53,7 +55,8 @@ for (const script of forbiddenRootScripts) {
 
 for (const needle of ["demo-api-key", "demo-nar-rehberi"]) {
   if (!webFirebase.includes(needle)) failures.push(`Web Firebase fallback eksik: ${needle}`);
-  if (!mobileFirebase.includes(needle)) failures.push(`Mobil Firebase fallback eksik: ${needle}`);
+  if (needle === "demo-api-key" && !mobileFirebase.includes(needle)) failures.push(`Mobil Firebase fallback eksik: ${needle}`);
+  if (needle === "demo-nar-rehberi" && !mobileRuntimeConfig.includes("nar-rehberi-pro")) failures.push("Mobil Firebase fallback eksik: nar-rehberi-pro");
 }
 
 for (const emulator of ["auth", "firestore", "functions", "storage", "ui"]) {
@@ -74,8 +77,8 @@ const emulatorNeedles = [
   [mobileFirebase, "connectFunctionsEmulator", "Mobil Functions emulator bağlantısı eksik."],
   [mobileFirebase, "connectStorageEmulator", "Mobil Storage emulator bağlantısı eksik."],
   [mobileFirebase, "EXPO_PUBLIC_USE_FIREBASE_EMULATORS", "Mobil emulator env bayrağı eksik."],
-  [mobileApp, "\"scheme\": \"narrehberi\"", "Mobil deep link scheme eksik."],
-  [mobileApp, "\"userInterfaceStyle\": \"automatic\"", "Mobil açık/koyu mod config eksik."]
+  [mobileApp, "scheme: \"narrehberi\"", "Mobil deep link scheme eksik."],
+  [mobileApp, "userInterfaceStyle: \"automatic\"", "Mobil açık/koyu mod config eksik."]
 ];
 
 for (const [text, needle, message] of emulatorNeedles) {

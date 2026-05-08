@@ -1,4 +1,4 @@
-﻿import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { t } from "@nar/core";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { styles } from "../styles";

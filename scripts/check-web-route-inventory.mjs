@@ -84,8 +84,8 @@ const requiredNeedles = [
   [layout, "application/ld+json", "layout JSON-LD structured data script eksik."],
   [routesLib, "roleHome", "rol yönlendirme route helperı roleHome kullanmalı."],
   [homeHero, "href=\"/mobil-uygulama\"", "ana sayfa mobil CTA gerçek mobil uygulama rotasına gitmeli."],
-  [landingSections, "fetchLivePlaces(6)", "landing canlı vitrin veri akışı eksik."],
-  [landingSections, "setPlaces((livePlaces.length ? livePlaces : featuredPlaces).slice(0, 6))", "landing fallback vitrin izi eksik."],
+  [landingSections, "fetchLivePlaces(80)", "landing canlı vitrin veri akışı eksik."],
+  [landingSections, "setPlaces(resolvedPlaces.slice(0, 6))", "landing fallback vitrin izi eksik."],
   [appShowcase, "fetchLiveOffers(1)", "mobil showcase canlı veri izi eksik."],
   [appShowcase, "setOffers(featuredOffers.slice(0, 1))", "mobil showcase fallback izi eksik."]
 ];

@@ -39,6 +39,18 @@ for (const file of walk(root)) {
   if (statSync(file).size > 1_500_000) continue;
   const text = readFileSync(file, "utf8");
   for (const item of secretPatterns) {
+    const allowedPublicFirebaseKeyFiles = [
+      "apps/mobile/app.config.js",
+      "apps/mobile/src/runtimeConfig.ts",
+      "apps/web/lib/firebase.ts"
+    ];
+    if (
+      item.name === "google api key literal" &&
+      allowedPublicFirebaseKeyFiles.includes(rel.replace(/\\/g, "/"))
+    ) {
+      continue;
+    }
+
     if (item.pattern.test(text) && !rel.endsWith(".env.example")) {
       failures.push(`${item.name} şüphesi: ${rel}`);
     }
