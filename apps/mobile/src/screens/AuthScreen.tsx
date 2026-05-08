@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { t, type Locale } from "@nar/core";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { AUTH_REDIRECT_STARTED, loginAnonymously, loginWithApplePopup, loginWithEmail, loginWithGooglePopup, registerWithEmailAndRole, resetPassword } from "../services";
+import { AUTH_REDIRECT_STARTED, createOptimisticGuestSession, loginAnonymously, loginWithApplePopup, loginWithEmail, loginWithGooglePopup, registerWithEmailAndRole, resetPassword } from "../services";
 import type { MobileSession } from "../services";
 import { perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
@@ -219,7 +219,20 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
             </Pressable>
           </View>
 
-          <Pressable accessibilityRole="button" onPress={() => { perfMark("auth:guest:press"); void runAuth("auth:guest", () => loginAnonymously()); }} style={styles.onboardingAction}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => {
+              perfMark("auth:guest:press");
+              perfMark("auth:guest:handler");
+              perfMark("auth:guest:navigate");
+              setStatus(c.statusSigning);
+              onSignedIn(createOptimisticGuestSession());
+              void loginAnonymously().catch((error) => {
+                setStatus(formatAuthError(error, c.statusError));
+              });
+            }}
+            style={styles.onboardingAction}
+          >
             <Text style={styles.onboardingActionText}>{c.guest}</Text>
           </Pressable>
 

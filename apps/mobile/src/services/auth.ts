@@ -157,6 +157,22 @@ function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): Mobi
   return session;
 }
 
+export function createOptimisticGuestSession(): MobileSession {
+  return {
+    uid: "guest-local",
+    email: "",
+    displayName: "Nar kullanıcısı",
+    isAnonymous: true,
+    role: "individual",
+    city: "Antalya",
+    preferredLocale: "tr",
+    themeMode: "system",
+    notificationPreferences: defaultPushPreferences,
+    points: 0,
+    nextTab: resolveRoleTab("individual")
+  };
+}
+
 function primeSession(user: User, requestedRole?: SelfServiceRole) {
   const session = buildFallbackSession(user, requestedRole);
   void ensureMobileUserProfile(user, requestedRole).catch(() => {
