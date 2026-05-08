@@ -2,6 +2,7 @@ import { compactValue, featuredOffers } from "@nar/core";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { FilterRow, OfferItem, SearchBar, StoryRail } from "../components/ui";
+import { perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 
@@ -33,6 +34,16 @@ export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide,
   const firstOffer = filteredOffers[0];
   const remainingUse = firstOffer?.useLimit ? Math.max(firstOffer.useLimit - (firstOffer.usedCount ?? 0), 0) : null;
   const visibleOffers = useMemo(() => filteredOffers.slice(0, visibleCount), [filteredOffers, visibleCount]);
+
+  useEffect(() => {
+    perfMark("offers:screenMount");
+    perfMeasure("offers:navigationToMount", "nav:Fırsatlar:press");
+    queueMicrotask(() => {
+      perfMark("offers:firstPaint");
+      perfMeasure("offers:mountToFirstPaint", "offers:screenMount");
+      perfMeasure("offers:navigationToFirstPaint", "nav:Fırsatlar:press");
+    });
+  }, []);
 
   function handleStorySelect(story: string) {
     setActiveStory(story);

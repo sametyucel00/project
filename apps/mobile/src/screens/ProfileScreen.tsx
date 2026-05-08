@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { InteractionManager, Pressable, ScrollView, Text, View } from "react-native";
 import { badges, compactValue, defaultPushPreferences, getEventById, getOfferById, getPlaceById, userTasks } from "@nar/core";
 import { ActionPill, ActionRow, DetailPreview, StatStrip } from "../components/ui";
 import { completeUserTask, deleteCurrentAccount, fetchUserOrders, fetchUserQrTransactions, logout, resetCurrentUserScanHistory, useQrTransaction } from "../services";
@@ -55,35 +55,37 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
 
   useEffect(() => {
     let active = true;
-    async function loadHistory() {
-      if (!uid) {
-        setQrRows([]);
-        setOrderRows([]);
-        return;
-      }
-      try {
-        const [liveQrTransactions, liveOrders] = await Promise.all([
-          fetchUserQrTransactions(uid),
-          fetchUserOrders(uid)
-        ]);
-        if (!active) return;
-        setQrRows(liveQrTransactions.map((transaction) => [
-          transaction.placeId,
-          `${transaction.pointsDelta} puan · bakiye ${transaction.balanceAfter ?? "Belirlenmemiş"}`
-        ]));
-        setOrderRows(liveOrders.map((order) => [
-          order.entityTitle,
-          `${translateOrderType(order.type)} · ${translateOrderStatus(order.status)} · ${order.amountLabel ?? "Belirlenmemiş"}`
-        ]));
-      } catch {
-        if (!active) return;
-        setQrRows([]);
-        setOrderRows([]);
-      }
-    }
-    void loadHistory();
+    const task = InteractionManager.runAfterInteractions(() => {
+      void (async () => {
+        if (!uid) {
+          setQrRows([]);
+          setOrderRows([]);
+          return;
+        }
+        try {
+          const [liveQrTransactions, liveOrders] = await Promise.all([
+            fetchUserQrTransactions(uid),
+            fetchUserOrders(uid)
+          ]);
+          if (!active) return;
+          setQrRows(liveQrTransactions.map((transaction) => [
+            transaction.placeId,
+            `${transaction.pointsDelta} puan · bakiye ${transaction.balanceAfter ?? "Belirlenmemiş"}`
+          ]));
+          setOrderRows(liveOrders.map((order) => [
+            order.entityTitle,
+            `${translateOrderType(order.type)} · ${translateOrderStatus(order.status)} · ${order.amountLabel ?? "Belirlenmemiş"}`
+          ]));
+        } catch {
+          if (!active) return;
+          setQrRows([]);
+          setOrderRows([]);
+        }
+      })();
+    });
     return () => {
       active = false;
+      task.cancel();
     };
   }, [uid]);
 
@@ -102,24 +104,27 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
     }
 
     let active = true;
-    void getDocs(query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc")))
-      .then((snapshot) => {
-        if (!active) return;
-        const rows = snapshot.docs.map((favorite) => {
-          const data = favorite.data() as { entityType?: string; entityId?: string };
-          return [
-            resolveFavoriteTitle(data.entityType ?? "", data.entityId ?? "", favoriteTitleLookupRef.current),
-            translateFavoriteType(data.entityType ?? "", language)
-          ] as [string, string];
+    const task = InteractionManager.runAfterInteractions(() => {
+      void getDocs(query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc")))
+        .then((snapshot) => {
+          if (!active) return;
+          const rows = snapshot.docs.map((favorite) => {
+            const data = favorite.data() as { entityType?: string; entityId?: string };
+            return [
+              resolveFavoriteTitle(data.entityType ?? "", data.entityId ?? "", favoriteTitleLookupRef.current),
+              translateFavoriteType(data.entityType ?? "", language)
+            ] as [string, string];
+          });
+          setFavoriteRows(rows);
+        })
+        .catch(() => {
+          if (active) setFavoriteRows([]);
         });
-        setFavoriteRows(rows);
-      })
-      .catch(() => {
-        if (active) setFavoriteRows([]);
-      });
+    });
 
     return () => {
       active = false;
+      task.cancel();
     };
   }, [language, uid]);
 

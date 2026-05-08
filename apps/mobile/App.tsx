@@ -157,6 +157,20 @@ function MobileApp() {
   }, [deviceLocale]);
 
   useEffect(() => {
+    if (onboardingCompleted !== true || !effectiveSession) return;
+    const task = InteractionManager.runAfterInteractions(() => {
+      setCatalogEnabled(true);
+      setMountedTabs((current) => {
+        const next = new Set(current);
+        next.add("Fırsatlar" as TabLabel);
+        next.add("Profil" as TabLabel);
+        return Array.from(next);
+      });
+    });
+    return () => task.cancel();
+  }, [effectiveSession, onboardingCompleted]);
+
+  useEffect(() => {
     let active = true;
     const fallbackTimer = setTimeout(() => {
       if (active) setOnboardingCompleted(false);
