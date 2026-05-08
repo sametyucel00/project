@@ -1,8 +1,9 @@
-import { FlatList, Text, View } from "react-native";
+import { FlatList, InteractionManager, Pressable, ScrollView, Text, View } from "react-native";
 import { getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
+import { fetchDiscoveryCategories } from "../services/discovery";
 import { perfCount, perfFlag, perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
 import { resolveDistanceLabel } from "../utils/location";
@@ -23,7 +24,8 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const disableHeavyCompute = perfFlag("nocompute");
   const primaryFilters = [c.all, c.open, c.popular, c.offers];
   const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>(c.all);
+  const [discoveryCategories, setDiscoveryCategories] = useState<Array<{ id: string; label: string }>>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [visibleCount, setVisibleCount] = useState(12);
   const deferredQuery = useDeferredValue(query);
@@ -33,7 +35,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   perfCount("places:render", { places: feed.places.length, visibleCount });
 
   useEffect(() => {
-    setActiveCategory(c.all);
+    setActiveCategory("all");
     setActiveFilter(c.all);
   }, [c.all]);
 
@@ -48,21 +50,51 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     return () => cancelAnimationFrame(frame);
   }, [feed.places.length]);
 
+  useEffect(() => {
+    let active = true;
+    const task = InteractionManager.runAfterInteractions(() => {
+      void fetchDiscoveryCategories()
+        .then((categories) => {
+          if (!active) return;
+          const next = categories
+            .filter((category) => category.target === "place" && (category.status ?? "published") === "published")
+            .map((category) => ({
+              id: category.id,
+              label: pickText(category.title, locale)
+            }));
+          setDiscoveryCategories(next);
+        })
+        .catch(() => {
+          if (active) setDiscoveryCategories([]);
+        });
+    });
+    return () => {
+      active = false;
+      task.cancel();
+    };
+  }, [locale]);
+
   const categoryTitleById = useMemo(() => {
     const titles = new Map<string, string>();
     for (const category of placeCategoryOptions) {
       titles.set(category.id, pickText(category.title, locale));
     }
+    for (const category of discoveryCategories) {
+      titles.set(category.id, category.label);
+    }
     return titles;
-  }, [locale]);
+  }, [discoveryCategories, locale]);
 
-  const availableCategoryIds = useMemo(() => new Set(feed.places.map((place) => getPlaceCategoryId(place))), [feed.places]);
+  const availableCategoryIds = useMemo(
+    () => new Set(feed.places.map((place) => resolvePlaceCategoryId(place, categoryTitleById))),
+    [categoryTitleById, feed.places]
+  );
   const offerPlaceIds = useMemo(() => new Set(feed.offers.map((offer) => offer.placeId)), [feed.offers]);
 
   const categoryTitleByPlaceId = useMemo(() => {
     const titles = new Map<string, string>();
     for (const place of feed.places) {
-      const categoryId = getPlaceCategoryId(place);
+      const categoryId = resolvePlaceCategoryId(place, categoryTitleById);
       titles.set(place.id, categoryTitleById.get(categoryId) ?? c.place);
     }
     return titles;
@@ -70,12 +102,13 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
 
   const categories = useMemo(
     () => [
-      c.all,
+      { id: "all", label: c.all },
       ...placeCategoryOptions
         .filter((category) => availableCategoryIds.has(category.id))
-        .map((category) => categoryTitleById.get(category.id) ?? c.place)
+        .map((category) => ({ id: category.id, label: categoryTitleById.get(category.id) ?? c.place })),
+      ...discoveryCategories.filter((category) => availableCategoryIds.has(category.id))
     ],
-    [availableCategoryIds, c.all, c.place, categoryTitleById]
+    [availableCategoryIds, c.all, c.place, categoryTitleById, discoveryCategories]
   );
 
   const filteredPlaces = useMemo(() => {
@@ -92,10 +125,11 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     }
 
     const next = feed.places.filter((place) => {
-      const categoryTitle = categoryTitleByPlaceId.get(place.id) ?? c.place;
+      const categoryId = resolvePlaceCategoryId(place, categoryTitleById);
+      const categoryTitle = categoryTitleById.get(categoryId) ?? c.place;
       const haystack = normalize([pickText(place.title, locale), pickText(place.description, locale), place.district, categoryTitle, place.address].join(" "));
       if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
-      if (activeCategory !== c.all && categoryTitle !== activeCategory) return false;
+      if (activeCategory !== "all" && categoryId !== activeCategory) return false;
       if (activeFilter === c.open && !place.openNow) return false;
       if (activeFilter === c.popular && (place.googleReviewCount ?? 0) < 100) return false;
       if (activeFilter === c.offers && !offerPlaceIds.has(place.id)) return false;
@@ -104,7 +138,7 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
 
     perfMeasure("places:heavyCompute:end", "places:heavyCompute:start", { result: next.length });
     return next;
-  }, [activeCategory, activeFilter, c.all, c.offers, c.open, c.place, c.popular, categoryTitleByPlaceId, deferredQuery, disableHeavyCompute, feed.places, offerPlaceIds, locale]);
+  }, [activeCategory, activeFilter, c.all, c.offers, c.open, c.place, c.popular, categoryTitleByPlaceId, deferredQuery, disableHeavyCompute, feed.places, offerPlaceIds, locale, categoryTitleById]);
 
   const visiblePlaces = useMemo(() => filteredPlaces.slice(0, visibleCount), [filteredPlaces, visibleCount]);
   const handleViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: Array<unknown> }) => {
@@ -149,7 +183,19 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
       ListHeaderComponent={
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
-          <FilterRow filters={categories} activeFilter={activeCategory} onSelect={setActiveCategory} />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterRow}>
+            {categories.map((category) => (
+              <Pressable
+                key={category.id}
+                accessibilityRole="button"
+                accessibilityState={{ selected: activeCategory === category.id }}
+                onPress={() => setActiveCategory(category.id)}
+                style={[styles.filterChipButton, activeCategory === category.id && styles.filterChipButtonActive]}
+              >
+                <Text style={[styles.filterChip, activeCategory === category.id && styles.filterChipActive]}>{category.label}</Text>
+              </Pressable>
+            ))}
+          </ScrollView>
           <FilterRow filters={primaryFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
           <Text style={styles.sectionTitle}>{sectionTitle}</Text>
         </View>
@@ -176,4 +222,12 @@ function pickText(value: unknown, locale: string) {
   if (typeof value === "string") return value;
   const record = value as Record<string, string | undefined>;
   return record[locale] ?? record.tr ?? record.en ?? "";
+}
+
+function resolvePlaceCategoryId(
+  place: { categoryId?: string; title: { tr?: string }; description: { tr?: string }; address?: string; features?: string[] },
+  categoryTitleById: Map<string, string>
+) {
+  if (place.categoryId && categoryTitleById.has(place.categoryId)) return place.categoryId;
+  return getPlaceCategoryId(place as Parameters<typeof getPlaceCategoryId>[0]);
 }

@@ -35,6 +35,14 @@ export interface OfferSearchInput {
   limitCount?: number;
 }
 
+export interface DiscoveryCategoryItem {
+  id: string;
+  target: "place" | "event";
+  title: Record<"tr" | "en" | "ru" | "de", string>;
+  status?: string;
+  sortOrder?: number;
+}
+
 function withPublished(status?: PublishStatus) {
   return status === "published";
 }
@@ -93,6 +101,17 @@ export async function fetchOffers(input: OfferSearchInput = {}) {
     .filter((offer) => applyOfferFilters(offer, input));
 }
 
+export async function fetchDiscoveryCategories() {
+  const snapshot = await getDocs(collection(db, "categories"));
+  const categories = snapshot.docs
+    .map((entry) => ({ id: entry.id, ...(entry.data() as Partial<DiscoveryCategoryItem>) }) as DiscoveryCategoryItem)
+    .sort((first, second) => {
+      if (first.target !== second.target) return first.target.localeCompare(second.target);
+      return (first.sortOrder ?? 0) - (second.sortOrder ?? 0) || pickCategoryTitle(first).localeCompare(pickCategoryTitle(second), "tr-TR");
+    });
+  return categories;
+}
+
 export function applyPlaceFilters(place: Place, input: PlaceSearchInput = {}) {
   if (!withPublished(place.status)) return false;
   if (input.minRating && (place.googleRating ?? 0) < input.minRating) return false;
@@ -121,4 +140,8 @@ export function applyOfferFilters(offer: Offer, input: OfferSearchInput = {}) {
   if (!withPublished(offer.status)) return false;
   if (!input.activeAt) return true;
   return offer.startsAt <= input.activeAt && offer.endsAt >= input.activeAt;
+}
+
+function pickCategoryTitle(category: DiscoveryCategoryItem) {
+  return category.title.tr ?? category.title.en ?? category.title.ru ?? category.title.de ?? "";
 }
