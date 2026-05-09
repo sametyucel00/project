@@ -1,4 +1,4 @@
-import { ImageBackground, ScrollView, Text, View } from "react-native";
+﻿import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getOfferById, getPlaceById } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
@@ -60,19 +60,19 @@ export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScre
 
       <ActionRow>
         {!isGuest ? <ActionPill label="QR ile kullan" onPress={() => void redeemOffer({ offerId: offer.id, offerTitle: offer.title.tr, businessId: offer.businessId, placeId: offer.placeId, amountLabel: offer.discountLabel })} /> : null}
-        {!isGuest ? <ActionPill label="Takvime ekle" variant="secondary" onPress={async () => {
-          setActionStatus("Uygulama içi hatırlatıcıya ekleniyor...");
+        {!isGuest ? <ActionPill label="Hatırlatıcı ekle" variant="secondary" onPress={async () => {
+          setActionStatus("Hatırlatıcı kaydediliyor...");
           try {
             await scheduleReminder({ entityType: "offer", entityId: offer.id, remindAt: offer.endsAt });
-            setActionStatus("Uygulama içi hatırlatıcıya eklendi. Takvim uygulaması açılmadı.");
+            setActionStatus("Hatırlatıcı kaydedildi. Profildeki Hatırlatıcılar bölümünde görünecek.");
           } catch {
-            setActionStatus("Hatırlatıcı ekleme tamamlanamadı.");
+            setActionStatus("Hatırlatıcı kaydedilemedi.");
           }
         }} /> : null}
         <ActionPill label="Mekan aç" variant="secondary" onPress={() => place?.website ? openExternalUrl(place.website) : undefined} />
       </ActionRow>
       {actionStatus ? <Text style={styles.detailActionStatus}>{actionStatus}</Text> : null}
-      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda fırsat kullanımı ve takvim işlemleri kapalıdır.</Text> : null}
+      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda fırsat kullanımı ve hatırlatıcı işlemleri kapalıdır.</Text> : null}
     </ScrollView>
   );
 }
@@ -80,3 +80,4 @@ export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScre
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
+

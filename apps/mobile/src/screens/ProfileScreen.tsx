@@ -21,6 +21,13 @@ type FavoriteEntry = {
   title: string;
   kindLabel: string;
 };
+type ReminderEntry = {
+  entityType: string;
+  entityId: string;
+  remindAt: string;
+  title: string;
+  kindLabel: string;
+};
 
 export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr, onOpenPlace, onOpenEvent, onOpenOffer }: MobileScreenProps) {
   const isGuest = !session || session.isAnonymous;
@@ -38,6 +45,8 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
   const [orderRows, setOrderRows] = useState<Array<[string, string]>>([]);
   const [favoriteRows, setFavoriteRows] = useState<Array<[string, string]>>([]);
   const [favoriteEntries, setFavoriteEntries] = useState<Array<FavoriteEntry>>([]);
+  const [reminderRows, setReminderRows] = useState<Array<[string, string]>>([]);
+  const [reminderEntries, setReminderEntries] = useState<Array<ReminderEntry>>([]);
   const [status, setStatus] = useState("Profil bilgilerin hazÄ±r.");
   const [saving, setSaving] = useState(false);
   const lastSavedRef = useRef("");
@@ -142,6 +151,48 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
         () => {
           setFavoriteEntries([]);
           setFavoriteRows([]);
+        }
+      );
+    });
+
+    return () => {
+      unsubscribe?.();
+      task.cancel();
+    };
+  }, [language, uid]);
+
+  useEffect(() => {
+    if (!uid) {
+      setReminderEntries([]);
+      setReminderRows([]);
+      return;
+    }
+
+    let unsubscribe: (() => void) | undefined;
+    const task = InteractionManager.runAfterInteractions(() => {
+      unsubscribe = onSnapshot(
+        query(collection(db, "users", uid, "reminders"), orderBy("createdAt", "desc")),
+        (snapshot) => {
+          const entries = snapshot.docs.map((reminder) => {
+            const data = reminder.data() as { entityType?: string; entityId?: string; remindAt?: string };
+            const entityType = data.entityType ?? "";
+            const entityId = data.entityId ?? "";
+            const remindAt = data.remindAt ?? "";
+            return {
+              entityType,
+              entityId,
+              remindAt,
+              title: resolveFavoriteTitle(entityType, entityId, favoriteTitleLookupRef.current),
+              kindLabel: translateFavoriteType(entityType, language)
+            } as ReminderEntry;
+          });
+          const rows = entries.map((entry) => [entry.title, `${entry.kindLabel} · ${formatReminderTime(entry.remindAt)}`] as [string, string]);
+          setReminderEntries(entries);
+          setReminderRows(rows);
+        },
+        () => {
+          setReminderEntries([]);
+          setReminderRows([]);
         }
       );
     });
@@ -439,6 +490,18 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
           <DetailPreview title={copy.qrHistory} rows={qrRows.length ? qrRows : [["GeÃ§miÅŸ", copy.noQrHistory]]} />
           <DetailPreview title={copy.orderHistory} rows={orderRows.length ? orderRows : [["GeÃ§miÅŸ", copy.noOrderHistory]]} />
           <DetailPreview
+            title={copy.reminders}
+            rows={reminderRows.length ? reminderRows : [["Hatırlatıcılar", copy.noReminderHistory]]}
+            onRowPress={(index) => {
+              const entry = reminderEntries[index];
+              if (!entry) return;
+              setStatus(`${entry.kindLabel} hatırlatıcısı açılıyor...`);
+              if (entry.entityType === "place") onOpenPlace?.(entry.entityId);
+              if (entry.entityType === "event") onOpenEvent?.(entry.entityId);
+              if (entry.entityType === "offer") onOpenOffer?.(entry.entityId);
+            }}
+          />
+          <DetailPreview
             title="Favoriler"
             rows={favoriteRows.length ? favoriteRows : [["Favoriler", "Henüz kaydedilen favori yok"]]}
             onRowPress={(index) => {
@@ -608,6 +671,13 @@ function translateFavoriteType(entityType: string, locale: ProfileLocale) {
   return labels[locale][entityType] ?? compactValue(entityType);
 }
 
+function formatReminderTime(value: string) {
+  if (!value) return "Zaman belirtilmemiş";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Zaman belirtilmemiş";
+  return new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(date);
+}
+
 function translateBadgeLevel(value: string) {
   if (value === "bronze") return "Bronz";
   if (value === "silver") return "GÃ¼mÃ¼ÅŸ";
@@ -697,7 +767,8 @@ const profileCopyTr = {
   orderHistory: "SipariÅŸ ve kullanÄ±m geÃ§miÅŸi",
   noQrHistory: "HenÃ¼z QR iÅŸlemi yok",
   noOrderHistory: "HenÃ¼z sipariÅŸ kaydÄ± yok",
-  guestLocked: "Misafir oturumunda puan, favori, takvim ve gÃ¶rev iÅŸlemleri kapalÄ±dÄ±r."
+  noReminderHistory: "HenÃ¼z kaydedilen hatırlatıcı yok",
+  guestLocked: "Misafir oturumunda puan, favori, hatırlatıcı ve gÃ¶rev iÅŸlemleri kapalÄ±dÄ±r."
 };
 
 const profileUiTranslations = {
@@ -807,7 +878,8 @@ const profileCopyTranslations = {
     orderHistory: "Orders and usage history",
     noQrHistory: "No QR action yet",
     noOrderHistory: "No order record yet",
-    guestLocked: "Points, favorites, calendar, and tasks are disabled in guest mode."
+    noReminderHistory: "No saved reminders yet",
+    guestLocked: "Points, favorites, reminders, and tasks are disabled in guest mode."
   },
   ru: {
     ...profileCopyTr,
@@ -851,7 +923,8 @@ const profileCopyTranslations = {
     orderHistory: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ Ğ·Ğ°ĞºĞ°Ğ·Ğ¾Ğ²",
     noQrHistory: "QR-Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğ¹ Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
     noOrderHistory: "Ğ—Ğ°ĞºĞ°Ğ·Ğ¾Ğ² Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
-    guestLocked: "Ğ‘Ğ°Ğ»Ğ»Ñ‹, Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğµ, ĞºĞ°Ğ»ĞµĞ½Ğ´Ğ°Ñ€ÑŒ Ğ¸ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹ Ğ² Ğ³Ğ¾ÑÑ‚ĞµĞ²Ğ¾Ğ¼ Ñ€ĞµĞ¶Ğ¸Ğ¼Ğµ."
+    noReminderHistory: "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ñ‘Ğ½Ğ½Ñ‹Ñ… Ğ½Ğ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°Ğ½Ğ¸Ğ¹ Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
+    guestLocked: "Ğ‘Ğ°Ğ»Ğ»Ñ‹, Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğµ, Ğ½Ğ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°Ğ½Ğ¸Ñ Ğ¸ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹ Ğ² Ğ³Ğ¾ÑÑ‚ĞµĞ²Ğ¾Ğ¼ Ñ€ĞµĞ¶Ğ¸Ğ¼Ğµ."
   },
   de: {
     ...profileCopyTr,
@@ -895,7 +968,8 @@ const profileCopyTranslations = {
     orderHistory: "Bestell- und Nutzungsverlauf",
     noQrHistory: "Noch keine QR-Aktion",
     noOrderHistory: "Noch kein Bestelleintrag",
-    guestLocked: "Punkte, Favoriten, Kalender und Aufgaben sind im Gastmodus deaktiviert."
+    noReminderHistory: "Noch keine gespeicherten Erinnerungen",
+    guestLocked: "Punkte, Favoriten, Erinnerungen und Aufgaben sind im Gastmodus deaktiviert."
   }
 } as const;
 

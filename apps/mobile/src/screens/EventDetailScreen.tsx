@@ -73,12 +73,12 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
   async function handleScheduleReminder() {
     if (!event || pendingAction) return;
     setPendingAction("calendar");
-    setActionStatus("Takvim iÅŸleniyor...");
+    setActionStatus("Hatırlatıcı kaydediliyor...");
     try {
       await scheduleReminder({ entityType: "event", entityId: event.id, remindAt: event.startsAt });
-      setActionStatus("Etkinlik uygulama içi hatırlatıcıya eklendi. Takvim uygulaması açılmadı.");
+      setActionStatus("Hatırlatıcı kaydedildi. Profildeki Hatırlatıcılar bölümünde görünecek.");
     } catch {
-      setActionStatus("Takvime ekleme tamamlanamadÄ±.");
+      setActionStatus("Hatırlatıcı kaydedilemedi.");
     } finally {
       setPendingAction(null);
     }
@@ -142,7 +142,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
 
       <ActionRow>
         {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void handleToggleFavorite()} disabled={pendingAction !== null} /> : null}
-        {!isGuest ? <ActionPill label="Takvime ekle" onPress={() => void handleScheduleReminder()} disabled={pendingAction !== null} /> : null}
+        {!isGuest ? <ActionPill label="Hatırlatıcı ekle" onPress={() => void handleScheduleReminder()} disabled={pendingAction !== null} /> : null}
         <ActionPill
           label="Bilet al"
           variant="secondary"
@@ -153,7 +153,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         />
       </ActionRow>
       {actionStatus ? <Text style={styles.detailActionStatus}>{actionStatus}</Text> : null}
-      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim iÅŸlemleri kapalÄ±dÄ±r.</Text> : null}
+      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve hatırlatıcı işlemleri kapalıdır.</Text> : null}
     </ScrollView>
   );
 }

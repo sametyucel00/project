@@ -1121,6 +1121,89 @@ export const processScheduledNotifications = onSchedule("every 5 minutes", async
   }
 });
 
+export const processScheduledReminders = onSchedule("every 5 minutes", async () => {
+  const now = new Date().toISOString();
+  const snapshot = await db.collectionGroup("reminders")
+    .where("status", "==", "scheduled")
+    .where("remindAt", "<=", now)
+    .limit(50)
+    .get();
+
+  for (const doc of snapshot.docs) {
+    const reminder = doc.data();
+    const userId = doc.ref.parent.parent?.id;
+    if (!userId) continue;
+
+    const userRef = db.doc(`users/${userId}`);
+    const user = await userRef.get();
+    const preferences = user.data()?.notificationPreferences;
+    if (preferences && preferences.reminders === false) {
+      await doc.ref.set({
+        status: "skipped",
+        skipReason: "reminders-disabled",
+        skippedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+      continue;
+    }
+
+    const tokensSnapshot = await userRef.collection("fcmTokens").limit(20).get();
+    const tokens = tokensSnapshot.docs.map((tokenDoc) => tokenDoc.data().token).filter(Boolean);
+    if (!tokens.length) {
+      await doc.ref.set({
+        status: "queued",
+        deliveryCount: 0,
+        queuedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+      continue;
+    }
+
+    const message = await buildReminderMessage(reminder);
+    const result = await getMessaging().sendEachForMulticast({
+      tokens,
+      notification: message,
+      data: {
+        reminderId: doc.id,
+        entityType: String(reminder.entityType ?? ""),
+        entityId: String(reminder.entityId ?? "")
+      }
+    });
+
+    await doc.ref.set({
+      status: "sent",
+      sentAt: FieldValue.serverTimestamp(),
+      deliveryCount: tokens.length,
+      lastDeliveryError: result.successCount < tokens.length ? "partial-failure" : null
+    }, { merge: true });
+  }
+});
+
+async function buildReminderMessage(reminder: Record<string, unknown>) {
+  const entityType = String(reminder.entityType ?? "");
+  const entityId = String(reminder.entityId ?? "");
+  const title = await resolveReminderTitle(entityType, entityId);
+  const remindAt = String(reminder.remindAt ?? "");
+  const timeLabel = formatReminderTime(remindAt);
+  return {
+    title: "Nar Rehberi",
+    body: title ? `${title} için hatırlatıcı zamanı geldi${timeLabel ? ` · ${timeLabel}` : ""}` : "Hatırlatıcı zamanı geldi"
+  };
+}
+
+async function resolveReminderTitle(entityType: string, entityId: string) {
+  if (!entityType || !entityId) return "";
+  const collectionName = entityType === "offer" ? "offers" : entityType === "event" ? "events" : entityType === "place" ? "places" : "";
+  if (!collectionName) return entityId;
+  const snapshot = await db.doc(`${collectionName}/${entityId}`).get();
+  const data = snapshot.data() as { title?: Record<string, string> } | undefined;
+  return data?.title?.tr ?? data?.title?.en ?? entityId;
+}
+
+function formatReminderTime(value: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(date);
+}
+
 async function collectTargetTokens(target: { kind: string; role?: string; city?: string; eventId?: string; userIds?: string[] }) {
   let userQuery: Query = db.collection("users");
   if (target.kind === "role" && target.role) userQuery = userQuery.where("role", "==", target.role);
