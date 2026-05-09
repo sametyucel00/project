@@ -125,6 +125,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
   const [status, setStatus] = useState("");
 
   const c = copy[locale] ?? copy.tr;
+  const errorCopy = authErrorCopy[locale] ?? authErrorCopy.tr;
 
   async function runAuth(name: string, action: () => Promise<unknown>) {
     perfMark(`${name}:handler`);
@@ -136,7 +137,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
       perfMark(`${name}:navigate`);
       onSignedIn(result instanceof Object ? (result as MobileSession) : null);
     } catch (error) {
-      setStatus(formatAuthError(error, c.statusError));
+      setStatus(formatAuthError(error, c.statusError, errorCopy));
     }
   }
 
@@ -146,7 +147,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
       await action();
       setStatus(successMessage ?? c.statusResetSent);
     } catch (error) {
-      setStatus(formatAuthError(error, c.statusError));
+      setStatus(formatAuthError(error, c.statusError, errorCopy));
     }
   }
 
@@ -239,7 +240,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
               setStatus(c.statusSigning);
               onSignedIn(createOptimisticGuestSession());
               void loginAnonymously().catch((error) => {
-                setStatus(formatAuthError(error, c.statusError));
+                setStatus(formatAuthError(error, c.statusError, errorCopy));
               });
             }}
             style={styles.onboardingAction}
@@ -263,7 +264,7 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
   );
 }
 
-function formatAuthError(error: unknown, fallback: string) {
+function formatAuthError(error: unknown, fallback: string, copy: { apiKey: string; appleMismatch: string; socialRedirect: string }) {
   const message = error instanceof Error ? error.message : String(error ?? "");
   if (!message) return fallback;
 
@@ -274,7 +275,7 @@ function formatAuthError(error: unknown, fallback: string) {
     message.includes("auth/api-key-not-valid") ||
     message.includes("identitytoolkit")
   ) {
-    return "Giriş servisinin mobil API anahtarı kısıtı güncellenmeli. Lütfen ayar kontrolünden sonra tekrar deneyin.";
+    return copy.apiKey;
   }
 
   if (
@@ -282,12 +283,35 @@ function formatAuthError(error: unknown, fallback: string) {
     message.includes("expected audience") ||
     (message.includes("auth/invalid-credential") && message.includes("Apple"))
   ) {
-    return "Apple giriş kimliği Firebase ile eşleşmiyor. Firebase Apple sağlayıcısındaki Services ID ile uygulamadaki Apple Service ID aynı olmalı.";
+    return copy.appleMismatch;
   }
 
   if (message.includes("invalid_request") || message.includes("redirect_uri") || message.includes("redirect url") || message.includes("nonce")) {
-    return "Sosyal giriş bağlantısı doğrulanamadı. Lütfen e-posta ile devam edin veya daha sonra tekrar deneyin.";
+    return copy.socialRedirect;
   }
 
   return message;
 }
+
+const authErrorCopy = {
+  tr: {
+    apiKey: "Giriş servisinin mobil API anahtarı kısıtı güncellenmeli. Lütfen ayar kontrolünden sonra tekrar deneyin.",
+    appleMismatch: "Apple giriş kimliği Firebase ile eşleşmiyor. Firebase Apple sağlayıcısındaki Services ID ile uygulamadaki Apple Service ID aynı olmalı.",
+    socialRedirect: "Sosyal giriş bağlantısı doğrulanamadı. Lütfen e-posta ile devam edin veya daha sonra tekrar deneyin."
+  },
+  en: {
+    apiKey: "The mobile API key restriction for the sign-in service must be updated. Please try again after checking the settings.",
+    appleMismatch: "The Apple sign-in identifier does not match Firebase. The Services ID in Firebase's Apple provider must match the Apple Service ID in the app.",
+    socialRedirect: "The social sign-in callback could not be verified. Please continue with email or try again later."
+  },
+  ru: {
+    apiKey: "Ограничение мобильного API-ключа для сервиса входа нужно обновить. Попробуйте ещё раз после проверки настроек.",
+    appleMismatch: "Идентификатор входа Apple не совпадает с Firebase. Services ID в провайдере Apple Firebase должен совпадать с Apple Service ID в приложении.",
+    socialRedirect: "Не удалось проверить перенаправление соцвхода. Используйте вход по e-mail или попробуйте позже."
+  },
+  de: {
+    apiKey: "Die mobile API-Key-Beschränkung für den Anmeldedienst muss aktualisiert werden. Bitte nach der Konfigurationsprüfung erneut versuchen.",
+    appleMismatch: "Die Apple-Anmeldekennung stimmt nicht mit Firebase überein. Die Services ID im Apple-Provider von Firebase muss mit der Apple Service ID in der App übereinstimmen.",
+    socialRedirect: "Der Social-Login-Callback konnte nicht verifiziert werden. Bitte mit E-Mail fortfahren oder später erneut versuchen."
+  }
+} as const;

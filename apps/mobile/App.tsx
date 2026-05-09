@@ -67,6 +67,53 @@ const tabs = [
   { label: "Profil", icon: "person-outline", screen: memo(ProfileScreen) }
 ] as const;
 
+const appCopy = {
+  tr: {
+    today: "bugün",
+    back: "Geri dön",
+    openQr: "QR ekranını aç",
+    locationAccess: "Konum erişimi",
+    placeDetail: "Mekan Detayı",
+    eventDetail: "Etkinlik Detayı",
+    offerDetail: "Fırsat Detayı",
+    qrTitle: "QR Kodum",
+    tabSuffix: "sekmesi"
+  },
+  en: {
+    today: "today",
+    back: "Go back",
+    openQr: "Open QR screen",
+    locationAccess: "Location access",
+    placeDetail: "Place Details",
+    eventDetail: "Event Details",
+    offerDetail: "Offer Details",
+    qrTitle: "My QR Code",
+    tabSuffix: "tab"
+  },
+  ru: {
+    today: "сегодня",
+    back: "Назад",
+    openQr: "Открыть QR-экран",
+    locationAccess: "Доступ к геолокации",
+    placeDetail: "Детали места",
+    eventDetail: "Детали события",
+    offerDetail: "Детали предложения",
+    qrTitle: "Мой QR-код",
+    tabSuffix: "вкладка"
+  },
+  de: {
+    today: "heute",
+    back: "Zurück",
+    openQr: "QR-Bildschirm öffnen",
+    locationAccess: "Standortzugriff",
+    placeDetail: "Ortsdetails",
+    eventDetail: "Veranstaltungsdetails",
+    offerDetail: "Angebotsdetails",
+    qrTitle: "Mein QR-Code",
+    tabSuffix: "Registerkarte"
+  }
+} as const;
+
 type TabLabel = (typeof tabs)[number]["label"];
 type ScreenComponent = (props: MobileScreenProps) => ReactElement;
 type Surface =
@@ -109,15 +156,15 @@ function MobileApp() {
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean | null>(null);
   const [optimisticSession, setOptimisticSession] = useState<MobileSession | null>(null);
   const { session, loading: sessionLoading } = useSession();
+  const deviceLocale = getDeviceLocale();
+  const locale = getMobileLocale();
   const effectiveSession = session ?? optimisticSession;
   const shouldLoadFeed = onboardingCompleted === true && Boolean(effectiveSession);
   const homeFeed = useDiscoveryFeed(shouldLoadFeed, "home");
   const catalogFeed = useDiscoveryFeed(shouldLoadFeed && catalogEnabled, "catalog");
-  const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true);
+  const { location: userLocation, permissionGranted, error: locationError, requestAccess: requestLocationAccess } = useUserLocation(onboardingCompleted === true, locale);
   const themeSnapshot = useSyncExternalStore(subscribeMobileTheme, getMobileThemeVersion, getMobileThemeVersion);
   useSyncExternalStore(subscribeMobileLocale, getMobileLocale, getMobileLocale);
-  const deviceLocale = getDeviceLocale();
-  const locale = getMobileLocale();
   const needsOnboarding = onboardingCompleted !== true;
 
   useEffect(() => {
@@ -199,12 +246,12 @@ function MobileApp() {
   const isTabSurface = surface.kind === "tab";
   const pageTitleBase = surface.kind === "tourist" ? t(locale, "touristSurvivalKit")
     : surface.kind === "ancient" ? t(locale, "ancientGuide")
-      : surface.kind === "place" ? "Mekan Detayı"
-        : surface.kind === "event" ? "Etkinlik Detayı"
-          : surface.kind === "offer" ? "Fırsat Detayı"
+      : surface.kind === "place" ? appCopy[locale].placeDetail
+        : surface.kind === "event" ? appCopy[locale].eventDetail
+          : surface.kind === "offer" ? appCopy[locale].offerDetail
             : t(locale, "appName");
 
-  const pageTitle = surface.kind === "qr" ? "QR Kodum" : pageTitleBase;
+  const pageTitle = surface.kind === "qr" ? appCopy[locale].qrTitle : pageTitleBase;
 
   const openTab = useCallback((tab: TabLabel) => {
     perfMark(`nav:${tab}:press`);
@@ -398,12 +445,12 @@ function MobileApp() {
               {isTabSurface ? (
                 <View>
                   <Text style={styles.logo}>{t(locale, "appName")}</Text>
-                  <Text style={styles.location}>{session?.city ?? "Antalya"} · bugün</Text>
-                </View>
+              <Text style={styles.location}>{session?.city ?? "Antalya"} · {appCopy[locale].today}</Text>
+              </View>
               ) : (
                 <Pressable
                   accessibilityRole="button"
-                  accessibilityLabel="Geri dön"
+                  accessibilityLabel={appCopy[locale].back}
                   onPress={backToTabs}
                   hitSlop={12}
                   style={styles.headerBack}
@@ -412,7 +459,7 @@ function MobileApp() {
                   <Text style={styles.headerBackText}>{pageTitle}</Text>
                 </Pressable>
               )}
-              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR ekranını aç" onPress={() => (session && !session.isAnonymous ? openQr() : openAuth())}>
+              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel={appCopy[locale].openQr} onPress={() => (session && !session.isAnonymous ? openQr() : openAuth())}>
                 <Ionicons name="qr-code-outline" size={22} color={theme.ink} />
               </Pressable>
             </View>
@@ -447,14 +494,14 @@ function MobileApp() {
             ) : surface.kind === "offer" ? (
               <OfferDetailScreen {...catalogScreenProps} offerId={surface.offerId} onBack={backToTabs} />
             ) : surface.kind === "qr" ? (
-              <QrScreen session={effectiveSession} onBack={backToTabs} />
+              <QrScreen session={effectiveSession} locale={locale} onBack={backToTabs} />
             ) : null}
           </View>
 
           {permissionGranted ? null : locationError ? (
             <View style={{ paddingHorizontal: 18 }}>
               <View style={styles.settingsCard}>
-                <Text style={styles.settingsTitle}>Konum erişimi</Text>
+                <Text style={styles.settingsTitle}>{appCopy[locale].locationAccess}</Text>
                 <Text style={styles.profileText}>{locationError}</Text>
               </View>
             </View>
@@ -468,7 +515,7 @@ function MobileApp() {
                 key={tab.label}
                 onPress={() => openTab(tab.label)}
                 accessibilityRole="button"
-                accessibilityLabel={`${tab.label} sekmesi`}
+                accessibilityLabel={`${tab.label} ${appCopy[locale].tabSuffix}`}
               >
                 <Ionicons name={tab.icon as keyof typeof Ionicons.glyphMap} size={21} color={tab.label === activeTab ? theme.nar : theme.muted} />
                 <Text style={[styles.tabText, tab.label === activeTab && styles.tabActive]}>

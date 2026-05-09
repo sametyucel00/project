@@ -47,7 +47,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
   const [favoriteEntries, setFavoriteEntries] = useState<Array<FavoriteEntry>>([]);
   const [reminderRows, setReminderRows] = useState<Array<[string, string]>>([]);
   const [reminderEntries, setReminderEntries] = useState<Array<ReminderEntry>>([]);
-  const [status, setStatus] = useState("Profil bilgilerin hazır.");
+  const [status, setStatus] = useState(getProfileCopy((getMobileLocale() as ProfileLocale) ?? "tr").ready);
   const [saving, setSaving] = useState(false);
   const lastSavedRef = useRef("");
   const languageRef = useRef(language);
@@ -94,11 +94,11 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
           if (!active) return;
           setQrRows(liveQrTransactions.map((transaction) => [
             transaction.placeId,
-            `${transaction.pointsDelta} puan · bakiye ${transaction.balanceAfter ?? "Belirlenmemiş"}`
+            `${transaction.pointsDelta} ${translatePointsUnit(language)} · ${copy.balance} ${transaction.balanceAfter ?? copy.unspecified}`
           ]));
           setOrderRows(liveOrders.map((order) => [
             order.entityTitle,
-            `${translateOrderType(order.type)} · ${translateOrderStatus(order.status)} · ${order.amountLabel ?? "Belirlenmemiş"}`
+            `${translateOrderType(order.type, language)} · ${translateOrderStatus(order.status, language)} · ${order.amountLabel ?? copy.unspecified}`
           ]));
         } catch {
           if (!active) return;
@@ -115,9 +115,9 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
 
   useEffect(() => {
     const lookup = new Map<string, string>();
-    for (const place of feed.places) lookup.set(`place:${place.id}`, place.title.tr);
-    for (const event of feed.events) lookup.set(`event:${event.id}`, event.title.tr);
-    for (const offer of feed.offers) lookup.set(`offer:${offer.id}`, offer.title.tr);
+    for (const place of feed.places) lookup.set(`place:${place.id}`, pickLocaleText(place.title, language));
+    for (const event of feed.events) lookup.set(`event:${event.id}`, pickLocaleText(event.title, language));
+    for (const offer of feed.offers) lookup.set(`offer:${offer.id}`, pickLocaleText(offer.title, language));
     favoriteTitleLookupRef.current = lookup;
   }, [feed.places, feed.events, feed.offers]);
 
@@ -140,7 +140,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
             return {
               entityType,
               entityId,
-              title: resolveFavoriteTitle(entityType, entityId, favoriteTitleLookupRef.current),
+              title: resolveFavoriteTitle(entityType, entityId, favoriteTitleLookupRef.current, language),
               kindLabel: translateFavoriteType(entityType, language)
             } as FavoriteEntry;
           });
@@ -182,11 +182,11 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
               entityType,
               entityId,
               remindAt,
-              title: resolveFavoriteTitle(entityType, entityId, favoriteTitleLookupRef.current),
+              title: resolveFavoriteTitle(entityType, entityId, favoriteTitleLookupRef.current, language),
               kindLabel: translateFavoriteType(entityType, language)
             } as ReminderEntry;
           });
-          const rows = entries.map((entry) => [entry.title, `${entry.kindLabel} · ${formatReminderTime(entry.remindAt)}`] as [string, string]);
+          const rows = entries.map((entry) => [entry.title, `${entry.kindLabel} · ${formatReminderTime(entry.remindAt, language)}`] as [string, string]);
           setReminderEntries(entries);
           setReminderRows(rows);
         },
@@ -485,29 +485,29 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
 
       {!isGuest ? (
         <>
-          <DetailPreview title={copy.tasks} rows={userTasks.map((task) => [task.title.tr, `${task.rewardPoints} puan`])} />
-          <DetailPreview title={copy.badges} rows={badges.map((badge) => [badge.title.tr, `${translateBadgeLevel(badge.level)} · ${badge.description.tr}`])} />
-          <DetailPreview title={copy.qrHistory} rows={qrRows.length ? qrRows : [["Geçmiş", copy.noQrHistory]]} />
-          <DetailPreview title={copy.orderHistory} rows={orderRows.length ? orderRows : [["Geçmiş", copy.noOrderHistory]]} />
+          <DetailPreview title={copy.tasks} rows={userTasks.map((task) => [pickLocaleText(task.title, language), `${task.rewardPoints} ${translatePointsUnit(language)}`])} />
+          <DetailPreview title={copy.badges} rows={badges.map((badge) => [pickLocaleText(badge.title, language), `${translateBadgeLevel(badge.level, language)} · ${pickLocaleText(badge.description, language)}`])} />
+          <DetailPreview title={copy.qrHistory} rows={qrRows.length ? qrRows : [[copy.qrHistory, copy.noQrHistory]]} />
+          <DetailPreview title={copy.orderHistory} rows={orderRows.length ? orderRows : [[copy.orderHistory, copy.noOrderHistory]]} />
           <DetailPreview
             title={copy.reminders}
-            rows={reminderRows.length ? reminderRows : [["Hatırlatıcılar", copy.noReminderHistory]]}
+            rows={reminderRows.length ? reminderRows : [[copy.reminders, copy.noReminderHistory]]}
             onRowPress={(index) => {
               const entry = reminderEntries[index];
               if (!entry) return;
-              setStatus(`${entry.kindLabel} hatırlatıcısı açılıyor...`);
+              setStatus(copy.openingReminder.replace("{kind}", entry.kindLabel));
               if (entry.entityType === "place") onOpenPlace?.(entry.entityId);
               if (entry.entityType === "event") onOpenEvent?.(entry.entityId);
               if (entry.entityType === "offer") onOpenOffer?.(entry.entityId);
             }}
           />
           <DetailPreview
-            title="Favoriler"
-            rows={favoriteRows.length ? favoriteRows : [["Favoriler", "Henüz kaydedilen favori yok"]]}
+            title={copy.favorites}
+            rows={favoriteRows.length ? favoriteRows : [[copy.favorites, copy.noFavoriteHistory]]}
             onRowPress={(index) => {
               const entry = favoriteEntries[index];
               if (!entry) return;
-              setStatus(`${entry.kindLabel} detayı açılıyor...`);
+              setStatus(copy.openingFavorite.replace("{kind}", entry.kindLabel));
               if (entry.entityType === "place") onOpenPlace?.(entry.entityId);
               if (entry.entityType === "event") onOpenEvent?.(entry.entityId);
               if (entry.entityType === "offer") onOpenOffer?.(entry.entityId);
@@ -626,6 +626,13 @@ function translateChoice(value: string, locale: ProfileLocale = "tr") {
   return compactValue(value);
 }
 
+function pickLocaleText(value: unknown, locale: ProfileLocale) {
+  if (!value) return "";
+  if (typeof value === "string") return value;
+  const record = value as Record<string, string | undefined>;
+  return record[locale] ?? record.tr ?? record.en ?? "";
+}
+
 function translateToggle(value: boolean, locale: ProfileLocale) {
   const labels: Record<ProfileLocale, [string, string]> = {
     tr: ["Açık", "Kapalı"],
@@ -652,13 +659,13 @@ function serializeSettings({
   });
 }
 
-function resolveFavoriteTitle(entityType: string, entityId: string, lookup: Map<string, string>) {
+function resolveFavoriteTitle(entityType: string, entityId: string, lookup: Map<string, string>, locale: ProfileLocale) {
   const cachedTitle = lookup.get(`${entityType}:${entityId}`);
   if (cachedTitle) return cachedTitle;
-  if (entityType === "place") return getPlaceById(entityId)?.title.tr ?? entityId;
-  if (entityType === "event") return getEventById(entityId)?.title.tr ?? entityId;
-  if (entityType === "offer") return getOfferById(entityId)?.title.tr ?? entityId;
-  return entityId || "Belirtilmemiş";
+  if (entityType === "place") return pickLocaleText(getPlaceById(entityId)?.title, locale) || entityId;
+  if (entityType === "event") return pickLocaleText(getEventById(entityId)?.title, locale) || entityId;
+  if (entityType === "offer") return pickLocaleText(getOfferById(entityId)?.title, locale) || entityId;
+  return entityId || getLocalizedUnspecified(locale);
 }
 
 function translateFavoriteType(entityType: string, locale: ProfileLocale) {
@@ -671,34 +678,71 @@ function translateFavoriteType(entityType: string, locale: ProfileLocale) {
   return labels[locale][entityType] ?? compactValue(entityType);
 }
 
-function formatReminderTime(value: string) {
-  if (!value) return "Zaman belirtilmemiş";
+function formatReminderTime(value: string, locale: ProfileLocale) {
+  if (!value) return getLocalizedUnspecified(locale);
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Zaman belirtilmemiş";
-  return new Intl.DateTimeFormat("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(date);
+  if (Number.isNaN(date.getTime())) return getLocalizedUnspecified(locale);
+  return new Intl.DateTimeFormat(getIntlLocale(locale), { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(date);
 }
 
-function translateBadgeLevel(value: string) {
-  if (value === "bronze") return "Bronz";
-  if (value === "silver") return "Gümüş";
-  if (value === "gold") return "Altın";
-  return compactValue(value);
+function translateBadgeLevel(value: string, locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, Record<string, string>> = {
+    tr: { bronze: "Bronz", silver: "Gümüş", gold: "Altın" },
+    en: { bronze: "Bronze", silver: "Silver", gold: "Gold" },
+    ru: { bronze: "Бронза", silver: "Серебро", gold: "Золото" },
+    de: { bronze: "Bronze", silver: "Silber", gold: "Gold" }
+  };
+  return labels[locale][value] ?? compactValue(value);
 }
 
-function translateOrderType(value: string) {
-  if (value === "ticket") return "Bilet";
-  if (value === "offer") return "Fırsat";
-  if (value === "points") return "Puan";
-  return compactValue(value);
+function translateOrderType(value: string, locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, Record<string, string>> = {
+    tr: { ticket: "Bilet", offer: "Fırsat", points: "Puan" },
+    en: { ticket: "Ticket", offer: "Offer", points: "Points" },
+    ru: { ticket: "Билет", offer: "Предложение", points: "Баллы" },
+    de: { ticket: "Ticket", offer: "Angebot", points: "Punkte" }
+  };
+  return labels[locale][value] ?? compactValue(value);
 }
 
-function translateOrderStatus(value: string) {
-  if (value === "created") return "Oluşturuldu";
-  if (value === "confirmed") return "Onaylandı";
-  if (value === "used") return "Kullanıldı";
-  if (value === "cancelled") return "İptal edildi";
-  if (value === "refunded") return "İade edildi";
-  return compactValue(value);
+function translateOrderStatus(value: string, locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, Record<string, string>> = {
+    tr: { created: "Oluşturuldu", confirmed: "Onaylandı", used: "Kullanıldı", cancelled: "İptal edildi", refunded: "İade edildi" },
+    en: { created: "Created", confirmed: "Confirmed", used: "Used", cancelled: "Cancelled", refunded: "Refunded" },
+    ru: { created: "Создано", confirmed: "Подтверждено", used: "Использовано", cancelled: "Отменено", refunded: "Возвращено" },
+    de: { created: "Erstellt", confirmed: "Bestätigt", used: "Verwendet", cancelled: "Storniert", refunded: "Erstattet" }
+  };
+  return labels[locale][value] ?? compactValue(value);
+}
+
+function translatePointsUnit(locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, string> = {
+    tr: "puan",
+    en: "points",
+    ru: "баллов",
+    de: "Punkte"
+  };
+  return labels[locale];
+}
+
+function getLocalizedUnspecified(locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, string> = {
+    tr: "Belirlenmemiş",
+    en: "Not specified",
+    ru: "Не указано",
+    de: "Nicht angegeben"
+  };
+  return labels[locale];
+}
+
+function getIntlLocale(locale: ProfileLocale) {
+  const labels: Record<ProfileLocale, string> = {
+    tr: "tr-TR",
+    en: "en-US",
+    ru: "ru-RU",
+    de: "de-DE"
+  };
+  return labels[locale];
 }
 
 const profileUiTr = {
@@ -733,6 +777,8 @@ const profileCopyTr = {
   city: "Şehir",
   task: "Görev",
   badge: "Rozet",
+  balance: "Bakiye",
+  favorites: "Favoriler",
   qrAction: "QR puan işle",
   taskAction: "Görev tamamla",
   logout: "Oturumu kapat",
@@ -768,6 +814,10 @@ const profileCopyTr = {
   noQrHistory: "Henüz QR işlemi yok",
   noOrderHistory: "Henüz sipariş kaydı yok",
   noReminderHistory: "Henüz kaydedilen hatırlatıcı yok",
+  noFavoriteHistory: "Henüz kaydedilen favori yok",
+  openingReminder: "{kind} hatırlatıcısı açılıyor.",
+  openingFavorite: "{kind} favorisi açılıyor.",
+  ready: "Profil bilgilerin hazır.",
   guestLocked: "Misafir oturumunda puan, favori, hatırlatıcı ve görev işlemleri kapalıdır."
 };
 
@@ -844,6 +894,8 @@ const profileCopyTranslations = {
     city: "City",
     task: "Task",
     badge: "Badge",
+    balance: "Balance",
+    favorites: "Favorites",
     qrAction: "Process QR points",
     taskAction: "Complete task",
     logout: "Sign out",
@@ -879,6 +931,10 @@ const profileCopyTranslations = {
     noQrHistory: "No QR action yet",
     noOrderHistory: "No order record yet",
     noReminderHistory: "No saved reminders yet",
+    noFavoriteHistory: "No saved favorites yet",
+    openingReminder: "Opening {kind} reminder.",
+    openingFavorite: "Opening {kind} favorite.",
+    ready: "Profile details are ready.",
     guestLocked: "Points, favorites, reminders, and tasks are disabled in guest mode."
   },
   ru: {
@@ -889,6 +945,8 @@ const profileCopyTranslations = {
     city: "Город",
     task: "Задание",
     badge: "Значок",
+    balance: "Баланс",
+    favorites: "Избранное",
     qrAction: "Начислить QR-баллы",
     taskAction: "Выполнить задание",
     logout: "Выйти",
@@ -924,6 +982,10 @@ const profileCopyTranslations = {
     noQrHistory: "Пока нет QR-операций",
     noOrderHistory: "Пока нет записей о заказах",
     noReminderHistory: "Пока нет сохранённых напоминаний",
+    noFavoriteHistory: "Пока нет сохранённых избранных",
+    openingReminder: "Открывается напоминание {kind}.",
+    openingFavorite: "Открывается избранное {kind}.",
+    ready: "Данные профиля готовы.",
     guestLocked: "Баллы, избранное, напоминания и задания недоступны в гостевом режиме."
   },
   de: {
@@ -934,6 +996,8 @@ const profileCopyTranslations = {
     city: "Stadt",
     task: "Aufgabe",
     badge: "Abzeichen",
+    balance: "Kontostand",
+    favorites: "Favoriten",
     qrAction: "QR-Punkte buchen",
     taskAction: "Aufgabe abschließen",
     logout: "Abmelden",
@@ -969,6 +1033,10 @@ const profileCopyTranslations = {
     noQrHistory: "Noch keine QR-Aktion",
     noOrderHistory: "Noch kein Bestelleintrag",
     noReminderHistory: "Noch keine gespeicherten Erinnerungen",
+    noFavoriteHistory: "Noch keine gespeicherten Favoriten",
+    openingReminder: "Erinnerung {kind} wird geöffnet.",
+    openingFavorite: "Favorit {kind} wird geöffnet.",
+    ready: "Profilinformationen sind bereit.",
     guestLocked: "Punkte, Favoriten, Erinnerungen und Aufgaben sind im Gastmodus deaktiviert."
   }
 } as const;

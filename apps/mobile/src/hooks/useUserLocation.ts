@@ -15,6 +15,27 @@ export interface UserLocationState {
 const locationPromptSuppressedKey = "narrehberi:mobile:location-prompt-suppressed";
 const cachedLocationKey = "narrehberi:mobile:last-location";
 
+type LocationLocale = "tr" | "en" | "ru" | "de";
+
+const locationCopy = {
+  tr: {
+    denied: "Konum izni verilmedi.",
+    unavailable: "Konum alınamadı."
+  },
+  en: {
+    denied: "Location permission was not granted.",
+    unavailable: "Location could not be obtained."
+  },
+  ru: {
+    denied: "Разрешение на геолокацию не предоставлено.",
+    unavailable: "Не удалось получить местоположение."
+  },
+  de: {
+    denied: "Standortzugriff wurde nicht gewährt.",
+    unavailable: "Standort konnte nicht ermittelt werden."
+  }
+} as const;
+
 export async function rememberLocationPromptSuppressed() {
   try {
     await AsyncStorage.setItem(locationPromptSuppressedKey, "1");
@@ -39,7 +60,7 @@ async function isLocationPromptSuppressed() {
   }
 }
 
-export function useUserLocation(autoRequest = true): UserLocationState {
+export function useUserLocation(autoRequest = true, locale: LocationLocale = "tr"): UserLocationState {
   const [location, setLocation] = useState<DeviceLocation | null>(null);
   const [permissionGranted, setPermissionGranted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -60,7 +81,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       if (!permission.granted) {
         setPermissionGranted(false);
         setLocation(null);
-        setError("Konum izni verilmedi.");
+        setError(locationCopy[locale].denied);
         void rememberLocationPromptSuppressed();
         return;
       }
@@ -98,11 +119,11 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       }
 
       setLocation(null);
-      setError("Konum alınamadı.");
+      setError(locationCopy[locale].unavailable);
     } catch (requestError) {
       setLocation(null);
       setPermissionGranted(false);
-      setError(requestError instanceof Error ? requestError.message : "Konum alınamadı.");
+      setError(requestError instanceof Error ? requestError.message : locationCopy[locale].unavailable);
     } finally {
       setLoading(false);
     }
@@ -135,7 +156,7 @@ export function useUserLocation(autoRequest = true): UserLocationState {
       if (timer) clearTimeout(timer);
       stopWatchingLocation(watchState.current);
     };
-  }, [autoRequest, requestAccess]);
+  }, [autoRequest, requestAccess, locale]);
 
   return { location, permissionGranted, loading, error, requestAccess };
 }
