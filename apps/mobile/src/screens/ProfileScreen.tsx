@@ -594,7 +594,7 @@ function translateTheme(value: MobileThemeMode, locale: ProfileLocale = "tr") {
   const labels: Record<ProfileLocale, Record<MobileThemeMode, string>> = {
     tr: { system: "Sistem", light: "Açık", dark: "Koyu" },
     en: { system: "System", light: "Light", dark: "Dark" },
-    ru: { system: "Ğ¡Ğ¸ÑÑ‚ĞµĞ¼Ğ°", light: "Ğ¡Ğ²ĞµÑ‚Ğ»Ğ°Ñ", dark: "Ğ¢ĞµĞ¼Ğ½Ğ°Ñ" },
+    ru: { system: "Система", light: "Светлая", dark: "Тёмная" },
     de: { system: "System", light: "Hell", dark: "Dunkel" }
   };
   return labels[locale][value];
@@ -604,7 +604,7 @@ function translateLocale(value: string, locale: ProfileLocale = "tr") {
   const labels: Record<ProfileLocale, Record<string, string>> = {
     tr: { tr: "Türkçe", en: "İngilizce", ru: "Rusça", de: "Almanca" },
     en: { tr: "Turkish", en: "English", ru: "Russian", de: "German" },
-    ru: { tr: "Ğ¢ÑƒÑ€ĞµÑ†ĞºĞ¸Ğ¹", en: "ĞĞ½Ğ³Ğ»Ğ¸Ğ¹ÑĞºĞ¸Ğ¹", ru: "Ğ ÑƒÑÑĞºĞ¸Ğ¹", de: "ĞĞµĞ¼ĞµÑ†ĞºĞ¸Ğ¹" },
+    ru: { tr: "Турецкий", en: "Английский", ru: "Русский", de: "Немецкий" },
     de: { tr: "Türkisch", en: "Englisch", ru: "Russisch", de: "Deutsch" }
   };
   return labels[locale][value] ?? compactValue(value);
@@ -614,7 +614,7 @@ function translateRole(value?: string, locale: ProfileLocale = "tr") {
   const labels: Record<ProfileLocale, Record<string, string>> = {
     tr: { business: "İşletme", theater: "Tiyatro", admin: "Yönetici", individual: "Bireysel" },
     en: { business: "Business", theater: "Theater", admin: "Admin", individual: "Individual" },
-    ru: { business: "Ğ‘Ğ¸Ğ·Ğ½ĞµÑ", theater: "Ğ¢ĞµĞ°Ñ‚Ñ€", admin: "ĞĞ´Ğ¼Ğ¸Ğ½", individual: "Ğ›Ğ¸Ñ‡Ğ½Ñ‹Ğ¹" },
+    ru: { business: "Бизнес", theater: "Театр", admin: "Админ", individual: "Частный" },
     de: { business: "Unternehmen", theater: "Theater", admin: "Admin", individual: "Privat" }
   };
   return labels[locale][value ?? "individual"] ?? labels.tr.individual;
@@ -630,7 +630,7 @@ function translateToggle(value: boolean, locale: ProfileLocale) {
   const labels: Record<ProfileLocale, [string, string]> = {
     tr: ["Açık", "Kapalı"],
     en: ["On", "Off"],
-    ru: ["Ğ’ĞºĞ».", "Ğ’Ñ‹ĞºĞ»."],
+    ru: ["Вкл.", "Выкл."],
     de: ["Ein", "Aus"]
   };
   return value ? labels[locale][0] : labels[locale][1];
@@ -665,7 +665,7 @@ function translateFavoriteType(entityType: string, locale: ProfileLocale) {
   const labels: Record<ProfileLocale, Record<string, string>> = {
     tr: { place: "Mekan", event: "Etkinlik", offer: "Fırsat" },
     en: { place: "Place", event: "Event", offer: "Offer" },
-    ru: { place: "ĞœĞµÑÑ‚Ğ¾", event: "Ğ¡Ğ¾Ğ±Ñ‹Ñ‚Ğ¸Ğµ", offer: "ĞŸÑ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ" },
+    ru: { place: "Место", event: "Событие", offer: "Предложение" },
     de: { place: "Ort", event: "Veranstaltung", offer: "Angebot" }
   };
   return labels[locale][entityType] ?? compactValue(entityType);
@@ -800,20 +800,20 @@ const profileUiTranslations = {
   },
   ru: {
     ...profileUiTr,
-    accountTitle: "ĞĞºĞºĞ°ÑƒĞ½Ñ‚",
-    accountLead: "ĞœĞ¾Ğ¶Ğ½Ğ¾ Ğ¿Ñ€Ğ¾Ğ´Ğ¾Ğ»Ğ¶Ğ¸Ñ‚ÑŒ ĞºĞ°Ğº Ğ³Ğ¾ÑÑ‚ÑŒ Ğ¸ Ğ²Ğ¾Ğ¹Ñ‚Ğ¸ Ğ¿Ğ¾Ğ·Ğ¶Ğµ.",
-    signInButton: "Ğ’Ğ¾Ğ¹Ñ‚Ğ¸ / Ñ€ĞµĞ³Ğ¸ÑÑ‚Ñ€Ğ°Ñ†Ğ¸Ñ",
-    dataTools: "Ğ”Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¸ Ğ¿Ñ€Ğ¸Ğ²Ğ°Ñ‚Ğ½Ğ¾ÑÑ‚ÑŒ",
-    resetScanButton: "ĞÑ‡Ğ¸ÑÑ‚Ğ¸Ñ‚ÑŒ Ğ¸ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ²",
-    openPrivacy: "ĞŸĞ¾Ğ»Ğ¸Ñ‚Ğ¸ĞºĞ° ĞºĞ¾Ğ½Ñ„Ğ¸Ğ´ĞµĞ½Ñ†Ğ¸Ğ°Ğ»ÑŒĞ½Ğ¾ÑÑ‚Ğ¸",
-    openTerms: "Ğ£ÑĞ»Ğ¾Ğ²Ğ¸Ñ Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ",
-    resettingScan: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ² Ğ¾Ñ‡Ğ¸Ñ‰Ğ°ĞµÑ‚ÑÑ...",
-    resetScanDone: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ² Ğ¾Ñ‡Ğ¸Ñ‰ĞµĞ½Ğ°.",
-    resetScanFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¾Ñ‡Ğ¸ÑÑ‚Ğ¸Ñ‚ÑŒ Ğ¸ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ².",
-    deleteAccountButton: "Ğ£Ğ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ Ğ°ĞºĞºĞ°ÑƒĞ½Ñ‚",
-    deleteAccountPending: "ĞĞºĞºĞ°ÑƒĞ½Ñ‚ ÑƒĞ´Ğ°Ğ»ÑĞµÑ‚ÑÑ...",
-    deleteAccountDone: "ĞĞºĞºĞ°ÑƒĞ½Ñ‚ ÑƒĞ´Ğ°Ğ»Ñ‘Ğ½.",
-    deleteAccountFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ ÑƒĞ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ Ğ°ĞºĞºĞ°ÑƒĞ½Ñ‚."
+    accountTitle: "Аккаунт",
+    accountLead: "Можно остаться как гость и войти позже.",
+    signInButton: "Войти / Зарегистрироваться",
+    dataTools: "Данные и конфиденциальность",
+    resetScanButton: "Очистить историю сканов",
+    openPrivacy: "Политика конфиденциальности",
+    openTerms: "Условия использования",
+    resettingScan: "История сканов очищается...",
+    resetScanDone: "История сканов очищена.",
+    resetScanFailed: "Не удалось очистить историю сканов.",
+    deleteAccountButton: "Удалить аккаунт",
+    deleteAccountPending: "Аккаунт удаляется...",
+    deleteAccountDone: "Аккаунт удалён.",
+    deleteAccountFailed: "Не удалось удалить аккаунт."
   },
   de: {
     ...profileUiTr,
@@ -883,48 +883,48 @@ const profileCopyTranslations = {
   },
   ru: {
     ...profileCopyTr,
-    pointsReady: "Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ³Ğ¾Ñ‚Ğ¾Ğ²Ñ‹",
-    guestPoints: "Ğ’Ğ°ÑˆĞ¸ Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ¿Ğ¾ÑĞ²ÑÑ‚ÑÑ Ğ·Ğ´ĞµÑÑŒ",
-    profileLead: "ĞŸĞ¾Ğ»ÑƒÑ‡Ğ°Ğ¹Ñ‚Ğµ Ğ±Ğ°Ğ»Ğ»Ñ‹ Ñ‡ĞµÑ€ĞµĞ· QR, Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·ÑƒĞ¹Ñ‚Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ Ğ¸ Ğ¾Ñ‚ĞºÑ€Ñ‹Ğ²Ğ°Ğ¹Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞºĞ¸.",
-    city: "Ğ“Ğ¾Ñ€Ğ¾Ğ´",
-    task: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ",
-    badge: "Ğ—Ğ½Ğ°Ñ‡Ğ¾Ğº",
-    qrAction: "ĞĞ°Ñ‡Ğ¸ÑĞ»Ğ¸Ñ‚ÑŒ QR-Ğ±Ğ°Ğ»Ğ»Ñ‹",
-    taskAction: "Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ",
-    logout: "Ğ’Ñ‹Ğ¹Ñ‚Ğ¸",
-    personalInfo: "Ğ›Ğ¸Ñ‡Ğ½Ñ‹Ğµ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ",
-    name: "Ğ˜Ğ¼Ñ",
+    pointsReady: "Ваши баллы готовы",
+    guestPoints: "Ваши баллы появятся здесь",
+    profileLead: "Получайте баллы через QR, используйте предложения и открывайте значки через задания.",
+    city: "Город",
+    task: "Задание",
+    badge: "Значок",
+    qrAction: "Начислить QR-баллы",
+    taskAction: "Выполнить задание",
+    logout: "Выйти",
+    personalInfo: "Личные данные",
+    name: "Имя",
     email: "E-mail",
-    role: "Ğ Ğ¾Ğ»ÑŒ",
-    languageTheme: "Ğ¯Ğ·Ñ‹Ğº Ğ¸ Ñ‚ĞµĞ¼Ğ°",
-    language: "Ğ¯Ğ·Ñ‹Ğº",
-    theme: "Ğ¢ĞµĞ¼Ğ°",
-    notifications: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸ ÑƒĞ²ĞµĞ´Ğ¾Ğ¼Ğ»ĞµĞ½Ğ¸Ğ¹",
-    offers: "ĞŸÑ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ",
-    events: "Ğ¡Ğ¾Ğ±Ñ‹Ñ‚Ğ¸Ñ",
-    theater: "Ğ¢ĞµĞ°Ñ‚Ñ€",
-    reminders: "ĞĞ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°Ğ½Ğ¸Ñ",
-    saveButton: "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ğ¸Ñ‚ÑŒ Ğ½Ğ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸",
-    savingButton: "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ğ¸Ğµ...",
-    savedSettings: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸ ÑĞ¾Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ñ‹.",
-    saveFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ ÑĞ¾Ñ…Ñ€Ğ°Ğ½Ğ¸Ñ‚ÑŒ Ğ½Ğ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸. ĞŸĞ¾Ğ²Ñ‚Ğ¾Ñ€Ğ¸Ñ‚Ğµ Ğ¿Ğ¾Ğ¿Ñ‹Ñ‚ĞºÑƒ.",
-    qrRequired: "Ğ”Ğ»Ñ QR Ğ½ÑƒĞ¶ĞµĞ½ Ğ²Ñ…Ğ¾Ğ´ Ğ¸ Ğ¼ĞµÑÑ‚Ğ¾.",
-    qrSaving: "QR-Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ°Ñ‚Ñ‹Ğ²Ğ°ÑÑ‚ÑÑ...",
-    qrSaved: "QR-Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ½Ğ°Ñ‡Ğ¸ÑĞ»ĞµĞ½Ñ‹.",
-    qrFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ QR-Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğµ.",
-    taskSaving: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ÑĞµÑ‚ÑÑ...",
-    taskSaved: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¾, Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ĞµĞ½Ñ‹.",
-    taskFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ.",
-    notSignedIn: "Ğ’Ñ…Ğ¾Ğ´ Ğ½Ğµ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½",
-    unspecified: "ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½Ğ¾",
-    tasks: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ",
-    badges: "Ğ—Ğ½Ğ°Ñ‡ĞºĞ¸",
-    qrHistory: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ QR",
-    orderHistory: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ Ğ·Ğ°ĞºĞ°Ğ·Ğ¾Ğ²",
-    noQrHistory: "QR-Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğ¹ Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
-    noOrderHistory: "Ğ—Ğ°ĞºĞ°Ğ·Ğ¾Ğ² Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
-    noReminderHistory: "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ñ‘Ğ½Ğ½Ñ‹Ñ… Ğ½Ğ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°Ğ½Ğ¸Ğ¹ Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
-    guestLocked: "Ğ‘Ğ°Ğ»Ğ»Ñ‹, Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğµ, Ğ½Ğ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°Ğ½Ğ¸Ñ Ğ¸ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹ Ğ² Ğ³Ğ¾ÑÑ‚ĞµĞ²Ğ¾Ğ¼ Ñ€ĞµĞ¶Ğ¸Ğ¼Ğµ."
+    role: "Роль",
+    languageTheme: "Язык и тема",
+    language: "Язык",
+    theme: "Тема",
+    notifications: "Уведомления",
+    offers: "Предложения",
+    events: "События",
+    theater: "Театр",
+    reminders: "Напоминания",
+    saveButton: "Сохранить настройки",
+    savingButton: "Сохранение...",
+    savedSettings: "Настройки сохранены.",
+    saveFailed: "Не удалось сохранить настройки. Попробуйте снова.",
+    qrRequired: "Для QR-акций нужны вход и место.",
+    qrSaving: "QR-баллы обрабатываются...",
+    qrSaved: "QR-баллы начислены.",
+    qrFailed: "Не удалось выполнить QR-операцию.",
+    taskSaving: "Задание выполняется...",
+    taskSaved: "Задание выполнено, баллы начислены.",
+    taskFailed: "Не удалось выполнить задание.",
+    notSignedIn: "Вход не выполнен",
+    unspecified: "Не указано",
+    tasks: "Задания",
+    badges: "Значки",
+    qrHistory: "История QR",
+    orderHistory: "История заказов и использования",
+    noQrHistory: "Пока нет QR-операций",
+    noOrderHistory: "Пока нет записей о заказах",
+    noReminderHistory: "Пока нет сохранённых напоминаний",
+    guestLocked: "Баллы, избранное, напоминания и задания недоступны в гостевом режиме."
   },
   de: {
     ...profileCopyTr,
