@@ -28,7 +28,7 @@ const publicFirebaseConfig = {
 module.exports = {
   ...expo,
   name: "Nar Rehberi",
-  version: "9.1.0",
+  version: "9.1.1",
   icon: "./assets/icon.png",
   splash: {
     backgroundColor: "#ffffff"
@@ -49,7 +49,7 @@ module.exports = {
     ...(expo.ios ?? {}),
     supportsTablet: true,
     bundleIdentifier: "com.narrehberi.app",
-    buildNumber: "1.17",
+    buildNumber: "1.18",
     infoPlist: {
       ...(expo.ios?.infoPlist ?? {}),
       NSLocationWhenInUseUsageDescription:
@@ -59,7 +59,7 @@ module.exports = {
   android: {
     ...(expo.android ?? {}),
     package: "narrehberi.com",
-    versionCode: 9117
+    versionCode: 9118
   },
   extra: {
     ...(expo.extra ?? {}),
