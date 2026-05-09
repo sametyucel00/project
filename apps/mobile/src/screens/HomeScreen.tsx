@@ -76,6 +76,33 @@ const homeLabels = {
   }
 } as const;
 
+const timeCardCopy = {
+  tr: {
+    morning: { label: "Sabah", title: "Güne iyi başlayan mekanlar", filters: ["kahvaltı", "kahve", "sessiz çalışma"] },
+    noon: { label: "Öğle Yaklaşıyor", title: "Yakındaki öğle molaları", filters: ["restoran", "kahve", "yemek fırsatları"] },
+    evening: { label: "Akşam", title: "Sahne, konser ve şehir ışıkları", filters: ["tiyatro", "konser", "sergi"] },
+    night: { label: "Gece", title: "Geç saat açık rotalar", filters: ["gece hayatı", "açık mekanlar", "canlı müzik"] }
+  },
+  en: {
+    morning: { label: "Morning", title: "Places for a good start to the day", filters: ["breakfast", "coffee", "quiet work"] },
+    noon: { label: "Lunch Time", title: "Nearby lunch breaks", filters: ["restaurant", "coffee", "food offers"] },
+    evening: { label: "Evening", title: "Stage, concerts and city lights", filters: ["theater", "concert", "exhibition"] },
+    night: { label: "Night", title: "Late-night routes", filters: ["nightlife", "open venues", "live music"] }
+  },
+  ru: {
+    morning: { label: "Утро", title: "Места для хорошего начала дня", filters: ["завтрак", "кофе", "тихая работа"] },
+    noon: { label: "Ближе к обеду", title: "Обеденные перерывы поблизости", filters: ["ресторан", "кофе", "предложения еды"] },
+    evening: { label: "Вечер", title: "Сцена, концерты и огни города", filters: ["театр", "концерт", "выставка"] },
+    night: { label: "Ночь", title: "Поздние маршруты", filters: ["ночная жизнь", "открытые места", "живая музыка"] }
+  },
+  de: {
+    morning: { label: "Morgen", title: "Orte für einen guten Start in den Tag", filters: ["Frühstück", "Kaffee", "ruhiges Arbeiten"] },
+    noon: { label: "Mittag", title: "Nahe Mittagspausen", filters: ["Restaurant", "Kaffee", "Essensangebote"] },
+    evening: { label: "Abend", title: "Bühne, Konzerte und Stadtlichter", filters: ["Theater", "Konzert", "Ausstellung"] },
+    night: { label: "Nacht", title: "Späte Routen", filters: ["Nachtleben", "offene Orte", "Live-Musik"] }
+  }
+} as const;
+
 const homeStoryActions = {
   tr: staticStoryActions,
   en: {
@@ -121,6 +148,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
   const locale = getMobileLocale();
   const labels = homeLabels[locale] ?? homeLabels.tr;
   const discovery = getTimeDiscovery();
+  const timeCopy = timeCardCopy[locale] ?? timeCardCopy.tr;
   const [query, setQuery] = useState("");
   const [activeStory, setActiveStory] = useState<string | undefined>();
   const [touristItems, setTouristItems] = useState<SurvivalKitItem[]>(touristSurvivalKit);
@@ -235,9 +263,9 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
           size={24}
           color={theme.coloredText}
         />
-        <Text style={styles.timeLabel}>{discovery.label}</Text>
-        <Text style={styles.timeTitle}>{discovery.title}</Text>
-        <Text style={styles.timeFilters}>{discovery.filters.join(" · ")}</Text>
+        <Text style={styles.timeLabel}>{timeCopy[discovery.key].label}</Text>
+        <Text style={styles.timeTitle}>{timeCopy[discovery.key].title}</Text>
+        <Text style={styles.timeFilters}>{timeCopy[discovery.key].filters.join(" · ")}</Text>
       </View>
       <StoryRail offers={visibleOffers.slice(0, 2)} activeStory={activeStory} onSelect={handleStorySelect} />
       {selectedStory ? (

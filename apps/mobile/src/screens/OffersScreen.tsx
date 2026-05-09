@@ -2,17 +2,88 @@ import { compactValue, featuredOffers } from "@nar/core";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { FilterRow, OfferItem, SearchBar, StoryRail } from "../components/ui";
+import { getMobileLocale } from "../locale";
 import { perfMark, perfMeasure } from "../services/perf";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 
-const offerFilters = ["Tümü", "QR ile", "Puanla", "Sınırlı", "Öne çıkan"];
 const hiddenOfferIds = new Set(["coffee-qr-week"]);
 
+type OfferFilterId = "all" | "qr" | "points" | "limited" | "featured";
+
+const offerCopy = {
+  tr: {
+    filters: [
+      { id: "all" as const, label: "Tümü" },
+      { id: "qr" as const, label: "QR ile" },
+      { id: "points" as const, label: "Puanla" },
+      { id: "limited" as const, label: "Sınırlı" },
+      { id: "featured" as const, label: "Öne çıkan" }
+    ],
+    title: "Nar fırsatları",
+    empty: "Seçtiğin filtreye uygun fırsat bulunamadı.",
+    selected: "Seçili fırsat",
+    discount: "indirim",
+    remaining: "kalan",
+    featured: "Öne çıkan",
+    standard: "Standart"
+  },
+  en: {
+    filters: [
+      { id: "all" as const, label: "All" },
+      { id: "qr" as const, label: "QR" },
+      { id: "points" as const, label: "By points" },
+      { id: "limited" as const, label: "Limited" },
+      { id: "featured" as const, label: "Featured" }
+    ],
+    title: "Nar offers",
+    empty: "No offers match your filters.",
+    selected: "Selected offer",
+    discount: "discount",
+    remaining: "remaining",
+    featured: "Featured",
+    standard: "Standard"
+  },
+  ru: {
+    filters: [
+      { id: "all" as const, label: "Все" },
+      { id: "qr" as const, label: "QR" },
+      { id: "points" as const, label: "За баллы" },
+      { id: "limited" as const, label: "Ограниченные" },
+      { id: "featured" as const, label: "Рекомендуемые" }
+    ],
+    title: "Предложения Nar",
+    empty: "По выбранным фильтрам предложения не найдены.",
+    selected: "Выбранное предложение",
+    discount: "скидка",
+    remaining: "осталось",
+    featured: "Рекомендуется",
+    standard: "Обычное"
+  },
+  de: {
+    filters: [
+      { id: "all" as const, label: "Alle" },
+      { id: "qr" as const, label: "QR" },
+      { id: "points" as const, label: "Mit Punkten" },
+      { id: "limited" as const, label: "Begrenzt" },
+      { id: "featured" as const, label: "Empfohlen" }
+    ],
+    title: "Nar-Angebote",
+    empty: "Keine Angebote passen zu deinen Filtern.",
+    selected: "Ausgewähltes Angebot",
+    discount: "Rabatt",
+    remaining: "übrig",
+    featured: "Empfohlen",
+    standard: "Standard"
+  }
+} as const;
+
 export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide, onOpenTouristGuide }: MobileScreenProps) {
+  const locale = getMobileLocale();
+  const copy = offerCopy[locale] ?? offerCopy.tr;
   const [query, setQuery] = useState("");
   const [activeStory, setActiveStory] = useState<string | undefined>();
-  const [activeFilter, setActiveFilter] = useState("Tümü");
+  const [activeFilter, setActiveFilter] = useState<OfferFilterId>("all");
   const [visibleCount, setVisibleCount] = useState(10);
   const deferredQuery = useDeferredValue(query);
 
@@ -26,10 +97,10 @@ export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide,
       mergedOffers.filter((offer) => {
         const haystack = normalize([offer.title.tr, offer.description.tr, offer.conditions.tr, offer.discountLabel].join(" "));
         if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
-        if (activeFilter === "QR ile" && !offer.requiresQr) return false;
-        if (activeFilter === "Puanla" && !offer.pointCost) return false;
-        if (activeFilter === "Sınırlı" && !offer.useLimit) return false;
-        if (activeFilter === "Öne çıkan" && !offer.featured && !offer.storyEnabled) return false;
+        if (activeFilter === "qr" && !offer.requiresQr) return false;
+        if (activeFilter === "points" && !offer.pointCost) return false;
+        if (activeFilter === "limited" && !offer.useLimit) return false;
+        if (activeFilter === "featured" && !offer.featured && !offer.storyEnabled) return false;
         return true;
       }),
     [activeFilter, deferredQuery, mergedOffers]
@@ -38,6 +109,10 @@ export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide,
   const firstOffer = filteredOffers[0];
   const remainingUse = firstOffer?.useLimit ? Math.max(firstOffer.useLimit - (firstOffer.usedCount ?? 0), 0) : null;
   const visibleOffers = useMemo(() => filteredOffers.slice(0, visibleCount), [filteredOffers, visibleCount]);
+
+  useEffect(() => {
+    setActiveFilter("all");
+  }, [locale]);
 
   useEffect(() => {
     perfMark("offers:screenMount");
@@ -86,15 +161,18 @@ export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide,
         <View style={{ paddingHorizontal: 18 }}>
           <SearchBar value={query} onChangeText={setQuery} />
           <StoryRail offers={mergedOffers.slice(0, 5)} activeStory={activeStory} onSelect={handleStorySelect} />
-          <FilterRow filters={offerFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
-          <Text style={styles.sectionTitle}>{`Nar fırsatları (${filteredOffers.length})`}</Text>
+          <FilterRow filters={copy.filters.map((filter) => filter.label)} activeFilter={(copy.filters.find((filter) => filter.id === activeFilter)?.label ?? copy.filters[0].label)} onSelect={(label) => {
+            const next = copy.filters.find((filter) => filter.label === label)?.id ?? "all";
+            setActiveFilter(next);
+          }} />
+          <Text style={styles.sectionTitle}>{`${copy.title} (${filteredOffers.length})`}</Text>
         </View>
       }
-      ListEmptyComponent={<Text style={styles.emptyText}>Seçtiğin filtreye uygun fırsat bulunamadı.</Text>}
+      ListEmptyComponent={<Text style={styles.emptyText}>{copy.empty}</Text>}
       ListFooterComponent={
         firstOffer ? (
           <Text style={[styles.emptyText, { paddingHorizontal: 18 }]}>
-            {`Seçili fırsat: ${firstOffer.title.tr} · indirim ${firstOffer.discountLabel} · kalan ${compactValue(remainingUse)}`}
+            {`${copy.selected}: ${firstOffer.title.tr} · ${copy.discount} ${firstOffer.discountLabel} · ${copy.remaining} ${compactValue(remainingUse)}`}
           </Text>
         ) : null
       }
