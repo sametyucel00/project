@@ -152,7 +152,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Roma",
     address: "Barbaros Mahallesi, Kaleiçi girişi, Muratpaşa/Antalya, Türkiye",
     location: { lat: 36.885, lng: 30.7087 },
-    image: "https://images.unsplash.com/photo-1604933762023-7213af7ff7a5"
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Hadrian%27s_Gate%2C_Antalya_06.jpg/960px-Hadrian%27s_Gate%2C_Antalya_06.jpg"
   },
   {
     id: "yivli-minaret",
@@ -179,7 +179,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Selçuklu",
     address: "Selçuk Mahallesi, Kaleiçi, Muratpaşa/Antalya, Türkiye",
     location: { lat: 36.8845, lng: 30.7098 },
-    image: "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb"
+    image: "https://picsum.photos/seed/yivli-minaret/1200/800"
   },
   {
     id: "hidirlik-tower",
@@ -206,7 +206,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Roma / Bizans",
     address: "Kılınçarslan Mahallesi, Hıdırlık Sokak, Muratpaşa/Antalya, Türkiye",
     location: { lat: 36.8838, lng: 30.7069 },
-    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
+    image: "https://picsum.photos/seed/hidirlik-tower/1200/800"
   },
   {
     id: "perge",
@@ -233,7 +233,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Pamfilya",
     address: "Aksu ilçesi, Perge Örenyeri yolu, Aksu/Antalya, Türkiye",
     location: { lat: 36.9588, lng: 30.8522 },
-    image: "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb"
+    image: "https://picsum.photos/seed/perge-antalya/1200/800"
   },
   {
     id: "aspendos",
@@ -260,7 +260,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Roma",
     address: "Belkıs Mahallesi, Aspendos Yolu, Serik/Antalya, Türkiye",
     location: { lat: 36.9397, lng: 31.1739 },
-    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523"
+    image: "https://picsum.photos/seed/aspendos-theater/1200/800"
   },
   {
     id: "side",
@@ -287,7 +287,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Roma",
     address: "Side Mahallesi, Side Antik Kenti, Manavgat/Antalya, Türkiye",
     location: { lat: 36.7661, lng: 31.3887 },
-    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
+    image: "https://picsum.photos/seed/side-ancient-city/1200/800"
   },
   {
     id: "termessos",
@@ -314,7 +314,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Helenistik / Roma",
     address: "Termessos Milli Parkı yolu, Döşemealtı/Antalya, Türkiye",
     location: { lat: 37.0159, lng: 30.5014 },
-    image: "https://images.unsplash.com/photo-1519608487953-e999c86e7455"
+    image: "https://picsum.photos/seed/termessos/1200/800"
   },
   {
     id: "phaselis",
@@ -341,7 +341,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Likya",
     address: "Tekirova Mahallesi, Phaselis Örenyeri, Kemer/Antalya, Türkiye",
     location: { lat: 36.5273, lng: 30.5502 },
-    image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21"
+    image: "https://picsum.photos/seed/phaselis/1200/800"
   },
   {
     id: "olympos",
@@ -368,7 +368,7 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Likya",
     address: "Yazır Mahallesi, Olympos Örenyeri yolu, Kumluca/Antalya, Türkiye",
     location: { lat: 36.4082, lng: 30.4762 },
-    image: "https://images.unsplash.com/photo-1519046904884-53103b34b206"
+    image: "https://picsum.photos/seed/olympos-antalya/1200/800"
   },
   {
     id: "karain-cave",
@@ -395,6 +395,6 @@ export const ancientGuideDetails: AncientGuideDetail[] = [
     era: "Prehistorya",
     address: "Yağca Mahallesi, Karain Mağarası Yolu, Döşemealtı/Antalya, Türkiye",
     location: { lat: 37.0296, lng: 30.6344 },
-    image: "https://images.unsplash.com/photo-1516048517990-68b0eb8e5a6b"
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Karain_cave_antalya_museum_turkey_paleolitik.JPG/960px-Karain_cave_antalya_museum_turkey_paleolitik.JPG"
   }
 ];
