@@ -3,120 +3,136 @@
 import { adjustTheaterNotificationLimit, createTheaterEvent, sendTheaterEventNotification, translateSynopsisDraft } from "@/lib/panel-actions";
 import { db } from "@/lib/firebase";
 import { featuredEvents, type EventItem } from "@nar/core";
-import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
+
+type CategoryOption = { id: string; title: { tr: string; en?: string; ru?: string; de?: string } };
 
 export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" }) {
   const sampleEvent = featuredEvents.find((event) => event.type === "theater") ?? featuredEvents[0];
-  const initialUsed = sampleEvent.notificationUsed ?? 0;
   const [events, setEvents] = useState<EventItem[]>([sampleEvent]);
-  const [synopsisTr, setSynopsisTr] = useState("Antalya gecesinde kesiÅŸen yollar ve kÃ¼Ã§Ã¼k sÄ±rlar Ã¼zerine sÄ±cak bir oyun.");
   const [eventId, setEventId] = useState(sampleEvent.id);
-  const [notificationLimit, setNotificationLimit] = useState(sampleEvent.notificationLimit);
   const [categoryId, setCategoryId] = useState(sampleEvent.categoryId ?? sampleEvent.type);
-  const [categories, setCategories] = useState<Array<{ id: string; title: { tr: string; en?: string; ru?: string; de?: string } }>>([]);
-  const [notificationUsed, setNotificationUsed] = useState(initialUsed);
-  const [status, setStatus] = useState("CanlÄ± tiyatro etkinlikleri yÃ¼kleniyor.");
-  const [translation, setTranslation] = useState("Ã‡eviri taslaÄŸÄ± henÃ¼z oluÅŸturulmadÄ±.");
-  const remainingNotifications = useMemo(() => Math.max(notificationLimit - notificationUsed, 0), [notificationLimit, notificationUsed]);
+  const [notificationLimit, setNotificationLimit] = useState(sampleEvent.notificationLimit);
+  const [notificationUsed, setNotificationUsed] = useState(sampleEvent.notificationUsed ?? 0);
+  const [synopsisTr, setSynopsisTr] = useState(sampleEvent.synopsis?.tr ?? sampleEvent.description.tr);
+  const [translation, setTranslation] = useState("");
+  const [status, setStatus] = useState("Canlı tiyatro etkinlikleri yükleniyor.");
+  const [categories, setCategories] = useState<CategoryOption[]>([]);
+
+  const remainingNotifications = useMemo(
+    () => Math.max(notificationLimit - notificationUsed, 0),
+    [notificationLimit, notificationUsed]
+  );
 
   useEffect(() => {
     let active = true;
 
     async function loadTheaterEvents() {
       try {
-        const snapshot = await getDocs(query(
-          collection(db, "events"),
-          where("type", "==", "theater"),
-          orderBy("startsAt", "desc"),
-          limit(24)
-        ));
+        const snapshot = await getDocs(
+          query(collection(db, "events"), where("type", "==", "theater"), limit(24))
+        );
         if (!active) return;
+
         const liveEvents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as EventItem);
         const nextEvents = liveEvents.length ? liveEvents : [sampleEvent];
         const selected = nextEvents.find((event) => event.id === eventId) ?? nextEvents[0];
+
         setEvents(nextEvents);
         setEventId(selected.id);
+        setCategoryId(selected.categoryId ?? selected.type);
         setNotificationLimit(selected.notificationLimit);
         setNotificationUsed(selected.notificationUsed ?? 0);
-        setStatus(liveEvents.length ? "CanlÄ± tiyatro etkinlikleri kullanÄ±lÄ±yor." : "HenÃ¼z canlÄ± tiyatro etkinliÄŸi yok.");
+        setSynopsisTr(selected.synopsis?.tr ?? selected.description.tr);
+        setStatus(liveEvents.length ? "Canlı tiyatro etkinlikleri kullanılıyor." : "Henüz canlı tiyatro etkinliği yok.");
       } catch (error) {
         if (!active) return;
         setEvents([sampleEvent]);
-        setStatus(error instanceof Error ? error.message : "Tiyatro etkinlikleri yÃ¼klenemedi.");
+        setStatus(error instanceof Error ? error.message : "Tiyatro etkinlikleri yüklenemedi.");
       }
-    getDocs(query(collection(db, "categories"), where("target", "==", "event"), where("status", "==", "published")))
-      .then((snapshot) => {
+    }
+
+    async function loadCategories() {
+      try {
+        const snapshot = await getDocs(
+          query(collection(db, "categories"), where("target", "==", "event"), where("status", "==", "published"), limit(50))
+        );
         if (!active) return;
+
         const liveCategories = snapshot.docs
-          .map((entry) => entry.data() as { id?: string; title?: { tr: string; en?: string; ru?: string; de?: string } })
-          .filter((category) => category.id && category.title?.tr)
-          .map((category) => ({ id: category.id as string, title: category.title as { tr: string; en?: string; ru?: string; de?: string } }));
+          .map((entry) => entry.data() as Partial<CategoryOption> & { id?: string })
+          .filter((category): category is CategoryOption => Boolean(category.id && category.title?.tr))
+          .sort((left, right) => {
+            const leftOrder = Number((left as { sortOrder?: number }).sortOrder ?? 0);
+            const rightOrder = Number((right as { sortOrder?: number }).sortOrder ?? 0);
+            return leftOrder - rightOrder;
+          });
+
         setCategories(liveCategories);
         if (liveCategories.length && !liveCategories.some((item) => item.id === categoryId)) {
           setCategoryId(liveCategories[0].id);
         }
-      })
-      .catch(() => {
+      } catch {
         if (!active) return;
         setCategories([]);
-      });
-
-    void loadTheaterEvents();
+      }
     }
 
     void loadTheaterEvents();
+    void loadCategories();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [categoryId, eventId, sampleEvent]);
 
   function selectEvent(nextEventId: string) {
     const selected = events.find((event) => event.id === nextEventId);
     setEventId(nextEventId);
     if (!selected) return;
+    setCategoryId(selected.categoryId ?? selected.type);
     setNotificationLimit(selected.notificationLimit);
     setNotificationUsed(selected.notificationUsed ?? 0);
     setSynopsisTr(selected.synopsis?.tr ?? selected.description.tr);
   }
 
   async function translate() {
-    setStatus("Sinopsis Ã§eviri taslaÄŸÄ± hazÄ±rlanÄ±yor.");
+    setStatus("Sinopsis çeviri taslağı hazırlanıyor.");
     try {
       const result = await translateSynopsisDraft(synopsisTr);
       setTranslation(result.data.synopsis.en);
-      setStatus("Sinopsis Ã§eviri taslaÄŸÄ± oluÅŸturuldu.");
+      setStatus("Sinopsis çeviri taslağı oluşturuldu.");
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Sinopsis Ã§evirisi oluÅŸturulamadÄ±.");
+      setStatus(error instanceof Error ? error.message : "Sinopsis çevirisi oluşturulamadı.");
     }
   }
 
   async function createDraft() {
-    setStatus("Oyun taslaÄŸÄ± oluÅŸturuluyor.");
+    setStatus("Oyun taslağı oluşturuluyor.");
     try {
       const result = await createTheaterEvent({
         categoryId,
         title: {
-          tr: "Yeni Sahne TaslaÄŸÄ±",
+          tr: "Yeni Sahne Taslağı",
           en: "New Stage Draft",
-          ru: "ĞĞ¾Ğ²Ñ‹Ğ¹ ÑÑ†ĞµĞ½Ğ¸Ñ‡ĞµÑĞºĞ¸Ğ¹ Ñ‡ĞµÑ€Ğ½Ğ¾Ğ²Ğ¸Ğº",
-          de: "Neuer BÃ¼hnenentwurf"
+          ru: "Новый сценический черновик",
+          de: "Neuer Bühnenentwurf"
         },
         description: {
           tr: synopsisTr,
-          en: translation,
+          en: translation || synopsisTr,
           ru: synopsisTr,
           de: synopsisTr
         },
         synopsis: {
           tr: synopsisTr,
-          en: translation,
+          en: translation || synopsisTr,
           ru: synopsisTr,
           de: synopsisTr
         },
         type: "theater",
-        district: "MuratpaÅŸa",
+        district: "Muratpaşa",
         venueName: "Nar Sahne",
         startsAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         priceType: "paid",
@@ -129,43 +145,68 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
       setEventId(result.data.id);
       setNotificationLimit(3);
       setNotificationUsed(0);
-      setStatus("Oyun taslaÄŸÄ± oluÅŸturuldu; bildirim limiti 3, kullanÄ±lan hak 0.");
+      setStatus("Oyun taslağı oluşturuldu; bildirim limiti 3, kullanılan hak 0.");
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Oyun taslaÄŸÄ± oluÅŸturulamadÄ±.");
+      setStatus(error instanceof Error ? error.message : "Oyun taslağı oluşturulamadı.");
     }
   }
 
   async function sendNotification() {
     if (remainingNotifications <= 0) {
-      setStatus("Bu oyun iÃ§in bildirim hakkÄ± tÃ¼kendi.");
+      setStatus("Bu oyun için bildirim hakkı tükendi.");
       return;
     }
-    setStatus("Oyun bildirimi gÃ¶nderiliyor.");
+
+    setStatus("Oyun bildirimi gönderiliyor.");
     try {
       await sendTheaterEventNotification({
         eventId,
         title: {
           tr: "Sahnede bu hafta",
           en: "On stage this week",
-          ru: "ĞĞ° ÑÑ†ĞµĞ½Ğµ Ğ½Ğ° ÑÑ‚Ğ¾Ğ¹ Ğ½ĞµĞ´ĞµĞ»Ğµ",
-          de: "Diese Woche auf der BÃ¼hne"
+          ru: "На сцене на этой неделе",
+          de: "Diese Woche auf der Bühne"
         },
         body: {
-          tr: "Favorindeki oyun iÃ§in yeni gÃ¶sterim ve bilet bilgisi hazÄ±r.",
+          tr: "Favorindeki oyun için yeni gösterim ve bilet bilgisi hazır.",
           en: "New showtime and ticket details are ready for your favorite play.",
-          ru: "Ğ”Ğ»Ñ Ğ²Ğ°ÑˆĞµĞ³Ğ¾ Ğ»ÑĞ±Ğ¸Ğ¼Ğ¾Ğ³Ğ¾ ÑĞ¿ĞµĞºÑ‚Ğ°ĞºĞ»Ñ Ğ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹ Ğ½Ğ¾Ğ²Ñ‹Ğµ ÑĞµĞ°Ğ½ÑÑ‹ Ğ¸ Ğ±Ğ¸Ğ»ĞµÑ‚Ñ‹.",
-          de: "Neue Spielzeit und Ticketdetails fÃ¼r dein LieblingsstÃ¼ck sind bereit."
+          ru: "Для вашего любимого спектакля готовы новые сеансы и билеты.",
+          de: "Neue Spielzeit und Ticketdetails für dein Lieblingsstück sind bereit."
         }
       });
       setNotificationUsed((value) => value + 1);
-      setStatus("Bildirim gÃ¶nderildi ve kullanÄ±lan hak artÄ±rÄ±ldÄ±.");
+      setStatus("Bildirim gönderildi ve kullanılan hak artırıldı.");
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Bildirim gÃ¶nderilemedi.");
+      setStatus(error instanceof Error ? error.message : "Bildirim gönderilemedi.");
     }
   }
 
   async function increaseLimit() {
     const nextLimit = notificationLimit + 1;
+    setStatus("Admin bildirim limiti güncelleniyor.");
+    try {
+      await adjustTheaterNotificationLimit({ eventId, notificationLimit: nextLimit });
+      setNotificationLimit(nextLimit);
+      setStatus("Bildirim limiti admin tarafından artırıldı.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Bildirim limiti güncellenemedi.");
+    }
+  }
+
+  return (
+    <section className="workflow" id={mode === "admin" ? "dt" : "play"}>
+      <h2>{mode === "admin" ? "Tiyatro Bildirim Kontrolü" : "Tiyatro Üretim Akışı"}</h2>
+      <div className="mini-form">
+        <label>
+          Türkçe sinopsis
+          <textarea value={synopsisTr} onChange={(event) => setSynopsisTr(event.target.value)} rows={4} />
+        </label>
+        <label>
+          Oyun kimliği
+          <select value={eventId} onChange={(event) => selectEvent(event.target.value)}>
+            {events.map((event) => <option key={event.id} value={event.id}>{event.title.tr}</option>)}
+          </select>
+        </label>
         <label>
           Etkinlik kategorisi
           <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)}>
@@ -176,32 +217,8 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
             )}
           </select>
         </label>
-    setStatus("Admin bildirim limiti gÃ¼ncelleniyor.");
-    try {
-      await adjustTheaterNotificationLimit({ eventId, notificationLimit: nextLimit });
-      setNotificationLimit(nextLimit);
-      setStatus("Bildirim limiti admin tarafÄ±ndan artÄ±rÄ±ldÄ±.");
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Bildirim limiti gÃ¼ncellenemedi.");
-    }
-  }
-
-  return (
-    <section className="workflow" id={mode === "admin" ? "dt" : "play"}>
-      <h2>{mode === "admin" ? "Tiyatro Bildirim KontrolÃ¼" : "Tiyatro Ãœretim AkÄ±ÅŸÄ±"}</h2>
-      <div className="mini-form">
         <label>
-          TÃ¼rkÃ§e sinopsis
-          <textarea value={synopsisTr} onChange={(event) => setSynopsisTr(event.target.value)} rows={4} />
-        </label>
-        <label>
-          Oyun kimliÄŸi
-          <select value={eventId} onChange={(event) => selectEvent(event.target.value)}>
-            {events.map((event) => <option key={event.id} value={event.id}>{event.title.tr}</option>)}
-          </select>
-        </label>
-        <label>
-          Manuel oyun kimliÄŸi
+          Manuel oyun kimliği
           <input value={eventId} onChange={(event) => setEventId(event.target.value)} />
         </label>
         <div className="metric-strip">
@@ -210,7 +227,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
             <strong>{notificationLimit}</strong>
           </div>
           <div className="metric">
-            <span>KullanÄ±lan hak</span>
+            <span>Kullanılan hak</span>
             <strong>{notificationUsed}</strong>
           </div>
           <div className="metric">
@@ -219,10 +236,10 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
           </div>
         </div>
         <div className="hero-actions">
-          <button className="secondary" onClick={translate}>Ã‡eviri taslaÄŸÄ± oluÅŸtur</button>
-          <button className="primary" onClick={createDraft}>Oyun taslaÄŸÄ± oluÅŸtur</button>
-          <button className="secondary" onClick={sendNotification}>Bildirim hakkÄ± kullan</button>
-          {mode === "admin" ? <button className="secondary" onClick={increaseLimit}>Bildirim limitini artÄ±r</button> : null}
+          <button className="secondary" onClick={translate}>Çeviri taslağı oluştur</button>
+          <button className="primary" onClick={createDraft}>Oyun taslağı oluştur</button>
+          <button className="secondary" onClick={sendNotification}>Bildirim hakkı kullan</button>
+          {mode === "admin" ? <button className="secondary" onClick={increaseLimit}>Bildirim limitini artır</button> : null}
         </div>
         <p className="meta">{translation}</p>
         <p className="meta" aria-live="polite">{status}</p>
