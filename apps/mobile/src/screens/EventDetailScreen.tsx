@@ -96,7 +96,14 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
       <ActionRow>
         {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void toggleFavorite("event", event.id)} /> : null}
         {!isGuest ? <ActionPill label="Takvime ekle" onPress={() => void scheduleReminder({ entityType: "event", entityId: event.id, remindAt: event.startsAt })} /> : null}
-        <ActionPill label="Bilet al" variant="secondary" onPress={() => void createTicketOrder({ eventId: event.id, eventTitle: event.title.tr, ticketUrl: event.ticketUrl })} />
+        <ActionPill
+          label="Bilet al"
+          variant="secondary"
+          onPress={() => {
+            void createTicketOrder({ eventId: event.id, eventTitle: event.title.tr, ticketUrl: event.ticketUrl });
+            if (event.ticketUrl) openExternalUrl(event.ticketUrl);
+          }}
+        />
       </ActionRow>
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim işlemleri kapalıdır.</Text> : null}
     </ScrollView>

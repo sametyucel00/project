@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { InteractionManager, Pressable, ScrollView, Text, View } from "react-native";
+import { InteractionManager, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { badges, compactValue, defaultPushPreferences, getEventById, getOfferById, getPlaceById, userTasks } from "@nar/core";
 import { ActionPill, ActionRow, DetailPreview, StatStrip } from "../components/ui";
-import { completeUserTask, deleteCurrentAccount, fetchUserOrders, fetchUserQrTransactions, logout, resetCurrentUserScanHistory, useQrTransaction } from "../services";
+import { completeUserTask, deleteCurrentAccount, fetchUserOrders, fetchUserQrTransactions, logout, resetCurrentUserScanHistory, updateMobileProfileDetails, useQrTransaction } from "../services";
 import { loadStoredAppSettings, saveStoredAppSettings } from "../services/appSettings";
 import { saveMobilePreferences, type MobileThemeMode } from "../services/preferences";
 import { db } from "../firebase";
@@ -11,7 +11,7 @@ import { styles } from "../styles";
 import { getMobileLocale, setMobileLocale } from "../locale";
 import { getMobileThemeMode, getMobileThemeVersion, setMobileThemeMode } from "../theme";
 import { perfMark, perfMeasure } from "../services/perf";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import type { MobileScreenProps } from "./types";
 
 type ProfileLocale = "tr" | "en" | "ru" | "de";
@@ -26,6 +26,8 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
   const [preferences, setPreferences] = useState(session?.notificationPreferences ?? defaultPushPreferences);
   const [themeMode, setThemeMode] = useState<MobileThemeMode>(getMobileThemeMode());
   const [language, setLanguage] = useState<ProfileLocale>((getMobileLocale() as ProfileLocale) ?? "tr");
+  const [profileName, setProfileName] = useState(session?.displayName ?? "");
+  const [profileEmail, setProfileEmail] = useState(session?.email ?? "");
   const [qrRows, setQrRows] = useState<Array<[string, string]>>([]);
   const [orderRows, setOrderRows] = useState<Array<[string, string]>>([]);
   const [favoriteRows, setFavoriteRows] = useState<Array<[string, string]>>([]);
@@ -40,6 +42,11 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
   const hydratedRef = useRef(false);
   const copy = getProfileCopy(language);
   const ui = getProfileUi(language);
+  useEffect(() => {
+    setProfileName(session?.displayName ?? "");
+    setProfileEmail(session?.email ?? "");
+  }, [session?.uid, session?.displayName, session?.email]);
+
   useEffect(() => {
     perfMark("profile:screenMount");
     perfMeasure("profile:navigationToMount", "nav:Profil:press");
@@ -104,11 +111,11 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
       return;
     }
 
-    let active = true;
+    let unsubscribe: (() => void) | undefined;
     const task = InteractionManager.runAfterInteractions(() => {
-      void getDocs(query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc")))
-        .then((snapshot) => {
-          if (!active) return;
+      unsubscribe = onSnapshot(
+        query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc")),
+        (snapshot) => {
           const rows = snapshot.docs.map((favorite) => {
             const data = favorite.data() as { entityType?: string; entityId?: string };
             return [
@@ -117,14 +124,13 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
             ] as [string, string];
           });
           setFavoriteRows(rows);
-        })
-        .catch(() => {
-          if (active) setFavoriteRows([]);
-        });
+        },
+        () => setFavoriteRows([])
+      );
     });
 
     return () => {
-      active = false;
+      unsubscribe?.();
       task.cancel();
     };
   }, [language, uid]);
@@ -215,6 +221,29 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
       setStatus(copy.savedSettings);
     } catch {
       setStatus(copy.saveFailed);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function saveIdentity() {
+    if (isGuest || !uid) {
+      setStatus(copy.guestLocked);
+      return;
+    }
+    const nextName = profileName.trim();
+    const nextEmail = profileEmail.trim();
+    if (!nextName || !nextEmail) {
+      setStatus(ui.identityRequired);
+      return;
+    }
+    setSaving(true);
+    setStatus(ui.identitySaving);
+    try {
+      await updateMobileProfileDetails({ displayName: nextName, email: nextEmail });
+      setStatus(ui.identitySaved);
+    } catch {
+      setStatus(ui.identityFailed);
     } finally {
       setSaving(false);
     }
@@ -320,9 +349,22 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
       <Text style={styles.profileText}>{status}</Text>
 
       <SettingsCard title={copy.personalInfo}>
-        <SettingsRow label={copy.name} value={session?.displayName ?? copy.notSignedIn} />
-        <SettingsRow label={copy.email} value={session?.email ?? copy.unspecified} />
+        <TextInput
+          value={profileName}
+          onChangeText={setProfileName}
+          placeholder={copy.name}
+          style={styles.authInput}
+        />
+        <TextInput
+          value={profileEmail}
+          onChangeText={setProfileEmail}
+          placeholder={copy.email}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          style={styles.authInput}
+        />
         <SettingsRow label={copy.role} value={translateRole(session?.role, language)} />
+        {!isGuest ? <ActionPill label={saving ? ui.identitySaving : ui.identitySaveButton} onPress={() => void saveIdentity()} /> : null}
       </SettingsCard>
 
       <SettingsCard title={copy.languageTheme}>
@@ -570,6 +612,11 @@ const profileUiTr = {
   openPrivacy: "Gizlilik ve koşullar",
   openTerms: "Kullanım koşulları",
   openQrCode: "QR kodumu aç",
+  identitySaveButton: "Ad ve e-postayı kaydet",
+  identitySaving: "Kaydediliyor...",
+  identitySaved: "Profil bilgileri güncellendi.",
+  identityFailed: "Profil bilgileri güncellenemedi.",
+  identityRequired: "Ad soyad ve e-posta gerekli.",
   resettingScan: "Tarama verileri temizleniyor...",
   resetScanDone: "Tarama verileri temizlendi.",
   resetScanFailed: "Tarama verileri temizlenemedi.",
@@ -637,6 +684,11 @@ const profileUiTranslations = {
     openPrivacy: "Privacy policy",
     openTerms: "Terms of use",
     openQrCode: "Open my QR code",
+    identitySaveButton: "Save name and email",
+    identitySaving: "Saving...",
+    identitySaved: "Profile details updated.",
+    identityFailed: "Profile details could not be updated.",
+    identityRequired: "Name and email are required.",
     resettingScan: "Clearing scan history...",
     resetScanDone: "Scan history cleared.",
     resetScanFailed: "Scan history could not be cleared.",

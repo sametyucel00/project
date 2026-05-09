@@ -1,4 +1,4 @@
-import { ImageBackground, ScrollView, Text, View } from "react-native";
+import { ImageBackground, ScrollView, Share, Text, View } from "react-native";
 import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
@@ -27,6 +27,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
   const mapUrl = mapPoint && hasMeaningfulMapPoint(mapPoint) ? createStaticMapUrl(mapPoint, process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY) : "";
   const openingHours = place?.openingHours?.length ? place.openingHours.join(" · ") : "Belirtilmemiş";
   const socialLinks = Object.values(place?.socialLinks ?? {}).filter(Boolean);
+  const shareText = place ? [place.title.tr, place.address, place.website].filter(Boolean).join("\n") : "";
 
   if (!place) {
     return (
@@ -53,7 +54,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
       <SubsectionGrid items={[...place.features.slice(0, 6), place.accessibility.wheelchair ? "Engelli dostu" : "Erişim bilgisi yok"]} />
       <ActionRow>
         <ActionPill label="Yol tarifi" variant="secondary" onPress={() => place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address)} />
-        <ActionPill label="Paylaş" variant="secondary" onPress={() => place.website ? openExternalUrl(place.website) : openAddressInMaps(place.address)} />
+        <ActionPill label="Paylaş" variant="secondary" onPress={() => void Share.share({ message: shareText || place.title.tr })} />
         {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void toggleFavorite("place", place.id)} /> : null}
       </ActionRow>
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori kaydedemezsin.</Text> : null}

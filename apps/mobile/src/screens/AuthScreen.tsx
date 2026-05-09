@@ -31,6 +31,7 @@ const copy = {
     guest: "Misafir olarak devam et",
     forgot: "Şifremi unuttum",
     continue: "Devam et",
+    resetEmailRequired: "Şifre sıfırlamak için e-posta gir.",
     accountType: "Hesap tipi",
     individual: "Bireysel",
     business: "İşletme",
@@ -54,6 +55,7 @@ const copy = {
     guest: "Continue as guest",
     forgot: "Forgot password",
     continue: "Continue",
+    resetEmailRequired: "Enter your email to reset the password.",
     accountType: "Account type",
     individual: "Individual",
     business: "Business",
@@ -77,6 +79,7 @@ const copy = {
     guest: "Продолжить как гость",
     forgot: "Забыл пароль",
     continue: "Продолжить",
+    resetEmailRequired: "Чтобы сбросить пароль, укажите e-mail.",
     accountType: "Тип аккаунта",
     individual: "Личный",
     business: "Бизнес",
@@ -99,7 +102,8 @@ const copy = {
     apple: "Mit Apple fortfahren",
     guest: "Als Gast fortfahren",
     forgot: "Passwort vergessen",
-    continue: "Weiter",
+    continue: "Fortfahren",
+    resetEmailRequired: "Gib deine E-Mail zum Zurücksetzen ein.",
     accountType: "Kontotyp",
     individual: "Privat",
     business: "Unternehmen",
@@ -167,7 +171,14 @@ export function AuthScreen({ locale, onSignedIn, onOpenLegal }: AuthProps) {
             <Pressable accessibilityRole="button" onPress={() => setMode("register")} style={[styles.authChoice, mode === "register" && styles.authChoiceActive]}>
               <Text style={mode === "register" ? styles.authChoiceTextActive : styles.authChoiceText}>{c.register}</Text>
             </Pressable>
-            <Pressable accessibilityRole="button" hitSlop={8} onPress={() => void runUtility(() => resetPassword(email.trim()), c.statusResetSent)} style={styles.authChoice}>
+            <Pressable accessibilityRole="button" hitSlop={8} onPress={() => {
+              const nextEmail = email.trim();
+              if (!nextEmail) {
+                setStatus(c.resetEmailRequired);
+                return;
+              }
+              void runUtility(() => resetPassword(nextEmail), c.statusResetSent);
+            }} style={styles.authChoice}>
               <Text style={styles.authChoiceText}>{c.forgot}</Text>
             </Pressable>
           </View>
@@ -280,3 +291,5 @@ function formatAuthError(error: unknown, fallback: string) {
 
   return message;
 }
+
+

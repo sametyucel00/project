@@ -15,6 +15,7 @@ import {
   signInWithPopup,
   signInWithRedirect,
   signOut,
+  updateEmail,
   updateProfile,
   type User
 } from "firebase/auth";
@@ -105,6 +106,14 @@ function createAuthNonce() {
   return `narrehberi-${Date.now()}-${randomPart}`;
 }
 
+function resolveUserEmail(user: User) {
+  return user.email ?? user.providerData.find((entry) => entry.email)?.email ?? "";
+}
+
+function resolveUserDisplayName(user: User) {
+  return user.displayName ?? user.providerData.find((entry) => entry.displayName)?.displayName ?? "Nar kullanıcısı";
+}
+
 function buildGoogleAuthUrl(clientId: string) {
   const nonce = createAuthNonce();
   const params = new URLSearchParams({
@@ -143,8 +152,8 @@ function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): Mobi
   const role: SelfServiceRole = user.isAnonymous ? "individual" : requestedRole ?? "individual";
   const session: MobileSession = {
     uid: user.uid,
-    email: user.email ?? "",
-    displayName: user.displayName ?? "Nar kullanıcısı",
+    email: resolveUserEmail(user),
+    displayName: resolveUserDisplayName(user),
     qrCodeId: `nar-${user.uid}`,
     isAnonymous: user.isAnonymous,
     role,
@@ -188,8 +197,8 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
   const role = (data.role ?? "individual") as UserRole;
   const session: MobileSession = {
     uid: user.uid,
-    email: typeof data.email === "string" ? data.email : user.email ?? "",
-    displayName: typeof data.displayName === "string" ? data.displayName : user.displayName ?? "Nar kullanıcısı",
+    email: typeof data.email === "string" && data.email ? data.email : resolveUserEmail(user),
+    displayName: typeof data.displayName === "string" ? data.displayName : resolveUserDisplayName(user),
     qrCodeId: typeof data.qrCodeId === "string" ? data.qrCodeId : `nar-${user.uid}`,
     isAnonymous: user.isAnonymous,
     role,
@@ -233,8 +242,8 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
         );
         const session: MobileSession = {
           uid: user.uid,
-          email: typeof storedData?.email === "string" ? storedData.email : user.email ?? "",
-          displayName: typeof storedData?.displayName === "string" ? storedData.displayName : user.displayName ?? "Nar kullanıcısı",
+          email: typeof storedData?.email === "string" && storedData.email ? storedData.email : resolveUserEmail(user),
+          displayName: typeof storedData?.displayName === "string" ? storedData.displayName : resolveUserDisplayName(user),
           qrCodeId: typeof storedData?.qrCodeId === "string" ? storedData.qrCodeId : `nar-${user.uid}`,
           isAnonymous: user.isAnonymous,
           role: (storedData?.role ?? "individual") as UserRole,
@@ -261,8 +270,8 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
       const profile = {
         id: user.uid,
         role,
-        displayName: user.displayName ?? "Nar kullanıcısı",
-        email: user.email ?? "",
+        displayName: resolveUserDisplayName(user),
+        email: resolveUserEmail(user),
         city: "Antalya",
         preferredLocale,
         themeMode: "system",
@@ -333,6 +342,37 @@ export async function loginAnonymously() {
 export async function resetPassword(email: string) {
   await sendPasswordResetEmail(auth, email);
   return { ok: true };
+}
+
+export async function updateMobileProfileDetails(input: { displayName?: string; email?: string }) {
+  const currentUser = auth.currentUser;
+  if (!currentUser) {
+    throw new Error("Aktif bir oturum bulunamadı.");
+  }
+
+  const nextDisplayName = input.displayName?.trim();
+  const nextEmail = input.email?.trim();
+  const userRef = doc(db, "users", currentUser.uid);
+
+  if (nextDisplayName && nextDisplayName !== currentUser.displayName) {
+    await updateProfile(currentUser, { displayName: nextDisplayName });
+  }
+
+  if (nextEmail && nextEmail !== currentUser.email) {
+    try {
+      await updateEmail(currentUser, nextEmail);
+    } catch {
+      // We still persist the visible profile email in Firestore below.
+    }
+  }
+
+  await setDoc(userRef, {
+    displayName: nextDisplayName ?? resolveUserDisplayName(currentUser),
+    email: nextEmail ?? resolveUserEmail(currentUser),
+    updatedAt: serverTimestamp()
+  }, { merge: true });
+
+  return ensureMobileUserProfile(currentUser);
 }
 
 export async function loginWithGoogleToken(input: GoogleTokenInput | string) {
@@ -493,3 +533,5 @@ export function watchAuthSession(onSession: (session: MobileSession | null) => v
     unsubscribeAuth();
   };
 }
+
+
