@@ -65,7 +65,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
         {event.ticketUrl ? <ActionPill label="Bilet aç" onPress={() => openExternalUrl(event.ticketUrl)} /> : null}
       </ActionRow>
-      <DetailHeroCard image={event.coverImage} eyebrow={getEventTypeMeta(event).title.tr} title={event.title.tr} subtitle={synopsisText || event.description.tr} />
+      <DetailHeroCard image={event.coverImage} eyebrow={getEventTypeMeta(event).title.tr} title={event.title.tr} />
       <StatStrip items={[
         ["Tarih", formatDate(event.startsAt)],
         ["Yer", event.venueName],

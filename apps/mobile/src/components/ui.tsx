@@ -195,13 +195,13 @@ export function DetailPreview({ title, rows }: { title: string; rows: Array<[str
   );
 }
 
-export function DetailHeroCard({ image, eyebrow, title, subtitle }: { image: string; eyebrow: string; title: string; subtitle: string }) {
+export function DetailHeroCard({ image, eyebrow, title, subtitle }: { image: string; eyebrow: string; title: string; subtitle?: string }) {
   return (
     <ImageBackground source={{ uri: resolveImageSource(image) }} imageStyle={styles.detailHeroImage} style={styles.detailHeroCard}>
       <View style={styles.detailHeroOverlay}>
         <Text style={styles.detailHeroEyebrow}>{eyebrow}</Text>
         <Text style={styles.detailHeroTitle}>{title}</Text>
-        <Text style={styles.detailHeroSubtitle}>{subtitle}</Text>
+        {subtitle ? <Text style={styles.detailHeroSubtitle}>{subtitle}</Text> : null}
       </View>
     </ImageBackground>
   );
