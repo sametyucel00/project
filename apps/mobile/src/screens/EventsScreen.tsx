@@ -248,7 +248,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
       keyExtractor={(event) => event.id}
       renderItem={({ item }) => {
         const venuePlace = resolveEventVenue(venueIndex, item.venueName, item.district);
-        const distance = resolveDistanceLabel(userLocation, venuePlace ?? item);
+        const distance = venuePlace ? resolveDistanceLabel(userLocation, venuePlace) : null;
         return (
           <WideItem
             image={item.coverImage}

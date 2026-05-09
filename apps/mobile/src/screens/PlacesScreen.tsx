@@ -12,7 +12,7 @@ import type { MobileScreenProps } from "./types";
 const placeCopy = {
   tr: { all: "Tümü", open: "Açık", popular: "Popüler", offers: "Fırsatlı", places: "Mekanlar", place: "Mekan", notFound: "Aramana uygun mekan bulunamadı.", openNow: "Açık", hoursMissing: "Saat belirtilmemiş" },
   en: { all: "All", open: "Open", popular: "Popular", offers: "With offers", places: "Places", place: "Place", notFound: "No places match your search.", openNow: "Open", hoursMissing: "Hours not specified" },
-  ru: { all: "Все", open: "Открыто", popular: "Популярные", offers: "С предложениями", places: "Места", place: "Место", notFound: "Места по запросу не найдены.", openNow: "Открыто", hoursMissing: "Часы не указаны" },
+  ru: { all: "Все", open: "Открыто", popular: "Популярные", offers: "С предложениями", places: "Места", place: "Место", notFound: "По запросу не найдено подходящих мест.", openNow: "Открыто", hoursMissing: "Часы не указаны" },
   de: { all: "Alle", open: "Offen", popular: "Beliebt", offers: "Mit Angeboten", places: "Orte", place: "Ort", notFound: "Keine passenden Orte gefunden.", openNow: "Offen", hoursMissing: "Öffnungszeiten fehlen" }
 } as const;
 

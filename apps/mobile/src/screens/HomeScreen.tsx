@@ -53,10 +53,10 @@ const homeLabels = {
     noRating: "Rating not specified"
   },
   ru: {
-    todayEvents: "События сегодня",
-    nearbyPlaces: "Места рядом",
+    todayEvents: "События на сегодня",
+    nearbyPlaces: "Места поблизости",
     offers: "Предложения",
-    noTodayEvents: "На сегодня событий нет.",
+    noTodayEvents: "На сегодня событий не найдено.",
     noPlaces: "Места по запросу не найдены.",
     noOffers: "Предложения по запросу не найдены.",
     paid: "Платно",
@@ -85,10 +85,10 @@ const homeStoryActions = {
     Acil: { label: "Tourist Support", description: "Open emergency and consulate info" }
   },
   ru: {
-    Tiyatro: { label: "События", description: "Открыть театры и сценические программы" },
-    Kahve: { label: "Места", description: "Показать кофейные и паузные точки" },
-    Antik: { label: "Античный гид", description: "Открыть исторические места" },
-    Acil: { label: "Помощь туристам", description: "Открыть аварийную и консульскую информацию" }
+    Tiyatro: { label: "События", description: "Открыть театральные и сценические программы" },
+    Kahve: { label: "Места", description: "Показать кофейни и места для паузы" },
+    Antik: { label: "Античный гид", description: "Открыть исторические точки" },
+    Acil: { label: "Помощь туристам", description: "Открыть экстренную и консульскую информацию" }
   },
   de: {
     Tiyatro: { label: "Veranstaltungen", description: "Theater- und Bühnenprogramm öffnen" },
@@ -267,7 +267,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
       </Section>
       <Section title={labels.nearbyPlaces}>
         {nearbyPlaces.length ? nearbyPlaces.map((place) => (
-          <WideItem key={place.id} image={place.coverImage} title={pickText(place.title, locale)} meta={`${place.district} · ${place.googleRating ?? labels.noRating} · ${resolveDistanceLabel(userLocation, place)}`} onPress={() => onOpenPlace?.(place.id)} />
+          <WideItem key={place.id} image={place.coverImage} title={pickText(place.title, locale)} meta={`${place.district} · ${place.googleRating ? labels.noRating : ""}${place.googleRating ? " · " : ""}${resolveDistanceLabel(userLocation, place)}`} onPress={() => onOpenPlace?.(place.id)} />
         )) : <Text style={styles.emptyText}>{labels.noPlaces}</Text>}
       </Section>
     </ScrollView>

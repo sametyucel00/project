@@ -291,5 +291,3 @@ function formatAuthError(error: unknown, fallback: string) {
 
   return message;
 }
-
-
