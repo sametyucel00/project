@@ -40,6 +40,7 @@ export interface MobileSession {
   uid: string;
   email: string;
   displayName: string;
+  qrCodeId: string;
   isAnonymous: boolean;
   role: UserRole;
   city: string;
@@ -144,6 +145,7 @@ function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): Mobi
     uid: user.uid,
     email: user.email ?? "",
     displayName: user.displayName ?? "Nar kullanıcısı",
+    qrCodeId: `nar-${user.uid}`,
     isAnonymous: user.isAnonymous,
     role,
     city: "Antalya",
@@ -162,6 +164,7 @@ export function createOptimisticGuestSession(): MobileSession {
     uid: "guest-local",
     email: "",
     displayName: "Nar kullanıcısı",
+    qrCodeId: "guest-local",
     isAnonymous: true,
     role: "individual",
     city: "Antalya",
@@ -187,6 +190,7 @@ function toSession(user: User, data: Record<string, unknown>): MobileSession {
     uid: user.uid,
     email: typeof data.email === "string" ? data.email : user.email ?? "",
     displayName: typeof data.displayName === "string" ? data.displayName : user.displayName ?? "Nar kullanıcısı",
+    qrCodeId: typeof data.qrCodeId === "string" ? data.qrCodeId : `nar-${user.uid}`,
     isAnonymous: user.isAnonymous,
     role,
     city: typeof data.city === "string" ? data.city : "Antalya",
@@ -231,6 +235,7 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
           uid: user.uid,
           email: typeof storedData?.email === "string" ? storedData.email : user.email ?? "",
           displayName: typeof storedData?.displayName === "string" ? storedData.displayName : user.displayName ?? "Nar kullanıcısı",
+          qrCodeId: typeof storedData?.qrCodeId === "string" ? storedData.qrCodeId : `nar-${user.uid}`,
           isAnonymous: user.isAnonymous,
           role: (storedData?.role ?? "individual") as UserRole,
           city: typeof storedData?.city === "string" ? storedData.city : "Antalya",
@@ -265,7 +270,7 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
         points,
         initialPointsGrantedAt: user.isAnonymous ? null : serverTimestamp(),
         pointsSeededAt: user.isAnonymous ? null : serverTimestamp(),
-        qrCodeId: "qr_" + user.uid,
+        qrCodeId: `nar-${user.uid}`,
         favoritePlaceIds: [],
         favoriteEventIds: [],
         favoriteOfferIds: [],
@@ -279,6 +284,7 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
         uid: user.uid,
         email: profile.email,
         displayName: profile.displayName,
+        qrCodeId: profile.qrCodeId,
         isAnonymous: user.isAnonymous,
         role: profile.role,
         city: profile.city,

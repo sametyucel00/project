@@ -12,6 +12,7 @@ import { GuideScreen } from "./src/screens/GuideScreen";
 import { PlaceDetailScreen } from "./src/screens/PlaceDetailScreen";
 import { EventDetailScreen } from "./src/screens/EventDetailScreen";
 import { OfferDetailScreen } from "./src/screens/OfferDetailScreen";
+import { QrScreen } from "./src/screens/QrScreen";
 import { OnboardingScreen } from "./src/screens/OnboardingScreen";
 import { AuthScreen } from "./src/screens/AuthScreen";
 import { LegalScreen } from "./src/screens/LegalScreen";
@@ -76,7 +77,8 @@ type Surface =
   | { kind: "legal"; page: "privacy" | "terms" }
   | { kind: "place"; placeId: string }
   | { kind: "event"; eventId: string }
-  | { kind: "offer"; offerId: string };
+  | { kind: "offer"; offerId: string }
+  | { kind: "qr" };
 
 export default function App() {
   return (
@@ -91,6 +93,7 @@ function getRouteMark(surface: Surface, activeTab: TabLabel) {
   if (surface.kind === "place") return "nav:place-detail:route";
   if (surface.kind === "event") return "nav:event-detail:route";
   if (surface.kind === "offer") return "nav:offer-detail:route";
+  if (surface.kind === "qr") return "nav:qr:route";
   if (surface.kind === "tourist") return "nav:tourist:route";
   if (surface.kind === "ancient") return "nav:ancient:route";
   if (surface.kind === "auth") return "nav:auth:route";
@@ -194,12 +197,14 @@ function MobileApp() {
   const showLegal = surface.kind === "legal";
 
   const isTabSurface = surface.kind === "tab";
-  const pageTitle = surface.kind === "tourist" ? t(locale, "touristSurvivalKit")
+  const pageTitleBase = surface.kind === "tourist" ? t(locale, "touristSurvivalKit")
     : surface.kind === "ancient" ? t(locale, "ancientGuide")
       : surface.kind === "place" ? "Mekan Detayı"
         : surface.kind === "event" ? "Etkinlik Detayı"
           : surface.kind === "offer" ? "Fırsat Detayı"
             : t(locale, "appName");
+
+  const pageTitle = surface.kind === "qr" ? "QR Kodum" : pageTitleBase;
 
   const openTab = useCallback((tab: TabLabel) => {
     perfMark(`nav:${tab}:press`);
@@ -236,6 +241,13 @@ function MobileApp() {
     setActiveTab("Fırsatlar");
     perfMark("nav:offer-detail:navigate", { offerId });
     setSurface({ kind: "offer", offerId });
+  }, []);
+
+  const openQr = useCallback(() => {
+    perfMark("nav:qr:press");
+    perfMark("nav:qr:handler");
+    perfMark("nav:qr:navigate");
+    setSurface({ kind: "qr" });
   }, []);
 
   const openTouristGuide = useCallback(() => {
@@ -299,10 +311,11 @@ function MobileApp() {
     onOpenOffer: openOffer,
     onOpenTouristGuide: openTouristGuide,
     onOpenAncientGuide: openAncientGuide,
+    onOpenQr: openQr,
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  }), [homeFeed, effectiveSession, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+  }), [homeFeed, effectiveSession, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openQr, openTab, openAuth, openLegal]);
 
   const catalogScreenProps: MobileScreenProps = useMemo(() => ({
     feed: catalogFeed,
@@ -313,10 +326,11 @@ function MobileApp() {
     onOpenOffer: openOffer,
     onOpenTouristGuide: openTouristGuide,
     onOpenAncientGuide: openAncientGuide,
+    onOpenQr: openQr,
     onOpenTab: openTab,
     onOpenAuth: openAuth,
     onOpenLegal: openLegal
-  }), [catalogFeed, effectiveSession, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openTab, openAuth, openLegal]);
+  }), [catalogFeed, effectiveSession, userLocation, openPlace, openEvent, openOffer, openTouristGuide, openAncientGuide, openQr, openTab, openAuth, openLegal]);
 
   if (onboardingCompleted === null || (!needsOnboarding && sessionLoading && !effectiveSession)) {
     return (
@@ -398,7 +412,7 @@ function MobileApp() {
                   <Text style={styles.headerBackText}>{pageTitle}</Text>
                 </Pressable>
               )}
-              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR kodunu aç" onPress={() => (session ? openTab("Profil") : openAuth())}>
+              <Pressable style={styles.iconButton} accessibilityRole="button" accessibilityLabel="QR ekranını aç" onPress={() => (session && !session.isAnonymous ? openQr() : openAuth())}>
                 <Ionicons name="qr-code-outline" size={22} color={theme.ink} />
               </Pressable>
             </View>
@@ -432,6 +446,8 @@ function MobileApp() {
               <EventDetailScreen {...catalogScreenProps} eventId={surface.eventId} onBack={backToTabs} />
             ) : surface.kind === "offer" ? (
               <OfferDetailScreen {...catalogScreenProps} offerId={surface.offerId} onBack={backToTabs} />
+            ) : surface.kind === "qr" ? (
+              <QrScreen session={effectiveSession} onBack={backToTabs} />
             ) : null}
           </View>
 

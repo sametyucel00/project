@@ -11,6 +11,7 @@ export interface MobileScreenProps {
   onOpenOffer?: (offerId: string) => void;
   onOpenTouristGuide?: () => void;
   onOpenAncientGuide?: () => void;
+  onOpenQr?: () => void;
   onOpenTab?: (tab: MobileTab) => void;
   onOpenAuth?: () => void;
   onOpenLegal?: (kind: "privacy" | "terms") => void;

@@ -61,6 +61,7 @@ function buildSessionSignature(session: MobileSession | null) {
     session.uid,
     session.email,
     session.displayName,
+    session.qrCodeId,
     session.isAnonymous ? "1" : "0",
     session.role,
     session.city,

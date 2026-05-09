@@ -16,11 +16,12 @@ import type { MobileScreenProps } from "./types";
 
 type ProfileLocale = "tr" | "en" | "ru" | "de";
 
-export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: MobileScreenProps) {
+export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr }: MobileScreenProps) {
   const isGuest = !session || session.isAnonymous;
+  const isBusiness = session?.role === "business";
   const points = isGuest ? 0 : session?.points ?? 500;
   const uid = session?.uid;
-  const samplePlace = feed.places[0];
+  const ownedPlace = isBusiness && uid ? feed.places.find((place) => place.ownerId === uid) : null;
 
   const [preferences, setPreferences] = useState(session?.notificationPreferences ?? defaultPushPreferences);
   const [themeMode, setThemeMode] = useState<MobileThemeMode>(getMobileThemeMode());
@@ -235,15 +236,19 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
       setStatus(copy.guestLocked);
       return;
     }
-    if (!uid || !samplePlace) {
-      setStatus(copy.qrRequired);
+    if (!isBusiness) {
+      setStatus(ui.openQrHint);
+      return;
+    }
+    if (!uid || !ownedPlace) {
+      setStatus(ui.qrNoOwnedPlace);
       return;
     }
     setStatus(copy.qrSaving);
     try {
       await useQrTransaction({
         userId: uid,
-        placeId: samplePlace.id,
+        placeId: ownedPlace.id,
         pointsDelta: 25,
         scanId: `mobile-${uid}-${Date.now()}`,
         note: "Mobil profil QR işlemi"
@@ -297,9 +302,16 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal }: Mobile
           <Text style={styles.profileText}>{ui.accountLead}</Text>
           <ActionPill label={ui.signInButton} onPress={() => onOpenAuth?.()} />
         </View>
-      ) : (
+      ) : isBusiness ? (
         <ActionRow>
           <ActionPill label={copy.qrAction} onPress={addQrPoints} />
+          <ActionPill label={ui.openQrCode} variant="secondary" onPress={() => onOpenQr?.()} />
+          <ActionPill label={copy.taskAction} variant="secondary" onPress={finishTask} />
+          <ActionPill label={copy.logout} variant="secondary" onPress={() => void logout()} />
+        </ActionRow>
+      ) : (
+        <ActionRow>
+          <ActionPill label={ui.openQrCode} onPress={() => onOpenQr?.()} />
           <ActionPill label={copy.taskAction} variant="secondary" onPress={finishTask} />
           <ActionPill label={copy.logout} variant="secondary" onPress={() => void logout()} />
         </ActionRow>
@@ -557,9 +569,12 @@ const profileUiTr = {
   resetScanButton: "Tarama verilerini sıfırla",
   openPrivacy: "Gizlilik ve koşullar",
   openTerms: "Kullanım koşulları",
+  openQrCode: "QR kodumu aç",
   resettingScan: "Tarama verileri temizleniyor...",
   resetScanDone: "Tarama verileri temizlendi.",
   resetScanFailed: "Tarama verileri temizlenemedi.",
+  openQrHint: "QR kodunu sağ üstten açıp işletmeye göster.",
+  qrNoOwnedPlace: "Bu QR işlemi için işletmeye ait mekan bulunamadı.",
   deleteAccountButton: "Hesabı sil",
   deleteAccountPending: "Hesap siliniyor...",
   deleteAccountDone: "Hesap silindi.",
@@ -621,9 +636,12 @@ const profileUiTranslations = {
     resetScanButton: "Clear scan history",
     openPrivacy: "Privacy policy",
     openTerms: "Terms of use",
+    openQrCode: "Open my QR code",
     resettingScan: "Clearing scan history...",
     resetScanDone: "Scan history cleared.",
     resetScanFailed: "Scan history could not be cleared.",
+    openQrHint: "Open your QR code from the top right and show it to the business.",
+    qrNoOwnedPlace: "No business-owned place was found for this QR action.",
     deleteAccountButton: "Delete account",
     deleteAccountPending: "Deleting account...",
     deleteAccountDone: "Account deleted.",
