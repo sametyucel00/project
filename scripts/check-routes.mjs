@@ -15,7 +15,6 @@ const routes = [
   "/etkinlikler",
   "/etkinlikler/may-theater-night",
   "/firsatlar",
-  "/firsatlar/coffee-qr-week",
   "/panel/admin",
   "/panel/isletme",
   "/panel/tiyatro",

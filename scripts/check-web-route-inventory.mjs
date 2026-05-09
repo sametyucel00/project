@@ -54,7 +54,6 @@ for (const slug of seoMetaSlugs) {
 const requiredRuntimeRoutes = [
   "/mekanlar/old-town-table",
   "/etkinlikler/may-theater-night",
-  "/firsatlar/coffee-qr-week",
   "/panel/admin",
   "/panel/isletme",
   "/panel/tiyatro",
@@ -67,7 +66,7 @@ const requiredRuntimeRoutes = [
 for (const route of requiredRuntimeRoutes) {
   const pagePath = route.endsWith(".xml") || route.endsWith(".txt") || route.endsWith(".webmanifest")
     ? null
-    : routeToPageFile(route.replace(/\/(old-town-table|may-theater-night|coffee-qr-week)$/, "/[id]"));
+    : routeToPageFile(route.replace(/\/(old-town-table|may-theater-night)$/, "/[id]"));
   if (pagePath && !exists(pagePath)) failures.push(`${route}: runtime sayfa dosyası eksik (${pagePath})`);
 }
 

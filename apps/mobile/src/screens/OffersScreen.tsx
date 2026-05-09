@@ -60,7 +60,7 @@ export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide,
       return;
     }
     if (story === "Kahve") {
-      onOpenOffer?.("coffee-qr-week");
+      onOpenTab?.("Mekanlar");
       return;
     }
     onOpenOffer?.(story);

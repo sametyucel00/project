@@ -917,14 +917,14 @@ export const sampleOrders: NarOrder[] = [
     createdAt: "2026-05-01T11:00:00+03:00"
   },
   {
-    id: "order-offer-coffee-qr-week",
+    id: "order-offer-demo",
     userId: "demo-user",
     type: "offer",
     status: "used",
-    entityId: "coffee-qr-week",
-    entityTitle: "QR ile ikinci kahve %50",
-    businessId: "business-harbor",
-    placeId: "harbor-coffee",
+    entityId: "demo-offer",
+    entityTitle: "Demo f?rsat",
+    businessId: "business-demo",
+    placeId: "demo-place",
     pointsDelta: 0,
     amountLabel: "%50",
     createdAt: "2026-05-01T12:30:00+03:00",
@@ -948,13 +948,13 @@ export const sampleQrTransactions: QrTransaction[] = [
   {
     id: "qr-demo-offer",
     userId: "demo-user",
-    businessId: "business-harbor",
-    placeId: "harbor-coffee",
-    offerId: "coffee-qr-week",
+    businessId: "business-demo",
+    placeId: "demo-place",
+    offerId: null,
     type: "spend",
     pointsDelta: 0,
     balanceAfter: 575,
-    note: "QR kampanya kullanımı",
+    note: "QR kampanya kullan?m?",
     createdAt: "2026-05-01T12:35:00+03:00"
   }
 ];
@@ -1359,48 +1359,9 @@ const curatedFeaturedEvents: EventItem[] = [
 
 export const featuredEvents: EventItem[] = [...curatedFeaturedEvents, ...legacyAntalyaEvents, ...biletinialAutfFestivalEvents, ...antalyaMay2026Events];
 
-export const featuredOffers: Offer[] = [
-  {
-    id: "coffee-qr-week",
-    businessId: "business-harbor",
-    placeId: "harbor-coffee",
-    title: { tr: "QR ile ikinci kahve %50", en: "Second coffee 50% with QR", ru: "Второй кофе -50% с QR", de: "Zweiter Kaffee 50% mit QR" },
-    description: {
-      tr: "Nar QR kodunu göster, günün ikinci kahvesini yarı fiyatına al.",
-      en: "Show your Nar QR code and get the second coffee of the day half price.",
-      ru: "Покажите QR Nar и получите второй кофе дня за полцены.",
-      de: "Zeige deinen Nar-QR-Code und erhalte den zweiten Kaffee zum halben Preis."
-    },
-    discountLabel: "%50",
-    startsAt: "2026-05-01T00:00:00+03:00",
-    endsAt: "2026-05-31T23:59:00+03:00",
-    conditions: {
-      tr: "Günde bir kez kullanılabilir. Paket servis dahil değildir.",
-      en: "Can be used once per day. Takeaway is not included.",
-      ru: "Можно использовать один раз в день. Еда навынос не включена.",
-      de: "Einmal pro Tag nutzbar. Take-away ist nicht enthalten."
-    },
-    requiresQr: true,
-    pointCost: 0,
-    storyEnabled: true,
-    storyPriority: 1,
-    useLimit: 500,
-    usedCount: 128,
-    featured: true,
-    status: "published"
-  }
-];
+export const featuredOffers: Offer[] = [];
 
-export const offerStories: OfferStory[] = [
-  {
-    id: "story-coffee-qr-week",
-    offerId: "coffee-qr-week",
-    title: { tr: "Kahve molası", en: "Coffee break", ru: "Кофейная пауза", de: "Kaffeepause" },
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
-    priority: 1,
-    status: "published"
-  }
-];
+export const offerStories: OfferStory[] = [];
 
 export function compactValue(value?: string | number | boolean | null) {
   if (value === undefined || value === null || value === "") return "Belirtilmemiş";

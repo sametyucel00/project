@@ -251,7 +251,7 @@ export function ExportManifestForm() {
 }
 
 export function OfferCampaignForm() {
-  const [offerId, setOfferId] = useState("coffee-qr-week");
+  const [offerId, setOfferId] = useState("");
   const [placeId, setPlaceId] = useState("harbor-coffee");
   const [discountLabel, setDiscountLabel] = useState("%25");
   const [useLimit, setUseLimit] = useState(250);
@@ -343,7 +343,7 @@ export function OfferCampaignForm() {
 export function QrTransactionForm() {
   const [userId, setUserId] = useState("");
   const [placeId, setPlaceId] = useState("harbor-coffee");
-  const [offerId, setOfferId] = useState("coffee-qr-week");
+  const [offerId, setOfferId] = useState("");
   const [pointsDelta, setPointsDelta] = useState(75);
   const [scanId, setScanId] = useState(`scan-${Date.now()}`);
   const [status, setStatus] = useState("QR puan işlemi hazır.");
