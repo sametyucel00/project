@@ -12,6 +12,9 @@ import { perfMark, perfMeasure } from "../services/perf";
 
 export function EventDetailScreen({ feed, userLocation, session, eventId, onBack }: MobileScreenProps & { eventId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
+  const [actionStatus, setActionStatus] = useState("");
+  const [pendingAction, setPendingAction] = useState<"favorite" | "calendar" | null>(null);
+
   useEffect(() => {
     perfMark("eventDetail:screenMount");
     perfMeasure("eventDetail:navigationToMount", "nav:event-detail:press");
@@ -21,6 +24,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
       perfMeasure("eventDetail:navigationToFirstPaint", "nav:event-detail:press");
     });
   }, []);
+
   const locale = getMobileLocale();
   const event = useMemo(() => feed.events.find((item) => item.id === eventId), [eventId, feed.events]);
   const venue = useMemo(() => event ? resolveEventVenue(feed.places, event.venueName, event.district, locale) : undefined, [event, feed.places, locale]);
@@ -50,6 +54,34 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
     };
   }, [event?.description.tr, locale, synopsis]);
 
+  async function handleToggleFavorite() {
+    if (!event || pendingAction) return;
+    setPendingAction("favorite");
+    setActionStatus("Favori işleniyor...");
+    try {
+      const result = await toggleFavorite("event", event.id);
+      setActionStatus(result.active ? "Etkinlik favorilere eklendi." : "Etkinlik favorilerden kaldırıldı.");
+    } catch {
+      setActionStatus("Favori işlemi tamamlanamadı.");
+    } finally {
+      setPendingAction(null);
+    }
+  }
+
+  async function handleScheduleReminder() {
+    if (!event || pendingAction) return;
+    setPendingAction("calendar");
+    setActionStatus("Takvim işleniyor...");
+    try {
+      await scheduleReminder({ entityType: "event", entityId: event.id, remindAt: event.startsAt });
+      setActionStatus("Etkinlik takvime eklendi.");
+    } catch {
+      setActionStatus("Takvime ekleme tamamlanamadı.");
+    } finally {
+      setPendingAction(null);
+    }
+  }
+
   if (!event) {
     return (
       <View style={styles.profileSurface}>
@@ -66,22 +98,29 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         {event.ticketUrl ? <ActionPill label="Bilet aç" onPress={() => openExternalUrl(event.ticketUrl)} /> : null}
       </ActionRow>
       <DetailHeroCard image={event.coverImage} eyebrow={getEventTypeMeta(event).title.tr} title={event.title.tr} />
-      <StatStrip items={[
-        ["Tarih", formatDate(event.startsAt)],
-        ["Yer", event.venueName],
-        ["Bilet", event.priceType === "free" ? "Ücretsiz" : "Ücretli"],
-        ["Mesafe", resolveDistanceLabel(userLocation, venue ?? event)]
-      ]} />
+      <StatStrip
+        items={[
+          ["Tarih", formatDate(event.startsAt)],
+          ["Yer", event.venueName],
+          ["Bilet", event.priceType === "free" ? "Ücretsiz" : "Ücretli"],
+          ["Mesafe", resolveDistanceLabel(userLocation, venue ?? event)]
+        ]}
+      />
       <SubsectionGrid items={[...event.cast.slice(0, 4), event.district]} />
 
       <View style={styles.settingsCard}>
         <Text style={styles.settingsTitle}>Etkinlik bilgileri</Text>
         <DetailLinkRow icon="calendar-outline" label="Tarih ve saat" value={formatDate(event.startsAt)} />
-        <DetailLinkRow icon="location-outline" label="Mekan" value={event.venueName} onPress={() => venue?.location ? openAddressInMaps(venue.address ?? event.venueName) : undefined} />
+        <DetailLinkRow icon="location-outline" label="Mekan" value={event.venueName} onPress={() => (venue?.location ? openAddressInMaps(venue.address ?? event.venueName) : undefined)} />
         <DetailLinkRow icon="people-outline" label="Kadro" value={compactValue(event.cast.join(", "))} />
         <DetailLinkRow icon="document-text-outline" label="Sinopsis" value={compactValue(synopsisText)} />
         <DetailLinkRow icon="ticket-outline" label="Bilet bağlantısı" value={compactValue(event.ticketUrl)} onPress={() => openExternalUrl(event.ticketUrl)} />
-        <DetailLinkRow icon="navigate-outline" label="Yol tarifi" value="Bağlantı" onPress={() => venue?.location ? openExternalUrl(createGoogleMapsDirectionsUrl(venue.location, venue.title.tr)) : openAddressInMaps(venue?.address ?? event.venueName)} />
+        <DetailLinkRow
+          icon="navigate-outline"
+          label="Yol tarifi"
+          value="Bağlantı"
+          onPress={() => (venue?.location ? openExternalUrl(createGoogleMapsDirectionsUrl(venue.location, venue.title.tr)) : openAddressInMaps(venue?.address ?? event.venueName))}
+        />
       </View>
 
       <View style={styles.settingsCard}>
@@ -94,8 +133,8 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
       </View>
 
       <ActionRow>
-        {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void toggleFavorite("event", event.id)} /> : null}
-        {!isGuest ? <ActionPill label="Takvime ekle" onPress={() => void scheduleReminder({ entityType: "event", entityId: event.id, remindAt: event.startsAt })} /> : null}
+        {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void handleToggleFavorite()} disabled={pendingAction !== null} /> : null}
+        {!isGuest ? <ActionPill label="Takvime ekle" onPress={() => void handleScheduleReminder()} disabled={pendingAction !== null} /> : null}
         <ActionPill
           label="Bilet al"
           variant="secondary"
@@ -105,6 +144,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
           }}
         />
       </ActionRow>
+      {actionStatus ? <Text style={styles.detailActionStatus}>{actionStatus}</Text> : null}
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim işlemleri kapalıdır.</Text> : null}
     </ScrollView>
   );

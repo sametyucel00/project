@@ -81,6 +81,7 @@ function buildStyles() {
     actionPillSecondary: { backgroundColor: theme.surface, borderWidth: StyleSheet.hairlineWidth, borderColor: theme.line },
     actionPillText: { color: theme.paper, fontWeight: "800", textAlign: "center", width: "100%" },
     actionPillTextSecondary: { color: theme.ink, fontWeight: "800", textAlign: "center", width: "100%" },
+    detailActionStatus: { color: theme.muted, lineHeight: 20, paddingTop: 8 },
     emptyText: { color: theme.muted, lineHeight: 21, paddingVertical: 10 },
     detailLinkRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: theme.line, paddingVertical: 12 },
     detailLinkLabelWrap: { flexDirection: "row", alignItems: "center", gap: 8, flex: 1, minWidth: 0 },

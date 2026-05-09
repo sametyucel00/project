@@ -168,10 +168,10 @@ export function DetailLinkRow({
   );
 }
 
-export function ActionPill({ label, onPress, variant = "primary" }: { label: string; onPress?: () => void; variant?: "primary" | "secondary" }) {
+export function ActionPill({ label, onPress, variant = "primary", disabled = false }: { label: string; onPress?: () => void; variant?: "primary" | "secondary"; disabled?: boolean }) {
   const secondary = variant === "secondary";
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} style={[styles.actionPill, secondary && styles.actionPillSecondary]}>
+    <Pressable accessibilityRole="button" accessibilityState={{ disabled }} disabled={disabled} onPress={disabled ? undefined : onPress} style={[styles.actionPill, secondary && styles.actionPillSecondary, disabled && { opacity: 0.62 }]}>
       <Text style={secondary ? styles.actionPillTextSecondary : styles.actionPillText}>{label}</Text>
     </Pressable>
   );

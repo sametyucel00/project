@@ -5,12 +5,15 @@ import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { openAddressInMaps, openEmailAddress, openExternalUrl, openPhoneNumber } from "../utils/links";
 import { toggleFavorite } from "../services";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { hasMeaningfulMapPoint, readMapPoint, resolveDistanceLabel } from "../utils/location";
 import { perfMark, perfMeasure } from "../services/perf";
 
 export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack }: MobileScreenProps & { placeId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
+  const [actionStatus, setActionStatus] = useState("");
+  const [pendingFavorite, setPendingFavorite] = useState(false);
+
   useEffect(() => {
     perfMark("placeDetail:screenMount");
     perfMeasure("placeDetail:navigationToMount", "nav:place-detail:press");
@@ -20,6 +23,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
       perfMeasure("placeDetail:navigationToFirstPaint", "nav:place-detail:press");
     });
   }, []);
+
   const place = useMemo(() => feed.places.find((item) => item.id === placeId), [feed.places, placeId]);
   const category = place ? placeCategoryOptions.find((item) => item.id === getPlaceCategoryId(place))?.title.tr ?? "Mekan" : "Mekan";
   const placeLocation = place;
@@ -28,6 +32,20 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
   const openingHours = place?.openingHours?.length ? place.openingHours.join(" · ") : "Belirtilmemiş";
   const socialLinks = Object.values(place?.socialLinks ?? {}).filter(Boolean);
   const shareText = place ? [place.title.tr, place.address, place.website].filter(Boolean).join("\n") : "";
+
+  async function handleToggleFavorite() {
+    if (!place || pendingFavorite) return;
+    setPendingFavorite(true);
+    setActionStatus("Favori işleniyor...");
+    try {
+      const result = await toggleFavorite("place", place.id);
+      setActionStatus(result.active ? "Mekan favorilere eklendi." : "Mekan favorilerden kaldırıldı.");
+    } catch {
+      setActionStatus("Favori işlemi tamamlanamadı.");
+    } finally {
+      setPendingFavorite(false);
+    }
+  }
 
   if (!place) {
     return (
@@ -45,18 +63,21 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
         <ActionPill label="Haritada aç" onPress={() => openAddressInMaps(place.address)} />
       </ActionRow>
       <DetailHeroCard image={place.coverImage} eyebrow={category} title={place.title.tr} subtitle={place.description.tr} />
-      <StatStrip items={[
-        ["Puan", compactValue(place.googleRating)],
-        ["Yorum", compactValue(place.googleReviewCount)],
-        ["Durum", place.openNow ? "Açık" : "Belirtilmemiş"],
-        ["Mesafe", resolveDistanceLabel(userLocation, place)]
-      ]} />
+      <StatStrip
+        items={[
+          ["Puan", compactValue(place.googleRating)],
+          ["Yorum", compactValue(place.googleReviewCount)],
+          ["Durum", place.openNow ? "Açık" : "Belirtilmemiş"],
+          ["Mesafe", resolveDistanceLabel(userLocation, place)]
+        ]}
+      />
       <SubsectionGrid items={[...place.features.slice(0, 6), place.accessibility.wheelchair ? "Engelli dostu" : "Erişim bilgisi yok"]} />
       <ActionRow>
-        <ActionPill label="Yol tarifi" variant="secondary" onPress={() => place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address)} />
+        <ActionPill label="Yol tarifi" variant="secondary" onPress={() => (place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address))} />
         <ActionPill label="Paylaş" variant="secondary" onPress={() => void Share.share({ message: shareText || place.title.tr })} />
-        {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void toggleFavorite("place", place.id)} /> : null}
+        {!isGuest ? <ActionPill label="Favori" variant="secondary" onPress={() => void handleToggleFavorite()} disabled={pendingFavorite} /> : null}
       </ActionRow>
+      {actionStatus ? <Text style={styles.detailActionStatus}>{actionStatus}</Text> : null}
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori kaydedemezsin.</Text> : null}
 
       <View style={styles.settingsCard}>
@@ -81,7 +102,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
       <View style={styles.settingsCard}>
         <Text style={styles.settingsTitle}>Ek bilgiler</Text>
         <DetailLinkRow icon="share-outline" label="Sosyal medya" value={socialLinks.length ? socialLinks.join(" · ") : "Belirtilmemiş"} />
-        <DetailLinkRow icon="navigate-outline" label="Yol tarifi" value="Bağlantı" onPress={() => place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address)} />
+        <DetailLinkRow icon="navigate-outline" label="Yol tarifi" value="Bağlantı" onPress={() => (place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address))} />
       </View>
     </ScrollView>
   );
