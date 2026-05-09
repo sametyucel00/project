@@ -71,7 +71,7 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
           ["Mesafe", resolveDistanceLabel(userLocation, place)]
         ]}
       />
-      <SubsectionGrid items={[...place.features.slice(0, 6), place.accessibility.wheelchair ? "Engelli dostu" : "Erişim bilgisi yok"]} />
+      <SubsectionGrid items={[...place.features.slice(0, 6), ...(place.accessibility.wheelchair ? ["Engelli dostu"] : [])]} />
       <ActionRow>
         <ActionPill label="Yol tarifi" variant="secondary" onPress={() => (place.location ? openExternalUrl(createGoogleMapsDirectionsUrl(place.location, place.title.tr)) : openAddressInMaps(place.address))} />
         <ActionPill label="Paylaş" variant="secondary" onPress={() => void Share.share({ message: shareText || place.title.tr })} />
