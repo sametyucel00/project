@@ -85,10 +85,6 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
     return titles;
   }, [discoveryCategories, locale]);
 
-  const availableCategoryIds = useMemo(
-    () => new Set(feed.places.map((place) => resolvePlaceCategoryId(place, categoryTitleById))),
-    [categoryTitleById, feed.places]
-  );
   const offerPlaceIds = useMemo(() => new Set(feed.offers.map((offer) => offer.placeId)), [feed.offers]);
 
   const categoryTitleByPlaceId = useMemo(() => {
@@ -103,12 +99,12 @@ export function PlacesScreen({ feed, userLocation, onOpenPlace }: MobileScreenPr
   const categories = useMemo(
     () => [
       { id: "all", label: c.all },
-      ...placeCategoryOptions
-        .filter((category) => availableCategoryIds.has(category.id))
-        .map((category) => ({ id: category.id, label: categoryTitleById.get(category.id) ?? c.place })),
-      ...discoveryCategories.filter((category) => availableCategoryIds.has(category.id))
+      ...placeCategoryOptions.map((category) => ({ id: category.id, label: categoryTitleById.get(category.id) ?? pickText(category.title, locale) })),
+      ...discoveryCategories
+        .filter((category) => !placeCategoryOptions.some((item) => item.id === category.id))
+        .map((category) => ({ id: category.id, label: category.label }))
     ],
-    [availableCategoryIds, c.all, c.place, categoryTitleById, discoveryCategories]
+    [c.all, categoryTitleById, discoveryCategories, locale]
   );
 
   const filteredPlaces = useMemo(() => {

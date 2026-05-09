@@ -1,7 +1,8 @@
-import { FlatList, Pressable, Text, View } from "react-native";
-import { eventTypes, eventViewModes, type EventViewMode } from "@nar/core";
+import { FlatList, InteractionManager, Pressable, Text, View } from "react-native";
+import { eventTypes, eventViewModes, getEventTypeId, type EventViewMode } from "@nar/core";
 import { FilterRow, SearchBar, WideItem } from "../components/ui";
 import { getMobileLocale } from "../locale";
+import { fetchDiscoveryCategories } from "../services/discovery";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
@@ -71,11 +72,14 @@ const eventCopy = {
   }
 } as const;
 
+type EventItemWithCategory = { categoryId?: string };
+
 export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenProps) {
   const locale = getMobileLocale();
   const c = eventCopy[locale] ?? eventCopy.tr;
   const quickFilters = [c.all, c.today, c.week, c.free, c.soon];
   const [query, setQuery] = useState("");
+  const [discoveryCategories, setDiscoveryCategories] = useState<Array<{ id: string; title: { tr: string; en?: string; ru?: string; de?: string } }>>([]);
   const [activeType, setActiveType] = useState<string>(c.all);
   const [activeFilter, setActiveFilter] = useState<string>(c.all);
   const [viewMode, setViewMode] = useState<EventViewMode>("list");
@@ -98,6 +102,27 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     setActiveFilter(c.all);
   }, [c.all]);
 
+  useEffect(() => {
+    let active = true;
+    const task = InteractionManager.runAfterInteractions(() => {
+      void fetchDiscoveryCategories()
+        .then((categories) => {
+          if (!active) return;
+          const next = categories
+            .filter((category) => category.target === "event" && (category.status ?? "published") === "published")
+            .map((category) => ({ id: category.id, title: category.title }));
+          setDiscoveryCategories(next);
+        })
+        .catch(() => {
+          if (active) setDiscoveryCategories([]);
+        });
+    });
+    return () => {
+      active = false;
+      task.cancel();
+    };
+  }, []);
+
   const eventTypeLabels = useMemo(() => {
     const labels = new Map<string, string>();
     for (const type of eventTypes) {
@@ -106,16 +131,16 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     return labels;
   }, [c.workshop, locale]);
 
-  const eventTypeIds = useMemo(() => new Set(feed.events.map((event) => event.type)), [feed.events]);
-
   const typeFilters = useMemo(
     () => [
-      c.all,
-      ...eventTypes
-        .filter((type) => eventTypeIds.has(type.id))
-        .map((type) => eventTypeLabels.get(type.id) ?? c.workshop)
+      { id: "all", label: c.all },
+      ...[
+        ...eventTypes.map((type) => ({ id: type.id, title: type.title })),
+        ...discoveryCategories.filter((category) => !eventTypes.some((type) => type.id === category.id))
+      ]
+        .map((type) => ({ id: type.id, label: eventTypeLabels.get(type.id) ?? pickText(type.title, locale) }))
     ],
-    [c.all, c.workshop, eventTypeIds, eventTypeLabels]
+    [c.all, eventTypeLabels, discoveryCategories, locale]
   );
 
   const todayStartTime = useMemo(() => {
@@ -128,10 +153,23 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     () =>
       feed.events
         .filter((event) => {
-          const typeLabel = eventTypeLabels.get(event.type) ?? c.workshop;
-          const haystack = normalize([pickText(event.title, locale), pickText(event.description, locale), event.venueName, event.district, typeLabel].join(" "));
+          const eventCategoryId = (event as EventItemWithCategory).categoryId ?? getEventTypeId(event);
+          const customCategoryTitle = discoveryCategories.find((category) => category.id === eventCategoryId)?.title;
+          const defaultTypeTitle = eventTypes.find((type) => type.id === getEventTypeId(event))?.title;
+          const typeLabel = eventTypeLabels.get(getEventTypeId(event)) ?? c.workshop;
+          const haystack = normalize([
+            pickText(event.title, locale),
+            pickText(event.description, locale),
+            pickText(event.synopsis, locale),
+            event.venueName,
+            event.district,
+            event.type,
+            typeLabel,
+            customCategoryTitle ? pickText(customCategoryTitle, locale) : "",
+            defaultTypeTitle ? pickText(defaultTypeTitle, locale) : ""
+          ].join(" "));
           if (deferredQuery.trim() && !haystack.includes(normalize(deferredQuery))) return false;
-          if (activeType !== c.all && typeLabel !== activeType) return false;
+          if (activeType !== c.all && eventCategoryId !== activeType && getEventTypeId(event) !== activeType) return false;
           if (activeFilter === c.today && !isToday(event.startsAt)) return false;
           if (activeFilter === c.week && !isThisWeek(event.startsAt)) return false;
           if (activeFilter === c.free && event.priceType !== "free") return false;
@@ -148,7 +186,7 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
           if (firstUpcoming !== secondUpcoming) return firstUpcoming ? -1 : 1;
           return firstUpcoming ? firstTime - secondTime : secondTime - firstTime;
         }),
-    [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, eventTypeLabels, feed.events, todayStartTime, viewMode, locale]
+    [activeFilter, activeType, c.all, c.free, c.soon, c.today, c.week, c.workshop, deferredQuery, discoveryCategories, eventTypeLabels, feed.events, todayStartTime, viewMode, locale]
   );
 
   const visibleEvents = useMemo(() => filteredEvents.slice(0, visibleCount), [filteredEvents, visibleCount]);
@@ -176,7 +214,14 @@ export function EventsScreen({ feed, userLocation, onOpenEvent }: MobileScreenPr
     return (
       <View style={{ paddingHorizontal: 18 }}>
         <SearchBar value={query} onChangeText={setQuery} />
-        <FilterRow filters={typeFilters} activeFilter={activeType} onSelect={setActiveType} />
+        <FilterRow
+          filters={typeFilters.map((filter) => filter.label)}
+          activeFilter={typeFilters.find((filter) => filter.id === activeType)?.label ?? c.all}
+          onSelect={(label) => {
+            const selected = typeFilters.find((filter) => filter.label === label);
+            setActiveType(selected?.id ?? "all");
+          }}
+        />
         <FilterRow filters={quickFilters} activeFilter={activeFilter} onSelect={setActiveFilter} />
         <View style={styles.calendarBand}>
           {eventViewModes.filter((mode) => mode.id !== "map").map((mode) => (
