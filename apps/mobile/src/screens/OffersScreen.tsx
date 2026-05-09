@@ -7,6 +7,7 @@ import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 
 const offerFilters = ["Tümü", "QR ile", "Puanla", "Sınırlı", "Öne çıkan"];
+const hiddenOfferIds = new Set(["coffee-qr-week"]);
 
 export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide, onOpenTouristGuide }: MobileScreenProps) {
   const [query, setQuery] = useState("");
@@ -15,7 +16,10 @@ export function OffersScreen({ feed, onOpenOffer, onOpenTab, onOpenAncientGuide,
   const [visibleCount, setVisibleCount] = useState(10);
   const deferredQuery = useDeferredValue(query);
 
-  const mergedOffers = useMemo(() => mergeOffers(feed.offers, featuredOffers), [feed.offers]);
+  const mergedOffers = useMemo(
+    () => mergeOffers(feed.offers.filter((offer) => !hiddenOfferIds.has(offer.id)), featuredOffers.filter((offer) => !hiddenOfferIds.has(offer.id))),
+    [feed.offers]
+  );
 
   const filteredOffers = useMemo(
     () =>

@@ -13,6 +13,7 @@ import { InteractionManager } from "react-native";
 
 type TimeKey = "morning" | "noon" | "evening" | "night";
 type StoryKey = "Tiyatro" | "Kahve" | "Antik" | "Acil";
+const hiddenOfferIds = new Set(["coffee-qr-week"]);
 
 const timeColors: Record<TimeKey, string> = {
   morning: "#d86f3f",
@@ -125,6 +126,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
   const [touristItems, setTouristItems] = useState<SurvivalKitItem[]>(touristSurvivalKit);
   const [ancientStops, setAncientStops] = useState<AncientGuideStop[]>(ancientGuideStops);
   const deferredQuery = useDeferredValue(query);
+  const visibleOffers = useMemo(() => feed.offers.filter((offer) => !hiddenOfferIds.has(offer.id)), [feed.offers]);
 
   useEffect(() => {
     let active = true;
@@ -186,10 +188,10 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
 
   const matchingOffers = useMemo(
     () =>
-      feed.offers
+      visibleOffers
         .filter((offer) => matchesText([pickText(offer.title, locale), pickText(offer.description, locale), pickText(offer.conditions, locale), offer.discountLabel], normalizedQuery))
         .slice(0, 4),
-    [feed.offers, locale, normalizedQuery]
+    [locale, normalizedQuery, visibleOffers]
   );
 
   const nearbyPlaces = useMemo(
@@ -237,7 +239,7 @@ export function HomeScreen({ feed, userLocation, onOpenPlace, onOpenEvent, onOpe
         <Text style={styles.timeTitle}>{discovery.title}</Text>
         <Text style={styles.timeFilters}>{discovery.filters.join(" · ")}</Text>
       </View>
-      <StoryRail offers={feed.offers.slice(0, 2)} activeStory={activeStory} onSelect={handleStorySelect} />
+      <StoryRail offers={visibleOffers.slice(0, 2)} activeStory={activeStory} onSelect={handleStorySelect} />
       {selectedStory ? (
         <View style={styles.settingsCard}>
           <Text style={styles.settingsTitle}>{selectedStory.label}</Text>
