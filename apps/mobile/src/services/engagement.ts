@@ -1,7 +1,7 @@
 import { type FavoriteEntityType, type NarOrder, type PushPreferences, type QrTransaction, type ReminderEntityType } from "@nar/core";
-import { collection, getDocs, limit, orderBy, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, limit, orderBy, query, runTransaction, serverTimestamp, setDoc, where } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
-import { db, functions } from "../firebase";
+import { auth, db, functions } from "../firebase";
 
 export interface QrTransactionInput {
   userId: string;
@@ -38,13 +38,54 @@ export async function useQrTransaction(input: QrTransactionInput) {
 }
 
 export async function toggleFavorite(entityType: FavoriteEntityType, entityId: string) {
-  const result = await toggleFavoriteCallable({ entityType, entityId });
-  return result.data;
+  const uid = auth.currentUser?.uid;
+  if (!uid) {
+    throw new Error("Oturum bulunamadı.");
+  }
+
+  const favoriteId = `${entityType}_${entityId}`;
+  const favoriteRef = doc(db, "users", uid, "favorites", favoriteId);
+  let active = false;
+
+  await runTransaction(db, async (tx) => {
+    const favorite = await tx.get(favoriteRef);
+    if (favorite.exists()) {
+      tx.delete(favoriteRef);
+      active = false;
+    } else {
+      tx.set(favoriteRef, {
+        id: favoriteId,
+        userId: uid,
+        entityType,
+        entityId,
+        createdAt: serverTimestamp()
+      });
+      active = true;
+    }
+  });
+
+  return { active };
 }
 
 export async function scheduleReminder(input: ReminderInput) {
-  const result = await scheduleReminderCallable(input);
-  return result.data;
+  const uid = auth.currentUser?.uid;
+  if (!uid) {
+    throw new Error("Oturum bulunamadı.");
+  }
+
+  const reminderRef = doc(collection(db, "users", uid, "reminders"));
+  await setDoc(reminderRef, {
+    id: reminderRef.id,
+    userId: uid,
+    entityType: input.entityType,
+    entityId: input.entityId,
+    remindAt: input.remindAt,
+    channel: input.channel ?? "push",
+    status: "scheduled",
+    createdAt: serverTimestamp()
+  });
+
+  return { id: reminderRef.id };
 }
 
 export async function updatePushPreferences(preferences: PushPreferences) {
