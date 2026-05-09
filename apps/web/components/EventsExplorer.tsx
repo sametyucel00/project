@@ -146,7 +146,8 @@ export function EventsExplorer() {
     const currentYear = now.getFullYear();
 
     const byFilter = items.filter((event) => {
-      const customCategoryTitle = customCategories.find((category) => category.id === event.type)?.title;
+      const eventCategoryId = event.categoryId ?? getEventTypeId(event);
+      const customCategoryTitle = customCategories.find((category) => category.id === eventCategoryId)?.title;
       const defaultTypeTitle = eventTypes.find((type) => type.id === getEventTypeId(event))?.title;
       const searchHaystack = [
         event.title.tr,
@@ -164,6 +165,7 @@ export function EventsExplorer() {
         event.venueName,
         event.district,
         event.type,
+        eventCategoryId,
         customCategoryTitle?.tr,
         defaultTypeTitle?.tr
       ].filter(Boolean).join(" ").toLocaleLowerCase("tr-TR");
@@ -173,7 +175,7 @@ export function EventsExplorer() {
         if (!searchHaystack.includes(query)) return false;
       }
 
-      if (activeCategory !== "all" && event.type !== activeCategory && getEventTypeId(event) !== activeCategory) {
+      if (activeCategory !== "all" && eventCategoryId !== activeCategory && getEventTypeId(event) !== activeCategory) {
         return false;
       }
 

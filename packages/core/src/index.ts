@@ -149,6 +149,7 @@ export const placeFilters: Array<{ id: PlaceFilterKey; label: string }> = [
 export interface EventItem {
   id: string;
   organizerId?: string;
+  categoryId?: string;
   title: LocalizedText;
   description: LocalizedText;
   synopsis?: LocalizedText;

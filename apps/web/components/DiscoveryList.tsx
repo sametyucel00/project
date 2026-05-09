@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import type { EventItem, GeoPoint, Offer, Place } from "@nar/core";
 import { createGoogleMapsDirectionsUrl } from "@nar/core";
@@ -68,7 +68,7 @@ export function DiscoveryList({ items, type }: { items: DiscoveryItem[]; type: "
   }
 
   return (
-    <div className="discovery-list" aria-label="Keşif listesi">
+    <div className="discovery-list" aria-label="KeÅŸif listesi">
       {items.map((item) => {
         const href = type === "places" ? `/mekanlar/${item.id}` : type === "events" ? `/etkinlikler/${item.id}` : `/firsatlar/${item.id}`;
         const image = "coverImage" in item ? item.coverImage : "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4";
@@ -76,8 +76,8 @@ export function DiscoveryList({ items, type }: { items: DiscoveryItem[]; type: "
         const title = localizeText(item.title, locale);
         const description = localizeText(item.description, locale);
         return (
-          <a className="discovery-item" href={href} key={item.id} aria-label={`${title} detayını aç`}>
-            <div className="discovery-thumb" role="img" aria-label={`${title} görseli`} style={{ backgroundImage: `url(${image}?auto=format&fit=crop&w=600&q=80)` }} />
+          <a className="discovery-item" href={href} key={item.id} aria-label={`${title} detayÄ±nÄ± aÃ§`}>
+            <div className="discovery-thumb" role="img" aria-label={`${title} gÃ¶rseli`} style={{ backgroundImage: `url(${image}?auto=format&fit=crop&w=600&q=80)` }} />
             <div>
               <span className={`meta meta-inline ${type === "offers" ? "meta-offer" : ""}`}>{meta}</span>
               <h3>{title}</h3>
@@ -109,17 +109,20 @@ function getMeta(
   qrOptionalLabel: string
 ) : React.ReactNode {
   if (type === "places" && "categoryId" in item) {
-    return `${item.district} · ${item.googleRating ?? unspecifiedLabel} · ${item.openNow ? openLabel : unspecifiedLabel}`;
+    const place = item as Place;
+    return `${place.district} Â· ${place.googleRating ?? unspecifiedLabel} Â· ${place.openNow ? openLabel : unspecifiedLabel}`;
   }
   if (type === "events" && "venueName" in item) {
-    return `${item.venueName} · ${new Intl.DateTimeFormat(locale === "tr" ? "tr-TR" : locale, { dateStyle: "medium" }).format(new Date(item.startsAt))}`;
+    const event = item as EventItem;
+    return `${event.venueName} Â· ${new Intl.DateTimeFormat(locale === "tr" ? "tr-TR" : locale, { dateStyle: "medium" }).format(new Date(event.startsAt))}`;
   }
   if (type === "offers" && "discountLabel" in item) {
+    const offer = item as Offer;
     return (
       <>
-        <span className="meta-offer-part"><Tag size={14} /> <span>{item.discountLabel}</span></span>
-        <span aria-hidden="true">·</span>
-        <span className="meta-offer-part"><QrCode size={14} /> <span>{item.requiresQr ? qrActiveLabel : qrOptionalLabel}</span></span>
+        <span className="meta-offer-part"><Tag size={14} /> <span>{offer.discountLabel}</span></span>
+        <span aria-hidden="true">Â·</span>
+        <span className="meta-offer-part"><QrCode size={14} /> <span>{offer.requiresQr ? qrActiveLabel : qrOptionalLabel}</span></span>
       </>
     );
   }
@@ -134,7 +137,7 @@ export function DetailHero({ title, description, image, meta }: { title: string;
         <h1 id="detail-title">{title}</h1>
         <p className="lead">{description}</p>
       </div>
-      <div className="detail-image" role="img" aria-label={`${title} kapak görseli`} style={{ backgroundImage: `url(${image}?auto=format&fit=crop&w=1200&q=80)` }} />
+      <div className="detail-image" role="img" aria-label={`${title} kapak gÃ¶rseli`} style={{ backgroundImage: `url(${image}?auto=format&fit=crop&w=1200&q=80)` }} />
     </section>
   );
 }
@@ -190,7 +193,7 @@ export function ActionStrip({
         : parsed.filter((item) => item.key !== storageKey);
       window.localStorage.setItem("nar-web-favorites", JSON.stringify(next));
     } catch {
-      // Yerel favori kaydı başarısız olursa akışı bozma.
+      // Yerel favori kaydÄ± baÅŸarÄ±sÄ±z olursa akÄ±ÅŸÄ± bozma.
     }
   }
 
@@ -201,7 +204,7 @@ export function ActionStrip({
         await navigator.share({ title: shareTitle, text: shareText, url });
         return;
       } catch {
-        // Kullanıcı paylaşımı iptal edebilir; sessizce clipboard'a geç.
+        // KullanÄ±cÄ± paylaÅŸÄ±mÄ± iptal edebilir; sessizce clipboard'a geÃ§.
       }
     }
     if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
@@ -210,7 +213,7 @@ export function ActionStrip({
   }
 
   return (
-    <div className="action-strip" aria-label="Detay aksiyonları">
+    <div className="action-strip" aria-label="Detay aksiyonlarÄ±">
       <button
         aria-pressed={isFavorite}
         aria-label={t("detail.favorite")}
@@ -222,7 +225,7 @@ export function ActionStrip({
         }}
       >
         <Heart size={18} />
-        <span>{isFavorite ? `${t("detail.favorite")} ✓` : t("detail.favorite")}</span>
+        <span>{isFavorite ? `${t("detail.favorite")} âœ“` : t("detail.favorite")}</span>
       </button>
       <button aria-label={t("detail.share")} type="button" onClick={() => { void handleShare(); }}>
         <Share2 size={18} />

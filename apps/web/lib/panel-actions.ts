@@ -75,6 +75,7 @@ export interface AncientGuideStopInput extends AncientGuideStop {
 }
 
 export interface TheaterEventDraftInput {
+  categoryId?: string;
   title: LocalizedText;
   description: LocalizedText;
   synopsis?: LocalizedText;
@@ -409,6 +410,7 @@ export async function createTheaterEvent(input: TheaterEventDraftInput) {
     await setDoc(doc(db, "events", id), {
       id,
       ...input,
+      categoryId: input.categoryId ?? input.type,
       organizerId: requireAuthUserId(),
       notificationLimit: input.notificationLimit ?? 3,
       notificationUsed: 0,
