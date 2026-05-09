@@ -114,7 +114,10 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         <DetailLinkRow icon="location-outline" label="Mekan" value={event.venueName} onPress={() => (venue?.location ? openAddressInMaps(venue.address ?? event.venueName) : undefined)} />
         <DetailLinkRow icon="people-outline" label="Kadro" value={compactValue(event.cast.join(", "))} />
         <View style={styles.detailSynopsisBlock}>
-          <Text style={styles.detailSynopsisTitle}>Sinopsis</Text>
+          <View style={styles.detailSynopsisHeader}>
+            <Text style={styles.detailSynopsisIcon}>⟡</Text>
+            <Text style={styles.detailSynopsisTitle}>Sinopsis</Text>
+          </View>
           <Text style={styles.detailSynopsisText}>{compactValue(synopsisText) || "Belirtilmemiş"}</Text>
         </View>
         <DetailLinkRow icon="ticket-outline" label="Bilet bağlantısı" value={compactValue(event.ticketUrl)} onPress={() => openExternalUrl(event.ticketUrl)} />

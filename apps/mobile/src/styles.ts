@@ -83,6 +83,8 @@ function buildStyles() {
     actionPillTextSecondary: { color: theme.ink, fontWeight: "800", textAlign: "center", width: "100%" },
     detailActionStatus: { color: theme.muted, lineHeight: 20, paddingTop: 8 },
     detailSynopsisBlock: { gap: 6, paddingVertical: 4 },
+    detailSynopsisHeader: { flexDirection: "row", alignItems: "center", gap: 8 },
+    detailSynopsisIcon: { color: theme.nar, fontSize: 18, fontWeight: "900", lineHeight: 18 },
     detailSynopsisTitle: { color: theme.ink, fontWeight: "800" },
     detailSynopsisText: { color: theme.muted, lineHeight: 21, textAlign: "justify" },
     emptyText: { color: theme.muted, lineHeight: 21, paddingVertical: 10 },
