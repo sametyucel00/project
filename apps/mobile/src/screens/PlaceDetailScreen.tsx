@@ -1,5 +1,5 @@
 import { ImageBackground, ScrollView, Share, Text, View } from "react-native";
-import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
+import { createGoogleMapsDirectionsUrl, createStaticMapUrl, getPlaceCategoryId, placeCategoryOptions } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
@@ -209,8 +209,8 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
       <DetailHeroCard image={place.coverImage} eyebrow={category} title={pickText(place.title, locale)} subtitle={pickText(place.description, locale)} />
       <StatStrip
         items={[
-          [copy.rating, compactValue(place.googleRating)],
-          [copy.reviews, compactValue(place.googleReviewCount)],
+          [copy.rating, presentValue(place.googleRating, locale, copy.unspecified)],
+          [copy.reviews, presentValue(place.googleReviewCount, locale, copy.unspecified)],
           [copy.status, place.openNow ? copy.openNow : copy.closed],
           [copy.distance, resolveDistanceLabel(userLocation, place)]
         ]}
@@ -226,11 +226,11 @@ export function PlaceDetailScreen({ feed, userLocation, session, placeId, onBack
 
       <View style={styles.settingsCard}>
         <Text style={styles.settingsTitle}>{copy.placeInfo}</Text>
-        <DetailLinkRow icon="call-outline" label={copy.phone} value={compactValue(place.phone)} onPress={() => openPhoneNumber(place.phone)} />
-        <DetailLinkRow icon="location-outline" label={copy.address} value={compactValue(place.address)} onPress={() => openAddressInMaps(place.address)} />
-        <DetailLinkRow icon="globe-outline" label={copy.website} value={compactValue(place.website)} onPress={() => openExternalUrl(place.website)} />
-        <DetailLinkRow icon="mail-outline" label={copy.email} value={compactValue(place.email)} onPress={() => openEmailAddress(place.email)} />
-        <DetailLinkRow icon="menu-outline" label={copy.menu} value={compactValue(place.menuUrl)} onPress={() => openExternalUrl(place.menuUrl)} />
+        <DetailLinkRow icon="call-outline" label={copy.phone} value={presentValue(place.phone, locale, copy.unspecified)} onPress={() => openPhoneNumber(place.phone)} />
+        <DetailLinkRow icon="location-outline" label={copy.address} value={presentValue(place.address, locale, copy.unspecified)} onPress={() => openAddressInMaps(place.address)} />
+        <DetailLinkRow icon="globe-outline" label={copy.website} value={presentValue(place.website, locale, copy.unspecified)} onPress={() => openExternalUrl(place.website)} />
+        <DetailLinkRow icon="mail-outline" label={copy.email} value={presentValue(place.email, locale, copy.unspecified)} onPress={() => openEmailAddress(place.email)} />
+        <DetailLinkRow icon="menu-outline" label={copy.menu} value={presentValue(place.menuUrl, locale, copy.unspecified)} onPress={() => openExternalUrl(place.menuUrl)} />
         <DetailLinkRow icon="time-outline" label={copy.workingHours} value={openingHours} />
       </View>
 
@@ -257,4 +257,11 @@ function pickText(value: unknown, locale: DetailLocale) {
   if (typeof value === "string") return value;
   const record = value as Record<string, string | undefined>;
   return record[locale] ?? record.tr ?? record.en ?? "";
+}
+
+function presentValue(value: unknown, locale: DetailLocale, fallback: string) {
+  const text = pickText(value, locale);
+  if (text) return text;
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return fallback;
 }
