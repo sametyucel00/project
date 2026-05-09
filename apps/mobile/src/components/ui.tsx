@@ -181,16 +181,27 @@ export function ActionRow({ children }: { children: ReactNode }) {
   return <View style={styles.actionRow}>{children}</View>;
 }
 
-export function DetailPreview({ title, rows }: { title: string; rows: Array<[string, string]> }) {
+export function DetailPreview({ title, rows, onRowPress }: { title: string; rows: Array<[string, string]>; onRowPress?: (index: number) => void }) {
   return (
     <View style={styles.detailPreview}>
       <Text style={styles.detailPreviewTitle}>{title}</Text>
-      {rows.map(([label, value]) => (
-        <View style={styles.detailRow} key={label}>
-          <Text style={styles.detailLabel}>{label}</Text>
-          <Text style={styles.detailValue}>{value}</Text>
-        </View>
-      ))}
+      {rows.map(([label, value], index) => {
+        const content = (
+          <>
+            <Text style={styles.detailLabel}>{label}</Text>
+            <Text style={styles.detailValue}>{value}</Text>
+          </>
+        );
+        return onRowPress ? (
+          <Pressable key={`${label}-${index}`} accessibilityRole="button" onPress={() => onRowPress(index)} style={({ pressed }) => [styles.detailRow, pressed && { opacity: 0.72 }]}>
+            {content}
+          </Pressable>
+        ) : (
+          <View style={styles.detailRow} key={`${label}-${index}`}>
+            {content}
+          </View>
+        );
+      })}
     </View>
   );
 }

@@ -1,4 +1,5 @@
-import { ImageBackground, ScrollView, Text, View } from "react-native";
+﻿import { ImageBackground, ScrollView, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { compactValue, createGoogleMapsDirectionsUrl, createStaticMapUrl, getEventTypeMeta, normalizeSynopsisText, translateText } from "@nar/core";
 import { ActionPill, ActionRow, DetailHeroCard, DetailLinkRow, StatStrip, SubsectionGrid } from "../components/ui";
 import { styles } from "../styles";
@@ -9,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getMobileLocale } from "../locale";
 import { hasMeaningfulMapPoint, readMapPoint, resolveDistanceLabel } from "../utils/location";
 import { perfMark, perfMeasure } from "../services/perf";
+import { theme } from "../theme";
 
 export function EventDetailScreen({ feed, userLocation, session, eventId, onBack }: MobileScreenProps & { eventId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
@@ -57,12 +59,12 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
   async function handleToggleFavorite() {
     if (!event || pendingAction) return;
     setPendingAction("favorite");
-    setActionStatus("Favori işleniyor...");
+    setActionStatus("Favori iÅŸleniyor...");
     try {
       const result = await toggleFavorite("event", event.id);
-      setActionStatus(result.active ? "Etkinlik favorilere eklendi." : "Etkinlik favorilerden kaldırıldı.");
+      setActionStatus(result.active ? "Etkinlik favorilere eklendi." : "Etkinlik favorilerden kaldÄ±rÄ±ldÄ±.");
     } catch {
-      setActionStatus("Favori işlemi tamamlanamadı.");
+      setActionStatus("Favori iÅŸlemi tamamlanamadÄ±.");
     } finally {
       setPendingAction(null);
     }
@@ -71,12 +73,12 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
   async function handleScheduleReminder() {
     if (!event || pendingAction) return;
     setPendingAction("calendar");
-    setActionStatus("Takvim işleniyor...");
+    setActionStatus("Takvim iÅŸleniyor...");
     try {
       await scheduleReminder({ entityType: "event", entityId: event.id, remindAt: event.startsAt });
-      setActionStatus("Etkinlik takvime eklendi.");
+      setActionStatus("Etkinlik uygulama içi hatırlatıcıya eklendi. Takvim uygulaması açılmadı.");
     } catch {
-      setActionStatus("Takvime ekleme tamamlanamadı.");
+      setActionStatus("Takvime ekleme tamamlanamadÄ±.");
     } finally {
       setPendingAction(null);
     }
@@ -86,7 +88,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
     return (
       <View style={styles.profileSurface}>
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
-        <Text style={styles.emptyText}>Seçilen etkinlik bulunamadı.</Text>
+        <Text style={styles.emptyText}>SeÃ§ilen etkinlik bulunamadÄ±.</Text>
       </View>
     );
   }
@@ -95,14 +97,14 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
     <ScrollView style={styles.screen} contentContainerStyle={[styles.content, { paddingBottom: 120 }]} showsVerticalScrollIndicator={false}>
       <ActionRow>
         <ActionPill label="Geri" variant="secondary" onPress={onBack} />
-        {event.ticketUrl ? <ActionPill label="Bilet aç" onPress={() => openExternalUrl(event.ticketUrl)} /> : null}
+        {event.ticketUrl ? <ActionPill label="Bilet aÃ§" onPress={() => openExternalUrl(event.ticketUrl)} /> : null}
       </ActionRow>
       <DetailHeroCard image={event.coverImage} eyebrow={getEventTypeMeta(event).title.tr} title={event.title.tr} />
       <StatStrip
         items={[
           ["Tarih", formatDate(event.startsAt)],
           ["Yer", event.venueName],
-          ["Bilet", event.priceType === "free" ? "Ücretsiz" : "Ücretli"],
+          ["Bilet", event.priceType === "free" ? "Ãœcretsiz" : "Ãœcretli"],
           ["Mesafe", resolveDistanceLabel(userLocation, venue ?? event)]
         ]}
       />
@@ -115,16 +117,16 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         <DetailLinkRow icon="people-outline" label="Kadro" value={compactValue(event.cast.join(", "))} />
         <View style={styles.detailSynopsisBlock}>
           <View style={styles.detailSynopsisHeader}>
-            <Text style={styles.detailSynopsisIcon}>⟡</Text>
+            <Ionicons name="document-text-outline" size={16} color={theme.nar} />
             <Text style={styles.detailSynopsisTitle}>Sinopsis</Text>
           </View>
-          <Text style={styles.detailSynopsisText}>{compactValue(synopsisText) || "Belirtilmemiş"}</Text>
+          <Text style={styles.detailSynopsisText}>{compactValue(synopsisText) || "BelirtilmemiÅŸ"}</Text>
         </View>
-        <DetailLinkRow icon="ticket-outline" label="Bilet bağlantısı" value={compactValue(event.ticketUrl)} onPress={() => openExternalUrl(event.ticketUrl)} />
+        <DetailLinkRow icon="ticket-outline" label="Bilet baÄŸlantÄ±sÄ±" value={compactValue(event.ticketUrl)} onPress={() => openExternalUrl(event.ticketUrl)} />
         <DetailLinkRow
           icon="navigate-outline"
           label="Yol tarifi"
-          value="Bağlantı"
+          value="BaÄŸlantÄ±"
           onPress={() => (venue?.location ? openExternalUrl(createGoogleMapsDirectionsUrl(venue.location, venue.title.tr)) : openAddressInMaps(venue?.address ?? event.venueName))}
         />
       </View>
@@ -134,7 +136,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         {mapUrl ? (
           <ImageBackground source={{ uri: mapUrl }} style={{ height: 190, borderRadius: 18, overflow: "hidden" }} imageStyle={{ borderRadius: 18 }} />
         ) : (
-          <ActionPill label="Haritayı aç" onPress={() => openAddressInMaps(venue?.address ?? event.venueName)} />
+          <ActionPill label="HaritayÄ± aÃ§" onPress={() => openAddressInMaps(venue?.address ?? event.venueName)} />
         )}
       </View>
 
@@ -151,7 +153,7 @@ export function EventDetailScreen({ feed, userLocation, session, eventId, onBack
         />
       </ActionRow>
       {actionStatus ? <Text style={styles.detailActionStatus}>{actionStatus}</Text> : null}
-      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim işlemleri kapalıdır.</Text> : null}
+      {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda favori ve takvim iÅŸlemleri kapalÄ±dÄ±r.</Text> : null}
     </ScrollView>
   );
 }
@@ -179,3 +181,5 @@ function pickText(value: unknown, locale: string) {
   const record = value as Record<string, string | undefined>;
   return record[locale] ?? record.tr ?? record.en ?? "";
 }
+
+

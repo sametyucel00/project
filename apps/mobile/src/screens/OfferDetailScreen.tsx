@@ -5,11 +5,12 @@ import { styles } from "../styles";
 import type { MobileScreenProps } from "./types";
 import { openAddressInMaps, openExternalUrl } from "../utils/links";
 import { redeemOffer, scheduleReminder, toggleFavorite } from "../services";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { hasMeaningfulMapPoint } from "../utils/location";
 
 export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScreenProps & { offerId: string; onBack: () => void }) {
   const isGuest = !session || session.isAnonymous;
+  const [actionStatus, setActionStatus] = useState("");
   const offer = useMemo(() => feed.offers.find((item) => item.id === offerId) ?? getOfferById(offerId), [feed.offers, offerId]);
   const place = useMemo(() => feed.places.find((item) => item.id === offer?.placeId) ?? (offer?.placeId ? getPlaceById(offer.placeId) : undefined), [feed.places, offer?.placeId]);
   const remainingUse = offer?.useLimit ? Math.max(offer.useLimit - (offer.usedCount ?? 0), 0) : null;
@@ -59,9 +60,18 @@ export function OfferDetailScreen({ feed, session, offerId, onBack }: MobileScre
 
       <ActionRow>
         {!isGuest ? <ActionPill label="QR ile kullan" onPress={() => void redeemOffer({ offerId: offer.id, offerTitle: offer.title.tr, businessId: offer.businessId, placeId: offer.placeId, amountLabel: offer.discountLabel })} /> : null}
-        {!isGuest ? <ActionPill label="Takvime ekle" variant="secondary" onPress={() => void scheduleReminder({ entityType: "offer", entityId: offer.id, remindAt: offer.endsAt })} /> : null}
+        {!isGuest ? <ActionPill label="Takvime ekle" variant="secondary" onPress={async () => {
+          setActionStatus("Uygulama içi hatırlatıcıya ekleniyor...");
+          try {
+            await scheduleReminder({ entityType: "offer", entityId: offer.id, remindAt: offer.endsAt });
+            setActionStatus("Uygulama içi hatırlatıcıya eklendi. Takvim uygulaması açılmadı.");
+          } catch {
+            setActionStatus("Hatırlatıcı ekleme tamamlanamadı.");
+          }
+        }} /> : null}
         <ActionPill label="Mekan aç" variant="secondary" onPress={() => place?.website ? openExternalUrl(place.website) : undefined} />
       </ActionRow>
+      {actionStatus ? <Text style={styles.detailActionStatus}>{actionStatus}</Text> : null}
       {isGuest ? <Text style={styles.emptyText}>Misafir oturumunda fırsat kullanımı ve takvim işlemleri kapalıdır.</Text> : null}
     </ScrollView>
   );

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { InteractionManager, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { badges, compactValue, defaultPushPreferences, getEventById, getOfferById, getPlaceById, userTasks } from "@nar/core";
@@ -15,8 +15,14 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import type { MobileScreenProps } from "./types";
 
 type ProfileLocale = "tr" | "en" | "ru" | "de";
+type FavoriteEntry = {
+  entityType: string;
+  entityId: string;
+  title: string;
+  kindLabel: string;
+};
 
-export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr }: MobileScreenProps) {
+export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr, onOpenPlace, onOpenEvent, onOpenOffer }: MobileScreenProps) {
   const isGuest = !session || session.isAnonymous;
   const isBusiness = session?.role === "business";
   const points = isGuest ? 0 : session?.points ?? 500;
@@ -31,7 +37,8 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
   const [qrRows, setQrRows] = useState<Array<[string, string]>>([]);
   const [orderRows, setOrderRows] = useState<Array<[string, string]>>([]);
   const [favoriteRows, setFavoriteRows] = useState<Array<[string, string]>>([]);
-  const [status, setStatus] = useState("Profil bilgilerin hazır.");
+  const [favoriteEntries, setFavoriteEntries] = useState<Array<FavoriteEntry>>([]);
+  const [status, setStatus] = useState("Profil bilgilerin hazÄ±r.");
   const [saving, setSaving] = useState(false);
   const lastSavedRef = useRef("");
   const languageRef = useRef(language);
@@ -78,11 +85,11 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
           if (!active) return;
           setQrRows(liveQrTransactions.map((transaction) => [
             transaction.placeId,
-            `${transaction.pointsDelta} puan · bakiye ${transaction.balanceAfter ?? "Belirlenmemiş"}`
+            `${transaction.pointsDelta} puan Â· bakiye ${transaction.balanceAfter ?? "BelirlenmemiÅŸ"}`
           ]));
           setOrderRows(liveOrders.map((order) => [
             order.entityTitle,
-            `${translateOrderType(order.type)} · ${translateOrderStatus(order.status)} · ${order.amountLabel ?? "Belirlenmemiş"}`
+            `${translateOrderType(order.type)} Â· ${translateOrderStatus(order.status)} Â· ${order.amountLabel ?? "BelirlenmemiÅŸ"}`
           ]));
         } catch {
           if (!active) return;
@@ -107,6 +114,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
 
   useEffect(() => {
     if (!uid) {
+      setFavoriteEntries([]);
       setFavoriteRows([]);
       return;
     }
@@ -116,16 +124,25 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
       unsubscribe = onSnapshot(
         query(collection(db, "users", uid, "favorites"), orderBy("createdAt", "desc")),
         (snapshot) => {
-          const rows = snapshot.docs.map((favorite) => {
+          const entries = snapshot.docs.map((favorite) => {
             const data = favorite.data() as { entityType?: string; entityId?: string };
-            return [
-              resolveFavoriteTitle(data.entityType ?? "", data.entityId ?? "", favoriteTitleLookupRef.current),
-              translateFavoriteType(data.entityType ?? "", language)
-            ] as [string, string];
+            const entityType = data.entityType ?? "";
+            const entityId = data.entityId ?? "";
+            return {
+              entityType,
+              entityId,
+              title: resolveFavoriteTitle(entityType, entityId, favoriteTitleLookupRef.current),
+              kindLabel: translateFavoriteType(entityType, language)
+            } as FavoriteEntry;
           });
+          const rows = entries.map((entry) => [entry.title, entry.kindLabel] as [string, string]);
+          setFavoriteEntries(entries);
           setFavoriteRows(rows);
         },
-        () => setFavoriteRows([])
+        () => {
+          setFavoriteEntries([]);
+          setFavoriteRows([]);
+        }
       );
     });
 
@@ -280,7 +297,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
         placeId: ownedPlace.id,
         pointsDelta: 25,
         scanId: `mobile-${uid}-${Date.now()}`,
-        note: "Mobil profil QR işlemi"
+        note: "Mobil profil QR iÅŸlemi"
       });
       setStatus(copy.qrSaved);
     } catch {
@@ -322,7 +339,7 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
       <StatStrip items={[
         [copy.city, session?.city ?? "Antalya"],
         [isGuest ? "Durum" : copy.task, isGuest ? "Misafir modu" : String(userTasks.length)],
-        [isGuest ? "Kısıt" : copy.badge, isGuest ? "Aktif değil" : String(badges.length)]
+        [isGuest ? "KÄ±sÄ±t" : copy.badge, isGuest ? "Aktif deÄŸil" : String(badges.length)]
       ]} />
 
       {isGuest ? (
@@ -418,10 +435,21 @@ export function ProfileScreen({ feed, session, onOpenAuth, onOpenLegal, onOpenQr
       {!isGuest ? (
         <>
           <DetailPreview title={copy.tasks} rows={userTasks.map((task) => [task.title.tr, `${task.rewardPoints} puan`])} />
-          <DetailPreview title={copy.badges} rows={badges.map((badge) => [badge.title.tr, `${translateBadgeLevel(badge.level)} · ${badge.description.tr}`])} />
-          <DetailPreview title={copy.qrHistory} rows={qrRows.length ? qrRows : [["Geçmiş", copy.noQrHistory]]} />
-          <DetailPreview title={copy.orderHistory} rows={orderRows.length ? orderRows : [["Geçmiş", copy.noOrderHistory]]} />
-          <DetailPreview title="Favoriler" rows={favoriteRows.length ? favoriteRows : [["Favoriler", "Henüz kaydedilen favori yok"]]} />
+          <DetailPreview title={copy.badges} rows={badges.map((badge) => [badge.title.tr, `${translateBadgeLevel(badge.level)} Â· ${badge.description.tr}`])} />
+          <DetailPreview title={copy.qrHistory} rows={qrRows.length ? qrRows : [["GeÃ§miÅŸ", copy.noQrHistory]]} />
+          <DetailPreview title={copy.orderHistory} rows={orderRows.length ? orderRows : [["GeÃ§miÅŸ", copy.noOrderHistory]]} />
+          <DetailPreview
+            title="Favoriler"
+            rows={favoriteRows.length ? favoriteRows : [["Favoriler", "Henüz kaydedilen favori yok"]]}
+            onRowPress={(index) => {
+              const entry = favoriteEntries[index];
+              if (!entry) return;
+              setStatus(`${entry.kindLabel} detayı açılıyor...`);
+              if (entry.entityType === "place") onOpenPlace?.(entry.entityId);
+              if (entry.entityType === "event") onOpenEvent?.(entry.entityId);
+              if (entry.entityType === "offer") onOpenOffer?.(entry.entityId);
+            }}
+          />
         </>
       ) : (
         <Text style={styles.emptyText}>{copy.guestLocked}</Text>
@@ -501,9 +529,9 @@ function ChoiceGrid({
 
 function translateTheme(value: MobileThemeMode, locale: ProfileLocale = "tr") {
   const labels: Record<ProfileLocale, Record<MobileThemeMode, string>> = {
-    tr: { system: "Sistem", light: "Açık", dark: "Koyu" },
+    tr: { system: "Sistem", light: "AÃ§Ä±k", dark: "Koyu" },
     en: { system: "System", light: "Light", dark: "Dark" },
-    ru: { system: "Система", light: "Светлая", dark: "Темная" },
+    ru: { system: "Ğ¡Ğ¸ÑÑ‚ĞµĞ¼Ğ°", light: "Ğ¡Ğ²ĞµÑ‚Ğ»Ğ°Ñ", dark: "Ğ¢ĞµĞ¼Ğ½Ğ°Ñ" },
     de: { system: "System", light: "Hell", dark: "Dunkel" }
   };
   return labels[locale][value];
@@ -511,19 +539,19 @@ function translateTheme(value: MobileThemeMode, locale: ProfileLocale = "tr") {
 
 function translateLocale(value: string, locale: ProfileLocale = "tr") {
   const labels: Record<ProfileLocale, Record<string, string>> = {
-    tr: { tr: "Türkçe", en: "İngilizce", ru: "Rusça", de: "Almanca" },
+    tr: { tr: "TÃ¼rkÃ§e", en: "Ä°ngilizce", ru: "RusÃ§a", de: "Almanca" },
     en: { tr: "Turkish", en: "English", ru: "Russian", de: "German" },
-    ru: { tr: "Турецкий", en: "Английский", ru: "Русский", de: "Немецкий" },
-    de: { tr: "Türkisch", en: "Englisch", ru: "Russisch", de: "Deutsch" }
+    ru: { tr: "Ğ¢ÑƒÑ€ĞµÑ†ĞºĞ¸Ğ¹", en: "ĞĞ½Ğ³Ğ»Ğ¸Ğ¹ÑĞºĞ¸Ğ¹", ru: "Ğ ÑƒÑÑĞºĞ¸Ğ¹", de: "ĞĞµĞ¼ĞµÑ†ĞºĞ¸Ğ¹" },
+    de: { tr: "TÃ¼rkisch", en: "Englisch", ru: "Russisch", de: "Deutsch" }
   };
   return labels[locale][value] ?? compactValue(value);
 }
 
 function translateRole(value?: string, locale: ProfileLocale = "tr") {
   const labels: Record<ProfileLocale, Record<string, string>> = {
-    tr: { business: "İşletme", theater: "Tiyatro", admin: "Yönetici", individual: "Bireysel" },
+    tr: { business: "Ä°ÅŸletme", theater: "Tiyatro", admin: "YÃ¶netici", individual: "Bireysel" },
     en: { business: "Business", theater: "Theater", admin: "Admin", individual: "Individual" },
-    ru: { business: "Бизнес", theater: "Театр", admin: "Админ", individual: "Личный" },
+    ru: { business: "Ğ‘Ğ¸Ğ·Ğ½ĞµÑ", theater: "Ğ¢ĞµĞ°Ñ‚Ñ€", admin: "ĞĞ´Ğ¼Ğ¸Ğ½", individual: "Ğ›Ğ¸Ñ‡Ğ½Ñ‹Ğ¹" },
     de: { business: "Unternehmen", theater: "Theater", admin: "Admin", individual: "Privat" }
   };
   return labels[locale][value ?? "individual"] ?? labels.tr.individual;
@@ -537,9 +565,9 @@ function translateChoice(value: string, locale: ProfileLocale = "tr") {
 
 function translateToggle(value: boolean, locale: ProfileLocale) {
   const labels: Record<ProfileLocale, [string, string]> = {
-    tr: ["Açık", "Kapalı"],
+    tr: ["AÃ§Ä±k", "KapalÄ±"],
     en: ["On", "Off"],
-    ru: ["Вкл.", "Выкл."],
+    ru: ["Ğ’ĞºĞ».", "Ğ’Ñ‹ĞºĞ»."],
     de: ["Ein", "Aus"]
   };
   return value ? labels[locale][0] : labels[locale][1];
@@ -567,14 +595,14 @@ function resolveFavoriteTitle(entityType: string, entityId: string, lookup: Map<
   if (entityType === "place") return getPlaceById(entityId)?.title.tr ?? entityId;
   if (entityType === "event") return getEventById(entityId)?.title.tr ?? entityId;
   if (entityType === "offer") return getOfferById(entityId)?.title.tr ?? entityId;
-  return entityId || "Belirtilmemiş";
+  return entityId || "BelirtilmemiÅŸ";
 }
 
 function translateFavoriteType(entityType: string, locale: ProfileLocale) {
   const labels: Record<ProfileLocale, Record<string, string>> = {
-    tr: { place: "Mekan", event: "Etkinlik", offer: "Fırsat" },
+    tr: { place: "Mekan", event: "Etkinlik", offer: "FÄ±rsat" },
     en: { place: "Place", event: "Event", offer: "Offer" },
-    ru: { place: "Место", event: "Событие", offer: "Предложение" },
+    ru: { place: "ĞœĞµÑÑ‚Ğ¾", event: "Ğ¡Ğ¾Ğ±Ñ‹Ñ‚Ğ¸Ğµ", offer: "ĞŸÑ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ" },
     de: { place: "Ort", event: "Veranstaltung", offer: "Angebot" }
   };
   return labels[locale][entityType] ?? compactValue(entityType);
@@ -582,63 +610,63 @@ function translateFavoriteType(entityType: string, locale: ProfileLocale) {
 
 function translateBadgeLevel(value: string) {
   if (value === "bronze") return "Bronz";
-  if (value === "silver") return "Gümüş";
-  if (value === "gold") return "Altın";
+  if (value === "silver") return "GÃ¼mÃ¼ÅŸ";
+  if (value === "gold") return "AltÄ±n";
   return compactValue(value);
 }
 
 function translateOrderType(value: string) {
   if (value === "ticket") return "Bilet";
-  if (value === "offer") return "Fırsat";
+  if (value === "offer") return "FÄ±rsat";
   if (value === "points") return "Puan";
   return compactValue(value);
 }
 
 function translateOrderStatus(value: string) {
-  if (value === "created") return "Oluşturuldu";
-  if (value === "confirmed") return "Onaylandı";
-  if (value === "used") return "Kullanıldı";
-  if (value === "cancelled") return "İptal edildi";
-  if (value === "refunded") return "İade edildi";
+  if (value === "created") return "OluÅŸturuldu";
+  if (value === "confirmed") return "OnaylandÄ±";
+  if (value === "used") return "KullanÄ±ldÄ±";
+  if (value === "cancelled") return "Ä°ptal edildi";
+  if (value === "refunded") return "Ä°ade edildi";
   return compactValue(value);
 }
 
 const profileUiTr = {
-  accountTitle: "Hesap bağlantısı",
-  accountLead: "Hesabın yoksa misafir olarak kalabilir, sonra giriş yapabilirsin.",
-  signInButton: "Giriş / Kayıt ol",
-  dataTools: "Veri araçları",
-  resetScanButton: "Tarama verilerini sıfırla",
-  openPrivacy: "Gizlilik ve koşullar",
-  openTerms: "Kullanım koşulları",
-  openQrCode: "QR kodumu aç",
-  identitySaveButton: "Ad ve e-postayı kaydet",
+  accountTitle: "Hesap baÄŸlantÄ±sÄ±",
+  accountLead: "HesabÄ±n yoksa misafir olarak kalabilir, sonra giriÅŸ yapabilirsin.",
+  signInButton: "GiriÅŸ / KayÄ±t ol",
+  dataTools: "Veri araÃ§larÄ±",
+  resetScanButton: "Tarama verilerini sÄ±fÄ±rla",
+  openPrivacy: "Gizlilik ve koÅŸullar",
+  openTerms: "KullanÄ±m koÅŸullarÄ±",
+  openQrCode: "QR kodumu aÃ§",
+  identitySaveButton: "Ad ve e-postayÄ± kaydet",
   identitySaving: "Kaydediliyor...",
-  identitySaved: "Profil bilgileri güncellendi.",
-  identityFailed: "Profil bilgileri güncellenemedi.",
+  identitySaved: "Profil bilgileri gÃ¼ncellendi.",
+  identityFailed: "Profil bilgileri gÃ¼ncellenemedi.",
   identityRequired: "Ad soyad ve e-posta gerekli.",
   resettingScan: "Tarama verileri temizleniyor...",
   resetScanDone: "Tarama verileri temizlendi.",
   resetScanFailed: "Tarama verileri temizlenemedi.",
-  openQrHint: "QR kodunu sağ üstten açıp işletmeye göster.",
-  qrNoOwnedPlace: "Bu QR işlemi için işletmeye ait mekan bulunamadı.",
-  deleteAccountButton: "Hesabı sil",
+  openQrHint: "QR kodunu saÄŸ Ã¼stten aÃ§Ä±p iÅŸletmeye gÃ¶ster.",
+  qrNoOwnedPlace: "Bu QR iÅŸlemi iÃ§in iÅŸletmeye ait mekan bulunamadÄ±.",
+  deleteAccountButton: "HesabÄ± sil",
   deleteAccountPending: "Hesap siliniyor...",
   deleteAccountDone: "Hesap silindi.",
   deleteAccountFailed: "Hesap silinemedi."
 };
 
 const profileCopyTr = {
-  pointsReady: "puanların hazır",
-  guestPoints: "Puanların burada görünecek",
-  profileLead: "QR kodunla puan kazanabilir, fırsat kullanabilir ve görevlerden rozet açabilirsin.",
-  city: "Şehir",
-  task: "Görev",
+  pointsReady: "puanlarÄ±n hazÄ±r",
+  guestPoints: "PuanlarÄ±n burada gÃ¶rÃ¼necek",
+  profileLead: "QR kodunla puan kazanabilir, fÄ±rsat kullanabilir ve gÃ¶revlerden rozet aÃ§abilirsin.",
+  city: "Åehir",
+  task: "GÃ¶rev",
   badge: "Rozet",
-  qrAction: "QR puan işle",
-  taskAction: "Görev tamamla",
+  qrAction: "QR puan iÅŸle",
+  taskAction: "GÃ¶rev tamamla",
   logout: "Oturumu kapat",
-  personalInfo: "Kişisel bilgiler",
+  personalInfo: "KiÅŸisel bilgiler",
   name: "Ad soyad",
   email: "E-posta",
   role: "Rol",
@@ -646,30 +674,30 @@ const profileCopyTr = {
   language: "Dil",
   theme: "Tema",
   notifications: "Bildirim tercihleri",
-  offers: "Fırsatlar",
+  offers: "FÄ±rsatlar",
   events: "Etkinlikler",
   theater: "Tiyatro",
-  reminders: "Hatırlatıcılar",
-  saveButton: "Ayarları kaydet",
+  reminders: "HatÄ±rlatÄ±cÄ±lar",
+  saveButton: "AyarlarÄ± kaydet",
   savingButton: "Kaydediliyor...",
   savedSettings: "Ayarlar kaydedildi.",
-  saveFailed: "Ayarlar kaydedilemedi. Lütfen tekrar dene.",
-  qrRequired: "QR işlemi için giriş ve mekan bilgisi gerekiyor.",
-  qrSaving: "QR puanı işleniyor...",
-  qrSaved: "QR puanı işlendi.",
-  qrFailed: "QR işlemi tamamlanamadı.",
-  taskSaving: "Görev tamamlanıyor...",
-  taskSaved: "Görev tamamlandı, puan hesabına işlendi.",
-  taskFailed: "Görev tamamlanamadı.",
-  notSignedIn: "Giriş yapılmadı",
-  unspecified: "Belirtilmemiş",
-  tasks: "Görevler",
+  saveFailed: "Ayarlar kaydedilemedi. LÃ¼tfen tekrar dene.",
+  qrRequired: "QR iÅŸlemi iÃ§in giriÅŸ ve mekan bilgisi gerekiyor.",
+  qrSaving: "QR puanÄ± iÅŸleniyor...",
+  qrSaved: "QR puanÄ± iÅŸlendi.",
+  qrFailed: "QR iÅŸlemi tamamlanamadÄ±.",
+  taskSaving: "GÃ¶rev tamamlanÄ±yor...",
+  taskSaved: "GÃ¶rev tamamlandÄ±, puan hesabÄ±na iÅŸlendi.",
+  taskFailed: "GÃ¶rev tamamlanamadÄ±.",
+  notSignedIn: "GiriÅŸ yapÄ±lmadÄ±",
+  unspecified: "BelirtilmemiÅŸ",
+  tasks: "GÃ¶revler",
   badges: "Rozetler",
-  qrHistory: "QR işlem geçmişi",
-  orderHistory: "Sipariş ve kullanım geçmişi",
-  noQrHistory: "Henüz QR işlemi yok",
-  noOrderHistory: "Henüz sipariş kaydı yok",
-  guestLocked: "Misafir oturumunda puan, favori, takvim ve görev işlemleri kapalıdır."
+  qrHistory: "QR iÅŸlem geÃ§miÅŸi",
+  orderHistory: "SipariÅŸ ve kullanÄ±m geÃ§miÅŸi",
+  noQrHistory: "HenÃ¼z QR iÅŸlemi yok",
+  noOrderHistory: "HenÃ¼z sipariÅŸ kaydÄ± yok",
+  guestLocked: "Misafir oturumunda puan, favori, takvim ve gÃ¶rev iÅŸlemleri kapalÄ±dÄ±r."
 };
 
 const profileUiTranslations = {
@@ -701,37 +729,37 @@ const profileUiTranslations = {
   },
   ru: {
     ...profileUiTr,
-    accountTitle: "Аккаунт",
-    accountLead: "Можно продолжить как гость и войти позже.",
-    signInButton: "Войти / регистрация",
-    dataTools: "Данные и приватность",
-    resetScanButton: "Очистить историю сканов",
-    openPrivacy: "Политика конфиденциальности",
-    openTerms: "Условия использования",
-    resettingScan: "История сканов очищается...",
-    resetScanDone: "История сканов очищена.",
-    resetScanFailed: "Не удалось очистить историю сканов.",
-    deleteAccountButton: "Удалить аккаунт",
-    deleteAccountPending: "Аккаунт удаляется...",
-    deleteAccountDone: "Аккаунт удалён.",
-    deleteAccountFailed: "Не удалось удалить аккаунт."
+    accountTitle: "ĞĞºĞºĞ°ÑƒĞ½Ñ‚",
+    accountLead: "ĞœĞ¾Ğ¶Ğ½Ğ¾ Ğ¿Ñ€Ğ¾Ğ´Ğ¾Ğ»Ğ¶Ğ¸Ñ‚ÑŒ ĞºĞ°Ğº Ğ³Ğ¾ÑÑ‚ÑŒ Ğ¸ Ğ²Ğ¾Ğ¹Ñ‚Ğ¸ Ğ¿Ğ¾Ğ·Ğ¶Ğµ.",
+    signInButton: "Ğ’Ğ¾Ğ¹Ñ‚Ğ¸ / Ñ€ĞµĞ³Ğ¸ÑÑ‚Ñ€Ğ°Ñ†Ğ¸Ñ",
+    dataTools: "Ğ”Ğ°Ğ½Ğ½Ñ‹Ğµ Ğ¸ Ğ¿Ñ€Ğ¸Ğ²Ğ°Ñ‚Ğ½Ğ¾ÑÑ‚ÑŒ",
+    resetScanButton: "ĞÑ‡Ğ¸ÑÑ‚Ğ¸Ñ‚ÑŒ Ğ¸ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ²",
+    openPrivacy: "ĞŸĞ¾Ğ»Ğ¸Ñ‚Ğ¸ĞºĞ° ĞºĞ¾Ğ½Ñ„Ğ¸Ğ´ĞµĞ½Ñ†Ğ¸Ğ°Ğ»ÑŒĞ½Ğ¾ÑÑ‚Ğ¸",
+    openTerms: "Ğ£ÑĞ»Ğ¾Ğ²Ğ¸Ñ Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ",
+    resettingScan: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ² Ğ¾Ñ‡Ğ¸Ñ‰Ğ°ĞµÑ‚ÑÑ...",
+    resetScanDone: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ² Ğ¾Ñ‡Ğ¸Ñ‰ĞµĞ½Ğ°.",
+    resetScanFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ¾Ñ‡Ğ¸ÑÑ‚Ğ¸Ñ‚ÑŒ Ğ¸ÑÑ‚Ğ¾Ñ€Ğ¸Ñ ÑĞºĞ°Ğ½Ğ¾Ğ².",
+    deleteAccountButton: "Ğ£Ğ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ Ğ°ĞºĞºĞ°ÑƒĞ½Ñ‚",
+    deleteAccountPending: "ĞĞºĞºĞ°ÑƒĞ½Ñ‚ ÑƒĞ´Ğ°Ğ»ÑĞµÑ‚ÑÑ...",
+    deleteAccountDone: "ĞĞºĞºĞ°ÑƒĞ½Ñ‚ ÑƒĞ´Ğ°Ğ»Ñ‘Ğ½.",
+    deleteAccountFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ ÑƒĞ´Ğ°Ğ»Ğ¸Ñ‚ÑŒ Ğ°ĞºĞºĞ°ÑƒĞ½Ñ‚."
   },
   de: {
     ...profileUiTr,
     accountTitle: "Konto",
-    accountLead: "Du kannst als Gast bleiben und dich später anmelden.",
+    accountLead: "Du kannst als Gast bleiben und dich spÃ¤ter anmelden.",
     signInButton: "Anmelden / Registrieren",
     dataTools: "Daten und Datenschutz",
-    resetScanButton: "Scanverlauf löschen",
+    resetScanButton: "Scanverlauf lÃ¶schen",
     openPrivacy: "Datenschutz",
     openTerms: "Nutzungsbedingungen",
-    resettingScan: "Scanverlauf wird gelöscht...",
-    resetScanDone: "Scanverlauf gelöscht.",
-    resetScanFailed: "Scanverlauf konnte nicht gelöscht werden.",
-    deleteAccountButton: "Konto löschen",
-    deleteAccountPending: "Konto wird gelöscht...",
-    deleteAccountDone: "Konto gelöscht.",
-    deleteAccountFailed: "Konto konnte nicht gelöscht werden."
+    resettingScan: "Scanverlauf wird gelÃ¶scht...",
+    resetScanDone: "Scanverlauf gelÃ¶scht.",
+    resetScanFailed: "Scanverlauf konnte nicht gelÃ¶scht werden.",
+    deleteAccountButton: "Konto lÃ¶schen",
+    deleteAccountPending: "Konto wird gelÃ¶scht...",
+    deleteAccountDone: "Konto gelÃ¶scht.",
+    deleteAccountFailed: "Konto konnte nicht gelÃ¶scht werden."
   }
 } as const;
 
@@ -783,47 +811,47 @@ const profileCopyTranslations = {
   },
   ru: {
     ...profileCopyTr,
-    pointsReady: "баллы готовы",
-    guestPoints: "Ваши баллы появятся здесь",
-    profileLead: "Получайте баллы через QR, используйте предложения и открывайте значки.",
-    city: "Город",
-    task: "Задание",
-    badge: "Значок",
-    qrAction: "Начислить QR-баллы",
-    taskAction: "Выполнить задание",
-    logout: "Выйти",
-    personalInfo: "Личные данные",
-    name: "Имя",
+    pointsReady: "Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ³Ğ¾Ñ‚Ğ¾Ğ²Ñ‹",
+    guestPoints: "Ğ’Ğ°ÑˆĞ¸ Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ¿Ğ¾ÑĞ²ÑÑ‚ÑÑ Ğ·Ğ´ĞµÑÑŒ",
+    profileLead: "ĞŸĞ¾Ğ»ÑƒÑ‡Ğ°Ğ¹Ñ‚Ğµ Ğ±Ğ°Ğ»Ğ»Ñ‹ Ñ‡ĞµÑ€ĞµĞ· QR, Ğ¸ÑĞ¿Ğ¾Ğ»ÑŒĞ·ÑƒĞ¹Ñ‚Ğµ Ğ¿Ñ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ Ğ¸ Ğ¾Ñ‚ĞºÑ€Ñ‹Ğ²Ğ°Ğ¹Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞºĞ¸.",
+    city: "Ğ“Ğ¾Ñ€Ğ¾Ğ´",
+    task: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ",
+    badge: "Ğ—Ğ½Ğ°Ñ‡Ğ¾Ğº",
+    qrAction: "ĞĞ°Ñ‡Ğ¸ÑĞ»Ğ¸Ñ‚ÑŒ QR-Ğ±Ğ°Ğ»Ğ»Ñ‹",
+    taskAction: "Ğ’Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ",
+    logout: "Ğ’Ñ‹Ğ¹Ñ‚Ğ¸",
+    personalInfo: "Ğ›Ğ¸Ñ‡Ğ½Ñ‹Ğµ Ğ´Ğ°Ğ½Ğ½Ñ‹Ğµ",
+    name: "Ğ˜Ğ¼Ñ",
     email: "E-mail",
-    role: "Роль",
-    languageTheme: "Язык и тема",
-    language: "Язык",
-    theme: "Тема",
-    notifications: "Настройки уведомлений",
-    offers: "Предложения",
-    events: "События",
-    theater: "Театр",
-    reminders: "Напоминания",
-    saveButton: "Сохранить настройки",
-    savingButton: "Сохранение...",
-    savedSettings: "Настройки сохранены.",
-    saveFailed: "Не удалось сохранить настройки. Повторите попытку.",
-    qrRequired: "Для QR нужен вход и место.",
-    qrSaving: "QR-баллы обрабатываются...",
-    qrSaved: "QR-баллы начислены.",
-    qrFailed: "Не удалось выполнить QR-действие.",
-    taskSaving: "Задание выполняется...",
-    taskSaved: "Задание выполнено, баллы добавлены.",
-    taskFailed: "Не удалось выполнить задание.",
-    notSignedIn: "Вход не выполнен",
-    unspecified: "Не указано",
-    tasks: "Задания",
-    badges: "Значки",
-    qrHistory: "История QR",
-    orderHistory: "История заказов",
-    noQrHistory: "QR-действий пока нет",
-    noOrderHistory: "Заказов пока нет",
-    guestLocked: "Баллы, избранное, календарь и задания недоступны в гостевом режиме."
+    role: "Ğ Ğ¾Ğ»ÑŒ",
+    languageTheme: "Ğ¯Ğ·Ñ‹Ğº Ğ¸ Ñ‚ĞµĞ¼Ğ°",
+    language: "Ğ¯Ğ·Ñ‹Ğº",
+    theme: "Ğ¢ĞµĞ¼Ğ°",
+    notifications: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸ ÑƒĞ²ĞµĞ´Ğ¾Ğ¼Ğ»ĞµĞ½Ğ¸Ğ¹",
+    offers: "ĞŸÑ€ĞµĞ´Ğ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ñ",
+    events: "Ğ¡Ğ¾Ğ±Ñ‹Ñ‚Ğ¸Ñ",
+    theater: "Ğ¢ĞµĞ°Ñ‚Ñ€",
+    reminders: "ĞĞ°Ğ¿Ğ¾Ğ¼Ğ¸Ğ½Ğ°Ğ½Ğ¸Ñ",
+    saveButton: "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½Ğ¸Ñ‚ÑŒ Ğ½Ğ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸",
+    savingButton: "Ğ¡Ğ¾Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ğ¸Ğµ...",
+    savedSettings: "ĞĞ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸ ÑĞ¾Ñ…Ñ€Ğ°Ğ½ĞµĞ½Ñ‹.",
+    saveFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ ÑĞ¾Ñ…Ñ€Ğ°Ğ½Ğ¸Ñ‚ÑŒ Ğ½Ğ°ÑÑ‚Ñ€Ğ¾Ğ¹ĞºĞ¸. ĞŸĞ¾Ğ²Ñ‚Ğ¾Ñ€Ğ¸Ñ‚Ğµ Ğ¿Ğ¾Ğ¿Ñ‹Ñ‚ĞºÑƒ.",
+    qrRequired: "Ğ”Ğ»Ñ QR Ğ½ÑƒĞ¶ĞµĞ½ Ğ²Ñ…Ğ¾Ğ´ Ğ¸ Ğ¼ĞµÑÑ‚Ğ¾.",
+    qrSaving: "QR-Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ°Ñ‚Ñ‹Ğ²Ğ°ÑÑ‚ÑÑ...",
+    qrSaved: "QR-Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ½Ğ°Ñ‡Ğ¸ÑĞ»ĞµĞ½Ñ‹.",
+    qrFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ QR-Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğµ.",
+    taskSaving: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ÑĞµÑ‚ÑÑ...",
+    taskSaved: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½Ğ¾, Ğ±Ğ°Ğ»Ğ»Ñ‹ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ĞµĞ½Ñ‹.",
+    taskFailed: "ĞĞµ ÑƒĞ´Ğ°Ğ»Ğ¾ÑÑŒ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½Ğ¸Ñ‚ÑŒ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ğµ.",
+    notSignedIn: "Ğ’Ñ…Ğ¾Ğ´ Ğ½Ğµ Ğ²Ñ‹Ğ¿Ğ¾Ğ»Ğ½ĞµĞ½",
+    unspecified: "ĞĞµ ÑƒĞºĞ°Ğ·Ğ°Ğ½Ğ¾",
+    tasks: "Ğ—Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ",
+    badges: "Ğ—Ğ½Ğ°Ñ‡ĞºĞ¸",
+    qrHistory: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ QR",
+    orderHistory: "Ğ˜ÑÑ‚Ğ¾Ñ€Ğ¸Ñ Ğ·Ğ°ĞºĞ°Ğ·Ğ¾Ğ²",
+    noQrHistory: "QR-Ğ´ĞµĞ¹ÑÑ‚Ğ²Ğ¸Ğ¹ Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
+    noOrderHistory: "Ğ—Ğ°ĞºĞ°Ğ·Ğ¾Ğ² Ğ¿Ğ¾ĞºĞ° Ğ½ĞµÑ‚",
+    guestLocked: "Ğ‘Ğ°Ğ»Ğ»Ñ‹, Ğ¸Ğ·Ğ±Ñ€Ğ°Ğ½Ğ½Ğ¾Ğµ, ĞºĞ°Ğ»ĞµĞ½Ğ´Ğ°Ñ€ÑŒ Ğ¸ Ğ·Ğ°Ğ´Ğ°Ğ½Ğ¸Ñ Ğ½ĞµĞ´Ğ¾ÑÑ‚ÑƒĞ¿Ğ½Ñ‹ Ğ² Ğ³Ğ¾ÑÑ‚ĞµĞ²Ğ¾Ğ¼ Ñ€ĞµĞ¶Ğ¸Ğ¼Ğµ."
   },
   de: {
     ...profileCopyTr,
@@ -834,9 +862,9 @@ const profileCopyTranslations = {
     task: "Aufgabe",
     badge: "Abzeichen",
     qrAction: "QR-Punkte buchen",
-    taskAction: "Aufgabe abschließen",
+    taskAction: "Aufgabe abschlieÃŸen",
     logout: "Abmelden",
-    personalInfo: "Persönliche Daten",
+    personalInfo: "PersÃ¶nliche Daten",
     name: "Name",
     email: "E-Mail",
     role: "Rolle",
@@ -852,7 +880,7 @@ const profileCopyTranslations = {
     savingButton: "Wird gespeichert...",
     savedSettings: "Einstellungen gespeichert.",
     saveFailed: "Einstellungen konnten nicht gespeichert werden. Bitte erneut versuchen.",
-    qrRequired: "Für QR-Aktionen sind Anmeldung und ein Ort erforderlich.",
+    qrRequired: "FÃ¼r QR-Aktionen sind Anmeldung und ein Ort erforderlich.",
     qrSaving: "QR-Punkte werden verarbeitet...",
     qrSaved: "QR-Punkte verarbeitet.",
     qrFailed: "QR-Aktion konnte nicht abgeschlossen werden.",
@@ -878,3 +906,9 @@ function getProfileUi(locale: ProfileLocale) {
 function getProfileCopy(locale: ProfileLocale) {
   return profileCopyTranslations[locale] ?? profileCopyTranslations.tr;
 }
+
+
+
+
+
+
