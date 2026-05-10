@@ -3,6 +3,14 @@ import type { UserRole } from "@nar/core";
 import { auth, db } from "./firebase";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
+function resolveBootstrapRoleByEmail(email?: string | null) {
+  const normalized = String(email ?? "").trim().toLowerCase();
+  if (normalized === "admin.test@narrehberi.com" || normalized === "master@narrehberi.com") return "admin" as const;
+  if (normalized === "business.test@narrehberi.com") return "business" as const;
+  if (normalized === "theater.test@narrehberi.com") return "theater" as const;
+  return null;
+}
+
 export async function ensureUserProfile(requestedRole?: Exclude<UserRole, "admin">) {
   const call = callable<{ requestedRole?: Exclude<UserRole, "admin"> }, { id: string; created: boolean; role: UserRole }>("ensureUserProfile");
   const shouldUseCallable =
@@ -20,9 +28,12 @@ export async function ensureUserProfile(requestedRole?: Exclude<UserRole, "admin
     if (!user) throw new Error("Kullanıcı oturumu bulunamadı.");
 
     const allowedSelfServiceRoles: Array<Exclude<UserRole, "admin">> = ["individual", "business", "theater"];
-    const role: Exclude<UserRole, "admin"> = requestedRole && allowedSelfServiceRoles.includes(requestedRole)
-      ? requestedRole
-      : "individual";
+    const bootstrapRole = resolveBootstrapRoleByEmail(user.email);
+    const role: UserRole = bootstrapRole
+      ? bootstrapRole
+      : requestedRole && allowedSelfServiceRoles.includes(requestedRole)
+        ? requestedRole
+        : "individual";
     const userRef = doc(db, "users", user.uid);
     const existing = await getDoc(userRef);
 
@@ -50,7 +61,16 @@ export async function ensureUserProfile(requestedRole?: Exclude<UserRole, "admin
       return { data: { id: user.uid, created: true, role } };
     }
 
-    const existingRole = String(existing.data()?.role ?? "individual") as UserRole;
+    const existingData = existing.data() ?? {};
+    if (bootstrapRole && existingData.role !== bootstrapRole) {
+      await setDoc(userRef, {
+        role: bootstrapRole,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+      return { data: { id: user.uid, created: false, role: bootstrapRole } };
+    }
+
+    const existingRole = String(existingData.role ?? "individual") as UserRole;
     return { data: { id: user.uid, created: false, role: existingRole } };
   }
 }

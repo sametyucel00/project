@@ -116,7 +116,7 @@ function resolveUserDisplayName(user: User) {
 
 function resolveBootstrapRoleByEmail(email?: string | null) {
   const normalized = String(email ?? "").trim().toLowerCase();
-  if (normalized === "admin.test@narrehberi.com") return "admin" as const;
+  if (normalized === "admin.test@narrehberi.com" || normalized === "master@narrehberi.com") return "admin" as const;
   if (normalized === "business.test@narrehberi.com") return "business" as const;
   if (normalized === "theater.test@narrehberi.com") return "theater" as const;
   return null;
