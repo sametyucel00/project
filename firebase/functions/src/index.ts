@@ -48,6 +48,49 @@ async function assertRateLimit(uid: string, action: string, maxCount: number, wi
   });
 }
 
+type GroqLocalizedText = { tr: string; en: string; ru: string; de: string };
+type GroqTranslationResult = {
+  title: GroqLocalizedText;
+  description: GroqLocalizedText;
+  synopsis: GroqLocalizedText;
+  notificationTitle: GroqLocalizedText;
+  notificationBody: GroqLocalizedText;
+};
+
+function normalizeGroqLocalizedText(value: unknown): GroqLocalizedText | null {
+  if (!value || typeof value !== "object") return null;
+  const record = value as Record<string, unknown>;
+  const localized = {
+    tr: String(record.tr ?? "").trim(),
+    en: String(record.en ?? "").trim(),
+    ru: String(record.ru ?? "").trim(),
+    de: String(record.de ?? "").trim()
+  };
+  return localized.tr || localized.en || localized.ru || localized.de ? localized : null;
+}
+
+function safeParseGroqTranslation(content: string): GroqTranslationResult | null {
+  const trimmed = content.trim();
+  if (!trimmed) return null;
+  const fenced = trimmed.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+  const start = fenced.indexOf("{");
+  const end = fenced.lastIndexOf("}");
+  if (start < 0 || end <= start) return null;
+
+  try {
+    const parsed = JSON.parse(fenced.slice(start, end + 1)) as Partial<Record<keyof GroqTranslationResult, unknown>>;
+    const result: Partial<GroqTranslationResult> = {};
+    for (const key of ["title", "description", "synopsis", "notificationTitle", "notificationBody"] as const) {
+      const localized = normalizeGroqLocalizedText(parsed[key]);
+      if (!localized) return null;
+      result[key] = localized;
+    }
+    return result as GroqTranslationResult;
+  } catch {
+    return null;
+  }
+}
+
 export const ensureUserProfile = onCall(async (request) => {
   assertSignedIn(request.auth?.uid);
   const uid = request.auth!.uid;
@@ -503,10 +546,82 @@ export const translateSynopsisDraft = onCall(async (request) => {
     synopsis: {
       tr: synopsisTr,
       en: `[Taslak çeviri] ${synopsisTr}`,
-      ru: `[Черновой перевод] ${synopsisTr}`,
-      de: `[Entwurfsübersetzung] ${synopsisTr}`
+      ru: `[Taslak çeviri] ${synopsisTr}`,
+      de: `[Taslak çeviri] ${synopsisTr}`
     }
   };
+});
+
+export const translateTheaterContent = onCall(async (request) => {
+  assertSignedIn(request.auth?.uid);
+  const uid = request.auth!.uid;
+  const user = await db.doc(`users/${uid}`).get();
+  if (!["theater", "admin"].includes(user.data()?.role)) {
+    throw new HttpsError("permission-denied", "Tiyatro yetkisi gerekli.");
+  }
+
+  const payload = request.data ?? {};
+  const titleTr = String(payload.titleTr ?? "").trim();
+  const descriptionTr = String(payload.descriptionTr ?? "").trim();
+  const synopsisTr = String(payload.synopsisTr ?? "").trim();
+  const notificationTitleTr = String(payload.notificationTitleTr ?? titleTr).trim();
+  const notificationBodyTr = String(payload.notificationBodyTr ?? descriptionTr).trim();
+
+  if (!titleTr || !descriptionTr || !synopsisTr) {
+    throw new HttpsError("invalid-argument", "Başlık, açıklama ve sinopsis gerekli.");
+  }
+
+  const groqKey = process.env.GROQ_API_KEY?.trim();
+  const base = {
+    title: { tr: titleTr, en: titleTr, ru: titleTr, de: titleTr },
+    description: { tr: descriptionTr, en: descriptionTr, ru: descriptionTr, de: descriptionTr },
+    synopsis: { tr: synopsisTr, en: synopsisTr, ru: synopsisTr, de: synopsisTr },
+    notificationTitle: { tr: notificationTitleTr, en: notificationTitleTr, ru: notificationTitleTr, de: notificationTitleTr },
+    notificationBody: { tr: notificationBodyTr, en: notificationBodyTr, ru: notificationBodyTr, de: notificationBodyTr }
+  };
+
+  if (!groqKey) {
+    return base;
+  }
+
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${groqKey}`
+    },
+    body: JSON.stringify({
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.2,
+      max_completion_tokens: 1400,
+      messages: [
+        {
+          role: "system",
+          content:
+            "Sen profesyonel bir çeviri motorusun. Sadece geçerli JSON döndür. Türkçe metinleri İngilizce, Rusça ve Almanca'ya doğal biçimde çevir. Özel adları ve marka adlarını koru. Çıktıda şu anahtarlar olsun: title, description, synopsis, notificationTitle, notificationBody. Her anahtarın içinde tr, en, ru, de alanları bulunsun."
+        },
+        {
+          role: "user",
+          content: JSON.stringify({
+            titleTr,
+            descriptionTr,
+            synopsisTr,
+            notificationTitleTr,
+            notificationBodyTr
+          })
+        }
+      ]
+    })
+  });
+
+  if (!response.ok) {
+    throw new HttpsError("internal", `Groq çeviri isteği başarısız oldu: ${response.status}`);
+  }
+
+  const json = await response.json() as { choices?: Array<{ message?: { content?: string | null } }> };
+  const content = json.choices?.[0]?.message?.content?.trim() ?? "";
+  const parsed = safeParseGroqTranslation(content);
+  return parsed ?? base;
 });
 
 export const createContactRequest = onCall(async (request) => {

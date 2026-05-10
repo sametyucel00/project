@@ -76,10 +76,10 @@ export interface AncientGuideStopInput extends AncientGuideStop {
 
 export interface TheaterEventDraftInput {
   categoryId?: string;
+  type?: EventItem["type"];
   title: LocalizedText;
   description: LocalizedText;
   synopsis?: LocalizedText;
-  type: EventItem["type"];
   district: string;
   venueName: string;
   startsAt: string;
@@ -95,6 +95,22 @@ export interface TheaterEventDraftInput {
 
 export interface TheaterEventUpdateInput extends TheaterEventDraftInput {
   eventId: string;
+}
+
+export interface TheaterLocalizedTextInput {
+  titleTr: string;
+  descriptionTr: string;
+  synopsisTr: string;
+  notificationTitleTr?: string;
+  notificationBodyTr?: string;
+}
+
+export interface TheaterLocalizedTextResult {
+  title: LocalizedText;
+  description: LocalizedText;
+  synopsis: LocalizedText;
+  notificationTitle: LocalizedText;
+  notificationBody: LocalizedText;
 }
 
 export interface GooglePlaceSnapshotInput {
@@ -408,6 +424,23 @@ export async function translateSynopsisDraft(synopsisTr: string) {
   }
   const call = callable<{ synopsisTr: string }, { synopsis: LocalizedText }>("translateSynopsisDraft");
   return call({ synopsisTr });
+}
+
+export async function translateTheaterContent(input: TheaterLocalizedTextInput) {
+  if (isLocalWeb()) {
+    const localized = (value: string) => ({ tr: value, en: value, ru: value, de: value });
+    return {
+      data: {
+        title: localized(input.titleTr),
+        description: localized(input.descriptionTr),
+        synopsis: localized(input.synopsisTr),
+        notificationTitle: localized(input.notificationTitleTr ?? input.titleTr),
+        notificationBody: localized(input.notificationBodyTr ?? input.descriptionTr)
+      } satisfies TheaterLocalizedTextResult
+    };
+  }
+  const call = callable<TheaterLocalizedTextInput, TheaterLocalizedTextResult>("translateTheaterContent");
+  return call(input);
 }
 
 export async function createTheaterEvent(input: TheaterEventDraftInput) {
