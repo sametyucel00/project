@@ -3,8 +3,14 @@
 import { approvalQueue, businessDraftTemplates, contentLifecycleStates, theaterDraftTemplates, userTasks, type UserRole } from "@nar/core";
 import { completeUserTask, reviewApproval, submitForApproval } from "@/lib/panel-actions";
 import { auth, db } from "@/lib/firebase";
-import { collection, getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, limit, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { localizeText } from "@nar/core";
+
+type ApprovalRecord = {
+  id: string;
+  submittedAt?: unknown;
+};
 
 export function WorkflowOps({ role }: { role: UserRole }) {
   if (role === "admin") return <ApprovalQueue />;
@@ -26,11 +32,12 @@ function ApprovalQueue() {
         const snapshot = await getDocs(query(
           collection(db, "approvalQueue"),
           where("status", "==", "pendingReview"),
-          orderBy("submittedAt", "desc"),
           limit(24)
         ));
         if (!active) return;
-        const liveItems = snapshot.docs.map((entry) => ({ id: entry.id, ...entry.data() })) as typeof approvalQueue;
+        const liveItems = snapshot.docs
+          .map((entry) => ({ id: entry.id, ...entry.data() }) as ApprovalRecord)
+          .sort((first, second) => toMillis(second.submittedAt) - toMillis(first.submittedAt)) as typeof approvalQueue;
         setItems(liveItems.length ? liveItems : approvalQueue);
         setStatus(liveItems.length ? "Canlı onay kuyruğu kullanılıyor." : "Onay kuyruğunda bekleyen kayıt yok.");
       } catch (error) {
@@ -182,8 +189,8 @@ function TaskCompletion() {
           return (
             <article key={task.id}>
               <div>
-                <strong>{task.title.tr}</strong>
-                <span>{task.description.tr} · {task.rewardPoints} puan</span>
+                <strong>{localizeText(task.title, "tr")}</strong>
+                <span>{localizeText(task.description, "tr")} · {task.rewardPoints} puan</span>
                 {completed ? <span>Tamamlandı</span> : null}
               </div>
               <div className="workflow-actions">
@@ -198,4 +205,16 @@ function TaskCompletion() {
       <p className="meta">{status}</p>
     </section>
   );
+}
+
+function toMillis(value?: unknown) {
+  if (!value) return 0;
+  if (typeof value === "string") {
+    const parsed = new Date(value).getTime();
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+  if (typeof value === "object" && value && "toDate" in value && typeof value.toDate === "function") {
+    return value.toDate().getTime();
+  }
+  return 0;
 }

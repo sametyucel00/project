@@ -101,7 +101,7 @@ export function LiveEventDetail({ id, fallback }: { id: string; fallback: EventI
 
   useEffect(() => {
     let active = true;
-    const source = normalizeSynopsisText(event?.synopsis?.tr ?? event?.description.tr ?? "");
+    const source = normalizeSynopsisText(localizeText(event?.synopsis ?? event?.description, locale, ""));
     if (!source) {
       setSynopsisText("");
       return;
@@ -117,13 +117,13 @@ export function LiveEventDetail({ id, fallback }: { id: string; fallback: EventI
     return () => {
       active = false;
     };
-  }, [event?.description.tr, event?.synopsis?.tr, locale]);
+  }, [event?.description?.tr, event?.synopsis?.tr, locale]);
 
   if (!event) return <MissingDetail backHref="/etkinlikler" backLabel={t("nav.events")} />;
 
   const title = localizeText(event.title, locale);
   const description = synopsisText || localizeText(event.synopsis ?? event.description, locale);
-  const relatedVenue = featuredPlaces.find((place) => place.title.tr === event.venueName || place.district === event.district);
+  const relatedVenue = featuredPlaces.find((place) => localizeText(place.title, locale) === event.venueName || place.district === event.district);
   const eventTypeTitle = localizeText(getEventTypeMeta(event).title, locale);
 
   return (
@@ -178,7 +178,7 @@ export function LiveOfferDetail({ id, fallback }: { id: string; fallback: Offer 
 
   return (
     <>
-      <DetailHero title={title} description={description} image={place?.coverImage ?? "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"} meta={`${offer.discountLabel} · ${place?.title.tr ?? t("common.unspecified")}`} />
+      <DetailHero title={title} description={description} image={place?.coverImage ?? "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4"} meta={`${offer.discountLabel} · ${localizeText(place?.title, locale, t("common.unspecified"))}`} />
       <ActionStrip
         deepLink={deepLinks.offer(offer.id)}
         shareText={`${title} - ${offer.discountLabel}`}
@@ -194,11 +194,11 @@ export function LiveOfferDetail({ id, fallback }: { id: string; fallback: Offer 
           { label: "Puan maliyeti", value: sanitizePublicValue(offer.pointCost) },
           { label: "Kalan kullanım", value: sanitizePublicValue(remainingUse) },
           { label: "Konum", value: sanitizePublicValue(place?.district) },
-          { label: "İşletme", value: sanitizePublicValue(place?.title.tr) },
+          { label: "İşletme", value: sanitizePublicValue(localizeText(place?.title, locale, t("common.unspecified"))) },
           { label: "Şartlar", value: conditions }
         ]}
       />
-      <MapSurface title={place?.title.tr ?? title} address={place?.address ?? place?.district ?? t("common.unspecified")} location={place?.location} />
+      <MapSurface title={localizeText(place?.title, locale, title)} address={place?.address ?? place?.district ?? t("common.unspecified")} location={place?.location} />
     </>
   );
 }

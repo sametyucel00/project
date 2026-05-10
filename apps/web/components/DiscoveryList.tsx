@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import type { EventItem, GeoPoint, Offer, Place } from "@nar/core";
+import type { EventItem, GeoPoint, LocalizedText, Offer, Place } from "@nar/core";
 import { createGoogleMapsDirectionsUrl } from "@nar/core";
 import { CalendarDays, Gift, Heart, Map, MapPin, Navigation, QrCode, Share2, Star, Tag } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -13,8 +13,9 @@ export type FilterOption = {
   label: string;
 };
 
-export function localizeText(text: { tr: string; en?: string; ru?: string; de?: string }, locale: SiteLocale) {
-  return text[locale] || text.tr;
+export function localizeText(text: Partial<LocalizedText> | undefined, locale: SiteLocale, fallback = "Belirtilmemi?") {
+  if (!text) return fallback;
+  return text[locale] || text.tr || fallback;
 }
 
 export function createEventCalendarUrl(event: EventItem) {
@@ -23,9 +24,9 @@ export function createEventCalendarUrl(event: EventItem) {
   const format = (value: Date) => value.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
   const params = new URLSearchParams({
     action: "TEMPLATE",
-    text: event.title.tr,
+    text: localizeText(event.title, "tr"),
     dates: `${format(start)}/${format(end)}`,
-    details: event.description.tr,
+    details: localizeText(event.description, "tr"),
     location: event.venueName
   });
   return `https://calendar.google.com/calendar/render?${params.toString()}`;

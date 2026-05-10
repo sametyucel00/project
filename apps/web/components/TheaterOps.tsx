@@ -2,11 +2,11 @@
 
 import { adjustTheaterNotificationLimit, createTheaterEvent, sendTheaterEventNotification, translateSynopsisDraft } from "@/lib/panel-actions";
 import { db } from "@/lib/firebase";
-import { featuredEvents, type EventItem } from "@nar/core";
+import { featuredEvents, localizeText, type EventItem, type LocalizedText } from "@nar/core";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-type CategoryOption = { id: string; title: { tr: string; en?: string; ru?: string; de?: string } };
+type CategoryOption = { id: string; title: LocalizedText; sortOrder?: number };
 
 export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" }) {
   const sampleEvent = featuredEvents.find((event) => event.type === "theater") ?? featuredEvents[0];
@@ -15,7 +15,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
   const [categoryId, setCategoryId] = useState(sampleEvent.categoryId ?? sampleEvent.type);
   const [notificationLimit, setNotificationLimit] = useState(sampleEvent.notificationLimit);
   const [notificationUsed, setNotificationUsed] = useState(sampleEvent.notificationUsed ?? 0);
-  const [synopsisTr, setSynopsisTr] = useState(sampleEvent.synopsis?.tr ?? sampleEvent.description.tr);
+  const [synopsisTr, setSynopsisTr] = useState(localizeText(sampleEvent.synopsis ?? sampleEvent.description, "tr"));
   const [translation, setTranslation] = useState("");
   const [status, setStatus] = useState("Canlı tiyatro etkinlikleri yükleniyor.");
   const [categories, setCategories] = useState<CategoryOption[]>([]);
@@ -44,7 +44,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
         setCategoryId(selected.categoryId ?? selected.type);
         setNotificationLimit(selected.notificationLimit);
         setNotificationUsed(selected.notificationUsed ?? 0);
-        setSynopsisTr(selected.synopsis?.tr ?? selected.description.tr);
+        setSynopsisTr(localizeText(selected.synopsis ?? selected.description, "tr"));
         setStatus(liveEvents.length ? "Canlı tiyatro etkinlikleri kullanılıyor." : "Henüz canlı tiyatro etkinliği yok.");
       } catch (error) {
         if (!active) return;
@@ -64,8 +64,8 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
           .map((entry) => entry.data() as Partial<CategoryOption> & { id?: string })
           .filter((category): category is CategoryOption => Boolean(category.id && category.title?.tr))
           .sort((left, right) => {
-            const leftOrder = Number((left as { sortOrder?: number }).sortOrder ?? 0);
-            const rightOrder = Number((right as { sortOrder?: number }).sortOrder ?? 0);
+            const leftOrder = Number(left.sortOrder ?? 0);
+            const rightOrder = Number(right.sortOrder ?? 0);
             return leftOrder - rightOrder;
           });
 
@@ -94,7 +94,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
     setCategoryId(selected.categoryId ?? selected.type);
     setNotificationLimit(selected.notificationLimit);
     setNotificationUsed(selected.notificationUsed ?? 0);
-    setSynopsisTr(selected.synopsis?.tr ?? selected.description.tr);
+    setSynopsisTr(localizeText(selected.synopsis ?? selected.description, "tr"));
   }
 
   async function translate() {
@@ -204,14 +204,14 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
         <label>
           Oyun kimliği
           <select value={eventId} onChange={(event) => selectEvent(event.target.value)}>
-            {events.map((event) => <option key={event.id} value={event.id}>{event.title.tr}</option>)}
+            {events.map((event) => <option key={event.id} value={event.id}>{localizeText(event.title, "tr")}</option>)}
           </select>
         </label>
         <label>
           Etkinlik kategorisi
           <select value={categoryId} onChange={(event) => setCategoryId(event.target.value)}>
             {categories.length > 0 ? (
-              categories.map((category) => <option key={category.id} value={category.id}>{category.title.tr}</option>)
+              categories.map((category) => <option key={category.id} value={category.id}>{localizeText(category.title, "tr")}</option>)
             ) : (
               <option value="theater">Tiyatro</option>
             )}

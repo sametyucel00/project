@@ -96,19 +96,19 @@ export function PlacesExplorer() {
       const customCategoryTitle = customCategories.find((category) => category.id === place.categoryId)?.title;
       const defaultCategoryTitle = placeCategoryOptions.find((category) => category.id === getPlaceCategoryId(place))?.title;
       const searchHaystack = [
-        place.title.tr,
+        localizeText(place.title, locale),
         place.title.en,
         place.title.ru,
         place.title.de,
-        place.description.tr,
+        localizeText(place.description, locale),
         place.description.en,
         place.description.ru,
         place.description.de,
         place.district,
         place.address,
         place.categoryId,
-        customCategoryTitle?.tr,
-        defaultCategoryTitle?.tr,
+        localizeText(customCategoryTitle, locale),
+        localizeText(defaultCategoryTitle, locale),
         ...place.features
       ].filter(Boolean).join(" ").toLocaleLowerCase("tr-TR");
 
@@ -133,7 +133,7 @@ export function PlacesExplorer() {
       }
     });
 
-    return [...nextItems].sort((first, second) => first.title.tr.localeCompare(second.title.tr, "tr-TR"));
+    return [...nextItems].sort((first, second) => localizeText(first.title, locale).localeCompare(localizeText(second.title, locale), locale === "tr" ? "tr-TR" : undefined));
   }, [activeCategory, activeFilter, customCategories, items, searchText]);
 
   useEffect(() => {

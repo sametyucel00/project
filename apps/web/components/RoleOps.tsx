@@ -1,9 +1,9 @@
 "use client";
 
-import { listAdminUsers, setUserDisabled, updateUserRole, useQrTransaction, type AdminUserSummary } from "@/lib/panel-actions";
-import { badges, userTasks, type UserRole } from "@nar/core";
-import { Languages, Medal, QrCode, Search, ShieldCheck, Users } from "lucide-react";
+import { badges, localizeText, userTasks, type UserRole } from "@nar/core";
+import { Languages, Medal, QrCode, Search, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { listAdminUsers, setUserDisabled, updateUserRole, useQrTransaction, type AdminUserSummary } from "@/lib/panel-actions";
 
 const assignableRoles: UserRole[] = ["individual", "business", "theater", "admin"];
 const roleLabels: Record<UserRole, string> = {
@@ -48,30 +48,21 @@ export function RoleOps({ role }: { role: UserRole }) {
         <h2>Görev ve Rozetler</h2>
         <p>Görevler tamamlandıkça puan ve rozet kazanımı hesaba işlenir.</p>
         <div className="compact-list">
-          {userTasks.map((task) => (
-            <article key={task.id}>
-              <strong>{task.title.tr}</strong>
-              <span>{task.rewardPoints} puan · {badges.find((badge) => badge.id === task.badgeId)?.title.tr ?? "Rozet yok"}</span>
-            </article>
-          ))}
+          {userTasks.map((task) => {
+            const badge = badges.find((item) => item.id === task.badgeId);
+            return (
+              <article key={task.id}>
+                <strong>{localizeText(task.title, "tr")}</strong>
+                <span>{task.rewardPoints} puan · {badge ? localizeText(badge.title, "tr") : "Rozet yok"}</span>
+              </article>
+            );
+          })}
         </div>
       </section>
     );
   }
 
-  return (
-    <>
-      <section className="role-ops">
-        <ShieldCheck size={22} />
-        <h2>Yönetim Kontrolü</h2>
-        <p>Üyeler, roller, içerik onayları ve işlem geçmişi tek panelde yönetilir.</p>
-        <div className="role-flow">
-          {["Üye", "Rol", "Onay", "Kayıt"].map((item) => <span key={item}>{item}</span>)}
-        </div>
-      </section>
-      <AdminRoleManager />
-    </>
-  );
+  return <AdminRoleManager />;
 }
 
 function BusinessQrManager() {

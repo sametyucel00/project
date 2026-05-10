@@ -2,7 +2,7 @@
 
 import { commitImport, createExportManifest, createOfferCampaign, estimateNotificationAudience, listDiscoveryCategories, previewImport, previewXlsxImport, saveAncientGuideStop, saveDiscoveryCategory, saveGooglePlaceSnapshot, saveTouristSurvivalKitItem, scheduleNotification, sendNotification, updateOfferStatus, useQrTransaction, type DiscoveryCategoryRecord } from "@/lib/panel-actions";
 import { db } from "@/lib/firebase";
-import { ancientGuideStops, importKinds, notificationTargets, parseCsvRows, parseJsonRows, previewRows, touristSurvivalKit, type ExportManifest, type ImportExportFormat, type ImportKind, type NotificationTarget, type PublishStatus, type SurvivalKitItem } from "@nar/core";
+import { ancientGuideStops, importKinds, notificationTargets, parseCsvRows, parseJsonRows, previewRows, touristSurvivalKit, localizeText, type ExportManifest, type ImportExportFormat, type ImportKind, type NotificationTarget, type PublishStatus, type SurvivalKitItem } from "@nar/core";
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
@@ -259,6 +259,33 @@ export function OfferCampaignForm() {
   const [featured, setFeatured] = useState(true);
   const [statusValue, setStatusValue] = useState<PublishStatus>("draft");
   const [status, setStatus] = useState("Kampanya haz?r.");
+
+  const [places, setPlaces] = useState<Array<{ id: string; title: { tr: string; en?: string; ru?: string; de?: string }; district?: string }>>([]);
+
+  useEffect(() => {
+    let active = true;
+    async function loadPlaces() {
+      try {
+        const snapshot = await getDocs(collection(db, "places"));
+        if (!active) return;
+        setPlaces(snapshot.docs.map((entry) => {
+          const data = entry.data();
+          return {
+            id: entry.id,
+            title: data.title ?? { tr: entry.id, en: entry.id, ru: entry.id, de: entry.id },
+            district: data.district
+          };
+        }));
+      } catch {
+        if (!active) return;
+        setPlaces([]);
+      }
+    }
+    void loadPlaces();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   async function createCampaign() {
     setStatus("Kampanya oluşturuluyor.");
@@ -694,7 +721,7 @@ export function CategoryManagementForm() {
         ) : categories.map((category) => (
           <article key={`${category.target}-${category.id}`}>
             <div>
-              <strong>{category.title.tr}</strong>
+              <strong>{localizeText(category.title, "tr")}</strong>
               <span>{category.id} · {category.target === "place" ? "Mekan" : "Etkinlik"} · {formatPublishStatus(category.status)}</span>
             </div>
             <small>Sıra {category.sortOrder ?? 0}</small>

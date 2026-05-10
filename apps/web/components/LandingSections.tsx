@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchLiveEvents, fetchLiveOffers, fetchLivePlaces } from "@/lib/live-data";
-import { categories, featuredEvents, featuredOffers, featuredPlaces, type EventItem, type Offer, type Place } from "@nar/core";
+import { categories, featuredEvents, featuredOffers, featuredPlaces, localizeText, type EventItem, type Offer, type Place } from "@nar/core";
 import { Bell, CalendarDays, Gift, Languages, QrCode, ShieldCheck, Sparkles, Tag, Theater, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocale } from "./LocaleProvider";
@@ -36,7 +36,7 @@ const copy = {
       ["Tiyatro", "Oyunlarını, kadronu, bilet bağlantılarını ve duyurularını düzenle."],
       ["Yönetim", "İçerikleri, üyeleri ve kampanyaları tek merkezden takip et."]
     ] as Array<[string, string]>,
-    categoryLead: categories.map((category) => category.title.tr).join(" · ")
+    categoryLead: categories.map((category) => localizeText(category.title, "tr")).join(" · ")
   },
   en: {
     title: "Discover the city in one calm flow.",
@@ -58,7 +58,7 @@ const copy = {
       ["Theater", "Manage plays, cast, ticket links and announcements."],
       ["Management", "Track content, members and campaigns from one center."]
     ] as Array<[string, string]>,
-    categoryLead: categories.map((category) => category.title.en).join(" · ")
+    categoryLead: categories.map((category) => localizeText(category.title, "en")).join(" · ")
   },
   ru: {
     title: "Открывайте город в одном спокойном потоке.",
@@ -80,7 +80,7 @@ const copy = {
       ["Театр", "Управляйте постановками, составом, ссылками на билеты и объявлениями."],
       ["Управление", "Отслеживайте контент, участников и кампании из одного центра."]
     ] as Array<[string, string]>,
-    categoryLead: categories.map((category) => category.title.ru).join(" · ")
+    categoryLead: categories.map((category) => localizeText(category.title, "ru")).join(" · ")
   },
   de: {
     title: "Entdecke die Stadt in einem ruhigen Fluss.",
@@ -102,14 +102,14 @@ const copy = {
       ["Theater", "Verwalte Stücke, Cast, Ticketlinks und Ankündigungen."],
       ["Verwaltung", "Verfolge Inhalte, Mitglieder und Kampagnen von einer Stelle aus."]
     ] as Array<[string, string]>,
-    categoryLead: categories.map((category) => category.title.de).join(" · ")
+    categoryLead: categories.map((category) => localizeText(category.title, "de")).join(" · ")
   }
 } as const;
 
 function uniqueEventsByTitle(items: EventItem[]) {
   const seen = new Set<string>();
   return items.filter((item) => {
-    const key = item.title.tr;
+    const key = localizeText(item.title, "tr");
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -147,7 +147,7 @@ function resolveNearbyEvents(items: EventItem[], places: Place[], location?: { l
     .map((event) => {
       const normalizedVenue = normalizeText(event.venueName);
       const place = places.find((item) => {
-        const title = normalizeText(item.title.tr);
+        const title = normalizeText(localizeText(item.title, "tr"));
         const address = normalizeText(item.address);
         return title.includes(normalizedVenue) || normalizedVenue.includes(title) || address.includes(normalizedVenue);
       });

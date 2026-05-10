@@ -19,7 +19,7 @@ function startOfDay(value: Date) {
 function uniqueEventsByTitle(items: EventItem[]) {
   const seen = new Set<string>();
   return items.filter((item) => {
-    const key = item.title.tr;
+    const key = localizeText(item.title, "tr");
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -150,15 +150,15 @@ export function EventsExplorer() {
       const customCategoryTitle = customCategories.find((category) => category.id === eventCategoryId)?.title;
       const defaultTypeTitle = eventTypes.find((type) => type.id === getEventTypeId(event))?.title;
       const searchHaystack = [
-        event.title.tr,
+        localizeText(event.title, locale),
         event.title.en,
         event.title.ru,
         event.title.de,
-        event.description.tr,
+        localizeText(event.description, locale),
         event.description.en,
         event.description.ru,
         event.description.de,
-        event.synopsis?.tr,
+        localizeText(event.synopsis, locale),
         event.synopsis?.en,
         event.synopsis?.ru,
         event.synopsis?.de,
@@ -261,7 +261,7 @@ export function EventsExplorer() {
           {maySpotlight.map((event) => (
             <article className="feature" key={event.id}>
               <span className="event-meta">{new Intl.DateTimeFormat("tr-TR", { dateStyle: "long", timeStyle: "short" }).format(new Date(event.startsAt))}</span>
-              <h3>{event.title.tr}</h3>
+              <h3>{localizeText(event.title, locale)}</h3>
               <p>{event.venueName} · {event.district}</p>
             </article>
           ))}

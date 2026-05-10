@@ -1,6 +1,7 @@
-import { importKinds, notificationTargets } from "@nar/core";
-import { Boxes, FileSpreadsheet, Landmark, Percent, Send, Timer } from "lucide-react";
-import { CategoryManagementForm, ExportManifestForm, ImportPreviewForm, MiniModuleManagementForm, NotificationForm, OfferCampaignForm } from "./ActionForms";
+import { importKinds } from "@nar/core";
+import { Boxes, FileSpreadsheet, Percent, Send, Timer } from "lucide-react";
+import { CategoryManagementForm, ExportManifestForm, ImportPreviewForm, NotificationForm, OfferCampaignForm } from "./ActionForms";
+import { CatalogManagementOps } from "./CatalogManagementOps";
 import { useLocale } from "./LocaleProvider";
 
 const adminCopy = {
@@ -93,24 +94,12 @@ const adminCopy = {
 export function AdminOps() {
   const { locale } = useLocale();
   const copy = adminCopy[locale];
-  const categoryButtons = locale === "tr"
-    ? ["Mekan kategorisi", "Etkinlik kategorisi", "Çok dil", "Sıralama"]
-    : locale === "en"
-      ? ["Venue category", "Event category", "Multilanguage", "Sorting"]
-      : locale === "ru"
-        ? ["Категория мест", "Категория событий", "Мультиязык", "Сортировка"]
-        : ["Ort-Kategorie", "Event-Kategorie", "Mehrsprachig", "Sortierung"];
   return (
     <section className="admin-ops" id="admin-operations">
       <div className="ops-block" id="notifications">
         <Send size={22} />
         <h2>{copy.notifications}</h2>
         <p>{copy.notificationsBody}</p>
-        <div className="ops-grid">
-          {notificationTargets.map((target) => (
-            <button key={target.id}>{target.label}</button>
-          ))}
-        </div>
         <div className="ops-schedule">
           <Timer size={18} />
           <span>{copy.scheduled}</span>
@@ -122,11 +111,6 @@ export function AdminOps() {
         <Percent size={22} />
         <h2>{copy.offers}</h2>
         <p>{copy.offersBody}</p>
-        <div className="ops-grid">
-          {[copy.draft, copy.live, copy.story, copy.limit].map((item) => (
-            <button key={item}>{item}</button>
-          ))}
-        </div>
         <OfferCampaignForm />
       </div>
 
@@ -150,23 +134,10 @@ export function AdminOps() {
         <Boxes size={22} />
         <h2>{copy.category}</h2>
         <p>{copy.categoryBody}</p>
-        <div className="ops-grid">
-          {categoryButtons.map((item) => <button key={item}>{item}</button>)}
-        </div>
         <CategoryManagementForm />
       </div>
 
-      <div className="ops-block" id="general">
-        <Landmark size={22} />
-        <h2>{copy.miniModules}</h2>
-        <p>{copy.miniModulesBody}</p>
-        <div className="ops-grid">
-          {[copy.touristSupport, copy.ancientGuide, copy.publishState, copy.history].map((item) => (
-            <button key={item}>{item}</button>
-          ))}
-        </div>
-        <MiniModuleManagementForm />
-      </div>
+      <CatalogManagementOps />
     </section>
   );
 }

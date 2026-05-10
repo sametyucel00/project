@@ -5,6 +5,7 @@ import { Bell, ChevronRight, PlusCircle } from "lucide-react";
 import { AdminOps } from "./AdminOps";
 import { AdminStats } from "./AdminStats";
 import { BusinessOps } from "./BusinessOps";
+import { CatalogManagementOps } from "./CatalogManagementOps";
 import { ContactInbox } from "./ContactInbox";
 import { IndividualOps } from "./IndividualOps";
 import { OrdersOps } from "./OrdersOps";
@@ -20,41 +21,38 @@ type MenuItem = { id: string; title: string; description: string };
 
 const panelMenus: Record<UserRole, MenuItem[]> = {
   admin: [
-    { id: "overview", title: "Genel", description: "Platform ozeti ve hizli islemler." },
-    { id: "members", title: "Uyeler", description: "Kullanicilar, roller ve hesap durumu." },
-    { id: "approvals", title: "Onaylar", description: "Mekan, etkinlik, firsat ve kategori kuyruklari." },
-    { id: "orders", title: "Siparisler", description: "Siparisler ve QR islem kayitlari." },
-    { id: "places", title: "Mekanlar", description: "Google bilgileri ve mekan duzeni." },
-    { id: "events", title: "Etkinlikler", description: "Etkinlik olusturma ve bildirim akisi." },
-    { id: "offers", title: "Firsatlar", description: "Kampanyalar, hikayeler ve yayin durumu." },
-    { id: "qr", title: "QR Akisi", description: "Puan ve islem kayitlari." },
-    { id: "import", title: "Ice / Disa Aktarim", description: "Dosya onizleme ve aktarim kayitlari." },
+    { id: "overview", title: "Genel", description: "Platform özeti ve hızlı işlemler." },
+    { id: "members", title: "Üyeler", description: "Kullanıcılar, roller ve hesap durumu." },
+    { id: "approvals", title: "Onaylar", description: "Mekan, etkinlik, fırsat ve kategori kuyrukları." },
+    { id: "orders", title: "Siparişler", description: "Siparişler ve QR işlem kayıtları." },
+    { id: "content-management", title: "İçerik", description: "Mekan, etkinlik ve fırsat kayıtları." },
+    { id: "import", title: "İçe / Dışa Aktarım", description: "Dosya önizleme ve aktarım kayıtları." },
     { id: "category-management", title: "Kategoriler", description: "Mekan ve etkinlik kategorileri." },
-    { id: "notifications", title: "Bildirimler", description: "Bildirim merkezi ve gonderimler." },
-    { id: "stats", title: "Istatistikler", description: "Canli panel sayaclari." },
-    { id: "contact-inbox", title: "Iletisim", description: "Formdan gelen mesajlar." },
+    { id: "notifications", title: "Bildirimler", description: "Bildirim merkezi ve gönderimler." },
+    { id: "stats", title: "İstatistikler", description: "Canlı panel sayaçları." },
+    { id: "contact-inbox", title: "İletişim", description: "Formdan gelen mesajlar." },
     { id: "settings", title: "Ayarlar", description: "Profil ve oturum tercihleri." }
   ],
   business: [
-    { id: "overview", title: "Genel", description: "Isletme ozeti ve hizli islemler." },
+    { id: "overview", title: "Genel", description: "İşletme özeti ve hızlı işlemler." },
     { id: "places", title: "Mekanlar", description: "Sahip olunan mekanlar ve Google bilgileri." },
-    { id: "offers", title: "Firsatlar", description: "Kampanyalar ve yayin durumu." },
-    { id: "qr", title: "QR Islem", description: "QR puan ve kampanya islemleri." },
-    { id: "orders", title: "Siparisler", description: "Kullanim ve islem gecmisi." },
+    { id: "offers", title: "Fırsatlar", description: "Kampanyalar ve yayın durumu." },
+    { id: "qr", title: "QR İşlem", description: "QR puan ve kampanya islemleri." },
+    { id: "orders", title: "Siparişler", description: "Kullanım ve işlem geçmişi." },
     { id: "settings", title: "Ayarlar", description: "Profil ve bildirim tercihleri." }
   ],
   theater: [
-    { id: "overview", title: "Genel", description: "Tiyatro ozeti ve hizli islemler." },
-    { id: "play", title: "Oyun", description: "Oyun, sinopsis, bilet ve bildirim akisi." },
-    { id: "settings", title: "Ayarlar", description: "Tiyatro profili ve icerik tercihleri." }
+    { id: "overview", title: "Genel", description: "Tiyatro özeti ve hızlı işlemler." },
+    { id: "play", title: "Oyun", description: "Oyun, sinopsis, bilet ve bildirim akışı." },
+    { id: "settings", title: "Ayarlar", description: "Tiyatro profili ve içerik tercihleri." }
   ],
   individual: [
-    { id: "overview", title: "Genel", description: "Puan, QR, gorev ve favori ozeti." },
+    { id: "overview", title: "Genel", description: "Puan, QR, görev ve favori özeti." },
     { id: "points", title: "Puan ve QR", description: "Puan bakiyesi ve QR hareketleri." },
-    { id: "tasks", title: "Gorevler", description: "Tamamlanabilir gorevler." },
+    { id: "tasks", title: "Görevler", description: "Tamamlanabilir görevler." },
     { id: "badges", title: "Rozetler", description: "Kazanımlar ve sehir basarilari." },
-    { id: "favorites", title: "Favoriler", description: "Kaydedilen mekan, etkinlik ve firsatlar." },
-    { id: "orders", title: "Siparisler", description: "Islem ve siparis gecmisi." },
+    { id: "favorites", title: "Favoriler", description: "Kaydedilen mekan, etkinlik ve fırsatlar." },
+    { id: "orders", title: "Siparişler", description: "İşlem ve sipariş geçmişi." },
     { id: "settings", title: "Ayarlar", description: "Dil, tema ve bildirim tercihleri." }
   ]
 };
@@ -62,21 +60,21 @@ const panelMenus: Record<UserRole, MenuItem[]> = {
 const copy = {
   tr: {
     roleLabels: {
-      admin: "Yonetim Paneli",
-      business: "Isletme Paneli",
+      admin: "Yönetim Paneli",
+      business: "İşletme Paneli",
       theater: "Tiyatro Paneli",
       individual: "Bireysel Panel"
     },
     roleSubtitles: {
-      admin: "Platform yonetimi, denetim ve icerik sureclerini buradan yonet.",
-      business: "Mekan, firsat, QR ve sadakat akislarini tek yerden duzenle.",
-      theater: "Oyun, sinopsis, bilet ve duyuru yonetimini sahne ritmine gore surdur.",
-      individual: "Puan, QR, gorev, rozet ve favorilerini tek ekranda takip et."
+      admin: "Platform yönetimi, denetim ve içerik süreçlerini buradan yönet.",
+      business: "Mekan, fırsat, QR ve sadakat akışlarını tek yerden düzenle.",
+      theater: "Oyun, sinopsis, bilet ve duyuru yönetimini sahne ritmine göre sürdür.",
+      individual: "Puan, QR, görev, rozet ve favorilerini tek ekranda takip et."
     },
     notifications: "Bildirimler",
-    newAction: "Yeni islem",
-    quickActionNote: "Rolune uygun temel islemleri buradan yonetebilirsin.",
-    liveNote: "Canli verilerle guncellenen panel ozeti."
+    newAction: "Yeni işlem",
+    quickActionNote: "Rolüne uygun temel işlemleri buradan yönetebilirsin.",
+    liveNote: "Canlı verilerle güncellenen panel özeti."
   },
   en: {
     roleLabels: {
@@ -192,13 +190,14 @@ export function PanelShell({ role }: { role: UserRole }) {
         {role === "admin" ? <div id="members"><RoleOps role={role} /></div> : null}
         {role === "admin" ? <WorkflowOps role={role} /> : null}
         {role === "admin" ? <AdminOps /> : null}
+        {role === "admin" ? <CatalogManagementOps /> : null}
         {role === "admin" ? <div id="stats"><AdminStats /></div> : null}
-        {role === "admin" ? <div id="contact-inbox"><ContactInbox /></div> : null}
         {role === "business" ? <BusinessOps /> : null}
         {role === "theater" ? <div id="play"><TheaterOps mode="theater" /></div> : null}
         {role === "individual" ? <IndividualOps /> : null}
         <OrdersOps role={role} />
         <PanelAccountOps role={role} />
+        {role === "admin" ? <div id="contact-inbox" className="contact-inbox-wide"><ContactInbox /></div> : null}
       </section>
     </main>
   );

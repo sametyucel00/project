@@ -1,4 +1,4 @@
-import { mapLegacyTheatrePlayToEvent, mapLegacyVenueToPlace, type EventItem, type Offer, type Place } from "@nar/core";
+import { localizeText, mapLegacyTheatrePlayToEvent, mapLegacyVenueToPlace, type EventItem, type Offer, type Place } from "@nar/core";
 import { collection, doc, getDoc, getDocs, limit, orderBy, query, where } from "firebase/firestore";
 import { db } from "./firebase";
 
@@ -33,7 +33,7 @@ export async function fetchLivePlaces(limitCount = 500) {
 
   return [...merged.values()]
     .filter((place) => place.status === "published")
-    .sort((first, second) => first.title.tr.localeCompare(second.title.tr, "tr-TR"))
+    .sort((first, second) => localizeText(first.title, "tr").localeCompare(localizeText(second.title, "tr"), "tr-TR"))
     .slice(0, limitCount);
 }
 

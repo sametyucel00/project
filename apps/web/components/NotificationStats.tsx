@@ -3,6 +3,7 @@
 import { db } from "@/lib/firebase";
 import {
   defaultPushPreferences,
+  localizeText,
   notificationAudiencePreviews,
   type NotificationDelivery,
   type NotificationDraft
@@ -114,7 +115,7 @@ export function NotificationStats() {
           <article key={notification.id}>
             <Clock size={18} />
             <div>
-              <strong>{notification.title.tr}</strong>
+              <strong>{localizeText(notification.title, "tr")}</strong>
               <span>{notification.target.kind} · {formatNotificationDate(notification.scheduledAt)}</span>
             </div>
           </article>
@@ -133,7 +134,7 @@ export function NotificationStats() {
           <article key={notification.id}>
             <MousePointerClick size={18} />
             <div>
-              <strong>{notification.title.tr}</strong>
+              <strong>{localizeText(notification.title, "tr")}</strong>
               <span>{formatNotificationStatus(notification.status)} · {formatNotificationDate(notification.sentAt)}</span>
             </div>
           </article>

@@ -2,7 +2,7 @@
 
 import { updatePushPreferences, useQrTransaction } from "@/lib/panel-actions";
 import { auth, db } from "@/lib/firebase";
-import { badges, deepLinks, defaultPushPreferences, featuredEvents, featuredOffers, featuredPlaces } from "@nar/core";
+import { badges, deepLinks, defaultPushPreferences, featuredEvents, featuredOffers, featuredPlaces, localizeText } from "@nar/core";
 import { collection, doc, getDoc, getDocs, limit, query, where } from "firebase/firestore";
 import { Bell, Heart, Link2, Medal, QrCode } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -139,8 +139,8 @@ export function IndividualOps() {
           {knownBadges.map((badge) => (
             <article key={badge.id}>
               <div>
-                <strong>{badge.title.tr}</strong>
-                <span>{badge.level} · {badge.description.tr}</span>
+                <strong>{localizeText(badge.title, "tr")}</strong>
+                <span>{badge.level} · {localizeText(badge.description, "tr")}</span>
               </div>
             </article>
           ))}
@@ -182,7 +182,7 @@ export function IndividualOps() {
           {favoritePlaces.map((place) => (
             <article key={place.id}>
               <div>
-                <strong>{place.title.tr}</strong>
+                <strong>{localizeText(place.title, "tr")}</strong>
                 <span>Mekan · {place.district}</span>
               </div>
             </article>
@@ -190,7 +190,7 @@ export function IndividualOps() {
           {favoriteEvents.map((event) => (
             <article key={event.id}>
               <div>
-                <strong>{event.title.tr}</strong>
+                <strong>{localizeText(event.title, "tr")}</strong>
                 <span>Etkinlik · {event.venueName}</span>
               </div>
             </article>
@@ -198,7 +198,7 @@ export function IndividualOps() {
           {favoriteOffers.map((offer) => (
             <article key={offer.id}>
               <div>
-                <strong>{offer.title.tr}</strong>
+                <strong>{localizeText(offer.title, "tr")}</strong>
                 <span>Fırsat · {offer.discountLabel}</span>
               </div>
             </article>

@@ -6,6 +6,7 @@ import {
   featuredEvents,
   featuredOffers,
   featuredPlaces,
+  localizeText,
   locales,
   type EventItem,
   type LocalizedText,
@@ -76,7 +77,7 @@ export function LocalizationOps() {
           const missing = [...new Set([...titleReport.missing, ...descriptionReport.missing])];
           return (
             <article key={`${item.type}-${item.id}`}>
-              <strong>{item.type}: {item.title.tr}</strong>
+              <strong>{item.type}: {localizeText(item.title, "tr")}</strong>
               <span>{missing.length ? `Eksik çeviri: ${missing.join(", ")}` : "Tüm çeviriler hazır"}</span>
               <small>Gösterilecek metin: {titleReport.fallbackText}</small>
             </article>

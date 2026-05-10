@@ -950,6 +950,105 @@ h1 {
   min-width: 0;
 }
 
+.catalog-manager,
+.contact-inbox-wide {
+  width: 100%;
+  max-width: none;
+}
+
+.contact-inbox-wide .system-logs {
+  grid-template-columns: 1fr;
+}
+
+.contact-inbox-wide .log-block {
+  width: 100%;
+}
+
+.catalog-rows {
+  display: grid;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.catalog-list,
+.catalog-editor,
+.catalog-summary {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.admin-ops .mini-form,
+.role-ops .mini-form,
+.workflow .mini-form,
+.notification-stats .mini-form,
+.orders-ops .mini-form {
+  max-width: none;
+}
+
+.admin-ops .mini-form,
+.role-ops .mini-form,
+.workflow .mini-form,
+.notification-stats .mini-form,
+.orders-ops .mini-form {
+  width: 100%;
+}
+
+.catalog-item {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: left;
+}
+
+.catalog-item.active {
+  border-color: var(--nar);
+  box-shadow: inset 0 0 0 1px var(--nar);
+}
+
+.catalog-item strong {
+  font-size: 16px;
+}
+
+.catalog-item span,
+.catalog-item small {
+  color: var(--muted);
+}
+
+.catalog-summary {
+  margin-top: 8px;
+}
+
+.catalog-summary article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.catalog-summary span {
+  color: var(--muted);
+}
+
+.role-flow button {
+  border-radius: 999px;
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.role-flow button.active {
+  border-color: var(--nar);
+  box-shadow: inset 0 0 0 1px var(--nar);
+}
+
 .panel-note {
   margin: 12px 0 4px;
 }
