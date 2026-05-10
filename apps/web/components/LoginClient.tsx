@@ -162,12 +162,8 @@ export function LoginClient() {
   }, [copy.messageDefault]);
 
   async function completeAuth(roleForNewAccount?: SelfServiceRole) {
-    const roleHint = roleForNewAccount ?? "individual";
-    const timeout = new Promise<{ data: { role: UserRole } }>((resolve) =>
-      setTimeout(() => resolve({ data: { role: roleHint } }), 1200)
-    );
-    const profile = await Promise.race([ensureUserProfile(roleForNewAccount), timeout]);
-    const role = profile.data.role ?? roleHint;
+    const profile = await ensureUserProfile(roleForNewAccount);
+    const role = profile.data.role ?? (roleForNewAccount ?? "individual");
     router.push(resolveRoleHome(role));
   }
 
