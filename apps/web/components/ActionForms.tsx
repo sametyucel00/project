@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 
 export function NotificationForm() {
   const [target, setTarget] = useState<NotificationTarget["kind"]>("all");
-  const [title, setTitle] = useState("Bugün şehirde iyi bir rota var");
-  const [body, setBody] = useState("Nar Rehberi önerilerini keşfet.");
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
   const [audience, setAudience] = useState("Hedef kitle henüz hesaplanmadı.");
   const [status, setStatus] = useState("Taslak hazır.");
 
@@ -83,12 +83,12 @@ export function NotificationForm() {
 export function ImportPreviewForm() {
   const [kind, setKind] = useState<ImportKind>("places");
   const [format, setFormat] = useState<ImportExportFormat>("csv");
-  const [raw, setRaw] = useState("title.tr,description.tr,categoryId,district,address\nÖrnek Mekan,Örnek açıklama,coffee,Muratpaşa,Kaleiçi");
+  const [raw, setRaw] = useState("");
   const [workbookBase64, setWorkbookBase64] = useState("");
   const [previewId, setPreviewId] = useState("");
   const [previewRowsState, setPreviewRowsState] = useState<Array<Record<string, unknown>>>([]);
   const [errors, setErrors] = useState<Array<{ row: number; message: string }>>([]);
-  const [status, setStatus] = useState("Örnek satır önizlemeye hazır.");
+  const [status, setStatus] = useState("Önizlemeye hazır.");
 
   async function preview() {
     setStatus("Önizleme isteği gönderiliyor.");
@@ -252,13 +252,13 @@ export function ExportManifestForm() {
 
 export function OfferCampaignForm() {
   const [offerId, setOfferId] = useState("");
-  const [placeId, setPlaceId] = useState("harbor-coffee");
+  const [placeId, setPlaceId] = useState("");
   const [discountLabel, setDiscountLabel] = useState("%25");
   const [useLimit, setUseLimit] = useState(250);
   const [storyEnabled, setStoryEnabled] = useState(true);
   const [featured, setFeatured] = useState(true);
   const [statusValue, setStatusValue] = useState<PublishStatus>("draft");
-  const [status, setStatus] = useState("Kampanya taslağı hazır.");
+  const [status, setStatus] = useState("Kampanya haz?r.");
 
   async function createCampaign() {
     setStatus("Kampanya oluşturuluyor.");
@@ -342,11 +342,11 @@ export function OfferCampaignForm() {
 
 export function QrTransactionForm() {
   const [userId, setUserId] = useState("");
-  const [placeId, setPlaceId] = useState("harbor-coffee");
+  const [placeId, setPlaceId] = useState("");
   const [offerId, setOfferId] = useState("");
   const [pointsDelta, setPointsDelta] = useState(75);
   const [scanId, setScanId] = useState(`scan-${Date.now()}`);
-  const [status, setStatus] = useState("QR puan işlemi hazır.");
+  const [status, setStatus] = useState("QR işlemi hazır.");
 
   async function submitQrTransaction() {
     const trimmedUserId = userId.trim();
@@ -405,7 +405,7 @@ export function QrTransactionForm() {
 }
 
 export function GooglePlaceSnapshotForm() {
-  const [placeId, setPlaceId] = useState("harbor-coffee");
+  const [placeId, setPlaceId] = useState("");
   const [googlePlaceId, setGooglePlaceId] = useState("");
   const [rating, setRating] = useState(4.7);
   const [reviewCount, setReviewCount] = useState(391);

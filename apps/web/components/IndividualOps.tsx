@@ -18,7 +18,6 @@ type PanelQrTransaction = { id: string; type?: string; pointsDelta?: number; bal
 type PanelOrder = { id: string; entityTitle?: string; type?: string; status?: string; amountLabel?: string; createdAt?: unknown };
 
 export function IndividualOps() {
-  const samplePlace = featuredPlaces[0];
   const [userId, setUserId] = useState("");
   const [preferences, setPreferences] = useState(defaultPushPreferences);
   const [status, setStatus] = useState("Bireysel panel hazır.");
@@ -85,7 +84,7 @@ export function IndividualOps() {
     try {
       const result = await useQrTransaction({
         userId,
-        placeId: samplePlace.id,
+        placeId: favoritePlaces[0]?.id ?? "",
         pointsDelta: 25,
         scanId: `web-individual-${userId}-${Date.now()}`,
         note: "Web bireysel panel QR işlemi"
@@ -215,7 +214,7 @@ export function IndividualOps() {
         <div className="import-table">
           <article><strong>Profil</strong><span>{deepLinks.profile()}</span></article>
           <article><strong>QR</strong><span>{deepLinks.qr()}</span></article>
-          <article><strong>Mekan</strong><span>{deepLinks.place(samplePlace.id)}</span></article>
+          {favoritePlaces[0] ? <article><strong>Mekan</strong><span>{deepLinks.place(favoritePlaces[0].id)}</span></article> : null}
         </div>
       </div>
     </section>
