@@ -6,6 +6,7 @@ import { collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from "fi
 import { Layers3, PencilLine, Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocale } from "./LocaleProvider";
+import { seedCollections } from "../../../packages/core/src/seed";
 
 type CatalogKind = "place" | "event" | "offer";
 
@@ -119,6 +120,7 @@ export function CatalogManagementOps() {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [categories, setCategories] = useState<Array<{ id: string; target: "place" | "event"; title: LocalizedText; status: PublishStatus; sortOrder?: number }>>([]);
+  const [hiddenIds, setHiddenIds] = useState<Record<CatalogKind, string[]>>({ place: [], event: [], offer: [] });
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [placeDraft, setPlaceDraft] = useState<PlaceDraft>(createPlaceDraft());
@@ -147,10 +149,14 @@ export function CatalogManagementOps() {
             if (first.target !== second.target) return first.target.localeCompare(second.target);
             return (first.sortOrder ?? 0) - (second.sortOrder ?? 0) || localizeText(first.title, locale).localeCompare(localizeText(second.title, locale), locale === "tr" ? "tr-TR" : undefined);
           });
-        setPlaces(livePlaces);
-        setEvents(liveEvents);
-        setOffers(liveOffers);
-        setCategories(liveCategories);
+        const fallbackCategories = [
+          ...placeCategoryOptions.map((item, index) => ({ id: item.id, target: "place" as const, title: item.title, status: "published" as PublishStatus, sortOrder: index })),
+          ...eventTypes.map((item, index) => ({ id: item.id, target: "event" as const, title: item.title, status: "published" as PublishStatus, sortOrder: index }))
+        ];
+        setPlaces(mergeWithFallback(livePlaces, seedCollections.places as Place[], hiddenIds.place));
+        setEvents(mergeWithFallback(liveEvents, seedCollections.events as EventItem[], hiddenIds.event));
+        setOffers(mergeWithFallback(liveOffers, seedCollections.offers as Offer[], hiddenIds.offer));
+        setCategories(mergeCategoriesWithFallback(liveCategories, fallbackCategories));
         setStatus("Canlı katalog verileri yüklendi.");
       } catch (error) {
         if (!active) return;
@@ -161,7 +167,7 @@ export function CatalogManagementOps() {
     return () => {
       active = false;
     };
-  }, [locale]);
+  }, [hiddenIds.event, hiddenIds.offer, hiddenIds.place, locale]);
 
   const visiblePlaces = useMemo(() => filterBySearch(places, search, locale), [locale, places, search]);
   const visibleEvents = useMemo(() => filterBySearch(events, search, locale), [locale, events, search]);
@@ -214,6 +220,10 @@ export function CatalogManagementOps() {
   async function saveCurrent() {
     setStatus("Kaydediliyor.");
     try {
+      const nextHiddenIds = {
+        ...hiddenIds,
+        [kind]: hiddenIds[kind].filter((itemId) => itemId !== selectedId)
+      };
       if (kind === "place") {
         await setDoc(doc(db, "places", placeDraft.id), {
           ...buildPlacePayload(placeDraft),
@@ -233,7 +243,8 @@ export function CatalogManagementOps() {
         }, { merge: true });
       }
       setStatus("Kaydedildi.");
-      await refresh();
+      setHiddenIds(nextHiddenIds);
+      await refresh(nextHiddenIds);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Kaydedilemedi.");
     }
@@ -243,27 +254,44 @@ export function CatalogManagementOps() {
     if (!selectedId) return;
     setStatus("Siliniyor.");
     try {
+      const nextHiddenIds = {
+        ...hiddenIds,
+        [kind]: hiddenIds[kind].includes(selectedId) ? hiddenIds[kind] : [...hiddenIds[kind], selectedId]
+      };
       await deleteDoc(doc(db, kind === "place" ? "places" : kind === "event" ? "events" : "offers", selectedId));
-      setStatus("Kayıt silindi.");
+      setStatus("Kay�t silindi.");
+      setHiddenIds(nextHiddenIds);
       setSelectedId("");
       if (kind === "place") setPlaceDraft(createPlaceDraft());
       if (kind === "event") setEventDraft(createEventDraft());
       if (kind === "offer") setOfferDraft(createOfferDraft());
-      await refresh();
+      await refresh(nextHiddenIds);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Kayıt silinemedi.");
     }
   }
 
-  async function refresh() {
+  async function refresh(overrideHiddenIds = hiddenIds) {
     const [placeSnap, eventSnap, offerSnap] = await Promise.all([
       getDocs(collection(db, "places")),
       getDocs(collection(db, "events")),
       getDocs(collection(db, "offers"))
     ]);
-    setPlaces(placeSnap.docs.map((entry) => ({ id: entry.id, ...entry.data() }) as Place));
-    setEvents(eventSnap.docs.map((entry) => ({ id: entry.id, ...entry.data() }) as EventItem));
-    setOffers(offerSnap.docs.map((entry) => ({ id: entry.id, ...entry.data() }) as Offer));
+    setPlaces(mergeWithFallback(
+      placeSnap.docs.map((entry) => ({ id: entry.id, ...entry.data() }) as Place),
+      seedCollections.places as Place[],
+      overrideHiddenIds.place
+    ));
+    setEvents(mergeWithFallback(
+      eventSnap.docs.map((entry) => ({ id: entry.id, ...entry.data() }) as EventItem),
+      seedCollections.events as EventItem[],
+      overrideHiddenIds.event
+    ));
+    setOffers(mergeWithFallback(
+      offerSnap.docs.map((entry) => ({ id: entry.id, ...entry.data() }) as Offer),
+      seedCollections.offers as Offer[],
+      overrideHiddenIds.offer
+    ));
   }
 
   function selectItem(id: string) {
@@ -433,6 +461,39 @@ export function CatalogManagementOps() {
       <p className="meta" aria-live="polite">{status}</p>
     </section>
   );
+}
+
+function mergeWithFallback<T extends { id: string }>(liveItems: T[], fallbackItems: T[], hiddenIds: string[]) {
+  const seen = new Set<string>();
+  const merged: T[] = [];
+  for (const item of liveItems) {
+    if (hiddenIds.includes(item.id) || seen.has(item.id)) continue;
+    seen.add(item.id);
+    merged.push(item);
+  }
+  for (const item of fallbackItems) {
+    if (hiddenIds.includes(item.id) || seen.has(item.id)) continue;
+    seen.add(item.id);
+    merged.push(item);
+  }
+  return merged;
+}
+
+function mergeCategoriesWithFallback(
+  liveItems: Array<{ id: string; target: "place" | "event"; title: LocalizedText; status: PublishStatus; sortOrder?: number }>,
+  fallbackItems: Array<{ id: string; target: "place" | "event"; title: LocalizedText; status: PublishStatus; sortOrder?: number }>
+) {
+  const seen = new Set<string>();
+  const merged = [...liveItems];
+  for (const item of liveItems) seen.add(item.id);
+  for (const item of fallbackItems) {
+    if (seen.has(item.id)) continue;
+    merged.push(item);
+  }
+  return merged.sort((first, second) => {
+    if (first.target !== second.target) return first.target.localeCompare(second.target);
+    return (first.sortOrder ?? 0) - (second.sortOrder ?? 0) || localizeText(first.title, "tr").localeCompare(localizeText(second.title, "tr"), "tr-TR");
+  });
 }
 
 function filterBySearch<T extends { id: string; title: LocalizedText }>(items: T[], search: string, locale: "tr" | "en" | "ru" | "de") {

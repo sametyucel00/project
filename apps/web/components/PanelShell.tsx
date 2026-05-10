@@ -5,7 +5,6 @@ import { Bell, ChevronRight, PlusCircle } from "lucide-react";
 import { AdminOps } from "./AdminOps";
 import { AdminStats } from "./AdminStats";
 import { BusinessOps } from "./BusinessOps";
-import { CatalogManagementOps } from "./CatalogManagementOps";
 import { ContactInbox } from "./ContactInbox";
 import { IndividualOps } from "./IndividualOps";
 import { OrdersOps } from "./OrdersOps";
@@ -190,7 +189,6 @@ export function PanelShell({ role }: { role: UserRole }) {
         {role === "admin" ? <div id="members"><RoleOps role={role} /></div> : null}
         {role === "admin" ? <WorkflowOps role={role} /> : null}
         {role === "admin" ? <AdminOps /> : null}
-        {role === "admin" ? <CatalogManagementOps /> : null}
         {role === "admin" ? <div id="stats"><AdminStats /></div> : null}
         {role === "business" ? <BusinessOps /> : null}
         {role === "theater" ? <div id="play"><TheaterOps mode="theater" /></div> : null}

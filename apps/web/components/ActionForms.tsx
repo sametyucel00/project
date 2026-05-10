@@ -718,8 +718,8 @@ export function CategoryManagementForm() {
             <strong>Henüz kategori yok</strong>
             <span>Yeni bir mekan veya etkinlik kategorisi ekleyebilirsin.</span>
           </article>
-        ) : categories.map((category) => (
-          <article key={`${category.target}-${category.id}`}>
+        ) : categories.map((category, index) => (
+          <article key={category.id && category.target ? `${category.target}-${category.id}` : `category-${index}`}>
             <div>
               <strong>{localizeText(category.title, "tr")}</strong>
               <span>{category.id} · {category.target === "place" ? "Mekan" : "Etkinlik"} · {formatPublishStatus(category.status)}</span>

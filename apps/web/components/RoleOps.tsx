@@ -2,7 +2,7 @@
 
 import { badges, localizeText, userTasks, type UserRole } from "@nar/core";
 import { Languages, Medal, QrCode, Search, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { listAdminUsers, setUserDisabled, updateUserRole, useQrTransaction, type AdminUserSummary } from "@/lib/panel-actions";
 
 const assignableRoles: UserRole[] = ["individual", "business", "theater", "admin"];
@@ -136,10 +136,6 @@ function AdminRoleManager() {
     }
   }
 
-  useEffect(() => {
-    void refreshUsers();
-  }, []);
-
   async function submitRoleUpdate() {
     if (!userId.trim()) {
       setStatus("Rol güncellemek için kullanıcı kimliği gerekli.");
@@ -201,7 +197,7 @@ function AdminRoleManager() {
         {users.length === 0 ? (
           <article>
             <strong>Üye bulunamadı</strong>
-            <span>Arama veya rol filtresini değiştirerek tekrar deneyin.</span>
+            <span>Listeyi görmek için Üyeleri listele düğmesine basın.</span>
           </article>
         ) : users.map((user) => (
           <article key={user.id}>
