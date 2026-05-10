@@ -8,6 +8,7 @@ import { BusinessOps } from "./BusinessOps";
 import { IndividualOps } from "./IndividualOps";
 import { RoleOps } from "./RoleOps";
 import { OrdersOps } from "./OrdersOps";
+import { ContactInbox } from "./ContactInbox";
 import { PanelAccountOps } from "./PanelAccountOps";
 import { SystemLogs } from "./SystemLogs";
 import { NotificationStats } from "./NotificationStats";
@@ -194,6 +195,7 @@ export function PanelShell({ role }: { role: UserRole }) {
         <PanelAccountOps role={role} />
         {role === "admin" ? <AdminStats /> : null}
         {role === "admin" ? <div id="panel-notifications"><NotificationStats /></div> : null}
+        {role === "admin" ? <ContactInbox /> : null}
         {role === "admin" ? <SeoOps /> : null}
         {role === "admin" ? <LocalizationOps /> : null}
         {role === "admin" ? <SystemLogs /> : null}
