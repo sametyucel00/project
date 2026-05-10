@@ -2,20 +2,19 @@
 
 import { adjustTheaterNotificationLimit, createTheaterEvent, sendTheaterEventNotification, translateSynopsisDraft } from "@/lib/panel-actions";
 import { db } from "@/lib/firebase";
-import { featuredEvents, localizeText, type EventItem, type LocalizedText } from "@nar/core";
+import { localizeText, type EventItem, type LocalizedText } from "@nar/core";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
 type CategoryOption = { id: string; title: LocalizedText; sortOrder?: number };
 
 export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" }) {
-  const sampleEvent = featuredEvents.find((event) => event.type === "theater") ?? featuredEvents[0];
-  const [events, setEvents] = useState<EventItem[]>([sampleEvent]);
-  const [eventId, setEventId] = useState(sampleEvent.id);
-  const [categoryId, setCategoryId] = useState(sampleEvent.categoryId ?? sampleEvent.type);
-  const [notificationLimit, setNotificationLimit] = useState(sampleEvent.notificationLimit);
-  const [notificationUsed, setNotificationUsed] = useState(sampleEvent.notificationUsed ?? 0);
-  const [synopsisTr, setSynopsisTr] = useState(localizeText(sampleEvent.synopsis ?? sampleEvent.description, "tr"));
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [eventId, setEventId] = useState("");
+  const [categoryId, setCategoryId] = useState("theater");
+  const [notificationLimit, setNotificationLimit] = useState(0);
+  const [notificationUsed, setNotificationUsed] = useState(0);
+  const [synopsisTr, setSynopsisTr] = useState("");
   const [translation, setTranslation] = useState("");
   const [status, setStatus] = useState("Canlı tiyatro etkinlikleri yükleniyor.");
   const [categories, setCategories] = useState<CategoryOption[]>([]);
@@ -36,19 +35,31 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
         if (!active) return;
 
         const liveEvents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as EventItem);
-        const nextEvents = liveEvents.length ? liveEvents : [sampleEvent];
-        const selected = nextEvents.find((event) => event.id === eventId) ?? nextEvents[0];
+        const selected = liveEvents.find((event) => event.id === eventId) ?? liveEvents[0];
 
-        setEvents(nextEvents);
-        setEventId(selected.id);
-        setCategoryId(selected.categoryId ?? selected.type);
-        setNotificationLimit(selected.notificationLimit);
-        setNotificationUsed(selected.notificationUsed ?? 0);
-        setSynopsisTr(localizeText(selected.synopsis ?? selected.description, "tr"));
+        setEvents(liveEvents);
+        if (selected) {
+          setEventId(selected.id);
+          setCategoryId(selected.categoryId ?? selected.type);
+          setNotificationLimit(selected.notificationLimit ?? 0);
+          setNotificationUsed(selected.notificationUsed ?? 0);
+          setSynopsisTr(localizeText(selected.synopsis ?? selected.description, "tr"));
+        } else {
+          setEventId("");
+          setCategoryId("theater");
+          setNotificationLimit(0);
+          setNotificationUsed(0);
+          setSynopsisTr("");
+        }
         setStatus(liveEvents.length ? "Canlı tiyatro etkinlikleri kullanılıyor." : "Henüz canlı tiyatro etkinliği yok.");
       } catch (error) {
         if (!active) return;
-        setEvents([sampleEvent]);
+        setEvents([]);
+        setEventId("");
+        setCategoryId("theater");
+        setNotificationLimit(0);
+        setNotificationUsed(0);
+        setSynopsisTr("");
         setStatus(error instanceof Error ? error.message : "Tiyatro etkinlikleri yüklenemedi.");
       }
     }
@@ -85,7 +96,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
     return () => {
       active = false;
     };
-  }, [categoryId, eventId, sampleEvent]);
+  }, [categoryId, eventId]);
 
   function selectEvent(nextEventId: string) {
     const selected = events.find((event) => event.id === nextEventId);
@@ -204,7 +215,11 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
         <label>
           Oyun kimliği
           <select value={eventId} onChange={(event) => selectEvent(event.target.value)}>
-            {events.map((event) => <option key={event.id} value={event.id}>{localizeText(event.title, "tr")}</option>)}
+            {events.length > 0 ? (
+              events.map((event) => <option key={event.id} value={event.id}>{localizeText(event.title, "tr")}</option>)
+            ) : (
+              <option value="">Henüz kayıt yok</option>
+            )}
           </select>
         </label>
         <label>

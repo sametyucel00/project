@@ -3,7 +3,7 @@ import type { UserRole } from "@nar/core";
 import { auth, db } from "./firebase";
 import { doc, getDoc, serverTimestamp, setDoc } from "firebase/firestore";
 
-function resolveBootstrapRoleByEmail(email?: string | null) {
+export function resolveBootstrapRoleByEmail(email?: string | null) {
   const normalized = String(email ?? "").trim().toLowerCase();
   if (normalized === "admin.test@narrehberi.com" || normalized === "master@narrehberi.com") return "admin" as const;
   if (normalized === "business.test@narrehberi.com") return "business" as const;

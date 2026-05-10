@@ -1,6 +1,6 @@
 "use client";
 
-import { ensureUserProfile } from "@/lib/auth-actions";
+import { ensureUserProfile, resolveBootstrapRoleByEmail } from "@/lib/auth-actions";
 import { AppleLogo, GoogleLogo } from "@/components/BrandIcons";
 import { appleProvider, auth, googleProvider } from "@/lib/firebase";
 import { resolveRoleHome } from "@/lib/routes";
@@ -162,8 +162,11 @@ export function LoginClient() {
   }, [copy.messageDefault]);
 
   async function completeAuth(roleForNewAccount?: SelfServiceRole) {
-    const profile = await ensureUserProfile(roleForNewAccount);
-    const role = profile.data.role ?? (roleForNewAccount ?? "individual");
+    const role =
+      resolveBootstrapRoleByEmail(auth.currentUser?.email) ??
+      roleForNewAccount ??
+      "individual";
+    void ensureUserProfile(roleForNewAccount).catch(() => undefined);
     router.push(resolveRoleHome(role));
   }
 

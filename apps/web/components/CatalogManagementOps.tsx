@@ -115,7 +115,7 @@ const createOfferDraft = (): OfferDraft => ({
 
 export function CatalogManagementOps() {
   const { locale } = useLocale();
-  const [kind, setKind] = useState<CatalogKind>("place");
+  const [kind, setKind] = useState<CatalogKind>("offer");
   const [places, setPlaces] = useState<Place[]>([]);
   const [events, setEvents] = useState<EventItem[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);

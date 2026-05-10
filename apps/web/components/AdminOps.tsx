@@ -1,6 +1,6 @@
 import { importKinds } from "@nar/core";
-import { Boxes, FileSpreadsheet, Percent, Send, Timer } from "lucide-react";
-import { CategoryManagementForm, ExportManifestForm, ImportPreviewForm, NotificationForm, OfferCampaignForm } from "./ActionForms";
+import { Boxes, FileSpreadsheet, Send, Timer } from "lucide-react";
+import { CategoryManagementForm, ExportManifestForm, ImportPreviewForm, NotificationForm } from "./ActionForms";
 import { CatalogManagementOps } from "./CatalogManagementOps";
 import { useLocale } from "./LocaleProvider";
 
@@ -105,13 +105,6 @@ export function AdminOps() {
           <span>{copy.scheduled}</span>
         </div>
         <NotificationForm />
-      </div>
-
-      <div className="ops-block" id="offers">
-        <Percent size={22} />
-        <h2>{copy.offers}</h2>
-        <p>{copy.offersBody}</p>
-        <OfferCampaignForm />
       </div>
 
       <div className="ops-block" id="import">

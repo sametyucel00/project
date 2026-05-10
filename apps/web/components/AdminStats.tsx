@@ -1,13 +1,11 @@
 "use client";
 
 import { getAdminDashboardSummary } from "@/lib/panel-actions";
-import { adminStats } from "@nar/core";
 import { Activity, BarChart3 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function AdminStats() {
-  const fallbackStats = adminStats.map((stat) => stat);
-  const [liveStats, setLiveStats] = useState(fallbackStats);
+  const [liveStats, setLiveStats] = useState<Array<{ id: string; label: string; value: string; trend?: string; tone: string }>>([]);
   const [status, setStatus] = useState("Canlı sayaçlar yükleniyor.");
 
   useEffect(() => {
@@ -27,7 +25,7 @@ export function AdminStats() {
         setStatus("Canlı panel sayaçları kullanılıyor.");
       } catch (error) {
         if (!active) return;
-        setLiveStats(fallbackStats);
+        setLiveStats([]);
         setStatus(error instanceof Error ? error.message : "Sayaçlar yüklenemedi.");
       }
     }

@@ -13,7 +13,6 @@ import { PanelMetrics } from "./PanelMetrics";
 import { RoleOps } from "./RoleOps";
 import { TheaterOps } from "./TheaterOps";
 import { ThemeToggle } from "./ThemeToggle";
-import { WorkflowOps } from "./WorkflowOps";
 import { useLocale } from "./LocaleProvider";
 
 type MenuItem = { id: string; title: string; description: string };
@@ -22,8 +21,6 @@ const panelMenus: Record<UserRole, MenuItem[]> = {
   admin: [
     { id: "overview", title: "Genel", description: "Platform özeti ve hızlı işlemler." },
     { id: "members", title: "Üyeler", description: "Kullanıcılar, roller ve hesap durumu." },
-    { id: "approvals", title: "Onaylar", description: "Mekan, etkinlik, fırsat ve kategori kuyrukları." },
-    { id: "orders", title: "Siparişler", description: "Siparişler ve QR işlem kayıtları." },
     { id: "content-management", title: "İçerik", description: "Mekan, etkinlik ve fırsat kayıtları." },
     { id: "import", title: "İçe / Dışa Aktarım", description: "Dosya önizleme ve aktarım kayıtları." },
     { id: "category-management", title: "Kategoriler", description: "Mekan ve etkinlik kategorileri." },
@@ -136,7 +133,7 @@ export function PanelShell({ role }: { role: UserRole }) {
   const t = copy[locale];
   const menu = panelMenus[role];
   const notificationHref = role === "admin" ? "#notifications" : "#settings";
-  const newActionHref = role === "admin" ? "#offers" : role === "business" ? "#qr" : role === "theater" ? "#play" : "#tasks";
+  const newActionHref = role === "admin" ? "#content-management" : role === "business" ? "#qr" : role === "theater" ? "#play" : "#tasks";
 
   return (
     <main className="panel-page" id="main-content">
@@ -187,13 +184,12 @@ export function PanelShell({ role }: { role: UserRole }) {
         <p className="meta panel-note">{t.quickActionNote}</p>
 
         {role === "admin" ? <div id="members"><RoleOps role={role} /></div> : null}
-        {role === "admin" ? <WorkflowOps role={role} /> : null}
         {role === "admin" ? <AdminOps /> : null}
         {role === "admin" ? <div id="stats"><AdminStats /></div> : null}
         {role === "business" ? <BusinessOps /> : null}
         {role === "theater" ? <div id="play"><TheaterOps mode="theater" /></div> : null}
         {role === "individual" ? <IndividualOps /> : null}
-        <OrdersOps role={role} />
+        {role !== "admin" ? <OrdersOps role={role} /> : null}
         <PanelAccountOps role={role} />
         {role === "admin" ? <div id="contact-inbox" className="contact-inbox-wide"><ContactInbox /></div> : null}
       </section>

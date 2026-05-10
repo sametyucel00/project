@@ -2,7 +2,7 @@
 
 import { auth, db } from "@/lib/firebase";
 import { getAdminDashboardSummary } from "@/lib/panel-actions";
-import { dashboardMetrics, type UserRole } from "@nar/core";
+import type { UserRole } from "@nar/core";
 import { collection, doc, getCountFromServer, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useLocale } from "./LocaleProvider";
@@ -82,7 +82,7 @@ export function PanelMetrics({ role }: { role: UserRole }) {
     }
   } as const;
   const text = copy[locale];
-  const [metrics, setMetrics] = useState<Metric[]>(dashboardMetrics[role]);
+  const [metrics, setMetrics] = useState<Metric[]>([]);
   const [status, setStatus] = useState<string>(text.loading);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export function PanelMetrics({ role }: { role: UserRole }) {
       if (role === "individual") {
         const uid = auth.currentUser?.uid;
         if (!uid) {
-          setMetrics(dashboardMetrics.individual);
+          setMetrics([]);
           setStatus(text.waiting);
           return;
         }
@@ -161,7 +161,7 @@ export function PanelMetrics({ role }: { role: UserRole }) {
         setStatus(text.live);
       } catch (error) {
         if (!active) return;
-        setMetrics(dashboardMetrics[role]);
+        setMetrics([]);
         setStatus(error instanceof Error ? error.message : text.failed);
       }
     }

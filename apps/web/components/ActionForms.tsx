@@ -633,8 +633,9 @@ export function CategoryManagementForm() {
     setStatus("Kategoriler yükleniyor.");
     try {
       const result = await listDiscoveryCategories();
-      setCategories(result.data.categories);
-      setStatus(result.data.categories.length ? `${result.data.categories.length} kategori listelendi.` : "Henüz kayıtlı kategori yok.");
+      const visibleCategories = result.data.categories.filter(isRenderableCategory);
+      setCategories(visibleCategories);
+      setStatus(visibleCategories.length ? `${visibleCategories.length} kategori listelendi.` : "Henüz kayıtlı kategori yok.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Kategoriler yüklenemedi.");
     }
@@ -741,4 +742,15 @@ function formatPublishStatus(status?: PublishStatus | string) {
   if (status === "ready") return "Hazır";
   if (status === "failed") return "Başarısız";
   return "Durum belirtilmemiş";
+}
+
+function isRenderableCategory(category: DiscoveryCategoryRecord) {
+  if (!category.id) return false;
+  if (category.target !== "place" && category.target !== "event") return false;
+  if (!isMeaningfulText(category.title?.tr) && !isMeaningfulText(category.title?.en) && !isMeaningfulText(category.title?.ru) && !isMeaningfulText(category.title?.de)) return false;
+  return ["draft", "pending", "published", "archived", "ready", "failed"].includes(String(category.status ?? ""));
+}
+
+function isMeaningfulText(value?: string | null) {
+  return Boolean(String(value ?? "").trim());
 }
