@@ -1369,6 +1369,81 @@ export const createTheaterEvent = onCall(async (request) => {
   return { id: ref.id };
 });
 
+export const updateTheaterEvent = onCall(async (request) => {
+  assertSignedIn(request.auth?.uid);
+  const uid = request.auth!.uid;
+  const user = await db.doc(`users/${uid}`).get();
+  if (!["theater", "admin"].includes(user.data()?.role)) {
+    throw new HttpsError("permission-denied", "Tiyatro yetkisi gerekli.");
+  }
+
+  const payload = request.data ?? {};
+  const eventId = payload.eventId;
+  if (!eventId || typeof eventId !== "string") {
+    throw new HttpsError("invalid-argument", "Etkinlik kimliği gerekli.");
+  }
+
+  const eventRef = db.doc(`events/${eventId}`);
+  const existing = await eventRef.get();
+  if (!existing.exists) {
+    throw new HttpsError("not-found", "Etkinlik bulunamadı.");
+  }
+
+  const existingData = existing.data() ?? {};
+  const isAdminUser = user.data()?.role === "admin";
+  const isOwnerTheater = user.data()?.role === "theater" && existingData.organizerId === uid;
+  if (!isAdminUser && !isOwnerTheater) {
+    throw new HttpsError("permission-denied", "Bu etkinliği düzenleme yetkisi yok.");
+  }
+
+  await eventRef.set({
+    ...payload,
+    eventId: undefined,
+    organizerId: existingData.organizerId ?? uid,
+    categoryId: payload.categoryId ?? payload.type,
+    updatedAt: FieldValue.serverTimestamp(),
+    updatedBy: uid
+  }, { merge: true });
+
+  return { id: eventId };
+});
+
+export const deleteTheaterEvent = onCall(async (request) => {
+  assertSignedIn(request.auth?.uid);
+  const uid = request.auth!.uid;
+  const user = await db.doc(`users/${uid}`).get();
+  if (!["theater", "admin"].includes(user.data()?.role)) {
+    throw new HttpsError("permission-denied", "Tiyatro yetkisi gerekli.");
+  }
+
+  const { eventId } = request.data ?? {};
+  if (!eventId || typeof eventId !== "string") {
+    throw new HttpsError("invalid-argument", "Etkinlik kimliği gerekli.");
+  }
+
+  const eventRef = db.doc(`events/${eventId}`);
+  const existing = await eventRef.get();
+  if (!existing.exists) {
+    throw new HttpsError("not-found", "Etkinlik bulunamadı.");
+  }
+
+  const existingData = existing.data() ?? {};
+  const isAdminUser = user.data()?.role === "admin";
+  const isOwnerTheater = user.data()?.role === "theater" && existingData.organizerId === uid;
+  if (!isAdminUser && !isOwnerTheater) {
+    throw new HttpsError("permission-denied", "Bu etkinliği silme yetkisi yok.");
+  }
+
+  await eventRef.set({
+    status: "archived",
+    deletedAt: FieldValue.serverTimestamp(),
+    deletedBy: uid,
+    updatedAt: FieldValue.serverTimestamp()
+  }, { merge: true });
+
+  return { id: eventId };
+});
+
 export const sendTheaterEventNotification = onCall(async (request) => {
   assertSignedIn(request.auth?.uid);
   const uid = request.auth!.uid;

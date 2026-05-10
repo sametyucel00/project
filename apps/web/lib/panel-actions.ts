@@ -1,4 +1,4 @@
-import { type AncientGuideStop, type EventItem, type GooglePlaceSnapshot, type ImportKind, type NotificationAudiencePreview, type NotificationTarget, type LocalizedText, type OrderStatus, type PublishStatus, type PushPreferences, type SurvivalKitItem, type UserRole } from "@nar/core";
+import { localizeText, type AncientGuideStop, type EventItem, type GooglePlaceSnapshot, type ImportKind, type NotificationAudiencePreview, type NotificationTarget, type LocalizedText, type OrderStatus, type PublishStatus, type PushPreferences, type SurvivalKitItem, type UserRole } from "@nar/core";
 import { arrayUnion, collection, doc, getDocs, increment, runTransaction, serverTimestamp, setDoc } from "firebase/firestore";
 import { callable } from "./functions";
 import { auth, db } from "./firebase";
@@ -91,6 +91,10 @@ export interface TheaterEventDraftInput {
   videoUrl?: string;
   status?: EventItem["status"];
   notificationLimit?: number;
+}
+
+export interface TheaterEventUpdateInput extends TheaterEventDraftInput {
+  eventId: string;
 }
 
 export interface GooglePlaceSnapshotInput {
@@ -305,7 +309,9 @@ export async function listDiscoveryCategories() {
     .map((entry) => entry.data() as DiscoveryCategoryRecord)
     .sort((first, second) => {
       if (first.target !== second.target) return first.target.localeCompare(second.target);
-      return (first.sortOrder ?? 0) - (second.sortOrder ?? 0) || first.title.tr.localeCompare(second.title.tr, "tr-TR");
+      const firstTitle = localizeText(first.title, "tr");
+      const secondTitle = localizeText(second.title, "tr");
+      return (first.sortOrder ?? 0) - (second.sortOrder ?? 0) || firstTitle.localeCompare(secondTitle, "tr-TR");
     });
   return { data: { categories } };
 }
@@ -419,6 +425,35 @@ export async function createTheaterEvent(input: TheaterEventDraftInput) {
     return { data: { id } };
   }
   const call = callable<TheaterEventDraftInput, { id: string }>("createTheaterEvent");
+  return call(input);
+}
+
+export async function updateTheaterEvent(input: TheaterEventUpdateInput) {
+  if (isLocalWeb()) {
+    const userId = requireAuthUserId();
+    await setDoc(doc(db, "events", input.eventId), {
+      ...input,
+      categoryId: input.categoryId ?? input.type,
+      organizerId: userId,
+      updatedAt: serverTimestamp(),
+      updatedBy: userId
+    }, { merge: true });
+    return { data: { id: input.eventId } };
+  }
+  const call = callable<TheaterEventUpdateInput, { id: string }>("updateTheaterEvent");
+  return call(input);
+}
+
+export async function deleteTheaterEvent(input: { eventId: string }) {
+  if (isLocalWeb()) {
+    await setDoc(doc(db, "events", input.eventId), {
+      deletedAt: serverTimestamp(),
+      deletedBy: requireAuthUserId(),
+      status: "archived"
+    }, { merge: true });
+    return { data: { id: input.eventId } };
+  }
+  const call = callable<{ eventId: string }, { id: string }>("deleteTheaterEvent");
   return call(input);
 }
 
