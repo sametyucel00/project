@@ -1,13 +1,11 @@
 "use client";
 
 import { useLocale } from "@/components/LocaleProvider";
-import { firebaseApp } from "@/lib/firebase";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { db } from "@/lib/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { MessagesSquare } from "lucide-react";
 import { useState } from "react";
 import { SectionEyebrow } from "./SectionEyebrow";
-
-const functions = getFunctions(firebaseApp);
 
 export function ContactForm() {
   const { t } = useLocale();
@@ -20,8 +18,14 @@ export function ContactForm() {
   async function submit() {
     setStatus(t("contact.sending"));
     try {
-      const call = httpsCallable(functions, "createContactRequest");
-      await call({ name, email, subject, message });
+      await addDoc(collection(db, "contactRequests"), {
+        name,
+        email,
+        subject,
+        message,
+        status: "new",
+        createdAt: serverTimestamp()
+      });
       setStatus(t("contact.success"));
       setName("");
       setEmail("");
