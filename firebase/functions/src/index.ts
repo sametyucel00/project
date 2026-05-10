@@ -10,6 +10,14 @@ initializeApp();
 
 const db = getFirestore();
 
+function resolveBootstrapRoleByEmail(email?: string | null) {
+  const normalized = String(email ?? "").trim().toLowerCase();
+  if (normalized === "admin.test@narrehberi.com") return "admin" as const;
+  if (normalized === "business.test@narrehberi.com") return "business" as const;
+  if (normalized === "theater.test@narrehberi.com") return "theater" as const;
+  return null;
+}
+
 function assertSignedIn(uid?: string) {
   if (!uid) throw new HttpsError("unauthenticated", "Giriş gerekli.");
 }
@@ -44,11 +52,24 @@ export const ensureUserProfile = onCall(async (request) => {
   assertSignedIn(request.auth?.uid);
   const uid = request.auth!.uid;
   const userRef = db.doc(`users/${uid}`);
+  const bootstrapRole = resolveBootstrapRoleByEmail(request.auth?.token.email);
   const existing = await userRef.get();
   if (existing.exists) {
     const data = existing.data() ?? {};
     const isAnonymous = request.auth?.token.firebase?.sign_in_provider === "anonymous";
     const currentPoints = typeof data.points === "number" ? data.points : null;
+    if (bootstrapRole && data.role !== bootstrapRole) {
+      await userRef.set({
+        role: bootstrapRole,
+        updatedAt: FieldValue.serverTimestamp()
+      }, { merge: true });
+      return {
+        id: uid,
+        created: false,
+        role: bootstrapRole,
+        points: isAnonymous ? 0 : data.points ?? 500
+      };
+    }
     if (!isAnonymous && (currentPoints === null || currentPoints < 500) && !data.initialPointsGrantedAt) {
       await userRef.set({
         points: 500,
@@ -63,7 +84,7 @@ export const ensureUserProfile = onCall(async (request) => {
 
   const requestedRole = String(request.data?.requestedRole ?? "individual");
   const allowedSelfServiceRoles = ["individual", "business", "theater"];
-  const role = allowedSelfServiceRoles.includes(requestedRole) ? requestedRole : "individual";
+  const role = bootstrapRole ?? (allowedSelfServiceRoles.includes(requestedRole) ? requestedRole : "individual");
 
   await userRef.set({
     id: uid,

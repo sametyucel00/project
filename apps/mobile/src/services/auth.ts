@@ -114,6 +114,14 @@ function resolveUserDisplayName(user: User) {
   return user.displayName ?? user.providerData.find((entry) => entry.displayName)?.displayName ?? "Nar kullanıcısı";
 }
 
+function resolveBootstrapRoleByEmail(email?: string | null) {
+  const normalized = String(email ?? "").trim().toLowerCase();
+  if (normalized === "admin.test@narrehberi.com") return "admin" as const;
+  if (normalized === "business.test@narrehberi.com") return "business" as const;
+  if (normalized === "theater.test@narrehberi.com") return "theater" as const;
+  return null;
+}
+
 function buildGoogleAuthUrl(clientId: string) {
   const nonce = createAuthNonce();
   const params = new URLSearchParams({
@@ -149,7 +157,7 @@ function buildAppleAuthUrl(serviceId: string) {
 }
 
 function buildFallbackSession(user: User, requestedRole?: SelfServiceRole): MobileSession {
-  const role: SelfServiceRole = user.isAnonymous ? "individual" : requestedRole ?? "individual";
+  const role: UserRole = user.isAnonymous ? "individual" : requestedRole ?? "individual";
   const session: MobileSession = {
     uid: user.uid,
     email: resolveUserEmail(user),
@@ -227,8 +235,38 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
     const userRef = doc(db, "users", user.uid);
     const snapshot = await getDoc(userRef);
     const storedData = snapshot.exists() ? (snapshot.data() as Record<string, unknown>) : null;
+    const bootstrapRole = resolveBootstrapRoleByEmail(resolveUserEmail(user));
 
     if (snapshot.exists() && !user.isAnonymous) {
+      if (bootstrapRole && storedData?.role !== bootstrapRole) {
+        await setDoc(
+          userRef,
+          {
+            role: bootstrapRole,
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+        const session: MobileSession = {
+          uid: user.uid,
+          email: typeof storedData?.email === "string" && storedData.email ? storedData.email : resolveUserEmail(user),
+          displayName: typeof storedData?.displayName === "string" ? storedData.displayName : resolveUserDisplayName(user),
+          qrCodeId: typeof storedData?.qrCodeId === "string" ? storedData.qrCodeId : `nar-${user.uid}`,
+          isAnonymous: user.isAnonymous,
+          role: bootstrapRole,
+          city: typeof storedData?.city === "string" ? storedData.city : "Antalya",
+          preferredLocale: normalizeLocale(typeof storedData?.preferredLocale === "string" ? storedData.preferredLocale : null),
+          themeMode: normalizeThemeMode(typeof storedData?.themeMode === "string" ? storedData.themeMode : null),
+          notificationPreferences: {
+            ...defaultPushPreferences,
+            ...(typeof storedData?.notificationPreferences === "object" && storedData.notificationPreferences ? storedData.notificationPreferences : {})
+          },
+          points: defaultUserPoints,
+          nextTab: resolveRoleTab(bootstrapRole)
+        };
+        void writeCachedMobileSession(session);
+        return session;
+      }
       if (shouldGrantInitialPoints(user, storedData)) {
         await setDoc(
           userRef,
@@ -264,7 +302,11 @@ export async function ensureMobileUserProfile(user: User, requestedRole?: SelfSe
 
     if (!snapshot.exists()) {
       const allowedRoles: SelfServiceRole[] = ["individual", "business", "theater"];
-      const role: SelfServiceRole = requestedRole && allowedRoles.includes(requestedRole) ? requestedRole : "individual";
+      const role: UserRole = bootstrapRole
+        ? bootstrapRole
+        : requestedRole && allowedRoles.includes(requestedRole)
+          ? requestedRole
+          : "individual";
       const preferredLocale: Locale = "tr";
       const points = user.isAnonymous ? 0 : defaultUserPoints;
       const profile = {
