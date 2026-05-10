@@ -123,8 +123,8 @@ export function PanelShell({ role }: { role: UserRole }) {
     <main className="panel-page" id="main-content">
       <aside className="panel-sidebar">
         <a className="brand" href="/">
-          <img className="brand-logo brand-logo-light" src="/nar-logo-light.svg" alt="Nar Rehberi logosu" />
-          <img className="brand-logo brand-logo-dark" src="/nar-logo-dark.svg" alt="Nar Rehberi logosu" />
+          <img className="brand-logo brand-logo-light" src="/nar-logo.png" alt="Nar Rehberi logosu" />
+          <img className="brand-logo brand-logo-dark" src="/nar-logo.png" alt="Nar Rehberi logosu" />
           <span>Nar Rehberi</span>
         </a>
         <div style={{ marginTop: 18 }}>

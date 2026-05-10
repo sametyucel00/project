@@ -21,8 +21,8 @@ export function SiteHeader({ compact = false }: { compact?: boolean }) {
   return (
     <nav className="nav">
       <a className="brand" href="/">
-        <img className="brand-logo brand-logo-light" src="/nar-logo-light.svg" alt="Nar Rehberi logosu" />
-        <img className="brand-logo brand-logo-dark" src="/nar-logo-dark.svg" alt="Nar Rehberi logosu" />
+        <img className="brand-logo brand-logo-light" src="/nar-logo.png" alt="Nar Rehberi logosu" />
+        <img className="brand-logo brand-logo-dark" src="/nar-logo.png" alt="Nar Rehberi logosu" />
         <span>Nar Rehberi</span>
       </a>
       {!compact ? (
