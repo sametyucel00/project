@@ -747,10 +747,23 @@ function formatPublishStatus(status?: PublishStatus | string) {
 function isRenderableCategory(category: DiscoveryCategoryRecord) {
   if (!category.id) return false;
   if (category.target !== "place" && category.target !== "event") return false;
-  if (!isMeaningfulText(category.title?.tr) && !isMeaningfulText(category.title?.en) && !isMeaningfulText(category.title?.ru) && !isMeaningfulText(category.title?.de)) return false;
+  if (
+    !hasRenderableTitle(category.title?.tr) &&
+    !hasRenderableTitle(category.title?.en) &&
+    !hasRenderableTitle(category.title?.ru) &&
+    !hasRenderableTitle(category.title?.de)
+  ) return false;
   return ["draft", "pending", "published", "archived", "ready", "failed"].includes(String(category.status ?? ""));
 }
 
-function isMeaningfulText(value?: string | null) {
-  return Boolean(String(value ?? "").trim());
+function hasRenderableTitle(value?: string | null) {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  if (!normalized) return false;
+  return ![
+    "belirtilmemiş",
+    "belirtilmemis",
+    "not specified",
+    "nicht angegeben",
+    "не указано"
+  ].includes(normalized);
 }

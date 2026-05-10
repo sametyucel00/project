@@ -3,7 +3,6 @@
 import type { UserRole } from "@nar/core";
 import { Bell, ChevronRight, PlusCircle } from "lucide-react";
 import { AdminOps } from "./AdminOps";
-import { AdminStats } from "./AdminStats";
 import { BusinessOps } from "./BusinessOps";
 import { ContactInbox } from "./ContactInbox";
 import { IndividualOps } from "./IndividualOps";
@@ -25,7 +24,6 @@ const panelMenus: Record<UserRole, MenuItem[]> = {
     { id: "import", title: "İçe / Dışa Aktarım", description: "Dosya önizleme ve aktarım kayıtları." },
     { id: "category-management", title: "Kategoriler", description: "Mekan ve etkinlik kategorileri." },
     { id: "notifications", title: "Bildirimler", description: "Bildirim merkezi ve gönderimler." },
-    { id: "stats", title: "İstatistikler", description: "Canlı panel sayaçları." },
     { id: "contact-inbox", title: "İletişim", description: "Formdan gelen mesajlar." },
     { id: "settings", title: "Ayarlar", description: "Profil ve oturum tercihleri." }
   ],
@@ -185,7 +183,6 @@ export function PanelShell({ role }: { role: UserRole }) {
 
         {role === "admin" ? <div id="members"><RoleOps role={role} /></div> : null}
         {role === "admin" ? <AdminOps /> : null}
-        {role === "admin" ? <div id="stats"><AdminStats /></div> : null}
         {role === "business" ? <BusinessOps /> : null}
         {role === "theater" ? <div id="play"><TheaterOps mode="theater" /></div> : null}
         {role === "individual" ? <IndividualOps /> : null}
