@@ -689,32 +689,42 @@ h1 {
 
 .panel-menu {
   display: grid;
-  gap: 4px;
+  gap: 8px;
   margin-top: 34px;
 }
 
 .panel-menu a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 42px;
-  padding: 0 10px;
-  border-radius: 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  min-height: 60px;
+  padding: 12px 12px 11px;
+  border-radius: 12px;
   color: #6f6760;
   min-width: 0;
   text-decoration: none;
+  border: 1px solid transparent;
 }
 
 .panel-menu a span {
+  display: block;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.panel-menu a small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  line-height: 1.35;
 }
 
 .panel-menu a:hover {
   background: rgba(198, 63, 46, 0.08);
   color: #171412;
+  border-color: rgba(198, 63, 46, 0.14);
 }
 
 :root[data-theme="dark"] .panel-sidebar {
@@ -874,10 +884,7 @@ h1 {
 }
 
 .panel-workspace {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
-  gap: 18px;
-  min-width: 0;
+  display: none;
 }
 
 .command-surface,
@@ -937,10 +944,14 @@ h1 {
 
 .admin-ops {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 18px;
   margin-top: 28px;
   min-width: 0;
+}
+
+.panel-note {
+  margin: 12px 0 4px;
 }
 
 .role-ops {
@@ -2126,19 +2137,14 @@ html[data-a11y-motion="reduced"] *::after {
 
   .panel-menu {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(126px, 1fr));
+    grid-template-columns: 1fr;
     gap: 8px;
     margin-top: 18px;
     overflow: visible;
     padding-bottom: 8px;
   }
 
-  .panel-menu a {
-    min-width: 0;
-  }
-
-  .panel-hero,
-  .panel-workspace {
+  .panel-hero {
     display: grid;
     grid-template-columns: 1fr;
   }
@@ -2273,13 +2279,12 @@ html[data-a11y-motion="reduced"] *::after {
   .panel-menu {
     margin-inline: 0;
     padding-inline: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .panel-menu a {
-    min-width: 0;
-    min-height: 40px;
-    padding: 0 9px;
+    min-height: 56px;
+    padding: 10px 10px 9px;
     font-size: 13px;
   }
 
@@ -2369,10 +2374,6 @@ html[data-a11y-motion="reduced"] *::after {
 }
 
 @media (max-width: 430px) {
-  .panel-menu a {
-    min-width: 0;
-  }
-
   .panel-menu a svg {
     width: 14px;
     height: 14px;
