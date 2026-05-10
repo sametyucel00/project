@@ -13,7 +13,6 @@ import { eventTypes, localizeText, type EventItem, type EventType, type Localize
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-type CategoryOption = { id: string; title: LocalizedText; sortOrder?: number };
 type TranslationPreview = {
   title: LocalizedText;
   description: LocalizedText;
@@ -25,7 +24,6 @@ type TranslationPreview = {
 type TheaterDraft = {
   id: string;
   type: EventType;
-  categoryId: string;
   titleTr: string;
   descriptionTr: string;
   synopsisTr: string;
@@ -42,10 +40,11 @@ type TheaterDraft = {
   notificationLimit: number;
 };
 
-const createBlankDraft = (): TheaterDraft => ({
+const emptyLocalizedText = (): LocalizedText => ({ tr: "", en: "", ru: "", de: "" });
+
+const emptyDraft = (): TheaterDraft => ({
   id: "",
   type: "theater",
-  categoryId: "theater",
   titleTr: "",
   descriptionTr: "",
   synopsisTr: "",
@@ -62,7 +61,7 @@ const createBlankDraft = (): TheaterDraft => ({
   notificationLimit: 3
 });
 
-const createBlankTranslations = (): TranslationPreview => ({
+const emptyTranslations = (): TranslationPreview => ({
   title: emptyLocalizedText(),
   description: emptyLocalizedText(),
   synopsis: emptyLocalizedText(),
@@ -70,17 +69,12 @@ const createBlankTranslations = (): TranslationPreview => ({
   notificationBody: emptyLocalizedText()
 });
 
-function emptyLocalizedText(): LocalizedText {
-  return { tr: "", en: "", ru: "", de: "" };
-}
-
 export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" }) {
   const uid = auth.currentUser?.uid ?? "";
   const [events, setEvents] = useState<EventItem[]>([]);
   const [selectedId, setSelectedId] = useState("");
-  const [draft, setDraft] = useState<TheaterDraft>(createBlankDraft());
-  const [categories, setCategories] = useState<CategoryOption[]>([]);
-  const [translations, setTranslations] = useState<TranslationPreview>(createBlankTranslations());
+  const [draft, setDraft] = useState<TheaterDraft>(emptyDraft());
+  const [translations, setTranslations] = useState<TranslationPreview>(emptyTranslations());
   const [notificationUsed, setNotificationUsed] = useState(0);
   const [notificationTitleTr, setNotificationTitleTr] = useState("Sahnede bu hafta");
   const [notificationBodyTr, setNotificationBodyTr] = useState("Favorindeki oyun için yeni gösterim ve bilet bilgisi hazır.");
@@ -90,29 +84,6 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
   const remainingNotifications = useMemo(() => Math.max(Number(draft.notificationLimit ?? 0) - notificationUsed, 0), [draft.notificationLimit, notificationUsed]);
   const eventTypeOptions = useMemo(() => eventTypes.map((item) => ({ id: item.id, label: localizeText(item.title, "tr") })), []);
   const eventTypeLabelById = useMemo(() => new Map<string, string>(eventTypeOptions.map((item) => [item.id, item.label])), [eventTypeOptions]);
-  const categoryOptions = useMemo(() => [
-    { id: "theater", label: "Tiyatro" },
-    ...categories.map((item) => ({ id: item.id, label: localizeText(item.title, "tr") }))
-  ], [categories]);
-
-  function formatEventType(type: EventType | string) {
-    return eventTypeLabelById.get(type) ?? type;
-  }
-
-  function formatEventStatus(status: PublishStatus) {
-    switch (status) {
-      case "draft":
-        return "Taslak";
-      case "pending":
-        return "Onay bekliyor";
-      case "published":
-        return "Yayında";
-      case "archived":
-        return "Arşiv";
-      default:
-        return status;
-    }
-  }
 
   useEffect(() => {
     let active = true;
@@ -122,8 +93,8 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
         if (!active) return;
         setEvents([]);
         setSelectedId("");
-        setDraft(createBlankDraft());
-        setTranslations(createBlankTranslations());
+        setDraft(emptyDraft());
+        setTranslations(emptyTranslations());
         setNotificationUsed(0);
         setStatus("Oturum bekleniyor.");
         return;
@@ -137,36 +108,19 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
           .sort((left, right) => Date.parse(right.startsAt ?? "") - Date.parse(left.startsAt ?? ""));
         setEvents(liveEvents);
         applyEvent(liveEvents[0] ?? null);
-        setStatus(liveEvents.length ? "Tiyatro paneli etkinlikleri yüklendi." : "Henüz etkinlik yok.");
+        setStatus(liveEvents.length ? "Etkinlikler yüklendi." : "Henüz etkinlik yok.");
       } catch (error) {
         if (!active) return;
         setEvents([]);
         setSelectedId("");
-        setDraft(createBlankDraft());
-        setTranslations(createBlankTranslations());
+        setDraft(emptyDraft());
+        setTranslations(emptyTranslations());
         setNotificationUsed(0);
         setStatus(error instanceof Error ? error.message : "Etkinlikler yüklenemedi.");
       }
     }
 
-    async function loadCategories() {
-      try {
-        const snapshot = await getDocs(query(collection(db, "categories"), where("target", "==", "event"), where("status", "==", "published"), limit(50)));
-        if (!active) return;
-        const liveCategories = snapshot.docs
-          .map((entry) => entry.data() as Partial<CategoryOption> & { id?: string })
-          .filter((category): category is CategoryOption => Boolean(category.id && category.title?.tr))
-          .sort((left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0));
-        setCategories(liveCategories);
-      } catch {
-        if (!active) return;
-        setCategories([]);
-      }
-    }
-
     void loadEvents();
-    void loadCategories();
-
     return () => {
       active = false;
     };
@@ -175,8 +129,8 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
   function applyEvent(event: EventItem | null) {
     if (!event) {
       setSelectedId("");
-      setDraft(createBlankDraft());
-      setTranslations(createBlankTranslations());
+      setDraft(emptyDraft());
+      setTranslations(emptyTranslations());
       setNotificationUsed(0);
       return;
     }
@@ -185,18 +139,17 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
     setDraft({
       id: event.id,
       type: event.type,
-      categoryId: event.categoryId ?? event.type,
       titleTr: event.title.tr ?? "",
       descriptionTr: event.description.tr ?? "",
       synopsisTr: event.synopsis?.tr ?? event.description.tr ?? "",
-      district: event.district,
-      venueName: event.venueName,
+      district: event.district ?? "",
+      venueName: event.venueName ?? "",
       startsAt: event.startsAt,
       endsAt: event.endsAt ?? "",
       priceType: event.priceType,
       ticketUrl: event.ticketUrl ?? "",
-      cast: event.cast.join(", "),
-      coverImage: event.coverImage,
+      cast: event.cast?.join(", ") ?? "",
+      coverImage: event.coverImage ?? "",
       videoUrl: event.videoUrl ?? "",
       status: event.status,
       notificationLimit: event.notificationLimit ?? 3
@@ -219,7 +172,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
       }
     });
     setNotificationUsed(Number(event.notificationUsed ?? 0));
-    setNotificationTitleTr(localizeText(event.title, "tr"));
+    setNotificationTitleTr(localizeText(event.title, "tr") || "Sahnede bu hafta");
     setNotificationBodyTr(event.synopsis?.tr?.trim() ? `${localizeText(event.title, "tr")} için yeni gösterim ve bilet bilgisi hazır.` : "Favorindeki oyun için yeni gösterim ve bilet bilgisi hazır.");
   }
 
@@ -257,7 +210,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
 
   function buildPayload(translated = translations) {
     return {
-      categoryId: draft.categoryId || draft.type,
+      categoryId: draft.type,
       title: translated.title.tr ? translated.title : { tr: draft.titleTr.trim(), en: draft.titleTr.trim(), ru: draft.titleTr.trim(), de: draft.titleTr.trim() },
       description: translated.description.tr ? translated.description : { tr: draft.descriptionTr.trim(), en: draft.descriptionTr.trim(), ru: draft.descriptionTr.trim(), de: draft.descriptionTr.trim() },
       synopsis: translated.synopsis.tr ? translated.synopsis : { tr: draft.synopsisTr.trim(), en: draft.synopsisTr.trim(), ru: draft.synopsisTr.trim(), de: draft.synopsisTr.trim() },
@@ -391,7 +344,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
             >
               <strong>{localizeText(event.title, "tr")}</strong>
               <span>{event.venueName} · {event.district}</span>
-              <small>{formatEventType(event.type)} · {formatEventStatus(event.status)}</small>
+              <small>{eventTypeLabelById.get(event.type) ?? event.type} · {event.status === "draft" ? "Taslak" : event.status === "pending" ? "Onay bekliyor" : event.status === "published" ? "Yayında" : "Arşiv"}</small>
             </button>
           ))}
         </div>
@@ -406,75 +359,30 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
           </div>
 
           <div className="mini-form" style={{ maxWidth: "none" }}>
-            <label>
-              Etkinlik kimliği
-              <input value={draft.id} onChange={(event) => setDraft((current) => ({ ...current, id: event.target.value }))} placeholder="bohem-gecesi-2026" />
-            </label>
-            <label>
-              Etkinlik türü
+            <label>Etkinlik kimliği<input value={draft.id} onChange={(event) => setDraft((current) => ({ ...current, id: event.target.value }))} placeholder="bohem-gecesi-2026" /></label>
+            <label>Etkinlik türü
               <select value={draft.type} onChange={(event) => setDraft((current) => ({ ...current, type: event.target.value as EventType }))}>
                 {eventTypeOptions.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
               </select>
             </label>
-            <label>
-              Kategori
-              <select value={draft.categoryId} onChange={(event) => setDraft((current) => ({ ...current, categoryId: event.target.value }))}>
-                {categoryOptions.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
-              </select>
-            </label>
-            <label>
-              Türkçe başlık
-              <input value={draft.titleTr} onChange={(event) => setDraft((current) => ({ ...current, titleTr: event.target.value }))} />
-            </label>
-            <label>
-              Türkçe açıklama
-              <textarea rows={3} value={draft.descriptionTr} onChange={(event) => setDraft((current) => ({ ...current, descriptionTr: event.target.value }))} />
-            </label>
-            <label>
-              Türkçe sinopsis
-              <textarea rows={4} value={draft.synopsisTr} onChange={(event) => setDraft((current) => ({ ...current, synopsisTr: event.target.value }))} />
-            </label>
-            <label>
-              İlçe
-              <input value={draft.district} onChange={(event) => setDraft((current) => ({ ...current, district: event.target.value }))} />
-            </label>
-            <label>
-              Mekân adı
-              <input value={draft.venueName} onChange={(event) => setDraft((current) => ({ ...current, venueName: event.target.value }))} />
-            </label>
-            <label>
-              Başlangıç
-              <input value={draft.startsAt} onChange={(event) => setDraft((current) => ({ ...current, startsAt: event.target.value }))} />
-            </label>
-            <label>
-              Bitiş
-              <input value={draft.endsAt} onChange={(event) => setDraft((current) => ({ ...current, endsAt: event.target.value }))} />
-            </label>
-            <label>
-              Ücret tipi
+            <label>Türkçe başlık<input value={draft.titleTr} onChange={(event) => setDraft((current) => ({ ...current, titleTr: event.target.value }))} /></label>
+            <label>Türkçe açıklama<textarea rows={3} value={draft.descriptionTr} onChange={(event) => setDraft((current) => ({ ...current, descriptionTr: event.target.value }))} /></label>
+            <label>Türkçe sinopsis<textarea rows={4} value={draft.synopsisTr} onChange={(event) => setDraft((current) => ({ ...current, synopsisTr: event.target.value }))} /></label>
+            <label>İlçe<input value={draft.district} onChange={(event) => setDraft((current) => ({ ...current, district: event.target.value }))} /></label>
+            <label>Mekân adı<input value={draft.venueName} onChange={(event) => setDraft((current) => ({ ...current, venueName: event.target.value }))} /></label>
+            <label>Başlangıç<input value={draft.startsAt} onChange={(event) => setDraft((current) => ({ ...current, startsAt: event.target.value }))} /></label>
+            <label>Bitiş<input value={draft.endsAt} onChange={(event) => setDraft((current) => ({ ...current, endsAt: event.target.value }))} /></label>
+            <label>Ücret tipi
               <select value={draft.priceType} onChange={(event) => setDraft((current) => ({ ...current, priceType: event.target.value as "free" | "paid" }))}>
                 <option value="paid">Ücretli</option>
                 <option value="free">Ücretsiz</option>
               </select>
             </label>
-            <label>
-              Bilet bağlantısı
-              <input value={draft.ticketUrl} onChange={(event) => setDraft((current) => ({ ...current, ticketUrl: event.target.value }))} />
-            </label>
-            <label>
-              Oyuncu kadrosu
-              <textarea rows={2} value={draft.cast} onChange={(event) => setDraft((current) => ({ ...current, cast: event.target.value }))} placeholder="Oyuncu 1, Oyuncu 2" />
-            </label>
-            <label>
-              Kapak görseli
-              <input value={draft.coverImage} onChange={(event) => setDraft((current) => ({ ...current, coverImage: event.target.value }))} />
-            </label>
-            <label>
-              Video bağlantısı
-              <input value={draft.videoUrl} onChange={(event) => setDraft((current) => ({ ...current, videoUrl: event.target.value }))} />
-            </label>
-            <label>
-              Durum
+            <label>Bilet bağlantısı<input value={draft.ticketUrl} onChange={(event) => setDraft((current) => ({ ...current, ticketUrl: event.target.value }))} /></label>
+            <label>Oyuncu kadrosu<textarea rows={2} value={draft.cast} onChange={(event) => setDraft((current) => ({ ...current, cast: event.target.value }))} placeholder="Oyuncu 1, Oyuncu 2" /></label>
+            <label>Kapak görseli<input value={draft.coverImage} onChange={(event) => setDraft((current) => ({ ...current, coverImage: event.target.value }))} /></label>
+            <label>Video bağlantısı<input value={draft.videoUrl} onChange={(event) => setDraft((current) => ({ ...current, videoUrl: event.target.value }))} /></label>
+            <label>Durum
               <select value={draft.status} onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as PublishStatus }))}>
                 <option value="draft">Taslak</option>
                 <option value="pending">Onay bekliyor</option>
@@ -487,47 +395,30 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
           <div className="ops-block" style={{ marginTop: 20 }} aria-label="Otomatik çeviri önizlemesi">
             <h3>Otomatik çeviri önizlemesi</h3>
             <div className="mini-form" style={{ maxWidth: "none" }}>
-              <label>
-                Başlık çevirisi
-                <textarea rows={2} readOnly value={formatTranslation(translations.title)} />
-              </label>
-              <label>
-                Açıklama çevirisi
-                <textarea rows={2} readOnly value={formatTranslation(translations.description)} />
-              </label>
-              <label>
-                Sinopsis çevirisi
-                <textarea rows={2} readOnly value={formatTranslation(translations.synopsis)} />
-              </label>
+              <label>Başlık çevirisi<textarea rows={2} readOnly value={formatTranslation(translations.title)} /></label>
+              <label>Açıklama çevirisi<textarea rows={2} readOnly value={formatTranslation(translations.description)} /></label>
+              <label>Sinopsis çevirisi<textarea rows={2} readOnly value={formatTranslation(translations.synopsis)} /></label>
             </div>
           </div>
 
           <div className="metric-strip">
-            <div className="metric">
-              <span>Bildirim limiti</span>
-              <strong>{draft.notificationLimit}</strong>
-            </div>
-            <div className="metric">
-              <span>Kullanılan hak</span>
-              <strong>{notificationUsed}</strong>
-            </div>
-            <div className="metric">
-              <span>Kalan hak</span>
-              <strong>{remainingNotifications}</strong>
-            </div>
+            <div className="metric"><span>Bildirim limiti</span><strong>{draft.notificationLimit}</strong></div>
+            <div className="metric"><span>Kullanılan hak</span><strong>{notificationUsed}</strong></div>
+            <div className="metric"><span>Kalan hak</span><strong>{remainingNotifications}</strong></div>
           </div>
 
           <div className="ops-block" style={{ marginTop: 20, background: "var(--surface-2)" }} aria-label="Bildirim gönderimi">
             <h3>Bildirim gönderimi</h3>
+            <label>
+              Bildirim etkinliği
+              <select value={selectedId} onChange={(event) => applyEvent(events.find((item) => item.id === event.target.value) ?? null)}>
+                <option value="">Etkinlik seç</option>
+                {events.map((event) => <option key={event.id} value={event.id}>{localizeText(event.title, "tr")}</option>)}
+              </select>
+            </label>
             <div className="mini-form" style={{ maxWidth: "none" }}>
-              <label>
-                Bildirim başlığı
-                <input value={notificationTitleTr} onChange={(event) => setNotificationTitleTr(event.target.value)} />
-              </label>
-              <label>
-                Bildirim mesajı
-                <textarea rows={3} value={notificationBodyTr} onChange={(event) => setNotificationBodyTr(event.target.value)} />
-              </label>
+              <label>Bildirim başlığı<input value={notificationTitleTr} onChange={(event) => setNotificationTitleTr(event.target.value)} /></label>
+              <label>Bildirim mesajı<textarea rows={3} value={notificationBodyTr} onChange={(event) => setNotificationBodyTr(event.target.value)} /></label>
             </div>
             <div className="hero-actions">
               <button className="secondary" onClick={sendNotification} disabled={!selectedId}>Bildirim gönder</button>

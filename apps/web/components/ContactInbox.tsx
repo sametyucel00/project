@@ -46,15 +46,15 @@ const copy = {
     date: "Date"
   },
   ru: {
-    title: "Сообщения обратной связи",
-    lead: "Заявки из формы обратной связи отображаются здесь.",
-    loading: "Загрузка сообщений.",
-    empty: "Пока сообщений нет.",
+    title: "Сообщения связи",
+    lead: "Заявки из контактной формы показываются здесь.",
+    loading: "Сообщения загружаются.",
+    empty: "Сообщений пока нет.",
     newLabel: "Новое",
     readLabel: "Прочитано",
-    openLabel: "Открыть почту",
+    openLabel: "Открыть e-mail",
     sender: "Отправитель",
-    email: "Почта",
+    email: "E-mail",
     subject: "Тема",
     message: "Сообщение",
     date: "Дата"
@@ -102,7 +102,7 @@ export function ContactInbox() {
     return () => {
       active = false;
     };
-  }, [text.empty, text.title]);
+  }, [text.empty, text.loading, text.title]);
 
   const unreadCount = useMemo(() => items.filter((item) => item.status !== "read").length, [items]);
 

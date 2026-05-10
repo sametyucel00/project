@@ -11,14 +11,13 @@ import { PanelAccountOps } from "./PanelAccountOps";
 import { PanelMetrics } from "./PanelMetrics";
 import { RoleOps } from "./RoleOps";
 import { TheaterOps } from "./TheaterOps";
-import { ThemeToggle } from "./ThemeToggle";
 import { useLocale } from "./LocaleProvider";
 
 type MenuItem = { id: string; title: string; description: string };
 
 const panelMenus: Record<UserRole, MenuItem[]> = {
   admin: [
-    { id: "overview", title: "Genel", description: "Platform özeti ve hızlı işlemler." },
+    { id: "overview", title: "Genel", description: "Panel özeti ve hızlı işlemler." },
     { id: "members", title: "Üyeler", description: "Kullanıcılar, roller ve hesap durumu." },
     { id: "content-management", title: "İçerik", description: "Mekan, etkinlik ve fırsat kayıtları." },
     { id: "import", title: "İçe / Dışa Aktarım", description: "Dosya önizleme ve aktarım kayıtları." },
@@ -29,22 +28,21 @@ const panelMenus: Record<UserRole, MenuItem[]> = {
   ],
   business: [
     { id: "overview", title: "Genel", description: "İşletme özeti ve hızlı işlemler." },
-    { id: "places", title: "Mekanlar", description: "Sahip olunan mekanlar ve Google bilgileri." },
-    { id: "offers", title: "Fırsatlar", description: "Kampanyalar ve yayın durumu." },
-    { id: "qr", title: "QR İşlem", description: "QR puan ve kampanya islemleri." },
+    { id: "places", title: "İşletme Bilgileri", description: "Mekan bilgileri, görseller ve Google verileri." },
+    { id: "qr", title: "QR İşlem", description: "QR puan ve kullanım işlemleri." },
     { id: "orders", title: "Siparişler", description: "Kullanım ve işlem geçmişi." },
     { id: "settings", title: "Ayarlar", description: "Profil ve bildirim tercihleri." }
   ],
   theater: [
-    { id: "overview", title: "Genel", description: "Tiyatro özeti ve hızlı işlemler." },
-    { id: "play", title: "Oyun", description: "Oyun, sinopsis, bilet ve bildirim akışı." },
-    { id: "settings", title: "Ayarlar", description: "Tiyatro profili ve içerik tercihleri." }
+    { id: "overview", title: "Genel", description: "Etkinlik özeti ve hızlı işlemler." },
+    { id: "play", title: "Etkinlik", description: "Etkinlik, sinopsis, bilet ve duyuru yönetimi." },
+    { id: "settings", title: "Ayarlar", description: "Profil ve içerik tercihleri." }
   ],
   individual: [
     { id: "overview", title: "Genel", description: "Puan, QR, görev ve favori özeti." },
     { id: "points", title: "Puan ve QR", description: "Puan bakiyesi ve QR hareketleri." },
     { id: "tasks", title: "Görevler", description: "Tamamlanabilir görevler." },
-    { id: "badges", title: "Rozetler", description: "Kazanımlar ve sehir basarilari." },
+    { id: "badges", title: "Rozetler", description: "Kazanımlar ve şehir başarıları." },
     { id: "favorites", title: "Favoriler", description: "Kaydedilen mekan, etkinlik ve fırsatlar." },
     { id: "orders", title: "Siparişler", description: "İşlem ve sipariş geçmişi." },
     { id: "settings", title: "Ayarlar", description: "Dil, tema ve bildirim tercihleri." }
@@ -56,73 +54,69 @@ const copy = {
     roleLabels: {
       admin: "Yönetim Paneli",
       business: "İşletme Paneli",
-      theater: "Tiyatro Paneli",
+      theater: "Etkinlik Paneli",
       individual: "Bireysel Panel"
     },
     roleSubtitles: {
       admin: "Platform yönetimi, denetim ve içerik süreçlerini buradan yönet.",
-      business: "Mekan, fırsat, QR ve sadakat akışlarını tek yerden düzenle.",
-      theater: "Oyun, sinopsis, bilet ve duyuru yönetimini sahne ritmine göre sürdür.",
+      business: "Mekan, QR ve sadakat akışlarını tek yerden düzenle.",
+      theater: "Etkinlik, sinopsis, bilet ve duyuru yönetimini buradan sürdür.",
       individual: "Puan, QR, görev, rozet ve favorilerini tek ekranda takip et."
     },
     notifications: "Bildirimler",
     newAction: "Yeni işlem",
-    quickActionNote: "Rolüne uygun temel işlemleri buradan yönetebilirsin.",
-    liveNote: "Canlı verilerle güncellenen panel özeti."
+    quickActionNote: "Rolüne uygun temel işlemleri buradan yönetebilirsin."
   },
   en: {
     roleLabels: {
       admin: "Admin Panel",
       business: "Business Panel",
-      theater: "Theater Panel",
+      theater: "Event Panel",
       individual: "Personal Panel"
     },
     roleSubtitles: {
       admin: "Manage platform operations, moderation and content flows here.",
-      business: "Organize venue, offer, QR and loyalty flows from one place.",
-      theater: "Run play, synopsis, ticket and announcement management in stage rhythm.",
+      business: "Organize venue, QR and loyalty flows from one place.",
+      theater: "Run event, synopsis, ticket and announcement management here.",
       individual: "Track points, QR, tasks, badges and favorites in one screen."
     },
     notifications: "Notifications",
     newAction: "New action",
-    quickActionNote: "Handle the core tasks for your role here.",
-    liveNote: "Panel summaries update with live data."
+    quickActionNote: "Handle the core tasks for your role here."
   },
   ru: {
     roleLabels: {
       admin: "Panel upravleniya",
       business: "Panel biznesa",
-      theater: "Teatralnaya panel",
+      theater: "Panel sobytiy",
       individual: "Lichnaya panel"
     },
     roleSubtitles: {
       admin: "Upravlyayte platformoy, moderatsiyey i kontentom zdes.",
-      business: "Organizuyte ploshchadki, predlozheniya, QR i loyalnost v odnom meste.",
-      theater: "Upravlyayte pyesami, sinopsisami, biletami i obyavleniyami.",
+      business: "Organizuyte ploshchadki, QR i loyalnost v odnom meste.",
+      theater: "Upravlyayte sobytiyami, sinopsisami, biletami i obyavleniyami zdes.",
       individual: "Sledite za ballami, QR, zadachami, beydzhami i izbrannym na odnom ekrane."
     },
     notifications: "Uvedomleniya",
     newAction: "Novoe deystvie",
-    quickActionNote: "Zdes dostupny osnovnye zadachi vashey roli.",
-    liveNote: "Svodki paneli obnovlyayutsya v realnom vremeni."
+    quickActionNote: "Zdes dostupny osnovnye zadachi vashey roli."
   },
   de: {
     roleLabels: {
       admin: "Admin-Bereich",
       business: "Business-Bereich",
-      theater: "Theater-Bereich",
+      theater: "Event-Bereich",
       individual: "Persoenlicher Bereich"
     },
     roleSubtitles: {
       admin: "Verwalte Plattform, Moderation und Content-Fluesse hier.",
-      business: "Organisiere Ort, Angebote, QR und Loyalty-Flows an einem Ort.",
-      theater: "Steuere Stuecke, Synopsen, Tickets und Ankuendigungen im Buehnenrhythmus.",
+      business: "Organisiere Ort-, QR- und Loyalty-Flows an einem Ort.",
+      theater: "Steuere Events, Synopsen, Tickets und Ankuendigungen hier.",
       individual: "Verfolge Punkte, QR, Aufgaben, Abzeichen und Favoriten auf einem Bildschirm."
     },
     notifications: "Benachrichtigungen",
     newAction: "Neue Aktion",
-    quickActionNote: "Verwalte hier die wichtigsten Aufgaben deiner Rolle.",
-    liveNote: "Panel-Zusammenfassungen aktualisieren sich live."
+    quickActionNote: "Verwalte hier die wichtigsten Aufgaben deiner Rolle."
   }
 } as const;
 
@@ -136,15 +130,8 @@ export function PanelShell({ role }: { role: UserRole }) {
   return (
     <main className="panel-page" id="main-content">
       <aside className="panel-sidebar">
-        <a className="brand" href="/">
-          <img className="brand-logo brand-logo-light" src="/nar-logo.png" alt="Nar Rehberi logosu" />
-          <img className="brand-logo brand-logo-dark" src="/nar-logo.png" alt="Nar Rehberi logosu" />
-          <span>Nar Rehberi</span>
-        </a>
-        <div style={{ marginTop: 18 }}>
-          <ThemeToggle />
-        </div>
-        <nav className="panel-menu" aria-label={`${t.roleLabels[role]} menusu`}>
+        <a className="brand brand-text" href="/">Nar Rehberi</a>
+        <nav className="panel-menu" aria-label={`${t.roleLabels[role]} menüsü`}>
           {menu.map((item) => (
             <a href={`#${item.id}`} key={item.id}>
               <div>
@@ -175,7 +162,7 @@ export function PanelShell({ role }: { role: UserRole }) {
           </div>
         </header>
 
-        <section aria-label="Panel ozeti">
+        <section aria-label="Panel özeti">
           <PanelMetrics role={role} />
         </section>
 
