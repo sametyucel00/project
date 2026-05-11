@@ -2,14 +2,6 @@ name: Android APK Build
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - "apps/mobile/**"
-      - "packages/**"
-      - "firebase/**"
-      - ".github/workflows/android-build.yml"
 
 jobs:
   build-android:

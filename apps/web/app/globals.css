@@ -453,7 +453,7 @@ h1 {
   color: #fffaf4;
   background:
     linear-gradient(135deg, rgba(17, 21, 27, 0.25), rgba(17, 21, 27, 0.1)),
-    url("https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=900&q=80") center/cover;
+    url("https://images.unsplash.com/photo-1514933651103-005eec06c04bauto=format&fit=crop&w=900&q=80") center/cover;
 }
 
 .stories {
@@ -1144,10 +1144,13 @@ h1 {
 .remember-row {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 8px;
   min-height: 32px;
   color: var(--muted);
   width: fit-content;
+  white-space: nowrap;
 }
 
 .remember-row input[type="checkbox"] {
@@ -1161,6 +1164,7 @@ h1 {
 
 .remember-row span {
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .account-type {
@@ -1233,6 +1237,16 @@ h1 {
   margin-top: 12px;
 }
 
+.login-surface label.remember-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 8px;
+  width: fit-content;
+  white-space: nowrap;
+}
+
 .login-surface input {
   min-height: 46px;
   border-radius: 8px;
@@ -1278,6 +1292,24 @@ h1 {
   width: fit-content;
   max-width: 100%;
   gap: 8px;
+}
+
+.mini-form select.panel-select,
+.panel-select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(23, 20, 18, 0.12);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 0 12px;
+}
+
+.datetime-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .error-list {
@@ -2451,6 +2483,10 @@ html[data-a11y-motion="reduced"] *::after {
 
   .metric strong {
     font-size: 26px;
+  }
+
+  .datetime-grid {
+    grid-template-columns: 1fr;
   }
 
   .command-surface h2,

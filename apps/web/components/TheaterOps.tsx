@@ -69,6 +69,24 @@ const emptyTranslations = (): TranslationPreview => ({
   notificationBody: emptyLocalizedText()
 });
 
+function splitDateTime(value: string) {
+  if (!value) return { date: "", time: "" };
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return { date: "", time: "" };
+  const pad = (input: number) => String(input).padStart(2, "0");
+  return {
+    date: `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`,
+    time: `${pad(date.getHours())}:${pad(date.getMinutes())}`
+  };
+}
+
+function mergeDateTime(dateValue: string, timeValue: string) {
+  if (!dateValue) return "";
+  const safeTime = timeValue || "00:00";
+  const merged = new Date(`${dateValue}T${safeTime}:00`);
+  return Number.isNaN(merged.getTime()) ? "" : merged.toISOString();
+}
+
 export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" }) {
   const uid = auth.currentUser?.uid ?? "";
   const [events, setEvents] = useState<EventItem[]>([]);
@@ -84,6 +102,8 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
   const remainingNotifications = useMemo(() => Math.max(Number(draft.notificationLimit ?? 0) - notificationUsed, 0), [draft.notificationLimit, notificationUsed]);
   const eventTypeOptions = useMemo(() => eventTypes.map((item) => ({ id: item.id, label: localizeText(item.title, "tr") })), []);
   const eventTypeLabelById = useMemo(() => new Map<string, string>(eventTypeOptions.map((item) => [item.id, item.label])), [eventTypeOptions]);
+  const startsAtParts = useMemo(() => splitDateTime(draft.startsAt), [draft.startsAt]);
+  const endsAtParts = useMemo(() => splitDateTime(draft.endsAt), [draft.endsAt]);
 
   useEffect(() => {
     let active = true;
@@ -234,6 +254,10 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
       setStatus("Başlık, açıklama, sinopsis ve mekân adı gerekli.");
       return;
     }
+    if (!draft.startsAt.trim()) {
+      setStatus("Başlangıç tarihi gerekli.");
+      return;
+    }
 
     try {
       if (!translations.title.tr || !translations.description.tr || !translations.synopsis.tr) {
@@ -361,7 +385,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
           <div className="mini-form" style={{ maxWidth: "none" }}>
             <label>Etkinlik kimliği<input value={draft.id} onChange={(event) => setDraft((current) => ({ ...current, id: event.target.value }))} placeholder="bohem-gecesi-2026" /></label>
             <label>Etkinlik türü
-              <select value={draft.type} onChange={(event) => setDraft((current) => ({ ...current, type: event.target.value as EventType }))}>
+              <select className="panel-select" value={draft.type} onChange={(event) => setDraft((current) => ({ ...current, type: event.target.value as EventType }))}>
                 {eventTypeOptions.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
               </select>
             </label>
@@ -370,10 +394,16 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
             <label>Türkçe sinopsis<textarea rows={4} value={draft.synopsisTr} onChange={(event) => setDraft((current) => ({ ...current, synopsisTr: event.target.value }))} /></label>
             <label>İlçe<input value={draft.district} onChange={(event) => setDraft((current) => ({ ...current, district: event.target.value }))} /></label>
             <label>Mekân adı<input value={draft.venueName} onChange={(event) => setDraft((current) => ({ ...current, venueName: event.target.value }))} /></label>
-            <label>Başlangıç<input value={draft.startsAt} onChange={(event) => setDraft((current) => ({ ...current, startsAt: event.target.value }))} /></label>
-            <label>Bitiş<input value={draft.endsAt} onChange={(event) => setDraft((current) => ({ ...current, endsAt: event.target.value }))} /></label>
+            <div className="datetime-grid">
+              <label>Başlangıç tarihi<input type="date" value={startsAtParts.date} onChange={(event) => setDraft((current) => ({ ...current, startsAt: mergeDateTime(event.target.value, startsAtParts.time) }))} /></label>
+              <label>Başlangıç saati<input type="time" value={startsAtParts.time} onChange={(event) => setDraft((current) => ({ ...current, startsAt: mergeDateTime(startsAtParts.date, event.target.value) }))} /></label>
+            </div>
+            <div className="datetime-grid">
+              <label>Bitiş tarihi<input type="date" value={endsAtParts.date} onChange={(event) => setDraft((current) => ({ ...current, endsAt: mergeDateTime(event.target.value, endsAtParts.time) }))} /></label>
+              <label>Bitiş saati<input type="time" value={endsAtParts.time} onChange={(event) => setDraft((current) => ({ ...current, endsAt: mergeDateTime(endsAtParts.date, event.target.value) }))} /></label>
+            </div>
             <label>Ücret tipi
-              <select value={draft.priceType} onChange={(event) => setDraft((current) => ({ ...current, priceType: event.target.value as "free" | "paid" }))}>
+              <select className="panel-select" value={draft.priceType} onChange={(event) => setDraft((current) => ({ ...current, priceType: event.target.value as "free" | "paid" }))}>
                 <option value="paid">Ücretli</option>
                 <option value="free">Ücretsiz</option>
               </select>
@@ -383,7 +413,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
             <label>Kapak görseli<input value={draft.coverImage} onChange={(event) => setDraft((current) => ({ ...current, coverImage: event.target.value }))} /></label>
             <label>Video bağlantısı<input value={draft.videoUrl} onChange={(event) => setDraft((current) => ({ ...current, videoUrl: event.target.value }))} /></label>
             <label>Durum
-              <select value={draft.status} onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as PublishStatus }))}>
+              <select className="panel-select" value={draft.status} onChange={(event) => setDraft((current) => ({ ...current, status: event.target.value as PublishStatus }))}>
                 <option value="draft">Taslak</option>
                 <option value="pending">Onay bekliyor</option>
                 <option value="published">Yayında</option>
@@ -411,7 +441,7 @@ export function TheaterOps({ mode = "theater" }: { mode?: "theater" | "admin" })
             <h3>Bildirim gönderimi</h3>
             <label>
               Bildirim etkinliği
-              <select value={selectedId} onChange={(event) => applyEvent(events.find((item) => item.id === event.target.value) ?? null)}>
+              <select className="panel-select" value={selectedId} onChange={(event) => applyEvent(events.find((item) => item.id === event.target.value) ?? null)}>
                 <option value="">Etkinlik seç</option>
                 {events.map((event) => <option key={event.id} value={event.id}>{localizeText(event.title, "tr")}</option>)}
               </select>
