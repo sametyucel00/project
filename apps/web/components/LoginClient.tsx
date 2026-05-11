@@ -5,7 +5,7 @@ import { AppleLogo, GoogleLogo } from "@/components/BrandIcons";
 import { appleProvider, auth, googleProvider } from "@/lib/firebase";
 import { resolveRoleHome } from "@/lib/routes";
 import type { UserRole } from "@nar/core";
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import type { FirebaseError } from "firebase/app";
 import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -37,7 +37,8 @@ const loginCopy = {
     forgotSending: "Şifre sıfırlama bağlantısı hazırlanıyor.",
     forgotSent: "Şifre sıfırlama bağlantısı e-posta adresine gönderildi.",
     googlePending: "Google ile devam ediliyor.",
-    applePending: "Apple ile devam ediliyor."
+    applePending: "Apple ile devam ediliyor.",
+    rememberMe: "Beni hatırla"
   },
   en: {
     tabLogin: "Sign in",
@@ -60,7 +61,8 @@ const loginCopy = {
     forgotSending: "Preparing the password reset link.",
     forgotSent: "Password reset link was sent to your e-mail address.",
     googlePending: "Continuing with Google.",
-    applePending: "Continuing with Apple."
+    applePending: "Continuing with Apple.",
+    rememberMe: "Remember me"
   },
   ru: {
     tabLogin: "Вход",
@@ -83,7 +85,8 @@ const loginCopy = {
     forgotSending: "Подготавливается ссылка для сброса пароля.",
     forgotSent: "Ссылка для сброса пароля отправлена на ваш e-mail.",
     googlePending: "Продолжаем через Google.",
-    applePending: "Продолжаем через Apple."
+    applePending: "Продолжаем через Apple.",
+    rememberMe: "Запомнить меня"
   },
   de: {
     tabLogin: "Anmelden",
@@ -106,7 +109,8 @@ const loginCopy = {
     forgotSending: "Passwort-Reset-Link wird vorbereitet.",
     forgotSent: "Der Passwort-Reset-Link wurde an deine E-Mail gesendet.",
     googlePending: "Weiter mit Google.",
-    applePending: "Weiter mit Apple."
+    applePending: "Weiter mit Apple.",
+    rememberMe: "Angemeldet bleiben"
   }
 } as const;
 
@@ -153,6 +157,7 @@ export function LoginClient() {
   const [requestedRole, setRequestedRole] = useState<SelfServiceRole>("individual");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
   const copy = loginCopy[locale];
   const [message, setMessage] = useState<string>(copy.messageDefault);
   const [busy, setBusy] = useState(false);
@@ -160,6 +165,18 @@ export function LoginClient() {
   useEffect(() => {
     setMessage(copy.messageDefault);
   }, [copy.messageDefault]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = window.localStorage.getItem("nar-login-remember-me");
+    if (stored === null) return;
+    setRememberMe(stored === "true");
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("nar-login-remember-me", String(rememberMe));
+  }, [rememberMe]);
 
   async function completeAuth(roleForNewAccount?: SelfServiceRole) {
     const role =
@@ -174,6 +191,7 @@ export function LoginClient() {
     setBusy(true);
     setMessage(copy.checking);
     try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       if (mode === "register") {
         await createUserWithEmailAndPassword(auth, email, password);
         await completeAuth(requestedRole);
@@ -192,6 +210,7 @@ export function LoginClient() {
     setBusy(true);
     setMessage(provider === "google" ? copy.googlePending : copy.applePending);
     try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       await signInWithPopup(auth, provider === "google" ? googleProvider : appleProvider);
       await completeAuth(mode === "register" ? requestedRole : undefined);
     } catch (error) {
@@ -239,6 +258,10 @@ export function LoginClient() {
       <label>
         {copy.password}
         <input value={password} onChange={(event) => setPassword(event.target.value)} placeholder={copy.passwordPlaceholder} type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} />
+      </label>
+      <label className="remember-row">
+        <input checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} type="checkbox" />
+        <span>{copy.rememberMe}</span>
       </label>
       {mode === "register" && (
         <div className="account-type" aria-label="Hesap tipi">

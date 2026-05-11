@@ -27,6 +27,7 @@ export type EventType =
   | "theater"
   | "ballet"
   | "musical"
+  | "cinema"
   | "concert"
   | "festival"
   | "exhibition"
@@ -1152,6 +1153,7 @@ export const eventTypes: Array<{ id: EventType; title: LocalizedText }> = [
   { id: "theater", title: { tr: "Tiyatro", en: "Theater", ru: "Театр", de: "Theater" } },
   { id: "ballet", title: { tr: "Bale", en: "Ballet", ru: "Балет", de: "Ballett" } },
   { id: "musical", title: { tr: "Müzikal", en: "Musical", ru: "Мюзикл", de: "Musical" } },
+  { id: "cinema", title: { tr: "Sinema", en: "Cinema", ru: "Кино", de: "Kino" } },
   { id: "concert", title: { tr: "Konser", en: "Concert", ru: "Концерт", de: "Konzert" } },
   { id: "festival", title: { tr: "Festival", en: "Festival", ru: "Фестиваль", de: "Festival" } },
   { id: "exhibition", title: { tr: "Sergi", en: "Exhibition", ru: "Выставка", de: "Ausstellung" } },
@@ -1217,6 +1219,7 @@ export function getEventTypeId(event: EventItem): EventType {
 
   if (includesAny(haystack, ["bale", "ballet"])) return "ballet";
   if (includesAny(haystack, ["muzikal", "musical"])) return "musical";
+  if (includesAny(haystack, ["sinema", "film", "movie", "kino"])) return "cinema";
   if (includesAny(haystack, ["konser", "concert", "live"])) return "concert";
   if (includesAny(haystack, ["festival"])) return "festival";
   if (includesAny(haystack, ["sergi", "exhibition", "gallery"])) return "exhibition";

@@ -60,6 +60,11 @@ type OfferDraft = {
   status: PublishStatus;
 };
 
+type DateTimeParts = {
+  date: string;
+  time: string;
+};
+
 const blankText = (value = ""): TextDraft => ({ tr: value, en: value, ru: value, de: value });
 
 const createPlaceDraft = (): PlaceDraft => ({
@@ -113,6 +118,26 @@ const createOfferDraft = (): OfferDraft => ({
   status: "draft"
 });
 
+function splitDateTime(value: string): DateTimeParts {
+  if (!value) return { date: "", time: "" };
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return { date: "", time: "" };
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return { date: `${year}-${month}-${day}`, time: `${hours}:${minutes}` };
+}
+
+function mergeDateTime(dateValue: string, timeValue: string) {
+  if (!dateValue) return "";
+  const [year, month, day] = dateValue.split("-").map(Number);
+  const [hours = 0, minutes = 0] = (timeValue || "00:00").split(":").map(Number);
+  const next = new Date(year, (month ?? 1) - 1, day ?? 1, hours, minutes, 0, 0);
+  return next.toISOString();
+}
+
 export function CatalogManagementOps() {
   const { locale } = useLocale();
   const [kind, setKind] = useState<CatalogKind>("offer");
@@ -126,6 +151,8 @@ export function CatalogManagementOps() {
   const [placeDraft, setPlaceDraft] = useState<PlaceDraft>(createPlaceDraft());
   const [eventDraft, setEventDraft] = useState<EventDraft>(createEventDraft());
   const [offerDraft, setOfferDraft] = useState<OfferDraft>(createOfferDraft());
+  const offerStarts = splitDateTime(offerDraft.startsAt);
+  const offerEnds = splitDateTime(offerDraft.endsAt);
   const [status, setStatus] = useState("İçerik yönetimi hazır.");
 
   useEffect(() => {
@@ -437,8 +464,10 @@ export function CatalogManagementOps() {
                 {placeOptions.map((place) => <option key={place.id} value={place.id}>{localizeText(place.title, locale)} · {place.district}</option>)}
               </select></label>
               <label>İndirim etiketi<input value={offerDraft.discountLabel} onChange={(event) => setOfferDraft((current) => ({ ...current, discountLabel: event.target.value }))} /></label>
-              <label>Başlangıç<input value={offerDraft.startsAt} onChange={(event) => setOfferDraft((current) => ({ ...current, startsAt: event.target.value }))} /></label>
-              <label>Bitiş<input value={offerDraft.endsAt} onChange={(event) => setOfferDraft((current) => ({ ...current, endsAt: event.target.value }))} /></label>
+              <label>Başlangıç tarihi<input type="date" value={offerStarts.date} onChange={(event) => setOfferDraft((current) => ({ ...current, startsAt: mergeDateTime(event.target.value, offerStarts.time) }))} /></label>
+              <label>Başlangıç saati<input type="time" value={offerStarts.time} onChange={(event) => setOfferDraft((current) => ({ ...current, startsAt: mergeDateTime(offerStarts.date, event.target.value) }))} /></label>
+              <label>Bitiş tarihi<input type="date" value={offerEnds.date} onChange={(event) => setOfferDraft((current) => ({ ...current, endsAt: mergeDateTime(event.target.value, offerEnds.time) }))} /></label>
+              <label>Bitiş saati<input type="time" value={offerEnds.time} onChange={(event) => setOfferDraft((current) => ({ ...current, endsAt: mergeDateTime(offerEnds.date, event.target.value) }))} /></label>
               <label>Puan maliyeti<input type="number" value={offerDraft.pointCost} onChange={(event) => setOfferDraft((current) => ({ ...current, pointCost: Number(event.target.value) }))} /></label>
               <label>Kullanım limiti<input type="number" value={offerDraft.useLimit} onChange={(event) => setOfferDraft((current) => ({ ...current, useLimit: Number(event.target.value) }))} /></label>
               <label>Hikaye görseli<input value={offerDraft.storyImage} onChange={(event) => setOfferDraft((current) => ({ ...current, storyImage: event.target.value }))} /></label>

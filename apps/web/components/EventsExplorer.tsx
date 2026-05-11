@@ -222,6 +222,7 @@ export function EventsExplorer() {
   }, [filteredItems.length, searchText]);
 
   const monthlyPreview = filteredItems.slice(0, 8).map((event) => ({
+    id: event.id,
     day: new Intl.DateTimeFormat(locale === "tr" ? "tr-TR" : locale, { day: "2-digit" }).format(new Date(event.startsAt)),
     month: new Intl.DateTimeFormat(locale === "tr" ? "tr-TR" : locale, { month: "short" }).format(new Date(event.startsAt)),
     title: localizeText(event.title, locale),
@@ -275,7 +276,7 @@ export function EventsExplorer() {
       {activeView !== "map" ? (
         <div className="orders-list" aria-label={t("events.monthlyPreview")}>
           {monthlyPreview.map((item) => (
-            <article key={`${item.day}-${item.title}`}>
+            <article key={item.id}>
               <div>
                 <strong>{item.day} {item.month}</strong>
                 <span>{item.title} · {item.venue}</span>
