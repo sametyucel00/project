@@ -9,7 +9,7 @@ const assignableRoles: UserRole[] = ["individual", "business", "theater", "admin
 const roleLabels: Record<UserRole, string> = {
   individual: "Bireysel",
   business: "İşletme",
-  theater: "Tiyatro",
+  theater: "Etkinlik",
   admin: "Yönetici"
 };
 

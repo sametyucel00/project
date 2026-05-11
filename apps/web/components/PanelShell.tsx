@@ -19,11 +19,11 @@ const panelMenus: Record<UserRole, MenuItem[]> = {
   admin: [
     { id: "overview", title: "Genel", description: "Panel özeti ve hızlı işlemler." },
     { id: "members", title: "Üyeler", description: "Kullanıcılar, roller ve hesap durumu." },
-    { id: "content-management", title: "İçerik", description: "Mekan, etkinlik ve fırsat kayıtları." },
+    { id: "content-management", title: "İçerik Yönetimi", description: "Mekan, etkinlik ve fırsat kayıtları." },
     { id: "import", title: "İçe / Dışa Aktarım", description: "Dosya önizleme ve aktarım kayıtları." },
     { id: "category-management", title: "Kategoriler", description: "Mekan ve etkinlik kategorileri." },
     { id: "notifications", title: "Bildirimler", description: "Bildirim merkezi ve gönderimler." },
-    { id: "contact-inbox", title: "İletişim", description: "Formdan gelen mesajlar." },
+    { id: "contact-inbox", title: "İletişim Mesajları", description: "Formdan gelen mesajlar." },
     { id: "settings", title: "Ayarlar", description: "Profil ve oturum tercihleri." }
   ],
   business: [

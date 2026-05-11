@@ -15,7 +15,7 @@ type ApprovalRecord = {
 export function WorkflowOps({ role }: { role: UserRole }) {
   if (role === "admin") return <ApprovalQueue />;
   if (role === "business") return <DraftTemplates title="İşletme Taslakları" templates={businessDraftTemplates} entityType="place" />;
-  if (role === "theater") return <DraftTemplates title="Tiyatro Taslakları" templates={theaterDraftTemplates} entityType="event" />;
+  if (role === "theater") return <DraftTemplates title="Etkinlik Taslakları" templates={theaterDraftTemplates} entityType="event" />;
   return <TaskCompletion />;
 }
 

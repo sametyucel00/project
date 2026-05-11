@@ -25,8 +25,8 @@ export function PanelMetrics({ role }: { role: UserRole }) {
       notification: "Bildirim",
       activeOffer: "Aktif fırsat",
       livePlace: "Yayındaki mekan",
-      theaterPlay: "Tiyatro oyunu",
-      playNotification: "Oyun bildirimi",
+      theaterPlay: "Etkinlikler",
+      playNotification: "Etkinlik bildirimi",
       notificationLimit: "Bildirim hakkı"
     },
     en: {

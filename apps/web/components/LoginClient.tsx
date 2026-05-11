@@ -9,7 +9,7 @@ import { browserLocalPersistence, browserSessionPersistence, createUserWithEmail
 import type { FirebaseError } from "firebase/app";
 import { Mail } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocale } from "./LocaleProvider";
 
 type AuthMode = "login" | "register";
@@ -118,22 +118,22 @@ const accountTypes = {
   tr: [
     { role: "individual", title: "Bireysel", text: "Puan, QR, favoriler ve etkinlik hatırlatıcıları." },
     { role: "business", title: "İşletme", text: "Mekan, kampanya ve QR sadakat yönetimi." },
-    { role: "theater", title: "Tiyatro", text: "Oyun, bilet bağlantısı, kadro ve duyuru yönetimi." }
+    { role: "theater", title: "Etkinlik", text: "Etkinlik, bilet bağlantısı, kadro ve duyuru yönetimi." }
   ],
   en: [
     { role: "individual", title: "Individual", text: "Points, QR, favorites and event reminders." },
     { role: "business", title: "Business", text: "Venue, campaign and QR loyalty management." },
-    { role: "theater", title: "Theater", text: "Play, ticket link, cast and announcement management." }
+    { role: "theater", title: "Event", text: "Event, ticket link, cast and announcement management." }
   ],
   ru: [
     { role: "individual", title: "Личный", text: "Баллы, QR, избранное и напоминания о событиях." },
     { role: "business", title: "Бизнес", text: "Управление местом, кампанией и QR-лояльностью." },
-    { role: "theater", title: "Театр", text: "Управление спектаклем, ссылкой на билет, составом и объявлениями." }
+    { role: "theater", title: "События", text: "Управление событием, ссылкой на билет, составом и объявлениями." }
   ],
   de: [
     { role: "individual", title: "Persönlich", text: "Punkte, QR, Favoriten und Event-Erinnerungen." },
     { role: "business", title: "Business", text: "Ort-, Kampagnen- und QR-Loyalty-Verwaltung." },
-    { role: "theater", title: "Theater", text: "Stück-, Ticket-, Cast- und Ankündigungsverwaltung." }
+    { role: "theater", title: "Veranstaltung", text: "Event-, Ticket-, Cast- und Ankündigungsverwaltung." }
   ]
 } as const;
 
@@ -158,6 +158,8 @@ export function LoginClient() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const copy = loginCopy[locale];
   const [message, setMessage] = useState<string>(copy.messageDefault);
   const [busy, setBusy] = useState(false);
@@ -188,15 +190,21 @@ export function LoginClient() {
   }
 
   async function submitEmail() {
+    const currentEmail = emailRef.current?.value.trim() || email.trim();
+    const currentPassword = passwordRef.current?.value || password;
+    if (!currentEmail || currentPassword.length < 6) {
+      setMessage(currentEmail ? copy.passwordPlaceholder : copy.emailPlaceholder);
+      return;
+    }
     setBusy(true);
     setMessage(copy.checking);
     try {
       await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       if (mode === "register") {
-        await createUserWithEmailAndPassword(auth, email, password);
+        await createUserWithEmailAndPassword(auth, currentEmail, currentPassword);
         await completeAuth(requestedRole);
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        await signInWithEmailAndPassword(auth, currentEmail, currentPassword);
         await completeAuth();
       }
     } catch (error) {
@@ -221,7 +229,7 @@ export function LoginClient() {
   }
 
   async function resetPassword() {
-    const safeEmail = email.trim();
+    const safeEmail = emailRef.current?.value.trim() || email.trim();
     if (!safeEmail) {
       setMessage(copy.forgotPrompt);
       return;
@@ -253,11 +261,11 @@ export function LoginClient() {
       </div>
       <label>
         {copy.email}
-        <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder={copy.emailPlaceholder} type="email" autoComplete="email" />
+        <input ref={emailRef} value={email} onChange={(event) => setEmail(event.target.value)} placeholder={copy.emailPlaceholder} type="email" autoComplete="email" />
       </label>
       <label>
         {copy.password}
-        <input value={password} onChange={(event) => setPassword(event.target.value)} placeholder={copy.passwordPlaceholder} type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} />
+        <input ref={passwordRef} value={password} onChange={(event) => setPassword(event.target.value)} placeholder={copy.passwordPlaceholder} type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} />
       </label>
       <label className="remember-row">
         <input checked={rememberMe} onChange={(event) => setRememberMe(event.target.checked)} type="checkbox" />
@@ -284,7 +292,7 @@ export function LoginClient() {
         </div>
       )}
       <div className="hero-actions" aria-label="Giriş aksiyonları">
-        <button className="primary" disabled={busy || !email || password.length < 6} onClick={submitEmail}>
+        <button className="primary" disabled={busy} onClick={submitEmail}>
           <Mail size={18} />
           <span>{mode === "login" ? copy.emailLogin : copy.register}</span>
         </button>
@@ -297,7 +305,7 @@ export function LoginClient() {
           <span>{copy.apple}</span>
         </button>
       </div>
-      <button className="link-button" disabled={busy || !email.trim()} onClick={resetPassword}>{copy.forgot}</button>
+      <button className="link-button" disabled={busy} onClick={resetPassword}>{copy.forgot}</button>
       <p className="meta" aria-live="polite">{message}</p>
     </div>
   );
